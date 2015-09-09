@@ -1,0 +1,670 @@
+
+%      * *
+%  **** * *
+% *       *
+%  ****   *
+%      *  *
+%      *  *
+%      *  *
+%      *  *
+%      *  *
+%      *  *
+%      *  *
+%      *  *
+%      *  *
+%      *   ***********************
+%      *                          *
+%      *                          *
+%      *                          *
+%      *    *     ******     *    *
+%      *   * *   *      *   * *   *
+%      *   * *   *      *   * *   *
+%       ***   ***        ***   ***
+
+\section{Analisi concettuale}
+
+Tipicamente, la prima cosa da fare nell'analisi dei requisiti \`e \emph{raffinare} i requisiti. Si identificano univocamente gli elementi dei requisiti, si eliminano i sinonimi, si raggruppano elementi correlati. Un'idea \`e fare liste annidate, un modello gerarchico a pi\`u livello, con i concetti primari al primo livello, quelli secondari al secondo, i dettagli oltre. \`E anche comodo inserire ``puntatori'' e riferimenti a altri concetti, per esempio la voce ``lista delle destinazioni'' rimanda alla voce che definisce le destinazioni.
+
+Per le funzionalit\`a \`e bene specificare gli ``attori'' del sistema (chi li usa), cosa ha in input e cosa ha in output.
+
+La fase di analisi parte dopo il raffinamento dei requisiti. L'analisi deve descrivere molto bene dati e funzioni dell'applicazioni, e creare uno schema concettuale, chiaro e non contraddittorio, della struttura dell'applicazione.
+
+L'analisi si divide in due fasi: analisi dei dati e analisi delle funzionalit\`a.
+
+\subsection{Il linguaggio Entity-Relationship (ER)}
+
+\`E un linguaggio diagrammatico, per creare un \emph{modello dei dati di interesse} di un'applicazione. Ha dei costrutti specifici (entity-relationship) da utilizzare rispettando la sua sintassi. A un diagramma ER \`e associata una formula logica (semantica), che rappresenta tutti i ``mondi'' realizzabili secondo quanto specificato dal diagramma.
+
+Il diagramma non descrive i dati, ma la struttura dei dati. C'\`e una differenza fra basi di dati e schema di basi di dati, fra relazione e schema di relazione. Anche in OOP le classi sono distinte dagli oggetti: sono statiche, contro la mortalit\`a degli oggetti. Distinzione fra aspetto intensionale (classe) contro l'aspetto estensionale (oggetto).
+
+Un diagramma ER descrive l'aspetto intensionale dei dati. Crea un insieme di vincoli su quali oggetti possono o non possono esistere, con quali relazioni fra loro. A un diagramma corrispondono tutte le istanze possibili.
+
+ER offre due costrutti di primo livello.
+
+Un'entit\`a descrive una \emph{classe} di oggetti di interesse. Ogni istanza di un'entit\`a ha propriet\`a comuni, ma ogni istanza ha anche un'esistenza autonoma rispetto alle altre istanze.
+
+I linguaggio Object Oriented sono nati assieme a questo tipo di analisi concettuale, per supportare proprio un tipo di analisi concettuale Object Oriented. Ma ER viene un po' prima: non offre all'entit\`a il concetto di metodo. \`E pensato per le basi di dati, quindi abbiamo \emph{solo} i dati. Come classi senza metodi.
+
+Ciascuna entit\`a rappresenta un insieme di istanze, ossia si astrae dalle istanze.
+
+Un attributo \`e una propriet\`a locale di una entit\`a di interesse. A ogni istanza di quell'entit\`a associa un certo valore di un certo tipo: per esempio, un attributo ``nome'' di tipo ``stringa''. ``Le istanze di un'entit\`a hanno esistenza autonoma'' vuol dire che l'istanza non ha alcun rapporto con le altre istanze, e la sua esistenza dipende unicamente dall'istanza stessa.
+
+Un'entit\`a ha esistenza autonoma.
+
+Le istanze si rappresentano con rettangoli, con ``fiammiferi'' a indicare gli attributi. Gli attributi vengono vincolati a un tipo, con magari vincoli extra (intero maggiore di zero).
+
+ER \`e preciso: un'entit\`a, se ha un attributo, vuol dire che \emph{deve} avere quell'attributo, e che ne deve avere \emph{uno solo}.
+
+Due istanze con gli stessi attributi possono coesistere, proprio perch\'e sono indipendenti.
+
+Si assume ci siano dei domini ``base'', ragionevoli. Interi, numeri reali, stringhe, date, orari, combo data e ora. I domini possono essere ristretti, con vincoli di dominio (detti anche \emph{tipi specializzati}). 
+
+Un dominio enumerativo \`e un insieme (piccolo) di domini conosciuti.
+
+ER permette di modellare anche attribuiti composti, ossia attributi aggregati di vari valori.
+
+I domini degli attributi non si scrivono accanto al nome degli attributi, e anche gli attributi composti vengono indicati solo con il nome. In un documento allegato (dizionario dei dati) ciascun attributo viene mappato al suo tipo, e ciascun attributo composto viene mappato ai valori da cui \`e costituito.
+
+L'altro contento centrale \`e quello di \emph{relationship}. Con relazione si indica sia il sottoinsieme di un prodotto cartesiano, sia uno schema di relazione in una base di dati, sia quello di cui parleremo ora.
+
+Una relationship esprime la possibilit\`a che istanze di due (o pi\`u) entit\`a abbiano un qualche legame.
+
+``\`E di interesse conoscere le citt\`a di residenza degli impiegati''.
+
+Due entit\`a E ed F hanno una relationship r che le lega. Quindi abbiamo, nel mondo, istanze di E e istanze di F, e un sottoinsieme r del prodotto cartesiano fra E e F. Quindi r \`e una relazione matematica su E \times F.
+
+r \subseteq E \times F
+
+Siamo a livello estensionale.
+
+Stiamo parlando di relazioni matematiche, quindi la stessa coppia (E,F) non pu\`o essere due volte in r. Un'entit\`a pu\`o avere duplicati, una relationship no. Se conosco il livello estensionale di r, posso dirti se e \in E e f \in F sono tali che (e,f) \in r.
+
+Una relationship non ammette l'esistenza di duplicati.
+
+Esempio importante: entit\`a Cliente, entit\`a Hotel. Relationship fra Cliente e Hotel, chiamata Prenotazione. Viene fuori che un cliente pu\`o prenotare un hotel solo una volta. Non va bene. Serve un livello intermedio, prenotazione deve essere un'entit\`a.
+
+Le relationship sono ancora comunque ``larghe''. Permettono di rappresentare mondi che nella realt\`a non sono legali. Bisogna aggiungere vincoli anche alle relationship per rappresentare pi\`u correttamente il mondo.
+
+I vincoli di integrit\`a impongono restrizioni ai livelli estensionali ammessi. Si pu\`o avere un vincolo di cardinalit\`a sulle relationship. Specificano il numero di volte che un'istanza di entit\`a pu\`o essere coinvolta in una istanza di relationship.
+
+Entit\`a impiegato, entit\`a citt\`a, relationship di residenza. Dico che un'istanza di impiegato pu\`o essere coinvolto (1,1) volte in una relationship. Un'istanza di citt\`a pu\`o essere coinvolta (0,N) volte in una istanza di relationship.
+
+I costrutti che fornisce l'ER sono degli elementi diagrammatici con un senso ben preciso. Un diagramma ER \`e una formula logica, ha una semantica ben precisa.
+
+Quando si parla di relationship, se r \`e una relazione tale per cui r \subseteq E \times F, vuol dire che abbiamo un insieme di istanze dell'entit\`a E, un insieme di istanze dell'entit\`a F, e un insieme di coppie (e,f) \in r tale per cui e \in E e f \in F.
+
+Vogliamo modellare i presidenti della repubblica. Di ogni presidente ci interessa Nome, Cognome e periodo in cui \`e stato in carica, e il predecessore. Si pu\`o mettere una relationship fra presidente e presidente. Ma qui comincia l'ambiguiti\`a. Bisogna dare un nome ai ruoli per poterli distinguiere. La semantica della relationship cambia: un'istanza di relationship \`e una coppia con i nomi dei ruoli.
+
+(precedessore: p1, successore: p2)
+
+I ruoli in genere sono opzionali. Se non si mette un'etichetta, il ruolo \`e il nome dell'entit\`a.
+
+Una relationship pu\`o legare pi\`u di due entit\`a.
+
+Una relationship r tra le entit\`a $E_1, E_2, \ldots, E_n$ con ruoli rispettivamente $u_1, u_2, \ldots, u_n$ \`e una n-upla:
+\[
+(u_1: e_1, \ldots, u_n: e_n)
+\]
+Semantica completa di una relationship. Insieme di n-uple etichettate.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+    \node (impiegato) [rect, draw] {Impiegato};
+\end{tikzpicture}
+\end{figure}
+
+Possiamo fare in modo che a ogni coppia di una relationship venga associato un attributo. Un attributo \`e una propriet\`a locale della relationship: ogni istanza di relationship deve avere un attributo. Le istanze di relationship sono sempre delle n-uple di entit\`a, a cui \`e associato un valore di attributo. Ad esempio: un impiegato pu\`o resiedere in una singola citt\`a (relationship residenza che coinvolge le entit\`a ``impiegato'' e ``citt\`a''), e un'istanza di questa relationship ha un attributo ``da'' che indica la data da cui l'impiegato risiede in quella citt\`a.
+
+Uno studente non pu\`o superare pi\`u volte un esame con voti diversi: lo supera una volta, con un singolo voto.
+
+Per sviluppare i vincoli si pu\`o ragionare singolarmente sui singoli ruoli.
+
+Un nuovo concetto \`e quello di ``relazione \isa''. \`E il costrutto che permette di rappresentare la relazione di ``sottoclasse''. Si rappresenta con un bel freccione.
+
+Si parla di entit\`a base, entit\`a figlia.
+
+A livello estensionale, in ogni momento le istanze di F sono anche istanze di E, se F \isa E. Ad esempio, ogni persona ha un attributo nome, ogni studente \`e anche (\isa) una persona, quindi ogni studente ha un nome. Ogni attributo dell'entit\`a base viene ereditato dall'entit\`a figlia.
+
+Cos\`i come si ereditano gli attributi, si ereditano le relationship.
+
+Con una freccia nera, che si divide in pi\`u entit\`a, possibilmente con un nome, dice che le due entit\`a figlie non hanno niente in comune. \`E un vincolo di disgiunzione. Il fatto che la freccia sia nera dice che ogni istanza dell'entit\`a base appartiene a una delle due entit\`a figlie. Questo si chiama: vincolo di completezza.
+
+Se la freccia \`e bianca, non si ha completezza. Un'entit\`a base non \`e necessariamente anche un'entit\`a figlia.
+
+ER ammette solo l'ereditariet\`a singola. Si pu\`o sempre riscrivere un diagramma con ereditariet\`a multipla in un diagramma che non ha ereditariet\`a multipla.
+
+Un'entit\`a base per\`o, pu\`o avere pi\`u generalizzazioni. Ad esempio, l'entit\`a base sono le Persone. Le persone si differenziano in Uomini o Donne: vincolo di disgiunzione e di completezza. \`E anche vero che le persone si differenziano per ruolo, ad esempio nelle entit\`a figlie Studenti e Docenti, e in questo caso c'\`e solo un vincolo di disgiunzione.
+
+Se ho diverse entit\`a figlie con lo stesso attributo, se un'istanza appartiene a pi\`u entit\`a con lo stesso attributo, l'istanza avr\`a una solo volta quell'attributo. Ma gli attributi devono avere, allora, lo stesso tipo, o comunque un tipo compatibile (uno sottotipo dell'altro, nel qual caso si restringe il tipo dell'attributo al tipo pi\`u ristretto).
+
+ER permette di modellare relazioni \isa anche tra relationship. Significa come al solito una relazione di sottoinsieme: le istanze di una certa relationship sono anche istanze di un'altra relationship, se la prima relationship ``\isa'' la seconda relationship. \`E un po' problematico. \`E legale stabilire una relazione \isa fra entit\`a, ma non una \isa fra relationship che riguardano entit\`a differenti, ad esempio fra una relationship su Citt\`a e Persona e una relationship fra Persona e Dipartimento. Si dice che le relationship devono essere dello stesso \emph{tipo} per poter stabilire una relazione \isa.
+
+In altri casi per\`o \`e legale, anche se i tipi non sono esattamente gli stessi. Ad esempio, Direttore \isa Persona, e c'\`e una relationship ``lavora'' fra Persona e Dipartimento, e una relationshpi ``dirige'' fra Direttore e Dipartimento. In questo caso infatti:
+
+(Direttore \times Dipartimento) \subseteq (Persona \times Dipartimento)
+
+Proviamo a formalizzare quando le relazioni \isa sono legali. Devono avere lo stesso tipo, o quantomeno tipi compatibili.
+
+Affinch\'e la semantica di r \isa q sia definita:
+\begin{itemize}
+    \item tipo di r \subseteq tipo di q
+    \item r e q hanno la stessa arit\`a
+    \item r e q hanno gli stessi ruoli
+    \item per ogni ruolo, l'entit\`a legata dalla relationship r deve discendere dall'entit\`a legata dalla relationship q, o essere dello stesso tipo, se entrambe hanno lo stesso ruolo
+\end{itemize}
+Non basta... I vincoli di cardinalit\`a delle relationship devono essere consistenti. Se r \isa q, le cardinalit\`a per l'entit\`a E per il ruolo u devono essere tali che quelle di r sono contenute in quelle di q (pensandole come intervalli).
+
+Possiamo dire che se r \isa q, il \min_{r}^{u} \le \min_q^{u} e che il \max_r^{u} \le \max_q^{u}. Il primo vincolo salta, se le entit\`a legate al ruolo u non sono dello stesso tipo, ma una un sottotipo dell'altra.
+
+Se \max_r^u \ge \max_q^u, o se \min_r^u \ge \max_q^u i vincoli di cardinalit\`a sono pi\`u larghi.
+
+Se \min_r^u \ge \max_q^u, i vincoli di cardinalit\`a sono proprio sbagliati.
+
+Anche gli attributi possono avere vincoli di molteplicit\`a. Un attributo senza vincoli di molteplicit\`a vuol dire che deve esserci uno e un solo attributo di quel tipo. Vincoli numerici possono essere del tipo (0,1), per indicare attributi opzionali, o attributi (1,N), per indicare che si possono avere pi\`u attributi di un certo tipo.
+
+Un vincolo di integrit\`a limita i possibili livelli estensionali ammessi.
+
+Un vincolo di identificazione di entit\`a \`e un insieme di relationship o di attributi in cui un'entit\`a \`e coinvolta tali per cui due entit\`a non hanno gli stessi valori.
+
+Annerire il fiammifero di un attributo vuol dire stabilire un vincolo di identificazione interno. Vuol dire che coinvolge solo attributi. Non esistono due studenti con la stessa matricola.
+
+Per vincolare n-uple di attributi, si mette un fiammifero annerito trasversale. \`E ancora interno.
+
+Un vincolo di identificazione esterno stabilisce che due entit\`a in una relazione non possono avere lo stesso attributo. Un fiammifero trasversale pu\`o stabilire che un'entit\`a \`e univocamente identificata dagli altri membri della relationship.
+
+I vincoli di identificazione devono essere minimali sotto la relazione di sottoinsieme.
+
+\subsection{Formalizzazione di un diagramma ER}
+
+\`E fondamentale che la formalizzazione concettuale sia corretta affinch\'e lo sia (per costruzione) anche il software che ne deriva.
+
+Un diagramma ER \`e una specifica logica di un mondo reale. Un diagramma ER \`e una specifica affermazione in logica del primo ordine. La formula logica sar\`a un AND fra forme pi\`u semplici.
+
+Una formalizzazione in logica del primo ordine \`e verificabile automaticamente.
+
+Si possono usare delle formule logiche (vincoli esterni al diagramma ER) per specificare ambiguit\`a nel diagramma.
+
+La logica \`e una famiglia di linguaggi formali per rappresentare informazione, e per derivare conseguenze dall'informazione (inferenza automatica). Ogni logica (come ogni linguaggio formale) ha una sintassi (le strutture legali delle formule) e una semantica (se una formula \`e vera o falsa in un mondo specifico).
+
+Nelle logiche classiche, i valori di verit\`a ammessi sono solo due. Dato un certo ``mondo'' m e una formula \varphi, m \models \varphi \iff \varphi \`e vera nel ``mondo'' m, ossia m \`e modello di \varphi.
+
+La sintassi stabilisce i simboli dell'alfabeto e le regole che li legano, ma non dice niente sul significato delle formule. La semantica definisce il significato di una formula (sintatticamente corretta), assegnandole un valore vero o falso. Si d\`a un significato o interpretazione alle formule pi\`u semplici, e poi si procede a darne uno alle formule composte.
+
+In una logica del primo ordine esistono le variabili.
+
+\begin{itemize}
+    \item insieme V di variabili
+    \item insieme F di simboli di funzione, ognuno con una specifica arit\`a
+    \item insieme P di simboli di predicati, ognuno con una specifica arit\`a, e contenente il predicato di uguaglianza ``='', di arit\`a 2
+    \item i soliti connettivi logici, \not, \lor, \land, \implies, \iff
+    \item quantificatori esistenziale \exists e universale \forall
+    \item parentesi e virgole
+\end{itemize}
+
+f/k indica che la funzione f ha k arit\`a.
+
+I simboli di funzione di arit\`a 0 vengono detti simboli di costante. I simboli di predicato non ``restituiscono'' qualcosa, ma dicono se qualcosa \`e vero o falso. Ad esempio, il predicato doppio/2, nella forma doppio(X,Y), \`e vero se Y \`e il doppio di X.
+
+Il livello funzionale quindi parla di \emph{oggetti} nel mondo, mentre il livello dei predicati parla delle propriet\`a di questi oggetti.
+
+La struttura sintattica della logica del primmo ordine \`e pi\`u complessa di quella della logica proposizionale. C'\`e un linguaggio intermedio, o linguaggio dei termini. I termini sono sequenze di simboli che individuano gli oggetti del mondo.
+
+\begin{defn}[Termine]
+Un termine atomico \`e:
+\begin{enumerate}
+    \item una variabile
+    \item un simbolo di costante (con arit\`a 0)
+\end{enumerate}
+Se f \`e un simbolo di funzione \in F di arit\`a n > 0, e t_1, \ldots, t_n sono n termini, allora f(t_1, \ldots, t_n), ossia f applicata a t_1, \ldots, t_n, \`e un termine.
+\end{defn}
+Questa \`e ancora sintassi: non sappiamo niente sul significato dei termini. E la semantica della formula non va confusa con la semantica ``esterna'', il significato assegnato a ciascun termine.
+
+\begin{defn}[Formule]
+Se p \`e un predicato di arit\`a n e t_1 \ldots t_n sono termini, p(t_1, \ldots, t_n) \`e una formula atomica.
+
+Se \phi e \psi sono formule, allora \phi CONNETTORE \psi \`e una formula.
+
+Se \phi \`e una formula e X \`e una variabile, allora \forall X \phi e \exists X \phi sono formule.
+\end{defn}
+L'uguaglianza \`e fondamentale nella modellazione della conoscenza. Scriviamo \phi = \psi invece di =(\phi, \psi).
+
+I \`e un'interpretazione, ossia un valore di verit\`a per le formule atomiche.
+
+Senza avere un'interpretazione I, una formula pu\`o essere soddisfacibile (vera in qualche interpretazione), valida (vera in ogni interpretazione) o insoddisfacibile (falsa in ogni interpretazione).
+
+Il significato di una formula \`e l'insieme dei suoi modelli.
+
+Per valutare una formula bisogna definire alcune cose. A livello dei termini bisogna stabilire il dominio D degli oggetti del mondo. Bisogna far corrispondere a ogni simbolo di costante un oggetto, e per ogni funzione bisogna stabilire ai suoi argomenti cosa corrisponde. Anche le variabili vanno associate a un oggetto.
+
+Le funzioni (di arit\`a k) sono tutte D^k \to D.
+
+Le funzioni devono essere totali. Se nel dominio c'\`e la pizza, e esiste la funzione ``padre di'', bisogna stabilire anche chi \`e il padre della pizza.
+
+Poi bisogna interpretare i simboli di predicato (ossia le formule atomiche). Per ogni predicato di arit\`a n, si stabilisce una relazione su D^n.
+
+\begin{defn}[Pre-interpretazione]
+Una pre-interpretazione preI \`e costituita da:
+\begin{enumerate}
+    \item un dominio di interpretazione non vuoto D
+    \item una funzione che associa a ogni simbolo di funzione f/n di arit\`a n \ge 0 una (vera) funzione preI(f) : D^n \to D. Se la funzione ha arit\`a 0, ossia \`e una funzione costante, a f/0 si associa un singolo elemento del dominio D.
+\end{enumerate}
+\end{defn}
+L'assegnamento di valore alle variabili non viene fatto nella pre-interpretazione. Un assegnamento di variabili \`e una funzione V \to D, che a ogni variabile associa a un oggetto.
+
+Data una pre-interpretazione e un assegnamento di variabili, si possono valutare i termini. Un vocabolario \`e un insieme di variabili V e di simboli di funzione F, e l'insieme T \`e l'insieme dei termini che ne risulta. L'insieme T contiene tutti i termini possibili. Data quindi una pre-interpretazione preI e un assegnamento di variabili S, la pre-valutazione \`e una funzione che associa a ciascun termine un elemento del dominio.
+
+pre-eval^{preI, S} : T \to D
+
+Dato un termine qualunque, ora sappiamo che oggetto nel mondo individua.
+
+Nel caso dei termini atomici, abbiamo che:
+\begin{enumerate}
+    \item se X \`e una variabile, pre-eval^{preI, S} (X) = S(X), ossia l'oggetto che corrisponde alla variabile X \`e l'oggetto associato a X dall'assegnamento di variabili
+    \item se c \`e un simbolo di costante, pre-eval^{preI, S} (c) = preI(c), ossia l'oggetto associato alla costante \`e l'oggetto associato alla costante dalla pre-interpretazione
+\end{enumerate}
+
+Poi, se f \`e un simbolo di funzione di arit\`a n > 0, e t_1, \ldots, t_n sono termini, la pre-valutazione della funzione (con i suoi termini) \`e definita induttivamente sui termini e sulla funzione:
+
+pre-eval^{preI, S} (f(t_1, \ldots, t_n)) = 
+preI(f) (pre-eval^{preI, S} (t_1), \ldots, pre-eval^{preI, S} (t_n))
+
+Ora possiamo passare all'interpretaizone. L'interpretazione ``include'' la pre-interpretazione, ossia fa qualcosa di aggiuntivo. L'assegnamento di variabili resta comunque fuori dall'interpretazione.
+
+Dobbiamo interpretare le formule atomiche. Ad ogni predicato p di arit\`a n, l'interpretazione I associa una relazione I(p) su D^n.
+
+Bisogna per\`o specificare il significato di uguaglianza: il predicato ``='' \`e la relazione su D \times D soddisfatta dalla coppia (a,b) se e solo se a \`e \emph{uguale} a b. Deve essere una relazione unicamente riflessiva.
+
+Sappiamo valutare formule atomiche.
+
+I(p) (preI(f), preI(f))
+
+Bisogna fare il caso induttivo. Ad esempio, eval^{I, S} ((\phi)) = eval^{I,S} (\phi). E per ogni connettore, bisogna dire che, ad esempio, eval^{I,S} (\phi \land \psi) \`e ``true'' se e solo se eval^{I, S} (\phi) \`e true e eval^{I,S} (\psi), e via dicendo.
+
+Bisogna vedere cosa fare con i quantificatori.
+
+eval^{I,S} (\exists V \phi) vale true se esiste un d \in D (un elemento del dominio), che se assegnato a V rende la formula vera. Quando c'\`e un quantificatore esistenziale, non interessa pi\`u il valore di V datogli dall'assegnazione di variabili. Si scrive di solito S[V/d] per dire che il valore di V \`e stato riassegnato all'oggetto d \in D. Discorso simile con il quantificatore universale. La formula eval^{I,S} (\forall V \phi) \`e vera se per ogni possibile d \in D assegnabile a V la formula \`e vera.
+
+\begin{oss}
+Le formule in cui tutte le variabili sono quantificate (formule chiuse) sono totalmente indipendenti dall'assegnazione di variabili che si fa.
+
+Le variabili non quantificate sono (quasi) come delle costanti.
+\end{oss}
+
+Torniamo al concetto di soddisfacibilit\`a, modello, etc.
+
+\begin{enumerate}
+    \item Una formula \`e soddisfacibile se esiste un'interpretazione I e un assegnamento di variabili S tale per cui eval^{I,S} (\phi) = true
+    \item Vorremmo che l'assegnamento di variabili per\`o non fosse cos\`i preminente nella definizione di validit\`a. Parliamo quindi di modello M (e M \`e un'interpretazione) se per ogni assegnamento di variabili S si ha che eval^{M,S} (\phi) = true. Si scrive M \models \phi
+    \item Una formula \`e valida (insoddisfacibile) se per ogni interpretazione I e assegnamento di variabili S si ha che eval^{I,S} (\phi) = true (false).
+\end{enumerate}
+
+I predicati sono preferibili alle funzioni, perch\'e tanto le funzioni sono casi speciali di relazioni.
+
+\section{Diagrammi ER e logica del primo ordine}
+
+Il significato di una formula \`e l'insieme dei mondi che soddisfano la formula, ossia che ne sono modelli. Li individua tutti. Anche i diagrammi ER fanno questo. Un diagramma ER individua tutti i livelli estensionali individuati dalla formula.
+
+La formula di un ER \`e un grande AND di formule piccole, ciascuna esprimente il significato di un elemento dell'ER.
+
+Abbiamo:
+\begin{itemize}
+    \item un simbolo di predicato unario E/1 per ogni entit\`a
+    \item un simbolo di predicato n-ario rel/n per ogni relationship
+    \item un simbolo di predicato binario attr/2 per ogni attributo di entit\`a
+    \item un simbolo di predicato n+1-ario attr/(n+1) per ogni attributo di relationship n-aria
+    \item un simbolo di predicato unario dom/1 per ogni dominio dom di attributo
+    \item il simbolo di predicato ``=''
+    \item nessun simbolo di funzione
+\end{itemize}
+
+Data l'interpretazione di una formula, bisogna specificare quali oggetti del mondo sono ``istanza'' del predicato E, ossia gli oggetti che nel mondo reale sono istanze di quel tipo di entit\`a. Stessa cosa per i domini.
+
+Entit\`a E con attributo attr di dominio dom di molteplicit\`a (min, max).
+
+Abbiamo il predicato attr/2 \in P, che nella formula attr(X,Y) dice ``Y \`e l'attributo di X''. Poi bisogna specificare il dominio dell'attributo. Quindi nella formulona mettiamo, in and, una formula che tipi i valori dell'attributo:
+
+\forall e \forall v E(e) \land attr(e,v) \implies dom(v)
+
+Per ogni entit\`a, per ogni attributo dell'entit\`a, l'attributo deve essere di un certo tipo. Poi i vincoli di molteplicit\`a:
+
+\forall e E(e) \implies \abs{\{ v : attr(e,v) \}} \ge \min
+\forall e E(e) \implies \abs{\{ v : attr(e,v) \}} \le \max
+
+Anche se queste non sono proprio formule in logica del primo ordine... v \`e una variabile libera, in questa formula (considerandola come formula del primo ordine).
+
+Ma mettere le graffe equivale a dire di volere \emph{tutte} le v \emph{tali che} v \`e un attributo di e. Quindi non \`e realmente libera. E le stanghette non sono che zucchero sintattico, si pu\`o riscrivere il tutto in logica del primo ordine cos\`i:
+
+\forall e E(e) \implies \exists v_1, \ldots v_{\min} 
+(v_1 \neq v_2 \land v_1 \neq v_3 \lands \ldots \land v_{\min-1} \neq v_{\min}) \land
+(attr(e, v_1)) \land \ldots \land attr(e, v_{\min})
+
+\forall e E(e) \implies \forall v_1, \ldots v_{\max + 1} 
+(attr(e, v_1)) \land \ldots \land attr(e, v_{\max + 1}) \implies
+(v_1 = v_2 \lor v_1 = v_3 \lor \ldots \lor v_{\max} = v_{\max + 1}) \land
+
+Con le relationship, che sono predicati, siamo gi\`a sicuri che non ci siano duplicati.
+
+\forall e_1, \ldots e_n rel(e_1, \ldots, e_n) \implies E_1(e_1) \land \ldots \lands E_n(e_n)
+
+Diciamo che per l'i-esimo elemento della relazione, quell'elemento deve essere istanza dell'entit\`a E_i. Un'istanza di relazione \`e una n-upla di entit\`a. Riguardo la molteplicit\`a dei ruoli, diciamo questo:
+
+\forall e_i E_i(e_i) \implies \abs{\{ (e_1^r , \ldots e_n^r) : rel(e_1^r , \ldots e_n^r) \lands e_i^r = e_i \}} \ge \min_i
+
+Il numero di n-uple che hanno all'i-esimo posto l'oggetto e_i devono essere \emph{almeno} \min_i.
+
+Gli attributi di relationship si formalizzano cos\`i:
+
+\forall e_1, \ldots e_n \forall v rel (e_1, \ldots, e_n) \land attr(e_1, \ldots, e_n, v) \to dom (v)
+
+E la molteplicit\`a si formalizza cos\`i:
+
+\forall e_1, \ldots e_n rel(e_1, \ldots, e_n) \implies \abs{\{v : attr(e_1, \ldots, e_n, v)\}} \ge min
+
+Ma poi abbiamo le relazioni \isa, e le generalizzazioni. Una relazione F \isa E dice:
+
+\forall f F(f) \implies E(f)
+
+Una generalizzazione dice:
+
+\forall f_1 F_1 (f_1) \implies E(f_1) \land \ldots \land
+\forall f_n F_n(f_n) \implies E(f_n) \land
+
+\forall f F_1 (f) \implies \not F_2 (f) \land \ldots
+
+Una formula logica del genere pu\`o essere usata con un dimostratore automatico per \emph{dimostrare} che una certa situazione non pu\`o avvenire, non sono possibili, non sono rappresentabili.
+
+Se la freccia \`e pure nera (vincolo di completezza)...
+
+\forall e E(e) \implies F_1 (e) \lor \ldots \lor F_n (e)
+
+Poi c'\`e l'\isa tra relationship. r \isa q vuol dire:
+
+\forall e_1, \ldots e_n r(e_1, \ldots e_n) \implies q(e_1, \ldots, e_n)
+
+L'arit\`a delle relationship viene preservate, o questo non ha senso. La semantica \`e rispettata anche con i tipi.
+
+I vincoli di identificazione sulle entit\`a vogliono dire:
+
+\forall e_1, e_2 \forall v E(e_1) \land attr(e_1, v) \land E(e_2) \land attr(e_2, v) \implies e_1 = e_2
+
+I vincoli di molteplicit\`a su un attributo di identificazione sono (1,1).
+
+Poi ci sono vincoli di identificazione interni su pi\`u attributi:
+
+\forall e_1, e_2, \forall v_1, \ldots v_n E(e_1) \land attr(e_1, v_1) \land \ldots 
+
+Poi ci sono i vincoli di identificazione esterni su attributi e relationship binarie:
+
+\forall e_1 \forall v_1 \forall f_1
+E(e_1) \land a_1 (e_1, v_1)
+r_1(e_1,f_1) \land r_k(e_1, f_k)
+\implies e_1 = e_2
+
+Non abbiamo ancora finito, per\`o. Ci sono alcune cose che il diagramma ER dice implicitamente. Ad esempio, le persone non sono aziende, se ``Persona'' e ``Azienda'' sono due entit\`a non collegate da relazioni \isa.
+
+Bisogna aggiungere quindi formulette del tipo:
+
+\forall e E(e) \implies \not F(e)
+
+Poi bisogna disgiungere esplicitamente domini e entit\`a.
+
+\forall e E(e) \implies \not dom(e)
+
+Se i domini sono ``simili'', tipo interi e interi positivi:
+
+\forall d dom(d) \implies dom'(d)
+
+Se i domini invece \emph{non} sono simili, come stringhe e interi:
+
+\forall d dom(d) \implies \not dom'(d)
+
+Alcuni concetti, come i tipi, non vogliamo siano interpretabili esternamente. Gli interi devono essere sempre gli interi.
+
+\subsection{Vincoli esterni}
+
+Data una formula \varphi modellata da un diagramma ER, un vincolo esterno \varpsi \`e una formula che, messa in AND con \varphi, restringe l'insieme dei mondi che modellano la formula \varphi.
+
+Assumiamo di avere dei simboli di funzione (+, -, \times, /), dei simboli di predicato (>, <, \ge, \le), dei simboli di costanti, tutti che vogliamo corrispondano a una specifica interpretazione. Vogliamo che questi simboli siano fissati alla semantica usuale.
+
+La semantica definita dal diagramma ER \`e quella dei modelli M tali che M \models \varphi \land \varpsi_1 \land \ldots \land \varpsi_n, con \varpsi_i un vincolo esterno.
+
+\section{Modellare le funzionalit\`a}
+
+Per modellare (o formalizzare) le funzionalit\`a usiamo l'UML. Fra i tanti diagrammi offerti dall'UML, a noi interessa (per questa specifica cosa) usare gli \emph{use-case}. Un use-case \`e un insieme omogeneo di funzionalit\`a accedute da un gruppo omogeneo di utenti. Questo implica la (possibile) esistenza di differenti utenti.
+
+Negli use-case si distinguono gli \emph{attori}, che non sono gli utenti ma i ruoli degli utenti. Pi\`u utenti possono avere lo stesso ruolo, e un utente pu\`o avere pi\`u ruoli.
+
+Gli attori sono omini con le braccia dritte, con il nome sotto.
+
+Le funzionalit\`a sono ovali con il nome all'interno.
+
+Le associazioni fra attori e funzionalit\`a sono frecce con (eventualmente) un nome sopra.
+
+Ci possono essere dipendenze fra gli use-case. Fra due use-case dipendenti si inserisce una freccia tratteggiata, con un nome (stereotipo) fra doppie parentesi angolate. 
+
+La freccia da Use-case A a Use-case B, con stereotipo \stereotipe{include}, significa che una funzionalit\`a nell'Use-case A utilizza una funzionalit\`a dentro Use-case B.
+
+La freccia da Use-case B a Use-case A, con stereotipo \stereotipe{extend}, indica che qualche funzionalit\`a di A, in casi particolari, ha bisogno di essere ``estesa'' con una qualche funzionalit\`a in B.
+
+Ci possono essere generalizzazioni tra attori. Una freccia da Attore B a Attore A indica che Attore B \`e un caso particoalre di Attore A.
+
+Non necessariamente gli attori nella modellazione dele funzionalit\`a devono essere anche entit\`a nel diagramma ER.
+
+Ci possono essere generalizzazioni tra use-case. Una freccia da Use-case B a Use-case A indica che alcune funzionalit\`a di A sono \emph{sovrascritte} da B.
+
+Ogni diagramma di use-case deve avere un documento di specifica, con la segnatura delle funzionalit\`a.
+
+Specifica use-case nome _ use-case
+
+operazione_1 (argomento_1 : dominio_1 , \ldots , argomento_n : dominio _n) : dominio_ritorno
+
+precondizioni: pre-condizioni
+
+postcondizioni: post-condizioni
+
+\vdots
+
+operazione_m (argomento_1 : dominio_1 , \ldots , argomento_n : dominio _n) : dominio_ritorno
+
+precondizioni: pre-condizioni
+
+postcondizioni: post-condizioni
+
+End
+
+Bisogna dare un modello logico-matematico dell'applicazione, non un algoritmo. Non vogliamo legarci alla tecnologia. Si fa una ``definizione del contratto''. Un'operazione \`e una ``promessa'', che se riceve gli argomenti dei domini giusti, e se le precondizioni sono rispettate, promette, appunto, che restituir\`a un valore del dominio di ritorno e che soddisfa le post-condizioni.
+
+Ci sono tre parti, in ogni singola operazione:
+\begin{enumerate}
+    \item la segnatura, che specifica i domini dei valori che si devono ricevere, e del valore che si restituisce
+    \item le precondizioni, che sono condizioni sugli argomenti e sul livello estensionale che, se sono verificate, garantiscono un risultato definito. Se non sono rispettate le precondizioni, \`e bene controllarlo.
+    \item le postcondizioni, che sono condizioni che devono valere dopo l'operazione, se le precondizioni sono soddisfatte. Riguardano sia il livello estensionale sia il tipo di ritorno.
+\end{enumerate}
+
+Quando si definisce un insieme di n-uple, gli elementi delle n-uple sono variabili libere nella formula che segue il ``tale che''.
+
+V_s = \{ \langle v,c \rangle \mid esame(s,c) \land voto(s,c,v) \}
+
+A questo livello interessa definire cosa sono le operazioni.
+
+Formalizzando, sia \Phi la formula in First Order Logic individuata da un diagramma ER e dai suoi vincoli esterni, e sia il livello estensionale di interesse il mondo M \models \Phi.
+
+M \`e un'interpretazione di tutti i simboli di predicato di \Phi, che individuano entit\`a, relationship, eccetera.
+
+Le precondizioni dicono che l'operazione op(args) pu\`o essere invocata sul livello M dei dati \iff M e i parametri args di op() soddisfano le condizioni. Ossia:
+
+M \land args \models \rho
+
+Le postondizioni dicono che al termine dell'esecuzione dell'operazione op(args), il livello estensionale sar\`a un mondo M' generalmente differente da M. Le postcondizioni definiscono M' a partire da M, in termini di modifiche, aggiunte, eliminazioni, e definiscono il valore di ritorno \emph{result} (se c'\`e) a partire da M'.
+
+Una volta definite le funzionalit\`a, con le specifiche, si possono riscrivere pi\`u facilmente i vincoli esterni. Ad esempio, dire che il saldo di un correntista deve essre sempre non negativo, senza ricorrere a complesse formule logiche, vuol dire affermare che \forall Correntista \implies saldo(Correntista) \ge 0.
+
+Ci sono un bel po' di vincoli da verificare, ad ogni operazione. \`E sempre bene avere vincoli esterni sui dati, piuttosto che funzioni che verificano precondizioni che permettono di mantenere i vincoli esterni.
+
+\section{Progettazione di una base di dati}
+
+In input avremo uno schema concettuale di un'applicazione. In output, avremo dei documenti di progetto per realizzare l'applicazione, specificando le tecnologie da utilizzare. La progettazione si concentra sul \emph{come}, mentre l'analisi si \`e concentrata sul \emph{cosa}. Noi useremo sempre DBMS per memorizzare i dati, e ci interessa particolarmente progettare il database con i suoi vincoli. Specificheremo algoritmi in pseudocodice e SQL per interagire con la base di dati.
+
+Quello che abbiamo \`e:
+\begin{itemize}
+    \item un diagramma ER con vincoli esterni
+    \item un dizionario dei dati
+    \item un diagramma UML degli use-case
+    \item la specifica delle funzionalit\`a
+\end{itemize}
+
+Il primo e il secondo punto confluiranno nella base di dati. I vincoli esterni dovranno far parte della base di dati finale, tenendo sempre presente la performance dell'applicazione.
+
+\subsection{Corrispondenza dei domini concettuali nei domini SQL}
+
+Abbiamo domini base, domini specializzati (interi positivi, intervalli, etc), domini enumerativi, domini strutturati (o composti).
+
+Per i domini specializzati, \`e possibile creare domini in SQL. Ad esempio, intero positivo diventer\`a il dominio:
+
+create domain InteroPos as integer 
+check (value > 0)
+
+Un intervallo:
+
+create domain ZeroDieci as integer
+check (value >= 0 and value <= 10)
+
+Il tipo enumerativo di solito finisce in un \code{type}, non in un dominio. Se non si pu\`o far questo (non sono disponibili gli enum), o se si hanno molti valori possibili, si pu\`o ``ristrutturare'' il diagramma ER.
+
+Si promuove l'attributo a entit\`a, e si crea una relazione fra entit\`a origianel e ``entit\`a attributo''. L'entit\`a attributo avr\`a un vincolo identificativo sul suo attributo nome, e la base di dati sar\`a vincolata a contenere sempre un insieme specifico di istanze dell'entit\`a attributo.
+
+Per i tipi strutturati, la funzionalit\`a da usare \`e questa:
+
+create type Indirizzo as (
+    via varchar(100),
+    civico integer,
+    citta varchar(100)
+)
+
+Ma le limitazioni possono essere fastidiose. Ad esempio, non \`e detto si possa specificare un \code{check (civico > 0)}. Alternativamente si fa ``flattening'': un attributo composto viene ``appiattito'' in pi\`u attributi, come \code{indirizzoVia}, \code{indirizzoCivico}, e \code{indirizzoCitta}.
+
+Il problema \`e che ora una funzione che prende in input un attributo di tipo Indirizzo, diventa una funzione che prende in input una terna. Altro problema: se l'attributo strutturato aveva una certa molteplicit\`a, bisogner\`a aggiungere un vincolo esterno per far rispettare la molteplicit\`a al nuovo insieme di attributi.
+
+Ma noi siamo ingegneri, e ora troveremo un metodo pi\`u strutturato per fare la stessa cosa.
+
+Vediamo qualche caso specifico: se abbiamo una relationship insegna(Docente, Corso), con molteplicit\`a (1,N) sul ruolo Docente, dobbiamo tirare fuori un vincolo di inclusione (che \`e una generalizzazione del vincolo di foreign key).
+
+Docente(matricola:integer)
+vincolo inclusione: matricola \subseteq Insegna(docente)
+
+Insegna(docente:integer, \ldots) 
+
+Un vincolo di foreign key \`e un vincolo di inclusione in cui il ``target'' \`e chiave primaria della tabella a cui ci si riferisce.
+
+Dobbiamo ristrutturare il diagramma ER prima di poter tirare fuori la struttura della base di dati. L'ER ristrutturato sar\`a (sostanzialmente) equivalente all'originale, ma conterr\`a solo costrutti semplici, e avr\`a molteplicit\`a massime pari a 1.
+
+Le formule logice dei due ER non saranno esattamente equivalenti, ma solo ``inferenzialmente'' equivalenti.
+
+Ora dobbiamo:
+\begin{itemize}
+    \item eliminare gli attributi multivalore
+    \item eliminare gli attributi composti
+    \item eliminare generalizzazioni e is-a tra entit\`a
+    \item eliminare is-a tra relationship
+    \item definire identificatori per ogni identit\`a (abbiamo bisogno di chiavi per le tabelle), vanno inventati se non ci sono gi\`a
+    \item aggiungere ridondanza
+\end{itemize}
+
+Avremo una metodologia per casi.
+
+\begin{itemize}
+    \item Attributi multivalore.
+
+    Un attributo multivalore diventa un'entit\`a attributo, e creiamo una relationship fra entit\`a originale e entit\`a attributo. La molteplicit\`a dell'entit\`a attributo sar\`a almeno 1. E l'entit\`a attributo avr\`a bisogno di un vincolo di identificazione su qualche suo attributo.
+
+    Se gli attributi multivalore sono sulle relationship, la relationship deve prima diventare un'entit\`a relationship. Poi ci si riconduce al caso precedente.
+
+    E se la relationship ha un'altra relationship che \`e is-a? Anche la seconda relationship diventa un'entit\`a, e l'is-a si trasferisce sulle relationship che nascono e sulla nuova entit\`a.
+
+    Alla fine di questa fase, tutti gli attributi avranno vincoli di cardinalit\`a (0,1) o (1,1).
+    \item Attributi composti.
+
+    Possiamo creare un tipo strutturato, se il DBMS ce lo consente. Oppure si pu\`o \emph{appiattire} l'attributo. Questo secondo caso ha senso solo se l'attributo ha molteplicit\`a (0,1) o (1,1).
+
+    Oppure, creiamo una nuova entit\`a per l'attributo composto. 
+
+    Ora abbiamo tutti tipi semplici, con vincoli di molteplicit\`a (0,1) o (1,1).
+    \item Generalizzazioni e relazioni is-a
+
+    Fusione. Se abbiamo due entit\`a, una is-a dell'altra, si pu\`o fondere l'entit\`a is-a con l'altra. Gli attributi della sottoentit\`a diventano attributi opzionali. Se l'attributo \`e identificativo, serve un vincolo esterno che simuli il vincolo di identificazione.
+
+    Le relationship che coinvolgono la sottoentit\`a coinvolgono anche l'entit\`a superiore, ma cambiano i vincoli di molteplicit\`a (da (1,1) diventano (0,1)). Poi, ci vuole un nuovo attributo ``tipo'' che dica se l'entit\`a \`e una sottoentit\`a o una super-entit\`a. Dopodich\'e, si aggiungono vincoli in base al tipo.
+
+    In presenza di generalizzazioni (complete e disgiunte), fondere tutto \`e una rottura di coglioni. Ma si pu\`o ancora fare, con gli stessi accorgimenti.
+
+    Se la generalizzazione non \`e completa (ma sempre disgiunta), i tipi diventano di pi\`u: si aggiunge il tipo non generalizzato.
+
+    In presenza di pi\`u relazioni is-a (non disgiunte) conviene creare attributi booleani per ogni tipo possibile, e fondere le sottoentit\`a nella super-entit\`a.
+
+    Divisione. L'altro approccio \`e quello di \emph{eliminare} la super-entit\`a. Il danno \`e che non si rappresentano pi\`u le super-entit\`a, e i vincoli di identificazione sono divisi. Quindi bisogna aggiungere vincoli esterni. L'approccio funziona con le generalizzazioni complete. Con generalizzazioni incomplete, bisogna aggiungere una ulteriore sottoentit\`a, ``altro'', e rendere la generalizzazione completa prima di dividere tutto.
+
+    Sostituzione. Un altro approccio prevede di sostituire le relazioni is-a con normali relationship. Funziona bene con relazioni is-a non disgiunte. Diventa molto semplice l'implementazione, di solito. Bisogna aggiungere dei vincoli di identificazione sulle relationship. In presenza di generalizzazioni disgiunte (complete o non complete), bisogna aggiungere dei vincoli esterni.
+
+    Ora non abbiamo pi\`u generalizzazioni, e le entit\`a sono disgiunte a coppie.
+    \item Is-a fra relationship
+
+    Non sappiamo come gestirle, quindi togliamo l'is-a fra relationship e aggiungiamo un vincolo esterno. Si implementa facilmente con un vincolo di foreign key.
+
+    Quando le cose sono pi\`u complicate, ossia la relationship figlia lega entit\`a diverse (legate fra loro da un'altra is-a), si complica anche il vicolo esterno. Si pu\`o sostituire l'is-a fra entit\`a con una relationship, e imporre un vincolo sulla relationship figlia, o fondere l'entit\`a figlia con l'entit\`a padre, aggiungere un tipo all'entit\`a padre, e imporre un vincolo leggermente differente.
+
+    Ovviamente, ora non ci sono pi\`u is-a fra relationship.
+    \item Aggiungere identificatori alle entit\`a
+
+    Dobbiamo assicurarci che ogni entit\`a abbia un identificatore primario.
+
+    Se l'entit\`a ha pi\`u identificatori, ne viene scelto uno come identificatore primario. Bisogna tener conto dei requisiti di performance. Per la scelta si preferiscono attributi semplici e usati nelle funzionalit\`a pi\`u importanti.
+
+    Se l'entit\`a non ha identificatore, ce ne inventiamo uno. Spesso si aggiunge un attributo ``id'' di tipo integer.
+
+    Poi, bisogna rompere i cicli degli identificatori primari. Un ciclo nel grafo degli identificaori primari appare quando due o pi\`u entit\`a sono identificate (primariamente) ciascuna da un'altra entit\`a.
+
+    Ora, tutte le entit\`a hanno identificatori primari, e non ci sono cicli nel grafo degli identificatori primari.
+\end{itemize}
+
+\`E importante, quando si creano nuove entit\`a, non mettere vincoli di molteplicit\`a con lower-bound minore di 0: ci si ritroverebbe ad avere entit\`a totalmente inutili, che non sono riferite da nessuna altra entit\`a.
+
+\subsection{Requisiti di performance}
+
+Fra le cose da tenere in considerazione durante la progettazione, \`e il numero atteso di istanze e di relationship, la frequenza attesa media di esecuzione delle funzioni. Si parla di requisiti \emph{non funzionali}.
+
+Il costo che si associa a un'operazione pu\`o essere il numero di entit\`a e relationship accedute in lettura e in scrittura. 
+
+\section{Creazione della base di dati}
+
+Le entit\`a diventano delle tabelle, le relationship diventano delle tabelle a parte con vincoli di chiave esterna, o vengono unite a una delle entit\`a coinvolte, e tutte le chiavi diventano vincoli.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

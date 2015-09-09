@@ -1,0 +1,122 @@
+\chapter{Riassunto dimostrazioni}
+
+\section{\code{3NF} e dipendenze parziali o transitive}
+
+Uno schema \`e in \code{3NF} se e solo se non esistono dipendenze parziali o transitive.
+
+Sunto della dimostrazione:
+\begin{enumerate}
+    \item ``solo se'': per ipotesi lo schema \`e in \code{3NF}, quindi ogni dipendenza $X \to A$ \`e tale che $A$ \`e primo o $X$ \`e una superchiave. Questo \`e esattamente la negazione delle definizioni di dipendenze parziali e transitive.
+    \item ``se'': si dimostra per assurdo. Supponiamo lo schema non sia in \code{3NF} nonostante non ci siano dipendenze parziali o transitive. Esiste quindi una dipendenza $X \to A$ con $A \notin X$ tale che $A$ non \`e primo e $X$ non \`e una superchiave. Ci\`o significa che o esiste una dipendenza parziale o esiste una dipendenza transitiva. Assurdo.
+\end{enumerate}
+
+\section{Chiusura di un insieme di dipendenze funzionali}
+
+La chiusura di un insieme di dipendenze funzionali \`e uguale all'insieme ottenuto applicando ricorsivamente gli assiomi di Armstrong.
+
+Si dimostra per doppia inclusione:
+\begin{enumerate}
+    \item $F^A \subseteq F^+$: si dimostra per induzione sul numero di applicazioni degli assiomi di Armstrong. 
+    \begin{enumerate}
+        \item Se l'ultimo assioma \`e l'assioma della riflessivit\`a, la nuova dipendenza $X \to Y$ \`e tale che $Y \subseteq X$. Quindi banalmente $X \to Y \in F^+$.
+        \item Se l'ultimo assioma \`e l'assioma dell'aumento, esiste una dipendenza funzionale $V \to W \in F^+$ per ipotesi induttiva. La nuova dipendenza $X \to Y$ \`e tale che $X = ZV$ e $Y = ZW$. In ogni istanza legale di $R$ se due tuple coincidono su $V$ coincideranno anche su $W$, perci\`o se coincidono su $X = VZ$ coincideranno anche su $Y = WZ$.
+        \item Se l'ultimo assioma \`e l'assioma della transitivit\`a, esistono due dipendenze funzionali $X \to Z$ e $Z \to Y$ dentro $F^+$. In ogni istanza legale di $R$ se due tuple coincidono su $X$ coincideranno anche su $Z$, e se coincidono su $Z$ coincideranno anche su $Y$.
+    \end{enumerate}
+    \item $F^+ \subseteq F^A$: si dimostra assumendo per assurdo che esista una dipendenza $X \to Y \in F^+$ che non appartiene a $F^A$.
+
+    Consideriamo un'istanza di $R$ composta da due tuple coincidenti solo sugli attributi in $X^+$. Assumiamo sia legale, e mostriamo che non soddisfa la dipendenza $X \to Y$ sotto l'assunzione che $X \to Y \notin F^A$.
+    \begin{itemize}
+        \item Se soddisfacesse la dipendenza $X \to Y$, avendo che $X \subseteq X^+$ le due tuple da cui \`e composta la relazione coincidono su $X$, ma se coincidessero anche su $Y$ avremmo che $Y \subseteq X^+$ in contraddizione con l'assunzione che $X \to Y \notin F^A$.
+        \item Se l'istanza non fosse legale, dovrebbe esistere una dipendenza funzionale $V \to W \in F^+$ che viene violata. Quindi le due tuple coincidono su $V$ ma non su $W$, e quindi $V \in X^+$ e $W \cap X^+ \neq \emptyset$. Ma per l'assioma della transitivit\`a avremmo che $X \to W \in F^A$, e che quindi $W \in X^+$.
+    \end{itemize}
+\end{enumerate}
+
+\section{Correttezza dell'algoritmo per calcolare la chiusura di un insieme di attributi}
+
+Siano $Z^{(i)}$ e $S^{(i)}$ i valori rispettivamente della variabile $Z$ e della variabile $S$ dopo l'$i$-esima iterazione del ciclo, e siano $Z^{(f)}$ e $S^{(f)}$ i valori finali.
+
+Si dimostra per doppia inclusione che $Z^{(f)} = X^+$.
+\begin{enumerate}
+    \item $Z^{(f)} \subseteq X^+$: si dimostra per induzione sul numero di iterazioni del ciclo. 
+
+    Caso base: $Z^{(0)} = X \subseteq X^+$.
+
+    Per ipotesi induttiva, $Z^{(i-1)} \subseteq X^+$. Ovviamente $Z^{(i-1)} \subseteq Z^{(i)}$. Bisogna far vedere che $\forall A \in Z^{(i)} \setminus Z^{(i-1)}$, vale che $A \in X^+$.
+
+    Necessariamente $A \in S^{(i-1)}$, essendo $Z^{(i)} = Z^{(i-1)} \cup S^{(i-1)}$. Quindi esiste una dipendenza funzionale $Y \to V$ con $Y \subseteq Z^{(i-1)} \subseteq X^+$, e con $A \in V$. Quindi, per transitivit\`a $X \to V \in F^+$, quindi $A \in V \subseteq X^+$.
+    \item $X^+ \subseteq Z^{(f)}$: consideriamo un'istanza di $R$ composta da due tuple coincidenti solo sugli attributi in $Z^{(f)}$.
+    \begin{itemize}
+        \item Se l'istanza non fosse legale, dovrebbe esistere una dipendenza funzionale $V \to W \in F$ tale che le due tuple coincidono su $V$ ma differiscono su $W$. Avremmo quindi che $V \subseteq Z^{(f)}$, ma $W \cap Z^{(f)} \neq \emptyset$. Ma poich\'e $V \subseteq Z^{(f)}$, vale che $W \subseteq S^{(f)}$, e quindi che $S^{(f)} \not\subseteq Z^{(f)}$, in contraddizione con la condizione di uscita dal ciclo.
+        \item Siccome l'istanza \`e legale, ogni dipendenza $X \to A \in F^+$ deve essere soddisfatta. Poich\'e $Z{(0)} = X \subseteq Z^{(f)}$, le due tuple coincidono su $X$. Essendo l'istanza legale, le due tuple coincidono anche su $A$, quindi $A \in Z^{(f)}$.
+    \end{itemize}
+\end{enumerate}
+
+\section{Correttezza dell'algoritmo per calcolare la chiusura di un insieme di attributi dopo una decomposizione}
+
+Siano $Z^{(i)}$ e $S^{(i)}$ i valori rispettivamente della variabile $Z$ e della variabile $S$ dopo l'$i$-esima iterazione del ciclo, e siano $Z^{(f)}$ e $S^{(f)}$ i valori finali.
+
+Dimostriamo unicamente che $Z^{(f)} \subseteq X^+_G$. Si dimostra per induzione su $i$.
+
+Caso base: $Z^{(0)} = X \subseteq X^+_G$.
+
+Per ipotesi induttiva, $Z^{(i-1)} \subseteq X^+_G$. Ovviamente $Z^{(i-1)} \subseteq Z^{(i)}$.
+
+Ogni attributo $A$ nuovo in $Z^{(i)} \setminus Z^{(i-1)}$ deve essere contenuto in $S^{(i-1)}$ (ma non in $Z^{(i-1)}$). Quindi per l'algoritmo deve esistere un $j$ tale per cui $A \in (Z^{(i-1)} \cap R_j)^+_F \cap R_j$. \`E un'intersezione, quindi $A$ deve essere nella chiusura di $Z^{(i-1)} \cap R_j$, e deve essere anche in $R_j$.
+
+Segue che $(Z^{(i-1)} \cap R_j) \to A \in F^A$, e che $(Z^{i-1} \cap R_j) \cup A \subseteq R_j$. Per come \`e definito $G$, questo significa che $(Z^{(i-1)} \cap R_j) \to A \in G$, essendo parte destra e parte sinistra della dipendenza contenute in un sottoinsieme della scomposizione, ed essendo la dipendenza nella chiusura di $F$.
+
+Per ipotesi induttiva, $X \to Z^{(i-1)} \in G^A$, e per la regola della decomposizione $X \to (Z^{(i-1)} \cap R_j) \in G^A$, da cui segue per transitivit\`a che $X \to A \in G^A$, e quindi $A \in X^+_G$.
+
+\section{Correttezza dell'algoritmo per calcolare se una decomposizione ha un join senza perdita}
+
+Sia $r_0$ la tabella costruita all'inizio dell'algoritmo, e sia $r_f$ la tabella ottenuta alla fine dell'algoritmo. Dimostriamo unicamente che se $\rho$ ha un Join senza perdita, $r_f$ ha una riga con tutte `$a$'.
+
+L'algoritmo si ferma quando nessuna dipendenza funzionale \`e violata, quindi $r_f$ si pu\`o interpretare come un'istanza legale di $R$.
+
+Per ogni insieme di attributi $R_i \in \rho$ la proiezione degli attributi $R_i$ della tabella $r_0$ contiene una riga con tutte `$a$'.
+
+Se due insiemi di attributi $R_i$ e $R_j$ in $\rho$ hanno attributi in comune, il loro Join ha una riga con tutte `$a$'.
+
+Poich\'e le `$a$' non vengono tolte da nessuna riga, la tabella $r_f$ avr\`a almeno le stesse `$a$' di $r_0$. Quindi anche $r_f$, per ogni insieme di attributi $R_i \in \rho$ avr\`a, nella proiezione degli attributi $R_i$, una riga con tutte `$a$'.
+
+Poich\'e per ipotesi $\rho$ ha un Join senza perdita, vale che:
+\[
+r_f = \pi_{R_1} (r_f) \Join \pi_{R_2} (r_f) \Join \ldots \Join \pi_{R_k} (r_f)
+\]
+e poich\'e al momento del Join le righe con tutte `$a$' vengono unite, $r_f$ ha una riga con tutte `$a$'.
+
+\section{Correttezza dell'algoritmo per ricavare una buona decomposizione}
+
+Bisogna dimostrare che l'algoritmo \`e corretto, ossia che la decomposizione prodotta preserva $F$ e ha ogni schema in \code{3NF}, e poi che la decomposizione prodotta unita ad una chiave $K$ di $R$ \`e in \code{3NF}, preserva $F$, e ha un Join senza perdita.
+
+Dimostriamo che l'algoritmo \`e corretto:
+\begin{enumerate}
+    \item La decomposizione prodotta preserva $F$. Bisogna verificare che $F \equiv G$, ossia che $F \subseteq G^+$ e che $G \subseteq F^+$. La seconda \`e verificata per costruzione di $G$.
+
+    La decomposizione \`e costruita unendo parte destra e parte sinistra di ogni dipendenza funzionale in $F$. Quindi, per come \`e definito $G$, ogni dipendenza funzionale in $F$ \`e anche in $G$.
+    \item Ogni schema della decomposizione \`e in \code{3NF}. 
+
+    Per ogni schema $XA$ nella decomposizione, $X$ \`e chiave dello schema.
+
+    Consideriamo una qualunque dipendenza funzionale $Y \to B \in F^+$ tale che $YB \subseteq XA$.
+    \begin{itemize}
+        \item Se $A = B$, poich\'e lo schema di partenza \`e una copertura minimale, deve essere per forza che $Y = X$, quindi $Y$ \`e una superchiave.
+        \item Se $A \neq B$, necessariamente $B \in X$, e quindi $B$ \`e primo.
+    \end{itemize}
+    Quindi ogni schema \`e in \code{3NF}.
+\end{enumerate}
+
+Dimostriamo che l'output dell'algoritmo, unito a una chiave di $R$, ha le propriet\`a elencate sopra:
+\begin{enumerate}
+    \item La decomposizione prodotta preserva $F$. Aggiungendo una chiave a una decomposizione che preserva $F$, questa preserva ancora $F$.
+    \item Ogni schema della decomposizione \`e in \code{3NF}. Gli schemi diversi da $K$ sono gi\`a in \code{3NF}. $K$ \`e chiave di s\'e stesso, quindi ogni dipendenza $X \to A \in F^+$ tale che $XA \subseteq K$, ha l'attributo a destra che \`e primo.
+    \item La decomposizione ha un Join senza perdita. Poich\'e $K$ \`e chiave di $R$, la chiusura di $K$ \`e tutto $R$. Usando l'algoritmo per calcolare la chiusura di un insieme di attributi, tutti gli attributi non in $K$ verranno aggiunti a $K$ con un certo ordine $A_1, \ldots, A_n$. Al passo $i$ la dipendenza $Y_i \to A_i \in F$ tale che $Y_i \subseteq K A_1 \ldots A_{i-1}$ viene presa in considerazione, e $A_i$ viene aggiunto alla chiusura.
+
+    Sapendo questo, si dimostra per induzione che la scomposizione cos\`i creata ha un Join senza perdita (ossia una riga con tutte `$a$').
+
+    La base dell'induzione \`e per $i = 1$. Per ciascun elemento nelle colonne di $K$, la riga $K$ avr\`a una `$a$'. La riga $Y_1 A_1$ ha tutte `$a$' sulle colonne di $Y_1$ (che intersecano $K$), e una `$a$' sulla colonna di $A_1$. Applicando l'algoritmo, anche la riga $K$ avr\`a una `$a$' sulla colonna $A_1$.
+
+    Per ipotesi induttiva per ogni indice fino a $i - 1$ vale che $K$ ha tutte `$a$' sulle colonne $K A_1 \ldots A_{i-1}$. La riga $Y_i A_i$ ha tutte `$a$' sulle colonne di $Y_i$, che intersecano $K A_1 \ldots A_{i-1}$, e una `$a$' sulla colonna di $A_i$. Applicando l'algoritmo, anche la riga $K$ avr\`a una `$a$' sulla colonna $A_i$.
+\end{enumerate}
+
+

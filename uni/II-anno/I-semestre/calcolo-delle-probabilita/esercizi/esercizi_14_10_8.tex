@@ -1,0 +1,30 @@
+\section{8 ottobre 2014}
+
+\begin{enumerate}
+    \item (1.13) Si consideri un gruppo di 20 persone. Quante sono le strette di mano se ciascuno d\`a la mano a tutti gli altri? $\sum_{k=1}^{n-1} k$. Equivale a chiedere: un grafo completo con $n$ vertici, quanti lati ha? Alternativamente, posso pensare una stretta di mano come un sottoinsieme di cardinalit\`a due dell'insieme delle persone, quindi il numero di strette di mano equivale al numero di sottoinsiemi di due elementi: $\binom{20}{2}$. Quindi vale anche $\sum_{k=1}^{n-1} k = \frac{n \cdot (n-1)}{2} = \binom{n}{2}$.
+    \item (1.14) Quante sono le mani di cinque carte da poker? 32, 36 o 40 scelgo 5, a seconda se ci sono 4, 5 o 6 giocatori.
+    \item (1.24) Sviluppare $\left( 3x^2 + y \right)^5$.
+        \begin{align*}
+        \left( 3x^2 + y \right)^5 = \\
+        \binom{5}{0} \left( 3x^2 \right)^5 +
+        \binom{5}{1} \left( 3x^2 \right)^4 y +
+        \binom{5}{2} \left( 3x^2 \right)^3 y^2 + \\
+        \binom{5}{3} \left( 3x^2 \right)^2 y^3 +
+        \binom{5}{4} 3x^2 y^4 +
+        \binom{5}{5} y^5 = \\
+        243 \ x^{10} +
+        5 \cdot 81 \ x^8 y +
+        10 \cdot 27 \ x^6 y^2 +
+        10 \cdot 9 \ x^4 y^3 +
+        5 \cdot 3 \ x^2 y^4 +
+        y^5 = \\
+        243 \ x^{10} +
+        405 \ x^8 y +
+        270 \ x^6 y^2 +
+        90 \ x^4 y^3 +
+        15 \ x^2 y^4 +
+        y^5
+        \end{align*}
+        $\binom{5}{2} = \binom{5}{3} = \binom{4}{2} + \binom{4}{1} = \binom{3}{2} + \binom{3}{1} + \binom{4}{1} = \binom{4}{1} + \binom{3}{1} + \binom{2}{2} + \binom{2}{1} = 4 + 3 + 2 + 1 = 10 $
+    \item (1.25) Nel gioco del bridge ci sono 4 giocatori, a ciascuno dei quali sono distribuite 13 carte. Quante sono le possibili distribuzioni? $\binom{52}{13,13,13,13}$
+\end{enumerate}

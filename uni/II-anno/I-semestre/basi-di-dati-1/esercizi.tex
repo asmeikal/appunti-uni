@@ -1,0 +1,98 @@
+\chapter{Esercizi}
+
+\section{16 gennaio 2013}
+
+\begin{enumerate}
+    \item Dato il seguente schema di una base di dati contenente dati su corsi universitari, aule e orario delle lezioni:
+
+    AULA(Id, Nome, N-posti, Edificio)  \\
+    CORSO(Id, Titolo, Anno, Docente) \\
+    ORARIO(Id-Aula, Giorno-settimana, Fascia-oraria, Id-Corso)
+
+    esprimere in algebra relazionale le seguenti interrogazioni:
+
+    \begin{enumerate}
+        \item Si desidera conoscere quando e dove  (cio\`e: giorno della settimana, fascia oraria, aula ed edificio in cui si trova l'aula) si svolgono le  lezioni di Basi di Dati tenute dal docente Moscarini.
+        \begin{align*}
+        \pi_{\text{Giorno-settimana, Fascia-oraria, Nome, Edificio}}
+        ((\sigma_{\text{Docente = Moscarini, Titolo = Basi di Dati}} (\text{CORSO})
+        \underset{\text{CORSO.Id = ORARIO.Id-Corso}}{\Join} \text{ORARIO})
+        \underset{\text{ORARIO.Id-Aula = AULA.Id}}{\Join} \text{AULA})
+        \end{align*}
+        \item Dati delle aule in cui non si svolgono lezioni di corsi del I anno.
+        \[
+        AULA -
+        (AULA
+        \underset{\text{AULA.Id = Id-Aula}}{\Join}
+        \pi_{\text{Id-Aula}}
+        (\sigma_{\text{Anno = I}} (\text{CORSO})
+        \underset{\text{CORSO.Id = ORARIO.Id-corso}}{\Join}
+        \text{ORARIO}))
+        \]
+    \end{enumerate}
+    \item Dati:
+    $R = ABCDEHI$ \\ 
+    $F = \{ AB \to CD, B \to E, E \to AC, H \to B \}$
+    \begin{enumerate}
+        \item Mostrare che  $HI$ \`e una chiave di $R$.
+
+        Per dimostrarlo bisogna far vedere che la chiusura $(HI)^+_F$ coincide con $R$, che \`e vero, e che nessun suo sottoinsieme \`e una chiave, infatti le chiusure di sottoinsiemi di $HI$ non coincidono con $R$, infatti $I^+_F = I$ e $H^+_F = ABCDEH$.
+        \item Sapendo che $HI$ \`e l'unica  chiave di $R$, mostrare che $R$ non \`e in terza forma normale.
+
+        Per dimostrarlo bisogna far vedere che esiste una dipendenza funzionale in $F$ (o in $F^+$) tale per cui la parte destra non \`e contenuta nella parte sinistra, come $B \to E$, la parte destra non \`e una chiave ($E$ non \`e una chiave) e la parte sinistra non contiene una chiave ($B$ non contiene una chiave).
+        \item Trovare una decomposizione $\rho$ di $R$ tale che:
+        \begin{itemize}
+            \item ogni schema in $\rho$ \`e in terza forma normale
+            \item $\rho$ preserva F
+        \end{itemize}
+
+        Per trovare tale decomposizione \`e sufficiente applicare l'algoritmo \ref{algoritmo_definitivo}, dopo aver trovato una copertura minimale di $F$. Una copertura minimale \`e $G = \{ B \to D, B \to E, E \to A, E \to C, H \to B \}$.
+
+        La decomposizione conterr\`a gli attributi non presenti in nessuna dipendenza funzionale di $G$, ossia $\rho = \{ I \}$, e l'unione di parte destra e parte sinistra delle dipendenze funzionali in $G$. Quindi:
+        \[
+        \rho = \{ I, BD, BE, EA, EC, HB \}
+        \]
+    \end{enumerate}
+    \item Abbiamo un file di 288.000 record. Ogni record occupa 49 byte di cui 10 per la chiave. Ogni blocco contiene 2048 byte. Un puntatore a blocco occupa 4 byte. Usiamo una organizzazione B-tree riempiendo al minimo sia i blocchi del file principale che quelli del file indice.
+    \begin{enumerate}
+        \item Quanti blocchi dobbiamo utilizzare per il file principale? 
+        \item Quanti blocchi dobbiamo utilizzare per il file indice?
+        \item Qual \`e il costo per la ricerca di un record? 
+    \end{enumerate}
+\end{enumerate}
+
+
+
+\section{10 giugno 2013}
+
+\begin{enumerate}
+    \item Dato il seguente schema di una base di dati contenente dati relativi a musei:
+
+    MUSEO ( Codice , Nome, Indirizzo, Regione ) \\
+    PITTORE (Codice , Nome , Cognome , Soprannome, DataNascita, DataMorte ) \\
+    QUADRO (Codice , Titolo , Autore , Anno , Museo)
+
+    (L'attributo Autore nella tabella QUADRO \`e il codice dell'autore del quadro, l'attributo Museo nella tabella QUADRO \`e il codice del museo in cui il quadro \`e conservato, l'attributo Anno nella tabella QUADRO \`e l'anno di realizzazione dell'opera) Esprimere in ALGEBRA relazionale le seguenti interrogazioni:
+    \begin{enumerate}
+        \item Quali quadri  del Pinturicchio sono conservati nei musei della Toscana. Restituire come risultato titolo del quadro e nome ed indirizzo del museo.
+        \item In quali musei della Toscana non \`e conservato alcun  quadro del XV secolo? Restituire come risultato  nome e indirizzo del museo.
+    \end{enumerate}
+    \item Dato lo schema di relazione $R = ABCDEHI$ e l'insieme di dipendenze funzionali: \\
+    $F = \{ A \to BC , AB \to D , C \to ED , AD \to E \}$
+    \begin{enumerate}
+        \item Verificare che $AHI$ \`e chiave dello schema $R$
+        \item Sapendo che $AHI$ \`e l'unica chiave, dire se $R$ \`e in 3NF e giustificare la risposta
+        \item Fornire una decomposizione $\rho$ di $R$ tale che:
+        \begin{enumerate}
+            \item ogni schema in $\rho$ \`e in 3NF
+            \item $\rho$  preserva $F$
+            \item $\rho$  ha un join senza perdita
+        \end{enumerate}
+    \end{enumerate}
+    \item \`E dato un file di 1.750.000 record. Ogni record occupa 130 byte, di cui 35 per la chiave. Un puntatore a blocco occupa 5 byte. Un blocco di memoria contiene 2048 byte. Utilizziamo un indice ISAM, e supponiamo che ogni blocco sia per i dati che per l'indice sia utilizzato al massimo.
+    \begin{enumerate}
+        \item Quanti blocchi di memoria occupa il file principale?
+        \item Quanti blocchi di memoria occupa il file indice?
+        \item Quale \`e il numero massimo di accessi per ricercare un record del file principale,  utilizzando la ricerca binaria sul file indice?
+    \end{enumerate}
+\end{enumerate}

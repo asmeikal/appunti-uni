@@ -1,0 +1,931 @@
+
+\section{Spazio di probabilit\`a}
+
+Consideriamo un esperimento con pi\`u esiti possibili. Vogliamo modellizzarlo con uno ``spazio di probabilit\`a''.
+
+\begin{defn}[Spazio campionario]
+Chiamiamo l'insieme dei possibili esiti dell'esperimento $S$, ``spazio campionario''.
+\end{defn}
+
+\begin{defn}[Evento]
+Matematicamente, un \emph{evento} \`e un sottoinsieme dello spazio campionario. Ad esempio, con lo spazio campionario dei risultati di un dado $\{ 1, 2, 3, 4, 5, 6\}$ un evento potrebbe essere ``esce un numero pari'', che corrisponde all'insieme di esiti $\{2, 4, 6\}$.
+
+Un evento elementare \`e un sottoinsieme dello spazio campionario consistente di un singolo elemento (o esito): $\{ s \}, s \in S$.
+\end{defn}
+
+\begin{defn}[Spazio e funzione di probabilit\`a]
+Lo spazio di probabilit\`a che modellizza l'esperimento \`e una coppia $(S,P)$ dove $S$ \`e lo spazio campionario e $P$ \`e una funzione reale, detta ``funzione di probabilit\`a'' definita su $\parts(S)$ t.c. valgono i seguenti assiomi:
+\begin{description}
+    \item[P1\label{itm:P1}] $0 \le \prob{E} \le 1 \forall  E \subset S$, la funzione di probabilit\`a associa un numero fra 0 ed 1 ad ogni \emph{evento}, non ad ogni esito. La probabilit\`a di un evento \`e un numero fra 0 ed 1.
+    \item[P2\label{itm:P2}] $\prob{S} = 1$. $S$ \`e l'``evento certo'', la cui probabilit\`a \`e 1.
+    \item[P3\label{itm:P3}] Assioma di numerabile additivit\`a: se $E_1, E_2, \dots$ \`e una successione di eventi ($E_1 \subset S \forall  i$), a 2 a 2 disgiunti (o incompatibili) ($E_i \cap E_j = \emptyset$ se $i \neq j$), allora:
+    \[
+    \prob{\bigcup_{i=1}^{\infty} E_i} = \sum_{i=1}^{\infty} \prob{E_i}
+    \]
+    Vuol dire che, considerando eventi incompatibili, la probabilit\`a dell'unione \`e la somma delle probabilit\`a. 
+\end{description}
+\end{defn}
+
+L'insieme delle parti di $S$ \`e la ``famiglia degli eventi'', la funzione $P: \parts(S) \to [0,1]$. La funzione $P$ \`e definita sull'insieme delle parti di $S$.
+
+L'intero insieme $S$ rappresenta l'evento certo. L'insieme vuoto $\emptyset$ \`e l'evento impossibile.
+
+Se $E, F$ sono eventi con $E \cap F = \emptyset \implies E$ ed $F$ sono detti ``incompatibili'': il realizzarsi di un evento implica che l'altro non si \`e realizzato. 
+
+$\prob{\emptyset} = 0$ non \`e un'assioma. Prendo infiniti insiemi a due a due disgiunti $E_1, E_2, \dots, E_n$ dove $E_i = \emptyset$, e quindi $\bigcup_{n=1}^{\infty} E_n = \emptyset$. Per l'assioma di numerabile additivit\`a:
+\[
+\prob{\emptyset} = \sum_{n=1}^{\infty} \prob{\emptyset} \implies \prob{\emptyset} = 0
+\]
+L'unico elemento che sommato infinite volte a s\'e stesso d\`a sempre s\'e stesso \`e lo 0.
+
+\begin{prop}[Additivit\`a finita \label{additivita_finita}]
+$P$ soddisfa l'additivit\`a finita. Considerata una famiglia finita $E_1, E_2, \dots, E_k$ di eventi a due a due disgiunti, vale che $\prob{\bigcup_{n=1}^k E_n} = \sum_{n=1}^k \prob{E_n}$.
+\end{prop}
+\begin{proof}
+Consideriamo la successione di eventi $F_1, F_2, F_3, \dots$ cos\`i definita:
+\[
+F_n =
+\begin{cases}
+E_n \text{ se } 1 \le n \le k \\
+\emptyset \text{ se } n > k
+\end{cases}
+\]
+Ho quindi una successione infinita di eventi a due a due disgiunti. Posso applicare l'assioma di numerabilit\`a additiva:
+\[
+\prob{\bigcup_{n = 1}^{\infty} F_n} = \sum_{n = 1}^{\infty} \prob{F_n}
+\]
+Ma $\bigcup_{n = 1}^{\infty} F_n = \bigcup_{n = 1}^{k} E_n$, quindi:
+\[
+\prob{\bigcup_{n = 1}^{\infty} F_n} =
+\prob{\bigcup_{n = 1}^{k} E_n} =
+\sum_{n = 1}^{\infty} \prob{F_n}
+\]
+Inoltre $\prob{F_n}$ \`e definita come:
+\[
+\prob{F_n} =
+\begin{cases}
+\prob{E_n} \text{ se } 1 \le n \le k \\
+\prob{\emptyset} \text{ se } n >k
+\end{cases}
+\]
+Quindi:
+\[
+\sum_{n = 1}^{\infty} \prob{F_n} =
+\sum_{n = 1}^{k} \prob{E_n}
+\]
+Per transitivit\`a ho dimostrato la tesi.
+\[
+\prob{\bigcup_{n=1}^k E_n} = \sum_{n=1}^k \prob{E_n}
+\]
+\end{proof}
+
+L'additivit\`a richiede la disgiunzione.
+
+\begin{prop}[Probabilit\`a dell'evento complementare]
+Dato un evento $E$, l'evento complementare $E^{\compl} = S \setminus E$ ha probabilit\`a:
+\[
+\prob{E^{\compl}} = 1 - \prob{E}
+\]
+\end{prop}
+\begin{proof}
+Applico la proposizione \ref{additivita_finita} con $k = 2$, dato che i due insiemi sono disgiunti.
+\[
+\prob{E \cup E^{\compl}} = \prob{E} + \prob{E^{\compl}}
+\]
+Ma poich\'e $E + E^{\compl} = S$:
+\[
+\prob{E \cup E^{\compl}} = \prob{E} + \prob{E^{\compl}} = P(S) = 1 \implies
+\prob{E^{\compl}} = 1 - \prob{E}
+\]
+\end{proof}
+
+\begin{prop}[Monotonia della compatibilit\`a]
+Se $E$ e $F$ sono eventi compatibili ($E \subset F$), allora $\prob{E} \le \prob{F}$. Sapendo che $F = E \cup (F \setminus E)$:
+\[
+\prob{F} = \prob{E \cup (F \setminus E)} = \prob{E} + \prob{F \setminus E} \ge \prob{E}
+\]
+\end{prop}
+
+Dati due eventi $A, B \subset S$ tali che $A \cap B = \emptyset \implies \prob{A \cup B} = \prob{A} + \prob{B}$. Ma nel caso generale?
+
+\begin{prop}
+Dati due eventi $A$, $B \subset S$, vale che $\prob{A \cup B} = \prob{A} + \prob{B} - \prob{A \cap B}$. La cardinalit\`a, come la misura della probabilit\`a, \`e additiva: $\abs{A \cup B} = \abs{A} + \abs{B} - \abs{A \cap B}$.
+\end{prop}
+\begin{proof}
+Dati due eventi congiunti $A, B$, chiamiamo $I = A \setminus B$, $II = A \cap B$, $III = B \setminus A$. $A \cup B = I \cup II \cup III$. Essendo i tre insiemi disgiunti, posso applicare l'additivit\`a finita.
+\[
+\prob{A \cup B} = \prob{I} + \prob{II} + \prob{III}
+\]
+Sempre per l'additivit\`a finita: $\prob{A} = \prob{I} + \prob{II}$ e $\prob{B} = \prob{II} + \prob{III}$, e $\prob{A \cap B} = \prob{II}$. Riscrivo quindi il membro destro della proposizione come:
+\begin{align*}
+\prob{A} + \prob{B} - \prob{A \cap B} = \\
+\prob{I} + \prob{II} + \prob{II} + \prob{III} - \prob{II} = \\
+\prob{I} + \prob{II} + \prob{III} = \\
+\prob{A \cup B}
+\end{align*}
+E ho dimostrato la tesi.
+\end{proof}
+
+\section{Spazi campionar\^i  a esiti equiprobabili}
+
+Quale \`e lo spazio di probabilit\`a $(S,P)$ che descrive il lancio di un dado?
+\[
+S = \{ 1, 2, 3, 4, 5, 6 \}
+\]
+Ma qual \`e la funzione di probabilit\`a $P : \parts(S) \to [0,1]$? Non ho motivi per ritenere che una faccia esca pi\`u spesso rispetto alle altre. Per simmetria, le probabilit\`a degli eventi elementari $\prob{\{1\}} = \prob{\{2\}} = \dots = \prob{\{6\}}$ sono tutte uguali.
+\begin{align*}
+\prob{S} &= 1 = \prob{\{1,2,\dots, 6\}} = \tag{per la propriet\`a \ref{itm:P2}} \\
+&= \underbrace{\prob{\{1\}}}_{x} + \prob{\{2\}} + \dots + \prob{\{6\}} = \tag{per additivit\`a finita} \\
+&= 6 \cdot x \implies \\
+& x = \frac{\prob{S}}{6} = \frac{1}{6} = \prob{\{k\}}
+\end{align*}
+% Riprendendo la propriet\`a \ref{itm:P2}, $\prob{S} = 1 = \prob{\{1,2,\dots, 6\}}$. Ma per l'additivit\`a finita, $\prob{S} = P(\{1\}) + P(\{2\}) + \dots + P(\{6\})$. Sono tutti numeri uguali, per cui $P(S) = 6 \ x$ con $x = P(\{1\})$. Quindi:
+% \[
+% x = \frac{P(S)}{6} = \frac{1}{6} = P(\{k\})
+% \]
+
+Sappiamo quindi la probabilit\`a di un evento elementare. Ma qual \`e $\prob{E}$ con $E \subseteq S$?
+\[
+\prob{E} = \prob{\bigcup_{k \in E} \{k\}}
+\]
+\`E una famiglia finita di insiemi a due a due disgiunti, quindi per l'additivit\`a finita:
+\[
+\prob{E} = \sum_{k \in E} \prob{\{k\}} = \frac{\abs{E}}{6} = \frac{\abs{E}}{\abs{S}}
+\]
+La probabilit\`a di un evento \`e data dal numero degli esiti favorevoli diviso il numero degli esiti equiprobabili, ma solo se gli esiti \emph{sono} equiprobabili.
+
+\begin{defn}[Spazio di probabilit\`a con esiti equiprobabili]
+Uno spazio di probabilit\`a $(P,S)$ \`e detto con esiti equiprobabili se $\prob{\{s\}} = \prob{\{s'\}} \forall s, s' \in S$.
+\end{defn}
+\begin{prop}
+Sia $S$ finito e $(S,P)$ con esiti equiprobabili, allora:
+\[
+\prob{E} = \frac{\abs{E}}{\abs{S}} \qquad \forall  E \subseteq S
+\]
+\end{prop}
+\begin{proof}
+Dato un evento $E$, posso scrivere:
+\[
+E = \bigcup_{s \in E} \{ s \}
+\]
+ossia, $E$ \`e un'unione finita di eventi a due a due disgiunti. Posso quindi applicare l'additivit\`a finita:
+\[
+\prob{E} = \sum_{s \in E} \prob{\{s\}}
+\]
+Consideriamo il caso in cui $E = S$:
+\[
+\prob{S} = \sum_{s \in S} \underbrace{\prob{\{ s \}}}_{x} = x \cdot \abs{S}
+\]
+poich\'e $\prob{\{s\}} = x$ non dipende da $s \in S$. Quindi $x = \frac{1}{\abs{S}}$, con $x = \prob{\{s\}} \forall  s \in S$. Sostituisco nell'equazione precedente:
+\[
+P(E) = \sum_{s \in E} \frac{1}{|S|} = \frac{|E|}{|S|}
+\]
+\end{proof}
+
+\begin{prop}
+Sia $\abs{S} = + \infty$ e $S$ numerabile, non esiste uno spazio di probabilit\`a con esiti equiprobabili. 
+\end{prop}
+\begin{proof}
+Supponiamo per assurdo che esista $(S,P)$ con esiti equiprobabili. So che $P(S) = 1$, e che:
+\[
+S = \bigcup_{s \in S} \{s\}
+\]
+Ho un'unione infinita numerabile di eventi a due a due disgiunti. Applico l'additivit\`a numerabile:
+\[
+P(S) = \sum_{s \in S} \underbrace{P \left( \{ s \} \right)}_{x} = 1
+\]
+Non esiste un numero $x$ che sommato infinite volte da 1, o qualunque altro numero finito.
+\end{proof}
+
+\begin{esercizio}
+Lancio due volte un dado.
+\begin{itemize}
+    \item Modellizare l'esperimento con uno spazio di probabilit\`a;
+    \item Calcolare la probabilit\`a che escano gli stessi numeri.
+\end{itemize}
+Lo spazio campionario \`e $S = \{ (a,b) : a,b \in \{ 1 \dots 6 \} \}$, con $a$ faccia del primo lancio e $b$ faccia del secondo lancio. In un singolo lancio ogni faccia \`e equivalente ad ogni altra faccia. La simmetria vale ancora se faccio due lanci. Quindi:
+\[
+\forall  E \subseteq S \qquad P(E) = \frac{|E|}{|S|} = \frac{|E|}{36}
+\]
+
+Prendiamo l'evento $E = $ ``le due facce sono uguali''. $E = \{ (1,1), (2,2) \dots (6,6) \}$.
+\[
+P(E) = \frac{6}{36} = \frac{1}{6}
+\]
+\end{esercizio}
+
+\begin{esercizio}
+Ho un'urna contenente 8 palline blu, 5 gialle e 3 nere. Estraggo tre palline senza rimpiazzo. Qual \`e la probabilit\'a di estrarre tre palline blu?
+
+Non posso definire lo spazio campionario basandomi sul colore: estrarre una pallina blu e una gialla, ad esempio, non \`e un esito equiprobabile. Posso distinguere le palline dello stesso colore numerandole. In questo caso estrarre una pallina rispetto ad un'altra \`e equiprobabile.
+\end{esercizio}
+
+\section{Principio di inclusione-esclusione}
+
+So che, dati gli eventi $A$ e $B$ non necessariamente disgiunti, la probabilit\`a della loro unione \`e $P(A \cup B) = P(A) + P(B) - P(A \cap B)$. Se volessi generalizzare a $n$ eventi?
+
+\begin{prop}
+Dati $n$ eventi $E_1, E_2 \dots E_n$, vale che:
+\begin{align*}
+P(E_1 \cup E_2 \cup \dots \cup E_n) = \\
+P(E_1) + P(E_2) + \dots + P(E_n) \\
+- \sum_{1 \le i_1 < i_2 \le n} P(E_{i_1} \cap E_{i_2}) \\
++ \sum_{1 \le i_1 < i_2 < i_3 \le n} P(E_{i_1} \cap E_{i_2} \cap E_{i_3}) \\
+\dots \\
++ (-1)^{n+1} P(E_1 \cap E_2 \cap \dots \cap E_n)
+\end{align*}
+In maniera pi\`u compatta:
+\begin{equation}
+P(E_1 \cup E_2 \cup \dots \cup E_n) =
+\sum_{r = 1}^{n} (-1)^{r+1} 
+\left(
+\sum_{1 \le i_1 < i_2 < \dots < i_r \le n} P(E_{i_1} \cap E_{i_2} \cap \dots \cap E_{i_r})
+\right)
+\end{equation}
+\end{prop}
+\begin{exmp}
+Prendiamo tre eventi $E, F, G$ (in seguito scriveremo $EF$ per intendere $E \cap F$) e vediamo la probabilit\`a di $P(E \cup F \cup G)$.
+\begin{align*}
+P(E \cup F \cup G) = \\
+(-1)^{1+1} \ (P(E) + P(F) + P(G)) \\
++ (-1)^{2+1} \ (P(E \cap F) + P(E \cap G) + P(F \cap G)) \\
++ (-1)^{3+1} \ (P(E \cap F \cap G)) = \\
+P(E) + P(F) + P(G) - P(E \cap F) - P(E \cap G) - P(F \cap G) + P(E \cap F \cap G)
+\end{align*}
+\end{exmp}
+\begin{proof}
+Limitiamo la dimostrazione a $S$ numerabile. Se lo spazio campionario \`e numerabile, vale la proposizione \ref{numerabile}.
+
+Dato $s \in S$ e dato $E \subseteq S$ indichiamo con il simbolo $\mathbf{1}(s \in E)$ (funzione caratteristica associata alla propriet\`a ``$s \in E$'') la funzione:
+\[
+\mathbf{1}(s \in E) =
+\begin{cases}
+1 \text{ se } s \in E \\
+0 \text{ se } s \notin E 
+\end{cases}
+\]
+Quindi la proposizione \ref{numerabile} equivale a scrivere:
+\[
+P(E) = \sum_{s \in E} P(\{s\}) = \sum_{s \in S} \mathbf{1}(s \in E) P(\{s\})
+\]
+Posso riscrivere il membro sinistro della proposizione come:
+\[
+P(E_1 \cup E_2 \cup \dots \cup E_n) = 
+\sum_{a \in S} \mathbf{1}(a \in E_1 \cup \dots \cup E_n) P(\{a\})
+\]
+Posso riscrivere il membro destro della proposizione come:
+\[
+\sum_{r = 1}^{n} (-1)^{r+1} 
+\left(
+\sum_{1 \le i_1 < i_2 < \dots < i_r \le n} 
+\overbrace{
+P(E_{i_1} \cap E_{i_2} \cap \dots \cap E_{i_r})
+}^{ \sum_{a \in S} \mathbf{1}(a \in E_1 \cap \dots \cap E_n) P(\{a\}) }
+\right) 
+\]
+Il risultato di una serie a termini non costanti dipende dall'ordine di somma. Ma queste serie sono assolutamente convergenti, quindi posso scambiare l'ordine di somma. Quindi:
+\[
+\sum_{a \in S} P(\{a\}) \left[ \sum_{r = 1}^n (-1)^{r+1} \sum_{1 \le i_1 < \dots < i_r \le n} \mathbf{1}(a \in E_{i_1} \cap E_{i_2} \cap \dots \cap E_{i_r}) \right]
+\]
+Per dimostrare il principio di inclusione-esclusione basta dimostrare che, $\forall  a \in S$:
+\[
+\sum_{r = 1}^n (-1)^{r+1} \sum_{1 \le i_1 < \dots < i_r \le n} \mathbf{1}(a \in E_{i_1} \cap E_{i_2} \cap \dots \cap E_{i_r}) = \mathbf{1}(a \in E_1 \cup \dots \cup E_n)
+\]
+Il membro destro sar\`a sempre o 0 o 1, il membro sinistro sar\`a una somma di 1, 0 e $-1$. Distinguiamo due casi:
+\begin{enumerate}
+    \item $a \notin E_1 \cup \dots \cup E_n$, allora il membro destro vale 0. Ma quindi $a$ non pu\`o appartenere all'intersezione di eventi, se non appartiene alla loro unione. Quindi anche il membro sinistro \`e 0 (o una somma di 0).
+    \item $a \in E_1 \cup \dots \cup E_n$, allora il membro destro vale 1. Sia $m$ il numero degli eventi di tipo $E_i$ a cui $a$ appartiene (ossia per cui $a \in E_i$). Per semplicit\`a, ma senza perdita di generalit\`a, supponiamo che $a$ appartenga ai primi $m$ elementi. Abbiamo quindi che $\mathbf{1}(a \in E_{i_1} \cap \dots \cap E_{i_r}) = 1 \Leftrightarrow i_1, i_2, \dots i_r \le m$.
+
+    Quindi la somma dei valori della funzione caratteristica per valori fino a $m$ \`e uguale al numero di possibili tuple di numeri distinti ordinati in senso crescente compresi fra 1 e $m$.
+    \[
+    \sum_{1 \le i_1 < \dots < i_r \le n} \mathbf{1}(a \in E_{i_1} \cap E_{i_2} \cap \dots \cap E_{i_r}) = \left| \{(i_1,i_2, \dots i_r) : 1 \le i_1 < i_2 < \dots < i_r \le m\} \right|
+    \]
+    Altro non \`e che $\binom{m}{r}$. C'\`e una bigezione fra il numero di insiemi non ordinati e il numero di $n$-uple ordinate in senso crescente.
+
+    La parte sinistra dell'equazione vale quindi:
+    \[
+    \sum_{r = 1}^{n} (-1)^{r+1} \binom{m}{r}
+    \]
+    Dobbiamo dimostrare che \`e uguale ad 1. Se $r > m$ il coefficiente binomiale vale 0. La somma si pu\`o semplificare ancora e diventare quindi:
+    \[
+    \sum_{r = 1}^{m} (-1)^{r+1} \binom{m}{r} =
+    \sum_{r = 0}^{m} (-1)^{r+1} \binom{m}{r} + 1 =
+    - \sum_{r = 0}^{m} (-1)^{r} \binom{m}{r} + 1
+    \]
+    Posso riscrivere tutto con il teorema del binomio applicato a $(1 - 1)^m$:
+    \[
+    \sum_{r = 0}^{m} \binom{m}{r} 1^{m-r} (-1)^r + 1 = (1-1)^m + 1 = 0 + 1 = 1
+    \]
+\end{enumerate}
+\end{proof}
+\begin{prop}\label{numerabile}
+Sia $S$ numerabile (finito o infinito), Allora $\forall  E \subset S$ vale:
+\[
+P(E) = \sum_{s \in E} P(\{s\})
+\]
+\end{prop}
+\begin{proof}
+Se $S$ \`e numerabile $\implies E$ \`e numerabile (perch\'e la cardinalit\`a di un insieme \`e maggiore della cardinalit\`a di un suo sottoinsieme proprio). Posso scrivere $E$ come:
+\[
+E = \bigcup_{s \in E} \{ s \}
+\]
+ossia, un'unione numerabile di eventi a due a due disgiunti. Vale quindi che:
+\[
+P(E) = \sum_{s \in E} P(\{s\})
+\]
+\end{proof}
+
+\begin{prop}
+Supponiamo di avere una famiglia di eventi $E_1, E_2, \dots E_n$ vale che:
+\[
+P(E_1 \cup E_2 \cup \dots \cup E_n) \le P(E_1) + P(E_2) + \dots + P(E_n)
+\]
+Inoltre, data una successione di eventi $E_1, E_2, \dots E_n \dots$ vale che:
+\[
+P \left( \bigcup_{n = 1}^{\infty} E_n \right) \le \sum_{n = 1}^{\infty} P(E_n)
+\]
+\end{prop}
+\begin{proof}
+Dimostriamo solo la prima parte. Per $n = 2$ vale che $P(E_1 \cup E_2) = P(E_1) + P(E_2) - P(E_1 \cap E_2) \le P(E_1) + P(E_2)$.
+
+Concludiamo per induzione. Se vale per $n$, vale per $n + 1$. Pensiamo $ P(E_1 \cup E_2 \cup \dots \cup E_n \cup E_{n+1}) $ come $P( A \cup E_{n+1})$ con $A = E_1 \cup E_2 \cup \dots \cup E_n$.
+\[
+P(E_1 \cup E_2 \cup \dots \cup E_n \cup E_{n+1}) \le P(E_1 \cup \dots \cup E_n) + P(E_{n+1}) \le P(E_1) + \dots + P(E_n) + P(E_{n+1})
+\]
+\end{proof}
+
+\begin{exmp}
+Abbiamo cinque coppie, ciascuna formata da un uomo e una donna. Vogliamo sapere qual \`e la probabilit\`a di prendere $G_i = F_i$ balla con $M_i$.
+\[
+E^{\compl} = G_1 \cup G_2 \cup G_3 \cup G_4 \cup G_5
+\]
+\[
+P(E^c) = P(G_1 \cup G_2 \cup G_3 \cup G_4 \cup G_5) = \sum_{r = 1}^{5} (-1)^{r +1} \sum_{1 \le i_1 < i_2 \dots i_r \le 5} P( G_{i_1} \cap G_{i_2} \dots G_{i_r})
+\]
+$P(G_i)$ non dipende da $i$, per simmetria.
+\[
+P(G_1) = \frac{4!}{5!} = \frac{1}{5}
+\]
+Sappiamo che \`e vero $\forall i = 1 \dots 5$. In generale:
+\[
+P( G_{i_1} \cap \dots \cap G_{i_r}) = \frac{(5 - r)!}{5!}
+\]
+\[
+P(E) = 1 - \sum_{r = 1}^{5} (-1)^{r+1} \frac{1}{r!} = 
+\sum_{k = 0}^{5} \frac{(-1)^k}{k!}
+\]
+Quindi:
+\[
+P(E) = 1 - \frac{1}{1!} + \frac{1}{2!} - \frac{1}{3!} + \frac{1}{4!} - \frac{1}{5!} = 
+\frac{3 \cdot 4 \cdot 5 - 4 \cdot 5 + 5 - 1}{5!}
+\]
+In generale:
+\[
+\sum_{k = 0}^{N} \frac{(-1)^k}{k!}
+\]
+Per $N$ all'infinito, questo \`e lo sviluppo in serie di $e^{-1}$
+\end{exmp}
+\section{Interpretazione frequentistica della probabilit\`a}
+
+Ripeto un esperimento $N$ volte. Chiamo $K(E, N)$ il numero di volte in cui $E$ si \`e verificato tra gli $N$ esperimenti. Quindi il rapporto $\frac{K(E, N)}{N}$ \`e la frequenza relativa con cui $E$ si \`e verificato negli $N$ esperimenti.
+
+Per $N$ grande la frequenza relativa \`e circa la probabilit\`a di $E$.
+\[
+\frac{K(E,N)}{N} \approx P(E)
+\]
+Di norma aggiungo informazioni per rendere gli esiti simmetrici.
+
+La modellizzazione si basa sul buon senso. La funzione di probabilit\`a in caso di esiti non equiprobabili si costruisce statisticamente.
+
+Su 1000 lanci, il mio dado truccato mi d\`a:
+
+\begin{tabular}{cc}
+1 & 405 \\
+2 & 200 \\
+3 & 001 \\
+4 & 103 \\
+5 & 050 \\
+6 & 241
+\end{tabular}
+
+Modellizzo quindi il mio dado con una funzione di probabilit\`a $P : \parts(S) \to [0,1]$ viene definita su $S = \{ 1 \dots 6 \}$ come:
+\begin{align*}
+P(\{1\}) &= \frac{405}{1000} \\
+P(\{2\}) &= \frac{200}{1000} \\
+\dots & \\
+P(\{6\}) &= \frac{241}{1000}
+\end{align*}
+
+Abbiamo la probabilit\`a degli eventi elementari. Se sappiamo la probabilit\`a degli eventi elementari, sappiamo tutto. Infatti per $S$ numerabile (finito o infinito):
+\[
+P(E) = \sum_{s \in E} P(\{s\})
+\]
+\begin{prop}
+Se $S$ \`e numerabile, allora per ogni funzione $p : S \to [0,1]$ tale che $\sum_{s \in S} p(s) = 1 \exists ! P$ funzione di probabilit\`a con $P(\{s\}) = p(s) \forall  s \in S$.
+\end{prop}
+
+\section{Probabilit\`a condizionata}
+
+Probabilit\`a condizionata all'informazione. Abbiamo un'informazione parziale sul risultato dell'esperimento.
+
+\begin{defn}[Probabilit\`a condizionata]
+Dati due eventi $E$ e $F$ con $P(F) > 0$ si definisce la probabilit\`a di $E$ condizionata dall'evento $F$ come:
+\[
+P(E|F) = \frac{P(E \cap F)}{P(F)} 
+\]
+\end{defn}
+
+\begin{oss}
+Se $S$ ha esiti equiprobabili e se $\abs{S} < + \infty$, allora:
+\[
+P(E|F) = \frac{\abs{E \cap F}}{\abs{F}}
+\]
+\end{oss}
+
+\begin{proof}
+Siccome lo spazio ha esiti equiprobabili, scriviamo la formula come cardinalit\`a di insiemi:
+\[
+P(E|F) = \frac{P(E \cap F)}{P(F)} = \frac{\frac{\abs{E \cap F}}{\abs{S}}}{\frac{\abs{F}}{\abs{S}}} = \frac{\abs{E \cap F}}{\abs{F}}
+\]
+Se moltiplico per $N$ numero di esperimenti, ho che $P(F)\ N$ \`e il numero di volte in cui si \`e verificato $P(F)$ negli $N$ esperimenti, e $P(E \cap F) \ N$ \`e il numero di volte in cui si \`e verificato sia $E$ che $F$.
+\end{proof}
+
+Lancio due dadi. $F =$ ``la somma dei due dadi \`e 7''. Qual \`e la probabilit\`a $E =$ ``il secondo lancio ha dato 3''?
+
+% gioco delle tre carte, RR RN NN
+
+\subsection{Legge del prodotto (o legge delle probabilit\`a composte)}
+\begin{theorem}[Legge del prodotto]
+Siano $E_1, E_2, \ldots, E_n$ eventi con $P(E_1 \cap \ldots \cap E_{n-1}) > 0$, allora:
+\[
+P(E_1 \cap \ldots \cap E_{n}) = P(E_1) \ P(E_2 | E_1) \ P(E_3 | E_1 \cap E_2) \ \ldots \ P(E_n | E_1 \cap E_2 \cap \ldots \cap E_{n-1})
+\]
+$P(E|F)$ si legge ``probabilit\`a di E condizionato F''.
+\end{theorem}
+
+\begin{exmp}
+Ho un'urna contenente 5 palline blu, 3 rosse e 6 gialle. Estraggo 3 palline senza rimpiazzo e voglio sapere la probabilit\`a che siano tutte gialle. Definisco, immaginando di estrarre le palline una dopo l'altra, l'evento $E_i =$ ``la pallina $i$-esima \`e gialla'', per $i = 1, 2, 3$. $P(E_1 \cap E_2 \cap E_3)$ \`e la probabilit\`a che tutte le palline siano gialle. Per la legge delle probabilit\`a composte quindi:
+\[
+P(E_1 \cap E_2 \cap E_3) = 
+P(E_1) \ P(E_2 | E_1) \ P(E_3 | E_1 \cap E_2)
+\]
+Al momento di estrarre la prima pallina so che la probabilit\`a di estrarre una pallina gialla \`e $P(E_1) = \frac{6}{14}$
+\end{exmp}
+
+La probabilit\`a condizionata ha senso quando l'evento condizionante ha cardinalit\`a positiva.
+
+\begin{oss}
+$P(E_1 \cap \ldots \cap E_{n_1}) > 0 \implies \forall r = 1 \dots n - 1 , \, P(E_1 \cap E_2 \cap \ldots \cap E_r) > 0$.
+\end{oss}
+
+Se $F \subset E$ e $P(F) > 0$ allora $P(E) > 0$
+
+\begin{proof}
+Il membro destro \`e:
+\[
+P(E_1) \cdot \frac{P(E_1 \cap E_2)}{P(E_1)} \cdot \frac{P(E_1 \cap E_2 \cap E_3)}{P(E_1 \cap E_2)} \dots \frac{P(E_1 \cap E_2 \cap \dots \cap E_{n-1} \cap E_n)}{P(E_1 \cap E_2 \cap \dots \cap E_{n-1})}
+\]
+Semplificando ottengo il membro sinistro.
+\end{proof}
+
+\subsection{Legge della probabilit\`a totale}
+\begin{theorem}[Legge della probabilit\`a totale]
+Siano $F_1, F_2, \dots F_n$ eventi a due a due disgiunti la cui unione \`e $S$, ossia $F_1 \dots F_n$ \`e una partizione di $S$. Supponiamo che $P(F_i) > 0 \forall i = 1 \dots n$. Allora $\forall E \in S$ vale:
+\[
+P(E) = \sum_{1 = 1}^{n} P(E | F_i) \cdot P(F_i)
+\]
+\end{theorem}
+\begin{proof}
+\[
+E = \bigcup_{i = 1}^{n} (E \cap F_i)
+\]
+Perch\'e:
+\[
+E = E \cap S = E \cap (\bigcup_{i = 1}^{n} f_i)
+\]
+Questi eventi sono a due a due disgiunti al variare di $i$, perch\'e lo sono gli $F_i$ e quindi a maggior ragione qualcosa di pi\`u piccolo.
+
+Per additivit\`a finita:
+\[
+P(E) = \sum_{i = 1}^{n} P(E \cap F_i)
+\]
+Ma $P(E \cap F_i) = P(E | F_i) P(F_i)$ per la definizione di probabilit\`a condizionata (o per la legge del prodotto). Finito.
+\end{proof}
+
+\begin{exmp}
+Lancio una moneta, se esce Testa estraggo 3 carte da un mazzo di 40, se esce croce estraggo una sola carta da un mazzo di 40. Vinco se estraggo almeno un Re.
+
+Con una partizione in due eventi $F$ e $F^c$ ho che $P(E) = P(E|F) P(F) + P(E|F^c) P(F^c)$.
+\[
+P(E|F) = 1 - \frac{\binom{36}{3}}{\frac{40}{3}}
+\]
+\end{exmp}
+
+\subsection{Teorema di Bayes}
+
+\begin{theorem}[Teorema di Bayes]
+Si legge ``beis''. Siano $E$ e $F$ eventi, allora:
+\[
+P(F|E) = \frac{P(E|F)P(F)}{P(E)} = \frac{P(E|F)P(F)}{P(E|F)P(F) + P(E|F^{c})P(F^{c})}
+\]
+La prima formula vale se $P(E)$ e $P(F) > 0$, la seconda se $P(F^{c}) > 0$.
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+P(F|E) &= \frac{P(FE)}{P(E)} = \tag{per definizione} \\
+&= \frac{P(E|F) \ P(F)}{P(E)} = \tag{per la legge del prodotto} \\
+&= \frac{P(E|F) \ P(F)}{P(E|F) \ P(F) + P(E|F^{c}) \ P(F^{c})} \tag{per la legge delle probabilit\`a totali}
+\end{align*}
+\end{proof}
+\`E utile quando bisogna scambiare l'evento condizionante con l'evento condizionato.
+
+\begin{theorem}[Versione generale del teorema di Bayes]
+Sia $F_1 \dots F_n$ una partizione dello spazio campionario $S$ (a due a due disgiunti e la cui unione da tutto $S$), allora per ogni evento $E \subset S$ e $\forall i = 1 \dots n$ vale:
+\[
+P(F_i|E) = \frac{P(E|F_i)P(F_i)}{P(E)} = \frac{P(E|F_i) P(F_i)}{\sum_{j = 1}^{n} P(E|F_j)P(F_j)}
+\]
+Per $n = 2$ e $F_1 = F$ e $F_2 = F^{c}$, il teorema di Bayes generale si riduce al teorema precedente.
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+P(F_i|E ) &= \frac{P(F_i E)}{P(E)} = \tag*{per definizione} \\ 
+&= \frac{P(E | F_i) P(F_i)}{P(E)} = \tag*{per la regola del prodotto} \\ 
+&= \frac{P(E | F_i) P(F_i)}{\sum_{j = 1}^{n} P(E | F_j) P(F_j)} \tag*{per la legge della probabilit\`a totale}
+\end{align*}
+\end{proof}
+
+\begin{exmp}
+Due persone estraggono una carta ciascuno da un mazzo di carte. Qual \`e la probabilit\`a che solo uno dei due estragga un asso?
+\begin{gather*}
+S = \{ (x_1, x_2) : x_1 \neq x_2 \text{ con } x_1, x_2 \in M \} \\
+P(x_1 \text{ sia asso}), \, P(x_2 \text{ sia asso})
+\end{gather*}
+$S \ni (x_1, x_2) \to (x_2, x_1) \in S$, ossia le coppie in cui $x_1$ \`e asso sono in bigezione con quelle in cui $x_2$ \`e asso. La probabilit\`a che la prima persona estragga un asso \`e uguale alla probabilit\`a che la seconda persona estragga un asso.
+\end{exmp}
+
+\begin{defn}[Rapporto a favore di un evento]
+Il rapporto a favore di un evento $A$ \`e definito come:
+\[
+\frac{P(A)}{P(A^{\compl})}
+\]
+\end{defn}
+\begin{exmp}
+``La Juve \`e data 10 a 2'' vuol dire che $\frac{P(A)}{P(A^{\compl})} = \frac{10}{2}$.
+\[
+\frac{P(A)}{P(A^{\compl})} = c \implies P(A) = c (1 - P(A)) \implies P(A) [1 + c] = c \implies P(A) = \frac{c}{1 + c}
+\]
+\end{exmp}
+
+\begin{exmp}[3a dal libro]
+Una compagnia di assicurazioni suddivide le persone in due classi: quelle che sono propense a incidenti e quelle che non lo sono.
+
+La probabilit\`a che una persona propensa a incidenti faccia un incidente \`e $0{,}4$ percento, la probabilit\`a che una persona non propensa a incidenti faccia un incidente \`e $0{,}2$ percento. Il 30 percento della popolazione \`e propensa agli incidenti.
+
+Qual \`e la probabilit\`a che un nuovo cliente abbia un incidente entro un anno. Non sappiamo se il cliente \`e propenso o meno agli incidenti.
+
+$A_1 = $ ``il cliente ha un incidente entro l'anno''.
+
+$A = $ ``il cliente \`e propenso agli incidenti''.
+\[
+P(A) = 30 \%
+\]
+\[
+P(A_1 | A) = 0{,}4 \%
+\]
+\[
+P(A_1 | A^{\compl}) = 0{,}2 \%
+\]
+\[
+P(A_1) = P(A_1 | A) P(A) + P(A_1 | A^{\compl}) P(A^{\compl})
+\]
+Dopo un anno il cliente ha avuto un incidente. Qual \`e ora la probabilit\`a che \`e propenso agli incidenti?
+\[
+P(A | A_1)
+\]
+L'ideale \`e applicare Bayes, perch\'e aiuta a invertire evento condizionato ed evento condizionante.
+\[
+P(A | A_1) = \frac{P(A \cap A_1)}{P(A_1)} = \frac{P(A) P(A_1 | A)}{P(A_1)}
+\]
+\end{exmp}
+
+Le ricerche a campionamento permettono di capire, sapendo che, ad esempio, non si \`e trovato l'aereo disperso in una certa zona, quanto vale la probabilit\`a che l'aereo disperso \emph{non sia} nella zona.
+
+\begin{exmp}[3m dal libro, seconda edizione]
+Tre tipi di lampadine. Tipo 1 ha 0,7 \% di probabilit\`a di durare $> 1000 h$, Tipo 2 ha 0,4 \% di probabilit\`a di durare $>$ di $1000 h$, tipo 3 ha 0,3 \% di probabilit\`a di durare $> 1000 h$.
+
+Ho una scatola in cui il 20 \% delle lampadine sono di tipo 1, 30 \% di tipo 2 e le restanti di tipo 3.
+
+Qual \`e la probabilit\`a che una lampadina scelta a caso duri pi\`u di mille ore.
+
+$A =$ ``la lampadina scelta dura pi\`u di 1000 h''
+
+$F_i =$ ``la lampadina scelta \`e del tipo $i$''
+\begin{align*}
+P(A | F_1) &= 0{,}7 \\
+P(A | F_2) &= 0{,}4 \\
+P(A | F_3) &= 0{,}3
+\end{align*}
+\begin{align*}
+P(F_1) &= 0{,}2 \\
+P(F_2) &= 0{,}3 \\
+P(F_3) &= 0{,}5
+\end{align*}
+\[
+P(A) = \sum_{i = 1}^{3} P(A | F_i) P(F_i)
+\]
+Sapendo che la lampadina funziona pi\`u 1000 h, qual \`e la probabilit\`a che sia di uno dei tre tipi?
+\[
+P(F_j | A) = \frac{P(A | F_j) P(F_j)}{P(A)}
+\]
+\end{exmp}
+
+\section{Indipendenza probabilistica di due eventi}
+
+Abbiamo due eventi $E$ e $F$. $P(F) > 0$, consideriamo il caso particolare in cui $P(E | F) = P(E)$. Sapere che si \`e verificato l'evento $F$ non cambia la probabilit\`a che si verifichi l'evento $E$. Vuol dire che $E$ \`e indipendente da $F$.
+
+Poich\`e $\frac{P(E \cap F)}{P(F)} = P(E)$ vuol dire richiedere che $P(E \cap F) = P(E) P(F)$.
+
+Se $P(E) > 0$ possiamo dire $P(F | E) = P(F)$.
+
+\begin{defn}[Indipendenza probabilistica]
+Due eventi E e F si dicono ``indipendenti'' se:
+\[
+P(E \cap F) = P(E) \ P(F)
+\]
+\end{defn}
+La premessa \`e questa osservazione:
+\begin{oss}
+Se $P(F) > 0$, $E$ e $F$ sono indipendenti se e solo se
+\[
+P(E| F) = P(E)
+\]
+\end{oss}
+
+\begin{exmp}
+Lanciamo due monete. $S = \{ (T, T), (C, C), (T, C), (C, T) \}$. $E =$ ``la prima moneta d\`a Testa'', $F =$ ``la seconda moneta d\`a croce''.
+\begin{align*}
+E &= \{(T, T), (T, C)\}
+F &= \{(C, C), (T, C)\}
+\end{align*}
+Abbiamo che $P(E) = \frac{2}{4}$, $P(F) = \frac{2}{4}$ e $P(E \cap F) = \frac{1}{4}$. \`E verificato che:
+\[
+P(E) P(F) = P(E F)
+\]
+$E$ ed $F$ sono quindi indipendenti.
+\end{exmp}
+
+\begin{defn}[Eventi indipendenti]
+Gli eventi $E, F, G$ sono indipendenti se:
+\begin{itemize}
+    \item sono indipendenti a coppie:
+    \begin{itemize}
+        \item $P(E F) = P(E) P(F)$
+        \item $P(E G) = P(E) P(G)$
+        \item $P(F G) = P(F) P(G)$
+    \end{itemize}
+    \item $P(EFG) = P(E) P(F) P(G)$
+\end{itemize}
+\end{defn}
+
+\begin{exmp}
+$E =$ ``il primo lancio d\`a Testa''.
+$F =$ ``il secondo lancio d\`a Testa''.
+$G =$ ``i due lanci danno lo stesso risultato''.
+\[
+P(E F) = \frac{1}{4} = P(E) P(F) = \frac{1}{2} \frac{1}{2}
+\]
+\[
+P(E G) = \frac{1}{4} = P(E) P(G) = \frac{1}{2} \frac{1}{2}
+\]
+\[
+P(F G) = P(F) P(G)
+\]
+\[
+P(E F G) = \frac{1}{4} \neq P(E) P(F) P(G) = \frac{1}{2} \frac{1}{2} \frac{1}{2}
+\]
+Non sono indipendenti.
+\end{exmp}
+
+\begin{prop}
+Se $E$ e $F$ sono indipendenti, allora $E$ e $F^{\compl}$ sono indipendenti.
+\end{prop}
+\begin{proof}
+Ipotesi: $P(E F) = P(E) P(F)$
+Tesi: $P(E F^{\compl}) = P(E) P(F^{\compl})$
+
+Abbiamo che $E \cap F^{\compl} = E \setminus (E \cap F)$
+
+Quindi $P(E F^{\compl}) = P(E) - P(EF) = P(E) - P(E) P(F) = P(E) (1 - P(F)) = P(E) P(F^{\compl})$
+\end{proof}
+Con il complementare, l'unione e l'intersezione, dato F posso generare solo $\emptyset$, $S$ e $F^{\compl}$.
+
+L'evento vuoto (impossibile) \`e indipendente da tutti. L'evento certo anche \`e indipendente da tutti gli altri.
+
+Quindi date $E$, $F$ con $E$ ed $F$ indipendenti, $E$ \`e indipendente da ogni insieme generabile da $F$ con unione, intersezione e complementare.
+
+Vale che se $E$, $F$ e $G$ sono indipendenti, allora che $E$ \`e indipendente da ogni evento costruito a partire da $F$ e $G$ tramite unione, intersezione e complementare.
+
+\begin{defn}[Indipendenza generalizzata]
+Dati $n$ eventi $E_1, E_2 \dots E_n$, questi sono detti indipendenti se comunque ne prendo una sottofamiglia, la probabilit\`a dell'intersezione \`e il prodotto delle singole probabilit\`a.
+\begin{gather*}
+\forall r \ge 2, \forall \seq{i}{1}{r} : 1 \le i_1 < i_2 < \ldots < i_r \le n \\ P \left( E_{i_1} \cap E_{i_2} \cap \ldots \cap E_{i_r} \right) = P(E_{i_1}) \cdot P(E_{i_2}) \cdot \ldots \cdot P(E_{i_r})
+\end{gather*}
+\end{defn}
+
+Due lanci di un dado non hanno memoria, quindi non interferiscono fra loro.
+
+Consideriamo un esperimento fatto da $n$ o $\infty$ sottoesperimenti che tra loro non interferiscono. Quando i sottoesperimenti sono identici, vengono detti \emph{prove}.
+
+Se $P$ descrive l'esperimento, vale la seguente propriet\`a (ossia se $P$ \`e una buona descrizione dell'esperimento): eventi riferiti a sottoesperimenti diversi sono matematicamente indipendenti.
+
+Posso avere un sottoesperimento con due esiti, 0 e 1. L'esito 0 viene chiamato insuccesso, 1 viene chiamato successo.
+
+Prove = sottoesperimenti operativamente indipendenti e identici.
+
+Consideriamo una successione (idealmente infinita) di prove dove si possono avere due risultati: ``succeso'' (1) e ``insuccesso'' (0). Il successo avviene con probabilit\`a $p$, l'insuccesso con probabilit\`a $q = 1 - p$.
+
+\begin{exmp}
+Lancio infinite volte una moneta, ``esce testa'' lo identifico con il successo, ``esce croce'' con l'insuccesso.
+
+Oppure, gioco infinite volte al lotto. Viene estratta una pallina da un'urna di novanta palline numerate da 1 a 90. Scommetto ogni volta lo stesso numero, il successo \`e ``esce quel numero'', se non esce quel numero si realizza un insuccesso.
+
+Calcoliamo la probabilit\`a che nelle prime $n$ prove ci sia sempre un successo.
+
+Lo spazio di probabilit\`a non \`e numerabile, ha $2^n$ esiti possibili, e la cardinalit\`a di questo insieme \`e la cardinalit\`a del continuo. ``Spazio degli stati non numerabili''.
+
+$P(\text{``nelle prime $n$ prove ho successo''}) = P( \bigcap_{i=1}^{n} F_i )$ con $F_i =$ ``ho successo alla prova $i$-esima.'' Eventi relativi a prove diverse devono essere matematicamente indipendenti. Ciascun evento $F_i$ \`e matematicamente indipendente dagli altri perch\'e riferiti a esperimenti operativamente indipendenti. Se sono indipendenti, la probabilit\`a dell'intersezione \`e il prodotto delle singole probabilit\`a.
+\[
+P \left( \bigcap_{i=1}^{n} \right) = \prod_{i=1}^{n} \overbrace{P(F_i)}^{p} = p^n
+\]
+Vediamo la probabilit\`a che ci sia almeno un successo nelle prime $n$ prove. $P($``almeno un successo nelle prime $n$-prove''$) = 1 -  P($``sempre insuccesso nelle prime $n$-prove''$)$.
+\[
+1 - P \left( \bigcap_{i=1}^{n} F_{i}^{\compl} \right) = 1 - \prod_{i=1}^{n} P(F_{i}^{\compl}) = 1 - q^n = 1 - (1 - p)^{n}
+\]
+Anche in questo caso ci riferiamo a prove operativamente indipendenti. Non \`e necessario pensare a una successione infinita di prove, questi esempi valgono anche nel caso di successioni finite.
+\end{exmp}
+
+C'\`e un teorema (che dobbiamo ancora vedere) che dice che:
+\[
+\lim_{n \to \infty} P(\text{``successo alle prime n-prove''}) = P(\text{``ho sempre successo''})
+\]
+Se $p$ \`e minore di 1, questo limite \`e 0. Quindi la probabilit\`a di avere sempre successo \`e nulla.
+
+Consideriamo $n$ prove e vediamo la probabilit\`a di avere esattamente $k$ successi nelle $n$ prove (o nelle prime $n$ prove se ne faccio infinite).
+\[
+P(\text{``esattamente $k$ successi nelle prime $n$ prove''})
+\]
+Consideriamo prima la probabilit\`a che nelle prime $n$ prove ho che le prime $k$ prove sono successi, le restanti $n - k$ sono insuccessi.
+\[
+P(F_1 \cap F_2 \cap \dots \cap F_k \cap F_{k+1}^{\compl} \cap \dots \cap F_{n}^{\compl})
+\]
+Sono matematicamente indipendenti, quindi per indipendenza questo \`e uguale a:
+\[
+P(F_1) \cdot P(F_2) \cdot \ldots \cdot P(F_k) \cdot P(F_{k+1}^{\compl}) \cdot \ldots \cdot P(F_{n}^{\compl}) = p^{k} \cdot q^{n-k}
+\]
+Anche cambiando l'ordine dei successi, la probabilit\`a \`e sempre $p^k \cdot q^{n-k}$.
+
+Fissato $A \subset \{ 1 \dots n \}$ con $|A| = k$, $P($``la prova $i$-esima \`e successo $\forall  i \in A$ e la prova $j$-esima \`e insuccesso $\forall  j \in \{1 \dots n \} \setminus A$''$)$.
+
+\begin{proof}
+\[
+P \left( \left( \bigcap_{i \in A} F_i \right) \cap \left( \bigcap_{j \in B \setminus A} F_j^{\compl} \right) \right) = 
+\prod_{i \in A} P(F_i) \cdot \prod_{j \in B \setminus A} P(F_{j}^{\compl}) = p^{|A|} \cdot q^{|B \setminus A|} = p^k q^{n-k}
+\]
+\end{proof}
+
+Torniamo all'esempio di prima. $P($``nelle prime $n$ prove ho $k$ successi e $n-k$ insuccessi''$)$. \`E uguale a:
+\[
+P \left( \bigcup_{A \subset B, \abs{A} = k} E_A \right) =
+\sum_{A \subset B, \abs{A} = k} P(E_A) = \sum_{A \subset B, \abs{A} = k} p^k \cdot q^{n - k} =
+\binom{n}{k} \cdot p^k \cdot q^{n - k} =
+\binom{n}{k} \cdot p^k \cdot {(1 - p)}^{n - k}
+\]
+Con $E_A$ l'evento ``le prove indicizzate da $A$ sono successi, le prove indicizzate da $B \setminus A$ sono insuccessi''.
+
+\begin{prop}
+Dato $F \subset S$ con $\prob{F} > 0$, allora $(S, \probcond{\cdot}{F})$ \`e uno spazio di probabilit\`a.
+
+Cio\`e la mappa $E \to \probcond{E}{F}$ con $E \subset S$ \`e una funzione di probabilit\`a, ossia la funzione che ad un evento associa la probabilit\`a dell'evento condizionato $F$ \`e una funzione di probabilit\`a.
+\end{prop}
+\begin{proof}
+Verifichiamo il primo assioma: $0 \le P(E|F) \le 1 \forall E \subset S$
+
+$\probcond{E}{F} = \frac{\prob{E \cap F}}{\prob{F}}$ per definizione, essendo numeratore e denominatore maggiori di 0, anche $\probcond{E}{F}$ \`e maggiore di 0. Inoltre $E \cap F \subset F \implies \prob{E \cap F} \le \prob{F}$ per monotonia. Quindi $\frac{ \prob{E \cap F} }{\prob{F}} \le 1$.
+
+Secondo assioma: $\probcond{S}{F} = 1$. Infatti $ \probcond{S}{F} = \frac{\prob{S \cap F}}{\prob{F}} = \frac{\prob{F}}{\prob{F}} = 1$
+
+Terzo assioma: additivit\`a numerabile. Sia $(E_n)$ con $N \ge 1$ una successione di eventi a 2 a 2 disgiunti. Dobbiamo verificare che:
+\[
+\probcond{\bigcup_{n = 1}^{\infty} E_n}{F} = \sum_{n = 1}^{\infty} \probcond{E_n}{F}
+\]
+Al membro sinistro abbiamo:
+\[
+\probcond{\bigcup_{n = 1}^{\infty} E_n}{F} = \frac{\prob{\left( \bigcup_{n = 1}^{\infty} E_n \right) \cap F}}{\prob{F}} = \frac{ \prob{ \bigcup_{n = 1}^{\infty} (E_n \cap F)}}{\prob{F}}
+\]
+Gli eventi $E_n \cap F$ sono a due a due disgiunti. Posso applicare l'additivit\`a finita:
+\[
+\sum_{n = 1}^{\infty} \frac{\prob{E_n \cap F}}{\prob{F}} = \sum_{n=1}^{\infty} \probcond{E_n}{F}
+\]
+\end{proof}
+
+Per questo, le propriet\`a che valgono per le probabilit\`a, valgono con le probabilit\`a condizionate.
+\[
+\probcond{E^{\compl}}{F} = 1 - \probcond{E}{F}
+\]
+\[
+\probcond{A \cup B}{F} = \probcond{A}{F} + \probcond{B}{F} - \probcond{A \cap B}{F}
+\]
+\begin{fact}
+Ho una funzione $P$. So che si \`e verificato l'evento $F$, quindi posso passare alla funzione $Q = \probcond{\cdot}{F}$. So poi che si \`e verificato l'evento $G$, quindi posso passare alla funzione $\probcond[Q]{\cdot}{G}$, che equivale a $\probcond{\cdot}{FG}$.
+\end{fact}
+\begin{proof}
+\[
+\probcond[Q]{E}{G} = \frac{\prob[Q]{E \cap G}}{\prob[Q]{G}} = \frac{\frac{\prob{E \cap G \cap F}}{\prob{F}}}{\frac{\prob{G \cap F}}{\prob{F}}} = \frac{\prob{E \cap G \cap F}}{\prob{G \cap F}} = \probcond{E}{FG}
+\]
+\end{proof}
+
+Consideriamo un esperimento fatto da $n$ sottoesperimenti operativamente indipendenti. Supponiamo che il $k$-esimo sottoesperimento sia modellizzato (ossia, descritto) da uno spazio di probabilit\`a $(S_k, P_k) \forall k = 1 \ldots n$.
+
+Nell'esempio del lancio del dado e della moneta truccata, il lancio del dado \`e descritto da $(S_1, P_1)$ con $S_1 = \{ 1, \ldots, 6 \}$ e $\prob[P_1]{E} = \frac{\abs{E}}{6}$ con $E \subset S_1$, e il lancio della moneta \`e descritto da $(S_2, P_2)$ con $S_2 = \{ T, C \}$ e $\prob[P_2]{E} = \frac{\abs{E}}{2}$ con $E \subset S_2$.
+
+Supponiamo di avere $S_1, S_2, \ldots, S_k$ spazi numerabili. L'esperimento si modellizza con lo spazio di probabilit\`a $(S, P)$ dove $S = S_1 \times S_2 \times \ldots \times S_n = \{ (x_1, x_2, \ldots, x_n) : x_i \in S_i$ con $i = 1, \ldots, n \}$. $P$ \`e l'unica funzione di probabilit\`a definita su $\parts(S)$ tale che:
+\[
+\prob{\{(x_1, x_2, \ldots, x_n)\}} = \prob[P_1]{\{x_1\}} \cdot \prob[P_2]{\{x_2\}} \cdot \ldots \cdot \prob[P_n]{\{x_n\}}
+\]
+La funzione $P$ \`e unica se l'insieme su cui \`e definita \`e numerabile.
+
+Eventi riferiti a sottoesperimenti diversi sono indipendenti in $(S, P)$.
+
+\begin{esercizio}
+Dimostrare che se $\abs{S_k} < \infty \forall  k = 1, \ldots, n$ e $(S_k, P_k)$ ha esiti equiprobabili $\forall  k = 1 \dots n$, allora $(S,P)$ ha esiti equiprobabili.
+\end{esercizio}
+
+% SONO ARRIVATO QUI A SISTEMARE
+
+Supponiamo di avere $n$ sottoesperimenti.
+\[
+(S_1, P_1), \ldots, (S_n, P_n)
+\]
+Ogni $S_i$ \`e numerabile.
+\[
+S = S_1 \times \ldots \times S_n = \{ (\seq{s}{1}{n}) : s_i \in S_i \text{ con } i = 1, \ldots, n \}
+\]
+$P$ \`e l'unica misura di probabilit\`a tale che $\prob{\{(\seq{s}{1}{n})\}} = \prob[P_1]{\{s_1\}} \cdot \ldots \cdot \prob[P_n]{\{s_n\}}$.
+
+\begin{prop}
+Se $\abs{S_1}, \ldots, \abs{S_n} < + \infty$ e $(S_i, P_i)$  ha esiti equiprobabili $\forall  i = 1, \ldots, n \implies (S, P)$ ha esiti equiprobabili.
+\end{prop}
+\begin{proof}
+\begin{align*}
+\prob{\{s_1 \ldots s_n\}} &= \prob[P_1]{\{s_1\}} \cdot \ldots \cdot \prob[P_n]{\{s_n\}} \tag{per definizione} \\
+&= \frac{1}{\abs{S_1}} \cdot \frac{1}{\abs{S_2}} \cdot \ldots \cdot \frac{1}{\abs{S_n}} \tag{avendo ciascun esperimento esiti equiprobabili} \\
+&= \frac{1}{\abs{S}}
+\end{align*}
+\end{proof}
+
+Considero $n$ prove, ciascuna con esito di tipo successo/insuccesso (1/0). Supponiamo che $p$ sia la probabilit\`a che si verifichi il successo in una singola prova. La prova $i$-esima \`e descritta dallo spazio di probabilit\`a $(S_i, P_i)$. $S_i = \{0,1\}$, e $\prob[P_i]{\{1\}} = p$. $\prob[P_i]{\{0\}} = 1 - p = q$.
+\[
+S = S_1 \times \dots \times S_n = \{0,1\} = \{ (\seq{x}{1}{n}) : x \in \{ 0, 1 \}\}
+\]
+$P$ \`e l'unica funzione di probabilit\`a tale che $\prob{\{(\seq{x}{1}{n})\}} = \prod_{i = 1}^{n} \prob[P_i]{\{x_i\}} = p^m \cdot q^{m-n}$ con $m $ a indicare il numero degli 1 presenti in $(\seq{x}{1}{n})$.
+
+\begin{esercizio}
+Lancio 3 volte un dado truccato. Ciascuna faccia esce con probabilit\`a:
+\begin{align*}
+1 &\to \frac{1}{2} \\
+2 &\to \frac{1}{10} \\
+& \vdots \\
+6 &\to \frac{1}{10}
+\end{align*}
+Calcolare la probabilit\`a che esca sempre lo stesso valore.
+\begin{gather*}
+S = \left\{ 1, \ldots, 6 \}^3 = \{ (x_1, x_2, x_3) : x_i \in \{1, \ldots, 6\} \right\} \\
+\prob{\{(x_1, x_2, x_3)\}} = \prob[\hat{P}]{\{x_1\}} \cdot \prob[\hat{P}]{\{x_2\}} \cdot \prob[\hat{P}]{\{x_3\}}
+\end{gather*}
+L'evento ``esce sempre lo stesso valore'' \`e:
+\[
+E = \left\{ (x, x, x) : x \in \{1, \ldots, 6\} \right\} \subset S
+\]
+La probabilit\`a di $E$ \`e:
+\begin{align*}
+\prob{E} &= \prob{\{(1,1,1)\}} + \prob{\{(2,2,2)\}} + \prob{\{(3,3,3)\}} + \\
+&+ \prob{\{(4,4,4)\}} + \prob{\{(5,5,5)\}} + \prob{\{(6,6,6)\}} = \\
+&= \left( \frac{1}{2} \right)^3 + 5 \cdot \left( \frac{1}{10} \right)^3 = \frac{1}{8} + \frac{1}{200}
+\end{align*}
+\end{esercizio}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

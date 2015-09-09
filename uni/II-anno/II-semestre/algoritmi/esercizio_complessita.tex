@@ -1,0 +1,68 @@
+\input{../../Common/common.tex}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\floatname{algorithm}{Algoritmo}
+% \renewcommand{\algorithmicrequire}{\textbf{precondizioni:}}
+% \renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\begin{document}
+\setcounter{chapter}{1}
+\setcounter{section}{1}
+
+\begin{esercizio}
+Si dimostri che il problema del ricoprimento di archi tramite vertici in un grafo determina un linguaggio \code{NP}-completo. Si utilizzi per la dimostrazione una riduzione dal linguaggio \code{NP}-completo delle formule booleane soddisfacibili. Si può assumere che ogni formula è espressa in forma normale congiuntiva e che ogni clausola contiene esattamente tre letterali.
+\end{esercizio}
+
+Il problema del sottografo completo \`e in \code{NP}: il ``certificato'' verificabile in tempo polinomiale \`e il vettore caratteristico (di cardinalit\`a $k$) che rappresenta un sottoinsieme di $G$. In tempo polinomiale si pu\`o controllare che ogni vertice nel vettore caratteristico sia adiacente a tutti gli altri vertici appartenenti al vettore caratteristico.
+
+Dobbiamo dimostrare che vale:
+\[
+\text{3-soddisfacibilit\`a } \le_P \text{ sottografo completo}
+\]
+
+La funzione di riduzione, per ogni formula booleana $\varphi$ in terza forma normale congiuntiva, costruisce un grafo $G(V,E)$ con $\abs{V} = 3 \, n$ associando ad ogni nodo un letterale in una delle $n$ clausole di $\varphi$. Inseriamo un arco fra due nodi se i due nodi corrispondono a letterali di clausole diverse che non si contraddicono. Ossia, dati due letterali $l_i^j$ e $l_h^k$ appartenenti alle clausole $j$ e $k$, vale che $j \neq k$ e che $l_i^j \neq \bar{l_h^k}$.
+
+Dire che la formula \`e soddisfacibile vuol dire affermare che per ogni clausola esiste un letterale vero, che vuol dire affermare che per ogni clausola esiste un letterale che non contraddice gli altri. I nodi associati a questi letterali formano un sottografo completo. A un'istanza $<G,k>$ del problema corrisponde una formula con $k$ clausole.
+ 
+Il problema del vertex cover \`e in \code{NP}: il ``certificato'' verificabile in tempo polinomiale \`e il vettore caratteristico (di cardinalit\`a $k$) che rappresenta un sottoinsieme di $G$. In tempo polinomiale si possono rimuovere tutti i vertici contenuti nel vettore caratteristico da $G$. Se dopo questa operazione $G$ ha ancora almeno un arco, il vettore caratteristico non \`e un vertex cover.
+
+Vogliamo dimostrare che vale questo:
+\[
+\text{sottografo completo } \le_P \text{ vertex cover}
+\]
+
+Il problema ``esiste un sottografo completo del grafo $G$ di cardinalit\`a $k$'' pu\`o essere ricondotto al problema del vertex cover.
+
+Sia $L$ il linguaggio:
+\[
+L = \{ <G,k> : \text{ esiste un sottografo completo del grafo $G$ di cardinalit\`a $k$}\}
+\]
+e sia $L'$ il linguaggio:
+\[
+L' = \{ <G,k> : \text{ esiste un vertex cover del grafo $G$ di cardinalit\`a $k$}\}
+\]
+Affermiamo questo:
+\begin{equation}
+\label{equiv_vertex_cover_grafo_completo}
+<G,k> \in L \iff <\bar{G}, n - k> \in L'
+\end{equation}
+La riduzione polinomiale dal linguaggio dei sottografi completi al linguaggio dei vertex cover \`e la funzione che mappa la coppia $<G,k>$ nella coppia $<\bar{G}, n - k>$. Sappiamo che questa funzione \`e polinomiale.
+
+Resta da dimostrare l'equivalenza \ref{equiv_vertex_cover_grafo_completo}.
+
+\begin{proof}[di \ref{equiv_vertex_cover_grafo_completo}]
+Parte ``se''.
+
+Sia $S$ un sottografo completo di $G$, con $\abs{S} = k$, e sia $S' = G \setminus S$. Chiaramente $\abs{S'} = n - k$. $S'$ \`e un vertex cover di $\bar{G}$.
+
+Per ogni arco $(x,y) \in \bar{G}$, almeno uno fra $x$ e $y$ non appartiene a $S$ (perch\'e $S$ \`e completo). Quindi, almeno uno fra $x$ e $y$ appartiene a $S'$, e quindi $(x,y)$ \`e coperto in $S'$.
+
+Parte ``solo se''.
+ 
+Sia $S'$ un vertex cover di $\bar{G}$, con $\abs{S'} = n - k$, e sia $S = \bar{G} \setminus S'$. Chiaramente $\abs{S} = k$. $S$ \`e un sottografo completo di $G$.
+
+Per ogni arco $(x,y) \in \bar{G}$, almeno uno fra $x$ e $y$ sono in $S'$. Se n\'e $x$ n\'e $y$ sono in $S'$, allora $(x,y) \notin \bar{G}$, e quindi $(x,y) \in G$. Poich\'e $x,y \notin S' \iff x,y \in S$, se $(x,y) \in G$ allora $x,y \in S$, e quindi $S$ \`e un sottografo completo di cardinalit\`a $k$.
+\end{proof}
+
+\end{document}

@@ -1,0 +1,651 @@
+\input{../../Common/common.tex}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\floatname{algorithm}{Algoritmo}
+\renewcommand{\algorithmicrequire}{\textbf{precondizioni:}}
+% \renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\begin{document}
+
+\setcounter{chapter}{1}
+
+\section{MST e SPT}
+
+\begin{esercizio}
+Sia $G$ un grafo non diretto, connesso e pesato dove i pesi sono tutti diversi tra loro. Sia $T$ un minimo albero di copertura di $G$, sia $s$ un nodo e $T_s$ l'albero dei cammini minimi da $s$ verso tutti gli altri nodi di $G$. Dimostrare oppure fornire un controesempio che $T_s$ e $T$ condividono almeno un arco.
+\end{esercizio}
+
+Sia $(s,v) \in T_s$ un arco tale che $p(s,v) < p(s,x) \forall x \adj s$.
+
+Supponiamo $(s,v) \notin T$. Sia $T' = T \cup \{(s,v)\}$. $T'$ contiene necessariamente un ciclo.
+
+Sia $(s,w)$ un arco appartenente al ciclo. $(s,w)$ \`e tale che $p(s,w) > p(s,v)$, quindi $T'' = T' \setminus \{ (s,w) \}$ \`e un albero di copertura, e $p(T'') < P(T)$. Assurdo, quindi $(s,v)$ appartiene necessariamente a $T$.
+
+\clearpage
+
+\section{Salto doppio}
+
+\begin{esercizio}
+In un vettore $V$ di $n$ interi si dice salto doppio un indice $i$, $1 \le i < n$, tale che $V[i + 1] - V[i] \ge 2$.
+\begin{enumerate}
+    \item Provare che un vettore $V$ di $n \ge 2$ interi tale che $V[n]-V[1] \ge n$, ha almeno un salto doppio.
+    \item Descrivere un algoritmo che, dato un vettore $V$ di $n \ge 2$ interi tale che $V[n] - V[1] \ge n$, trova un salto doppio in tempo $O\left(\log (n)\right)$.
+\end{enumerate}
+\end{esercizio}
+
+Primo punto: se non c'\`e un salto doppio fra gli elementi $V[i]$ e $V[i+1]$, allora vale:
+\[
+V[i+1] - V[i] \le 1 \implies V[i+1] \le V[i] + 1
+\]
+Quindi, se non c'\`e un salto doppio nel vettore $V$, deve valere che:
+\[
+V[n] \le V[n-1] + 1 \le \ldots \le V[n - i] + i \le V[n - (n - 1)] + n - 1 = V[1] + n - 1
+\]
+Quindi, deve valere che $V[n] \le V[1] + n - 1 \implies V[n] - V[1] \le n - 1$, in contraddizione con l'ipotesi che $V[n] - V[1] \ge n$.
+
+Secondo punto: dimostriamo che un vettore $A$ contiene un salto doppio fra gli indici $a < b$ se $A[b] - A[a] > b - a$.
+
+\begin{proof}
+Poich\'e c'\`e un salto doppio fra due elementi consecutivi se $A[i+1] > A[i] + 1$, vale che:
+\[
+A[b] > A[b-1] + 1 > \ldots > A[b - (b - a)] + b - a = A[a] + b - a
+\]
+\end{proof}
+
+\begin{algorithm}
+\begin{algorithmic}
+\Require $A[b] - A[a] > b - a$
+\Function{Salto\_Doppio}{$A$: array, $a,b$: indici}
+    \If{$b = a + 1$}
+        \State \Return $a$
+    \Else
+        \State $m \gets \frac{a + b}{2}$
+        \If{$A[m] - A[a] > m - a$}
+            \State \Return \Call{Salto\_Doppio}{$A, a, m$}
+        \Else
+            \State \Return \Call{Salto\_Doppio}{$A, m, b$}
+        \EndIf
+    \EndIf
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_salto_doppio}trovare la posizione di un salto doppio in un array ordinato di interi}
+\end{algorithm}
+
+La complessit\`a dell'algoritmo \ref{alg_salto_doppio} \`e uguale alla complessit\`a della ricerca binaria, ossia $O\left(\log (n)\right)$.
+
+\clearpage
+
+\section{Coppie}
+
+\begin{esercizio}
+Abbiamo una sequenza $S = (s_1,s_2,\ldots,s_n)$ di interi positivi. Una sottosequenza $S'$ di $S$ si dice valida se per ogni coppia di elementi consecutivi di $S$ almeno un elemento della coppia compare in $S'$. Il valore di una sottosequenza valida \`e la somma dei suoi elementi. Ad esempio, se $S = (1,2,3,5,4,6,7)$ allora $S' = (1,3,6)$ non \`e valida, $S' = (2,5,4,7)$ \`e valida di valore 18 e $S'' = (2,3,4,6)$ \`e valida di valore 15.
+\begin{enumerate}
+    \item Descrivere un algoritmo che, data la sequenza $S$, calcola il valore minimo di una sottosequenza valida in tempo $O(n)$.
+    \item Descrivere poi un algoritmo che trova una sottosequenza valida di valore minimo.
+\end{enumerate}
+\end{esercizio}
+
+Consideriamo una tabella $M$. Per ogni valore $i = 1 \ldots n$, $M[i]$ \`e il valore minimo della somma di una sottosequenza valida contenente l'elemento $S[i]$.
+
+I casi di base sono, banalmente:
+\begin{enumerate}
+    \item $M[1] = S[1]$
+    \item $M[2] = S[2]$
+    \item $M[3] = S[3] + \min(S[2], S[1])$
+\end{enumerate}
+Il caso generico \`e, per ogni $i > 3$:
+\[
+M[i] = S[i] + \min (M[i-1], M[i-2], M[i-3])
+\]
+L'elemento $i$-esimo deve essere nella sottosequenza, e bisogna prendere poi uno dei tre elementi precedenti (per ottenere un valore minimo), o non tutte le coppie consecutive sarebbero coperte dalla sottosequenza.
+\begin{center}
+\begin{tabular}{*{5}{l|}l}
+\hline
+$\cdots$ & $i-3$ & $i-2$ & $i-1$ & $i$ & $\cdots$ \\
+\hline 
+\end{tabular}
+\end{center}
+
+\begin{proof}
+La correttezza dei casi base \`e banalmente dimostrata.
+
+Supponiamo l'algoritmo sia corretto per un certo $i$, ossia per ogni $j \le i$, $M[j]$ \`e il valore minimo della somma di una sottosequenza valida contenente l'elemento $S[j]$. $M[i+1]$ \`e banalmente il valore minimo della somma di una sottosequenza valida contenente l'elemento $S[i+1]$, essendo pari a:
+\[
+M[i+1] = S[i+1] + \min (M[i], M[i-1], M[i-2])
+\]
+Non si pu\`o scegliere un indice minore di $i-2$. Se si scegliesse, ad esempio, l'indice $i-3$, la sequenza non sarebbe pi\`u valida, poich\'e l'elemento $i-1$ non sarebbe coperto.
+\end{proof}
+
+$M[n-1]$ e $M[n]$ sono il valore minimo della somma di una sottosequenza valida che copre tutto l'array. Il minore fra i due \`e il valore che cerchiamo.
+
+\begin{algorithm}
+\begin{algorithmic}
+\Function{Coppie}{$S$: array, $n$: intero}
+    \State $M \gets$ tabella di dimensione $n$
+    \State $M[1] \gets S[1]$
+    \State $M[2] \gets S[2]$
+    \State $M[3] \gets S[3] + \min(S[2], S[1])$
+    \For{$i \gets 4 \ldots n$}
+        \State $M[i] \gets S[i] + \min (M[i-1], M[i-2], M[i-3])$
+    \EndFor
+    \State \Return $\min(M[n], M[n-1])$
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_coppie}trovare il valore minimo di una sottosequenza valida}
+\end{algorithm}
+
+La complessit\`a dell'algoritmo \ref{alg_coppie} per trovare il valore minimo di una sottosequenza valida \`e $O(n)$. Il caso per $n \le 3$ \`e banale, e assumiamo quindi valga $n > 3$.
+
+L'algoritmo \ref{alg_sol_coppie} per trovare una soluzione a partire dalla tabella calcolata dall'algoritmo \ref{alg_coppie} ha anch'esso complessit\`a $O(n)$.
+
+\begin{algorithm}
+\begin{algorithmic}
+\Function{Sol\_Coppie}{$S$: array, $M$: tabella, $n$: intero}
+    \State $sol \gets$ array booleano di $n$ elementi, inizializzato a 0
+    \State $v \gets \min (M[n], M[n-1])$
+    \If{$v = M[n]$}
+        \State $i \gets n$
+    \Else
+        \State $i \gets n - 1$
+    \EndIf
+    \State $sol[i] \gets 1$
+    \State $v \gets v - S[i]$
+    \While{$v > 0$}
+        \If{$v = M[i-1]$}
+            \State $i \gets i - 1$
+        \ElsIf{$v = M[i-2]$}
+            \State $i \gets i - 2$
+        \Else
+            \State $i \gets i - 3$
+        \EndIf
+        \State $v \gets v - S[i]$
+        \State $sol[i] \gets 1$
+    \EndWhile
+    \State \Return $sol$
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_sol_coppie} trovare una sottosequenza valida}
+\end{algorithm}
+
+\clearpage
+
+\section{Punto fisso}
+
+\begin{esercizio}
+In un vettore $V$ di $n$ interi si dice punto fisso un indice $i$, $1 \le i \le n$, tale che $V[i] = i$. Dato un vettore ordinato $V$ di $n$ interi distinti vogliamo determinare se $V$ contiene punti fissi.
+\begin{enumerate}
+    \item Dare lo pseudo-codice di un algoritmo che nel caso particolare in cui gli interi del vettore sono tutti interi positivi risolva il problema in $O(1)$ tempo.
+    \item Dare lo pseudo-codice di un algoritmo che nel caso generale risolva il problema in tempo $O \left(\log (n) \right)$.
+\end{enumerate}
+\end{esercizio}
+
+Se gli interi del vettore sono ordinati, distinti, e tutti positivi, $V$ contiene un punto fisso $\iff V[0] = 0$.
+
+Supponiamo per assurdo esista un punto fisso di indice $i$ nonostante $V[0] > 0 \implies V[0] \ge 1$. Poich\'e il vettore \`e composto da interi distinti e ordinati, $\forall i < n$ vale che $V[i+1] \ge V[i] + 1$. Quindi:
+\[
+V[i] \ge V[i-1] + 1 \ge \ldots \ge V[1] + i - 1 \ge V[0] + i \ge i + 1
+\]
+Assurdo.
+
+Se gli interi sono ordinati, distinti, e non tutti positivi, vale che esiste un punto fisso con indice maggiore o uguale a $i$ se $V[i] \le i$. Sfruttando questa propriet\`a possiamo applicare la ricerca binaria per trovare un punto fisso, se c'\`e.
+
+\begin{algorithm}
+\begin{algorithmic}
+\Require $V[a] \le a$
+\Function{Punti\_Fissi}{$V$: vettore, $a,b$: indici}
+    \If{$a = b$}
+        \If{$V[a] = a$}
+            \State \Return $a$
+        \Else
+            \State \Return $-1$
+        \EndIf
+    \Else
+        \State $m \gets \frac{a + b}{2}$
+        \If{$V[m] > m$}
+            \State \Return \Call{Punti\_Fissi}{$V,a,m$}
+        \Else
+            \State \Return \Call{Punti\_Fissi}{$V,m,b$}
+        \EndIf
+    \EndIf
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_punti_fissi}trovare un punto fisso}
+\end{algorithm}
+
+La complessit\`a dell'algoritmo \ref{alg_punti_fissi} \`e la complessit\`a della ricerca binaria, quindi $O \left(\log (n) \right)$.
+
+\clearpage
+
+\section{Sottosequenze}
+
+\begin{esercizio}
+Data una sequenza $S$ di interi positivi si vuole trovare una sottosequenza di $S$ senza elementi in posizioni consecutive di somma massima. Ad esempio, per $S = (1,5,4,6,10,3,2,9)$ una soluzione \`e $(-,5,-,-,10,-,-,9)$ e vale 24 (anche $(1,-,4,-,10,-,-,9)$ \`e una soluzione), mentre $(1,-,-,6,10,-,-,9)$ non \`e una sottosequenza ammissibile perché contiene gli elementi 6 e 10 in posizioni consecutive.
+\begin{enumerate}
+    \item Dare lo pseudo-codice di un algoritmo che risolve il problema in $O(n)$.
+    \item Dare poi lo pseudo-codice di un algoritmo che trova una sottosequenza ottimale.
+\end{enumerate}
+\end{esercizio}
+
+La lunghezza della sottosequenza deve essere almeno $\frac{n}{2}$, poich\'e gli interi nella sequenza $S$ sono tutti positivi, e per ogni sottosequenza $S'$ di lunghezza minore di $\frac{n}{2}$ esiste almeno un intero $x \in S$ non adiacente a nessun intero nella sequenza $S'$, e tale per cui il valore di $S' \cup \{ x \}$ \`e maggiore o uguale al valore di $S'$.
+
+Consideriamo una tabella $M$. Per ogni valore $i = 1 \ldots n$, $M[i]$ \`e il valore massimo della somma di una sottosequenza senza elementi in posizioni consecutive contenente l'elemento $i$-esimo.
+
+I casi base sono:
+\begin{enumerate}
+    \item $M[1] = S[1]$
+    \item $M[2] = S[2]$
+    \item $M[3] = S[3] + S[1]$
+\end{enumerate}
+Il caso generico \`e, per $i > 3$:
+\[
+M[i] = S[i] + \max ( M[i-2], M[i-3] )
+\]
+La soluzione sar\`a il $\max(M[n], M[n-1])$.
+
+\begin{proof}
+La correttezza dei casi base \`e dimostrabile banalmente.
+
+Supponiamo l'algoritmo sia corretto per ogni $j \le i$, ossia $M[j]$ \`e il valore massimo della somma di una sottosequenza senza elementi in posizioni consecutive contenente l'elemento $j$-esimo. $M[i+1]$ contiene l'elemento $S[i+1]$, e la maggiore fra le sequenze che terminano in $i-1$ o $i-2$. Quindi $M[i+1]$ \`e il valore massimo della somma di una sottosequenza senza elementi in posizioni consecutive, e contiene l'elementi $(i+1)$-esimo.
+\end{proof}
+
+\begin{algorithm}
+\begin{algorithmic}
+\Function{Sottosequenze}{$S$: array di interi, $n$: intero}
+    \State $M \gets$ tabella di lunghezza $n$
+    \State $M[1] \gets S[1]$
+    \State $M[2] \gets S[2]$
+    \State $M[3] \gets S[3] + S[1]$
+    \For{$i \gets 4 \ldots n$}
+        \State $M[i] \gets S[i] + \max(M[i-2], M[i-3])$
+    \EndFor
+    \State \Return $\max (M[n], M[n-1])$
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_sottosequenze}calcolare il valore di una sottosequenza di somma massima}
+\end{algorithm}
+
+La complessit\`a dell'algoritmo \ref{alg_sottosequenze} \`e $O(n)$.  Il caso per $n \le 3$ \`e banale, e assumiamo quindi valga $n > 3$.
+
+\begin{algorithm}
+\begin{algorithmic}
+\Function{Sol\_Sottosequenze}{$S$: array di interi, $n$: intero, $M$: tabella}
+    \State $Sol \gets$ array booleano di lunghezza $n$ inizializzato a 0
+    \State $v \gets \max (M[n], M[n-1])$
+    \If{$M[n] = v$}
+        \State $i \gets n$
+    \Else
+        \State $i \gets n - 1$
+    \EndIf
+    \State $Sol[i] \gets 1$
+    \State $v \gets v - S[i]$
+    \While{$v > 0$}
+        \If{$v = M[i-2]$}
+            \State $i \gets i - 2$
+        \Else
+            \State $i \gets i - 3$
+        \EndIf
+        \State $Sol[i] \gets 1$
+        \State $v \gets v - S[i]$
+    \EndWhile
+    \State \Return $Sol$
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_sol_sottosequenze}calcolare una sottosequenza di somma massima}
+\end{algorithm}
+
+La complessit\`a dell'algoritmo \ref{alg_sol_sottosequenze} per trovare una sottosequenza di somma massima a partire dalla tabella calcolata dall'algoritmo \ref{alg_sottosequenze} \`e $O(n)$.
+
+\clearpage
+
+\section{Zaino rivisitato}
+
+\begin{esercizio}
+Nella versione classica abbiamo uno Zaino di capacit\`a $C$ ed n oggetti ciascuno con un suo valore $v_i$ ed un suo peso $p_i$, $1 \le i \le n$. Possiamo mettere nello zaino un qualunque sottoinsieme degli oggetti il cui peso complessivo non superi la capacit\`a $C$ e vogliamo trovare il sottoinsieme di valore massimo. Nella versione rivisitata disponiamo di un numero arbitrario di copie di ciascuno degli $n$ oggetti e quindi pi\`u copie di uno stesso oggetto possono essere inserite nello zaino allo scopo di ottenere una soluzione di valore massimo. Ad esempio per uno zaino di capacit\`a $C = 18$ e tre oggetti con valore e peso specificati dalle seguenti tabelle:
+\begin{center}
+\begin{tabular}{lll}
+\multicolumn{3}{c}{Peso} \\
+\hline
+$p_1$ & $p_2$ & $p_3$ \\
+9 & 5 & 4
+\end{tabular}
+\qquad
+\begin{tabular}{lll}
+\multicolumn{3}{c}{Valore} \\
+\hline
+$v_1$ & $v_2$ & $v_3$ \\
+6 & 4 & 3
+\end{tabular}
+\end{center}
+la combinazione di oggetti che massimizza il valore dello zaino rispettandone la capacit\`a \`e quella che prende due copie del secondo oggetto e due copie del terzo (questa combinazione ha peso 18 e valore 14).
+\begin{enumerate}
+    \item Dare lo pseudo-codice di un algoritmo che calcola il valore della soluzione ottima in $O(n \cdot C)$.
+    \item Dare poi lo pseudo-codice di un algoritmo che produce una soluzione ottimale restituendo in output il numero di copie di ciascun oggetto da inserire nello zaino (per l'esempio l'algoritmo restituir\`a il vettore $(0,2,2)$).
+\end{enumerate}
+\end{esercizio}
+
+Consideriamo una tabella $T$. Per ogni valore $i = 0 \ldots n$ e $j = 0 \ldots C$, $T[i,j]$ \`e il valore massimo che si pu\`o trasportare in uno zaino di capacit\`a $j$ prendendo pi\`u copie dei primi $i$ oggetti.
+
+I casi base sono $T[0,j] = 0$ e $T[i,0] = 0$, per $i = 0 \ldots n$ e $j = 0 \ldots C$.
+
+Il caso generico \`e:
+\[
+T[i,j] = 
+\begin{cases}
+T[i-1,j] & \text{ se } p[i] > j \\
+\max \left( T[i-1,j], v[i] + T \left[ i, j-p[i] \right] \right) & \text{ altrimenti}
+\end{cases}
+\]
+per $i = 0 \ldots n$ e $j = 0 \ldots C$.
+
+Il primo caso corrisponde al caso in cui l'oggetto $i$ ha peso maggiore di $j$ (la capacit\`a dello zaino). 
+
+Il secondo caso corrisponde al caso in cui il peso dell'oggetto \`e minore della capacit\`a dello zaino: possiamo quindi scegliere o meno una copia dell'oggetto $i$.
+
+\begin{algorithm}
+\begin{algorithmic}
+\Function{Zaino\_Bis}{$p$: array pesi, $v$: array valori, $n,C$: interi}
+    \State $T \gets$ tabella di dimensione $(n+1) \times (C+1)$
+    \For{$i \gets 0 \ldots n$}
+        \State $T[i,0] \gets 0$
+    \EndFor
+    \For{$j \gets 1 \ldots C$}
+        \State $T[0,j] \gets 0$
+    \EndFor
+    \For{$i \gets 1 \ldots n$}
+        \For{$j \gets 1 \ldots C$}
+            \State $T[i,j] \gets T[i-1,j]$
+            \If{$p[i] \le j$}
+                \State $T[i,j] \gets \max \left( T[i,j], v[i] + T \left[ i, j-p[i] \right] \right)$
+            \EndIf
+        \EndFor
+    \EndFor
+    \State \Return $T[n,C]$
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_zaino_bis}trovare il valore di una soluzione ottima}
+\end{algorithm}
+
+La complessit\`a dell'algoritmo \ref{alg_zaino_bis} \`e $O(n \cdot C)$.
+
+\begin{algorithm}
+\begin{algorithmic}
+\Function{Sol\_Zaino\_Bis}{$T$: tabella, $n, C$: interi, $p$: array pesi}
+    \State $sol \gets$ array di $n$ interi
+    \State $i \gets n$
+    \State $j \gets C$
+    \While{$i > 0 \land j > 0$}
+        \If{$T[i,j] = T[i-1,j]$}
+            \State $i \gets i - 1$
+        \Else
+            \State $sol[i] \gets sol[i] + 1$
+            \State $j \gets j - p[i]$
+        \EndIf
+    \EndWhile
+    \State \Return $sol$
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_sol_zaino_bis}calcolare una soluzione ottima}
+\end{algorithm}
+
+La complessit\`a dell'algoritmo \ref{alg_sol_zaino_bis} per calcolare una soluzione ottima a partire dalla tabella calcolata dall'algoritmo \ref{alg_zaino_bis} \`e $O(n + C)$.
+
+\clearpage
+
+\section{Somma}
+
+\begin{esercizio}
+Data una sequenza di $n$ interi positivi $X$ e un intero positivo $s$ vogliamo trovare la pi\`u lunga sottosequenza di $X$ di somma $s$. Ad esempio se $X = (5,2,2,6,1,7,3,5,11,3,6)$ e $s = 25$, la pi\`u lunga sottosequenza \`e lunga 7 $(5,2,2,-,1,7,3,5,-,-,-)$; se $X = (3,3,5,13,3,5)$ e $s = 28$, non ci sono sottosequenze di somma 28.
+\begin{enumerate}
+    \item Dare lo pseudo-codice di un algoritmo che dati $X$ e $s$ ritorna la lunghezza massima di una sottosequenza di somma $s$ di $X$ in tempo $O(n \cdot s)$ (se non ci sono sottosequenze di somma $s$, ritorna 0).
+    \item Dare poi lo pseudo-codice di un algoritmo che ritorna una sottosequenza di lunghezza massima per $X$ e $s$.
+\end{enumerate}
+\end{esercizio}
+
+Consideriamo una tabella $T$. Per ogni valore $i = 0 \ldots n$ e $j = 0 \ldots s$, $T[i,j]$ \`e la lunghezza massima della sottosequenza dei primi $i$ numeri che hanno somma $j$. Se $T[i,j]$ \`e 0, non esiste nessuna sottosequenza.
+
+I casi base sono $T[0,j] = 0$ e $T[i,0] = 0$, per $i = 0 \ldots n$ e $j = 0 \ldots c$.
+
+Il caso generico \`e:
+\[
+T[i,j] = 
+\begin{cases}
+\max (T[i-1,j], 1) & \text{ se } j = X[i] \\
+\max \left( T[i-1,j], T \left[ i-1,j-X[i] \right] + 1 \right) & \text{ se } T \left[ i-1,j-X[i] \right] \neq 0 \text{ e } X[i] > j \\
+T[i-1,j] & \text{ altrimenti}
+\end{cases}
+\]
+per $i = 0 \ldots n$ e $j = 0 \ldots c$.
+
+Nel primo caso, $j$ \`e esattamente $X[i]$, quindi esiste sicuramente una sottosequenza contenente solo l'elemento $i$ la cui somma \`e $j$. 
+
+Nel secondo caso, $j$ \`e maggiore di $X[i]$, quindi se esiste una sottosequenza lunga $k$ (con $k > 0$) la cui somma \`e $j - X[i]$, esiste una sottosequenza lunga almeno $k + 1$ la cui somma \`e $j$, che contiene l'elemento $i$.
+
+Infine, in generale, il numero di sottosequenze di somma $j$ contenenti i primi $i$ elementi \`e almeno il numero di sottosequenze di somma $j$ contenenti i primi $i-1$ elementi.
+
+\begin{algorithm}
+\begin{algorithmic}
+\Function{Somma}{$X$: array di interi, $s,n$: interi}
+    \State $T \gets$ una tabella $(n+1) \times (s+1)$
+    \For{$i \gets 0 \ldots n$}
+        \State $T[i,0] \gets 0$
+    \EndFor
+    \For{$j \gets 1 \ldots s$}
+        \State $T[0,j] \gets 0$
+    \EndFor
+    \For{$i \gets 1 \ldots n$}
+        \For{$j \gets 1 \ldots s$}
+            \State $T[i,j] \gets T[i-1, j]$
+            \If{$(T \left[ i-1,j-X[i] \right] \neq 0 \land X[i] > j) \lor X[i] = j$}
+                \State $T[i,j] \gets \max \left( T \left[ i-1,j-X[i] \right] + 1, T[i,j] \right)$
+            \EndIf
+        \EndFor
+    \EndFor
+    \State \Return $T[n,s]$
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_somma}trovare la lunghezza massima di una sottosequenza di somma $s$}
+\end{algorithm}
+
+La complessit\`a dell'algoritmo \ref{alg_somma} \`e $O(n \cdot s)$.
+
+\begin{algorithm}
+\begin{algorithmic}
+\Function{Sol\_Somma}{$T$: tabella, $X$: array interi, $s,n$: interi}
+    \State $sol \gets$ array booleano di $n$ elementi, inizializzato a 0
+    \While{$n > 0 \land s > 0$}
+        \If{$T[n,s] = T[n-1,s]$}
+            \State $n \gets n - 1$
+        \Else
+            \State $sol[n] \gets 1$
+            \State $s \gets s - X[n]$
+        \EndIf
+    \EndWhile
+    \State \Return $sol$
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_sol_somma}trovare una sottosequenza di lunghezza massima e somma $s$}
+\end{algorithm}
+
+La complessit\`a dell'algoritmo \ref{alg_sol_somma} che calcola una sottosequenza di lunghezza massima a partire dalla tabella trovata dall'algoritmo \ref{alg_somma} \`e $O(n + s)$.
+
+\begin{table}
+\begin{tabular}{r|*{25}{c}}
+   &  0 &  1 &  2 &  3 &  4 &  5 &  6 &  7 &  8 &  9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 \\ \hline
+ 0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\
+ 1 &  0 &  0 &  0 &  0 &  0 &  1 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\
+ 2 &  0 &  0 &  1 &  0 &  0 &  1 &  0 &  2 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\
+ 3 &  0 &  0 &  1 &  0 &  2 &  1 &  0 &  2 &  0 &  3 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\
+ 4 &  0 &  0 &  1 &  0 &  2 &  1 &  1 &  2 &  2 &  3 &  3 &  2 &  0 &  3 &  0 &  4 &  0 &  0 &  0 &  0 \\
+ 5 &  0 &  1 &  1 &  2 &  2 &  3 &  2 &  2 &  3 &  3 &  4 &  4 &  3 &  3 &  0 &  4 &  5 &  0 &  0 &  0 \\
+ 6 &  0 &  1 &  1 &  2 &  2 &  3 &  2 &  2 &  3 &  3 &  4 &  4 &  4 &  3 &  3 &  4 &  5 &  5 &  5 &  4 \\
+ 7 &  0 &  1 &  1 &  2 &  2 &  3 &  3 &  3 &  4 &  3 &  4 &  4 &  4 &  5 &  5 &  5 &  5 &  5 &  5 &  6 \\
+ 8 &  0 &  1 &  1 &  2 &  2 &  3 &  3 &  3 &  4 &  3 &  4 &  4 &  4 &  5 &  5 &  5 &  5 &  5 &  6 &  6 \\
+ 9 &  0 &  1 &  1 &  2 &  2 &  3 &  3 &  3 &  4 &  3 &  4 &  4 &  4 &  5 &  5 &  5 &  5 &  5 &  6 &  6 \\
+10 &  0 &  1 &  1 &  2 &  2 &  3 &  3 &  3 &  4 &  4 &  4 &  5 &  4 &  5 &  5 &  5 &  6 &  6 &  6 &  6 \\
+11 &  0 &  1 &  1 &  2 &  2 &  3 &  3 &  3 &  4 &  4 &  4 &  5 &  4 &  5 &  5 &  5 &  6 &  6 &  6 &  6 
+\end{tabular}
+\caption{Tabella costruita dall'algoritmo per $X = (5,2,2,6,1,7,3,5,11,3,6)$ e $s = 19$.}
+\end{table}
+
+\clearpage
+
+\section{Supersequenza}
+
+\begin{esercizio}
+Date due sequenze $X = (x_1,\ldots,x_n)$ e $Y = (y_1,\ldots,y_m)$ una supersequenza di $X$ e $Y$ \`e una qualsiasi sequenza $Z$ tale che sia $X$ che $Y$ sono sottosequenze di $Z$. Ad esempio, per le sequenze di lettere alberi e libri le seguenti sono supersequenze: \emph{alberilibri}, \emph{albelibri}, \emph{lialberi}, \emph{aliberi}.
+\begin{enumerate}
+    \item Dare lo pseudo-codice di un algoritmo che date due sequenze $X$ e $Y$, di lunghezze $n$ e $m$, calcola la lunghezza minima di una supersequenza di $X$ e $Y$ in $O(n \cdot m)$.
+    \item Dare poi lo pseudo-codice di un algoritmo che ritorna una supersequenza di lunghezza minima di $X$ e $Y$.
+\end{enumerate}
+\end{esercizio}
+
+Una supersequenza deve contenere gli elementi della sottosequenza comune pi\`u lunga di $X$ e $Y$, e gli elementi di $X$ e $Y$ che non appartengono a questa sottosequenza. Quindi il numero di elementi che deve contenere \`e almeno:
+\[
+LCS(X,Y) + \abs{X} - LCS(X,Y) + \abs{Y} - LCS(X,Y) = 
+\abs{X} + \abs{Y} - LCS(X,Y)
+\]
+L'algoritmo per calcolare la lunghezza dela sottosequenza pi\`u lunga pu\`o essere usato per calcolare la lunghezza minima di una supersequenza.
+
+\begin{algorithm}
+\begin{algorithmic}
+\Function{Supersequenza}{$X,Y$: sequenze, $n,m$: interi}
+    \State $L \gets$ tabella $(n+1) \times (m+1)$
+    \For{$i \gets 0 \ldots n$}
+        \State $L[i,0] \gets 0$
+    \EndFor
+    \For{$j \gets 1 \ldots m$}
+        \State $L[0,j] \gets 0$
+    \EndFor
+    \For{$i \gets 1 \ldots n$}
+        \For{$j \gets 1 \ldots m$}
+            \If{$X[i] = Y[j]$}
+                \State $L[i,j] \gets L[i-1, j-1] + 1$
+            \Else
+                \State $L[i,j] \gets \max \left( L[i-1,j], L[i,j-1] \right)$
+            \EndIf
+        \EndFor
+    \EndFor
+    \State \Return $n + m - L[n,m]$
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_supersequenza}trovare la lunghezza minima di una supersequenza}
+\end{algorithm}
+La complessit\`a dell'algoritmo \ref{alg_supersequenza} \`e $O(n \cdot m)$.
+
+Consideriamo due coppie di indici $i_{k}, i_{k+1}, j_{k}, j_{k+1}$, tali che:
+\[
+X[i_{k}] = Y[j_{k}], \, X[i_{k+1}] = Y[j_{k+1}]
+\]
+Per ogni $i_k \le i \le i_{k+1}$, e per ogni $j_k \le j \le j_{k+1}$, vale che $X[i] \neq Y[j]$ (esclusi i casi agli estremi). La supersequenza minima $Z$ dovr\`a contenere ogni $X[i]$ e ogni $Y[j]$, e $X$ e $Y$ dovranno essere sue sottosequenze. Quindi, $Z$ dovr\`a contenere una sequenza del tipo:
+\[
+X[i_{k}], X[i_{k}+1], \ldots, X[i_{k+1}-1], Y[j_{k}+1], \ldots, Y[j_{k+1}-1], X[i_{k+1}]
+\]
+Le posizioni relative degli elementi di $X$ e di $Y$ che non appartengono a entrambe le stringhe devono essere rispettate, perch\'e $Z$ sia una supersequenza di entrambe le sequenze.
+
+La supersequenza $Z$ deve quindi contenere, fra due elementi $Z[i]$ e $Z[j]$ tali che $Z[i] = X[i_{k}] = Y[j_{k}]$ e $Z[j] = X[i_{k+1}] = Y[j_{k+1}]$, tutti gli elementi $X[i]$ per $i_k \le i \le i_{k+1}$, e tutti gli elementi $Y[j]$ tali che $j_k \le j \le j_{k+1}$.
+
+Ripercorrendo la tabella calcolata dall'algoritmo \ref{alg_supersequenza}, \`e sufficiente aggiungere a $Z$ ogni elemento in comune fra le due sequenze, seguito dagli elementi appartenenti solo a $X$ e solo a $Y$ fino al successivo elemento in comune.
+
+\begin{algorithm}
+\begin{algorithmic}
+\Function{Sol\_Supersequenza}{$X,Y$: sequenze, $n,m$: interi, $L$: tabella}
+    \State $c \gets n + m - L[n,m]$
+    \State $sol \gets$ sequenza vuota lunga $c$
+    \State $i \gets n$
+    \State $j \gets m$
+    \While{$c > 0$}
+        \If{$X[i] = X[j]$}
+            \State $sol[c] \gets X[i]$
+            \State $i \gets i - 1$
+            \State $j \gets j - 1$
+        \ElsIf{$L[i,j] = L[i-1, j]$}
+            \State $sol[c] \gets X[i]$
+            \State $i \gets i - 1$
+        \Else
+            \State $sol[c] \gets Y[j]$
+            \State $j \gets j - 1$
+        \EndIf
+        \State $c \gets c - 1$
+    \EndWhile
+    \State \Return $sol$
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_sol_supersequenza}trovare una supersequenza di lunghezza minima}
+\end{algorithm}
+
+La complessit\`a dell'algoritmo \ref{alg_sol_supersequenza} \`e $O(n + m)$.
+
+\clearpage
+
+\section{Majority element}
+
+\begin{esercizio}
+Sia $A[1,\ldots,n]$ un array di $n$ elementi. Un \emph{majority element} di $A$ \`e un elemento che occorre in pi\`u di $\frac{n}{2}$ posizioni di $A$ (quindi se $n = 6$ o $n = 7$, un \emph{majority element} deve occorrere almeno 4  volte in $A$). Assumiamo che gli elementi di $A$ non possono essere ordinati, ma si pu\`o calcolare se due elementi sono uguali (per esempio, gli elementi di $A$ potrebbero essere stringhe). Scrivere lo pseudocodice di un algoritmo $O \left(n \cdot \log (n) \right)$ che prende in input un array $A$ e restituisce ``YES'' se esiste un \emph{majority element} in $A$.
+\end{esercizio}
+
+L'algoritmo, per avere la complessit\`a richiesta, deve essere un algoritmo \emph{Divide et Impera}. La funzione di ricorrenza dovr\`a essere:
+\[
+T(n) = a \, T \left( \frac{n}{a} \right) + \Theta(n)
+\]
+Un'istanza del problema, ossia un array di $n$ elementi, dovr\`a quindi essere spezzato in istanze dello stesso problema, pi\`u piccole. 
+
+I casi base sono quelli in cui si ha un array di 1 o 2 elementi. Nel primo caso, la risposta \`e ``YES'', nel secondo caso la risposta \`e ``YES'' se i due elementi sono uguali.
+
+Consideriamo il caso composto da pi\`u istanze pi\`u piccole. Per semplicit\`a, consideriamo $a = 2$, e quindi consideriamo due istanze pi\`u piccole. Se almeno uno dei due sottoproblemi risponde ``YES'', l'istanza risponde ``YES'' solo se il numero di elementi uguali al \emph{majority element} di una delle due istanze \`e maggiore della met\`a della lunghezza dell'istanza. Questo controllo si pu\`o fare in tempo lineare.
+
+La funzione usata dall'algoritmo ritorner\`a $-1$ se la sottosequenza presa in considerazione non ha un \emph{majority element}, e l'indice del \emph{majority element} altrimenti.
+
+\begin{algorithm}
+\begin{algorithmic}
+\Function{Majority\_Element}{$A$: array, $a,b$: interi}
+    \If{$b \le a + 1$}
+        \If{$A[a] = A[b]$}
+            \State \Return $a$
+        \Else
+            \State \Return $-1$
+        \EndIf
+    \Else
+        \State $m \gets \intinf{\frac{a+b}{2}}$
+        \State $l \gets$ \Call{Majority\_Element}{$A,a,m$}
+        \State $u \gets$ \Call{Majority\_Element}{$A,m+1,b$}
+        \If{$u > 0$}
+            \State $c \gets 0$
+            \For{$i \gets a \ldots b$}
+                \If{$A[i] = A[u]$}
+                    \State $c \gets c + 1$
+                \EndIf
+            \EndFor
+            \If{$c > \intinf{\frac{b-a}{2}}$}
+                \State \Return $u$
+            \EndIf
+        \EndIf
+        \If{$l > 0$}
+            \State $c \gets 0$
+            \For{$i \gets a \ldots b$}
+                \If{$A[i] = A[l]$}
+                    \State $c \gets c + 1$
+                \EndIf
+            \EndFor
+            \If{$c > \intinf{\frac{b-a}{2}}$}
+                \State \Return $l$
+            \EndIf
+        \EndIf
+        \State \Return $-1$
+    \EndIf
+\EndFunction
+\end{algorithmic}
+\caption{\label{alg_majority_element}trovare il \emph{majority element} in un array}
+\end{algorithm}
+
+\clearpage
+
+\section{Partizione}
+
+\begin{esercizio}
+Sia $A[1,\ldots,n]$ un array di interi, con valori da $0$ a $K$ (quindi $0 \le A[i] \le K$ per ogni indice $i$). Dare lo pseudocodice di un algoritmo per trovare una partizione $(X,Y)$ dell'insieme $\{1,2,\ldots,n\}$ tale che $\abs{S_X - S_Y}$ \`e minimo, dove $S_X$ e $S_Y$ sono la somma degli elementi di $X$ e di $Y$ rispettivamente. Per esempio, se $A = [1,3,1,1]$, allora $X = \{1,3,4\}$ e $Y = \{2\}$ \`e la soluzione ottimale con $S_X = 3$, $S_Y = 3$. Se $A = [2,2,3,2]$ allora $X = \{1,2\}$ e $Y = \{3,4\}$ \`e una soluzione ottimale con $S_X = 4$ e $S_Y = 5$.
+\end{esercizio}
+
+\clearpage
+
+\end{document}

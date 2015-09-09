@@ -1,0 +1,23 @@
+\section{3 ottobre 2014}
+
+\begin{enumerate}
+    \item (1.12) Si devono selezionare cinque studenti di una classe di 30 studenti per assegnare dei premi distinti. In quanti modi si possono selezionare gli studenti se:
+    \begin{enumerate}
+        \item uno studente pu\`o ricevere pi\`u premi;
+        \item uno studente pu\`o ricevere al pi\`u un premio?
+    \end{enumerate}
+    \item (1.15) Una classe di tango argentino ha 22 studenti, 10 donne e 12 uomini. In quanti modi si possono formare 5 coppie?
+    \item (1.16) Uno studente vuole vendere 2 libri da una collezione di 6 testi di matematica, 7 di scienze e 4 di economia. Quante sono le scelte possibili se:
+    \begin{enumerate}
+        \item i 2 libri devono riguardare l ostesso argomento;
+        \item i 2 libri devono riguardare soggetti diversi?
+    \end{enumerate}
+    \item (1.18) Si deve formare una commissione parlamentare di 7 persone, composta da 2 Popolari, 2 Socialisti e 3 Indipendenti scelti tra 5 Popolari, 6 Socialisti e 4 Indipendenti. Quante commissioni possibili si possono formare?
+    \item (1.19) Si deve formare un comitato di 3 uomini e 3 donne scelti da un gruppo di 8 donne e 6 uomini. Quanti comitati sono possibili se:
+    \begin{enumerate}
+        \item 2 degli uomini rifiutano di sedere assieme? Ho $\binom{6}{3}\binom{8}{3}$ modi per fare i gruppi, da cui tolgo i $\binom{4}{1}\binom{8}{3}$ gruppi che contengono la coppia che non va bene. $\binom{4}{1} = \binom{6-2}{3-2}$, avendo fissato due elementi. Quindi: $\binom{6}{3} \binom{8}{3} - \binom{4}{1} \binom{8}{3}$. Altrimenti posso sommare le cardinalit\`a dei tre insiemi possibili: quello senza i due elementi in conflitto, di cardinalit\`a $\binom{4}{3}\binom{8}{3}$, pi\`u la cardinalit\`a dei due insiemi in cui ho uno dei due elementi di conflitto, $\binom{4}{2}\binom{8}{3}$. Quindi: $\binom{4}{3} \binom{8}{3} + 2 \binom{4}{2} \binom{8}{3}$
+        \item 2 delle donne rifiutano di sedere assieme;
+        \item un uomo e una donna rifiutano di sedere assieme?
+    \end{enumerate}
+\end{enumerate}
+

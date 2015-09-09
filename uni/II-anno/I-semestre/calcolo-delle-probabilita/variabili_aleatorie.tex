@@ -1,0 +1,1766 @@
+\section{Variabili aleatorie discrete}
+
+Partiamo da uno spazio di probabilit\`a $(S,P)$.
+\begin{defn}[Variabile aleatoria]
+Una variabile aleatoria (reale) \`e una funzione $X : S \to \reals$. Una variabile aleatoria \`e quindi una funzione definita sullo spazio campionario.
+\end{defn}
+\begin{exmp}
+Lancio 2 volte una moneta. La variabile aleatoria $X$ \`e il numero di teste uscite nei lanci.
+
+Lo spazio campionario \`e $S = \{ (T,T), (T,C), (C, T), (C, C)\}$. Quindi $X : S \to \reals$, definita come segue:
+\begin{align*}
+X \left( (T,T) \right) &= 2 \\
+X \left( (T,C) \right) &= 1 \\
+X \left( (C,T) \right) &= 1 \\
+X \left( (C,C) \right) &= 0
+\end{align*}
+\end{exmp}
+
+Ci concentriamo inizialmente sulle variabili aleatorie discrete.
+
+\begin{defn}[Variabile aleatoria discreta]
+Una variabile aleatoria $X$ si dice discreta se i suoi possibili valori formano un insieme numerabile (finito o infinito).
+\end{defn}
+
+La $X$ dell'esempio precedente \`e una variabile aleatoria discreta.
+
+Un oggetto di interesse delle variabili aleatorie discrete \`e la ``densit\`a discreta''.
+
+\subsection{Densit\`a discreta di una variabile aleatoria}
+
+\begin{defn}[Densit\`a discreta]
+Data una variabile aleatoria $X$, definisco la sua densit\`a, denotata con $p_X$, come la funzione:
+\[
+p_X : \reals \to [0,1] : \mass{a} = \prob{\{X = a\}}
+\]
+\end{defn}
+\begin{oss}
+Se $a$ non \`e tra i possibili valori di $X$, allora l'evento $\{X = a\}$ \`e vuoto, quindi \`e impossibile.
+\[
+\mass{a} = \prob{\{X = a\}} = 0
+\]
+\end{oss}
+Cosa vuol dire $\{X = a\}$?
+\[
+\{X = a\} = \{ s \in S : X(s) = a\}
+\]
+Si scrive solitamente $\prob{X = a}$ per indicare $\prob{\{X = a\}}$.
+
+Riprendiamo l'esempio del lancio di due monete. 
+\begin{align*}
+\mass{0} &= \prob{X = 0} = \prob{\{(C,C)\}} = \frac{1}{4} \\
+\mass{1} &= \prob{X = 1} = \prob{\{(T,C), (C,T)\}} = \frac{1}{2} \\
+\mass{2} &= \prob{X = 2} = \prob{\{(T,T)\}} = \frac{1}{4} \\
+\mass{a} &= 0 \forall a \in \reals \setminus \{0, 1, 2\}
+\end{align*}
+\begin{prop}
+Se $X$ \`e una variabile aleatoria discreta con possibili valori $\{x_i\}_{i \in I}$, allora ($I$ \`e l'insieme degli indici):
+\[
+\sum_{i \in I} \mass{x_i} = 1
+\]
+\end{prop}
+\`E vero perch\'e i possibili valori sono numerabili.
+\begin{proof}
+\[
+1 = \prob{X \in \{x_i\}_{i \in I}} = \prob{\bigcup_{i \in I} \{X = x_i\}}
+\]
+Abbiamo una famiglia numerabile di eventi a due a due disgiunti. Possiamo applicare l'additivit\`a numerabile:
+\[
+\prob{\bigcup_{i \in I} \{X = x_i\}} = \sum_{i \in I} \prob{X = x_i}
+\]
+Per definizione di densit\`a discreta:
+\[
+\sum_{i \in I} \prob{X = x_i} = \sum_{i \in I} \mass{x_i}
+\]
+\end{proof}
+
+\subsection{Valore atteso di una variabile aleatoria}
+\begin{defn}[Valore atteso]
+Data una variabile aleatoria discreta $X$ con possibili valori $\{x_i\}_{i \in I}$, il suo valore atteso $\expect{X}$ \`e definito come:
+\[
+\expect{X} = \sum_{i \in I} x_i \cdot \prob{X = x_i} = \sum_{i \in I} x_i \cdot \mass{x_i}
+\]
+Ossia \`e una somma ``pesata'' dei possibili valori. Si dice anche ``speranza matematica''.
+\end{defn}
+Il valore atteso potrebbe non essere sempre ben definito nel caso di infiniti numerabili. A volte $\expect{X}$ viene scritto come $E X$.
+
+Riprendiamo l'esempio del lancio di due monete.
+\[
+\expect{X} = 0 \cdot \prob{X = 0} + 1 \cdot \prob{X = 1} + 2 \cdot \prob{X = 2} =
+0 + 1 \cdot \frac{2}{4} + 2 \cdot \frac{1}{4} = 1
+\]
+
+\begin{exmp}
+Ho un'urna contenente 3 paline Bianche, 4 palline Rosse e 5 palline Gialle. Estraggo 2 palline senza rimpiazzo. Vinco 1 euro per ogni pallina Bianca estratta, perdo 2 euro per ogni pallina Rossa estratta.
+
+La variabile aleatoria $X$ \`e la ``vincita in senso algebrico''. Ossia, $X = -2$ vuol dire che perdo 2 euro. $X$ \`e una variabile discreta.
+
+Determinare la densit\`a discreta di $X$ e il valore atteso di $X$.
+\begin{align*}
+B, B &\Rightarrow \{X = 2\} = \{ \text{estraggo 2 Bianche} \} \\
+B, G &\Rightarrow \{X = 1\} \\
+B, R &\Rightarrow \{X = -1\} \\
+R, G &\Rightarrow \{X = -2\} \\
+R, R &\Rightarrow \{X = -4\} \\
+G, G &\Rightarrow \{X = 0\}
+\end{align*}
+Necessariamente questi sono anche dei ``se e solo se''. La densit\`a discreta \`e:
+\begin{align*}
+\mass{2} &= \prob{X = 2} = \frac{\binom{3}{2}}{\binom{12}{2}} \\
+\mass{1} &= \prob{X = 1} = \frac{3 \cdot 5}{\binom{12}{2}} \\
+\mass{0} &= \prob{X = 0} = \frac{\binom{5}{2}}{\binom{12}{2}} \\
+\mass{-1} &= \prob{X = -1} = \frac{3 \cdot 4}{\binom{12}{2}} \\
+\mass{-2} &= \prob{X = -2} = \frac{4 \cdot 5}{\binom{12}{2}} \\
+\mass{-4} &= \prob{X = -4} = \frac{\binom{4}{2}}{\binom{12}{2}}
+\end{align*}
+Il valore atteso \`e:
+\[
+EX = 2 \cdot \mass{2} + \cdot \mass{1} - \cdot \mass{-1} - 4 \cdot \mass{-4} - 2 \cdot \mass{-2}
+\]
+\end{exmp}
+C'\`e una forma alternativa se $S$ \`e numerabile (finito o infinito) della forma sopra.
+\begin{prop}
+Se $S$ \`e numerabie (finito o infinito) ogni variabile aleatoria $X$ \`e discreta, e vale che:
+\[
+\expect{X} = \sum_{z \in S} X(z) \cdot \prob{\{z\}}
+\]
+\end{prop}
+\begin{proof}
+$X : S \to \reals$ per definizione di variabile aleatoria.
+
+$S$ \`e numerabile, quindi anche $X(S)$ (l'immagine di X) \`e numerabile (finito o infinito). $X$ \`e quindi variabile aleatoria discreta. L'immagine di un insieme non \`e maggiore della cardinalit\`a dell'insieme.
+
+Dimostriamo la seconda parte. Chiamo $\{x_i\}_{i \in I}$ ($I$ insieme di indici) l'insieme dei possibili valori di $X$, cio\`e $X(S) = \{x_i\}_{i \in I}$. Anche $I$ \`e numerabile!
+\[
+\expect{X} = \sum_{x_i} x_i \cdot \underbrace{\prob{X = x_i}}_{S \text{ numerabile}}
+\]
+Sapendo che $\{ X = x_i\} = \{z \in S : X(z) = x_i\}$, si vede subito che:
+\[
+\prob{X = x_i} = \sum_{z \in \{X = x_i\}} \prob{\{z\}}
+\]
+Quindi dire $z \in \{ X = x_i\}$ equivale a dire $X(z) = x_i$
+\[
+\expect{X} = \sum_{x_i} x_i \cdot \left( \sum_{z \in S : X(z) = x_i} \prob{\{z\}} \right)
+\]
+Stando ben attenti, scambiamo le somme.
+\begin{align*}
+\expect{X} &= \sum_{x_i} x_i \cdot \left( \sum_{z \in S : X(z) = x_i} \prob{\{z\}} \right) = \\
+&= \sum_{z \in S} \prob{\{z\}} \cdot \left[ \sum_{x_i : X(z) = x_i} x_i \right]
+\end{align*}
+Ma $\sum_{x_i : X(z) = x_i} x_i = X(z)$, essendoci un solo valore $x_i$ per cui $X(z) = x_i$.
+
+Quindi:
+\[
+\expect{X} = \sum_{z \in S} \prob{\{z\}} \cdot X(z)
+\]
+\end{proof}
+
+\begin{exmp}
+Lancio un dado. Vinco 1 euro se esce un numero pari, perdo 2 euro se esce un numero dispari. $X$ \`e la vincita algebrica. Calcoliamo il valore atteso.
+
+$X$ assume i valori 1 e $-2$.
+\begin{align*}
+\mass{1} &= \frac{1}{2} \\
+\mass{-2} &= \frac{1}{2}
+\end{align*}
+Quindi $\expect{X} = 1 \cdot \frac{1}{2} - \frac{2}{2} = - \frac{1}{2}$
+
+Se vogliamo usare invece la proposizione appena vista, abbiamo $S = \{1, \ldots, 6\}$. $X : S \to \{1, -2\}$.
+\begin{align*}
+\expect{X} &= \sum_{z \in S} \prob{\{z\}} X(z) \\
+&= \frac{1}{6} X(1) + \frac{1}{6} X(2) + \frac{1}{6} X(3) + \frac{1}{6} X(4) + \frac{1}{6} X(5) + \frac{1}{6} X(6) \\
+&= \frac{1}{6} - \frac{2}{6} + \frac{1}{6} - \frac{2}{6} + \frac{1}{6} - \frac{2}{6} \\
+&= \frac{3}{6} - \frac{6}{6} = - \frac{1}{2}
+\end{align*}
+\end{exmp}
+
+\subsection{Funzioni di variabili aleatorie}
+
+Chiariamo il contesto: $X : S \to \reals$ \`e una generica variabile aleatoria (discreta). Poi, $f : \reals \to \reals$ \`e una funzione, ad esempio $f(a) = a^3 - a$ con $a \in \reals$. Consideriamo la funzione composta $f \circ X = f(X) : S \to \reals$, che dato $z \in S$ applica la mappa $z \mapsto f(X(z))$.
+
+\begin{fact}
+Anche $f(X)$ \`e una variabile aleatoria discreta.
+\end{fact}
+\begin{proof}
+$f(X) : S \to \reals$ per costruzione. Per ipotesi sappiamo che $X(S)$ \`e numerabile, essendo $X$ variabile aleatoria discreta. Quindi anche l'immagine $f(X(S))$ \`e numerabile, e $f(X(S))$ \`e l'immagine di $S$ per $f \circ X$.
+\end{proof}
+
+\begin{exmp}
+Lanciamo un dado. Lo spazio campionario \`e $S = \{1, \ldots, 6\}$, e la variabile aleatoria $X : S \to \reals$ \`e definita come:
+\begin{align*}
+X(1) = X(2) &= -1 \\
+X(3) = X(4) &= 1 \\
+X(5) = X(6) &= 2
+\end{align*}
+$f : \reals \to \reals$ \`e $f(a) = a^2$. Abbiamo una nuova variabile aleatoria composta, $f(X) : S \to \reals$.
+
+$f(X)$ mappa $\{1, 2, 3, 4\} \mapsto 1$, e $\{5, 6\} \mapsto 4$. Calcoliamo il valore atteso di $f(X)$.
+\[
+\expect{f(X)} = \sum_{y_j \in \image{f(X)}} y_j \cdot \prob{f(X) = y_j} = 
+1 \cdot \frac{2}{3} + 4 \cdot \frac{1}{3} = 2
+\]
+Per applicare la formula dobbiamo calcolare la densit\`a discreta di $f(X)$ valutata in $y_j$, ossia $\mass[f(X)]{y_j} = \prob{f(X) = y_j}$.
+
+Ma se conosciamo gi\`a la densit\`a discreta di $X$, ossia $p_X$, possiamo comunque calcolare il valore atteso di $f(X)$ senza calcolare la densit\`a discreta di $f(X)$.
+\begin{prop}
+Se $X$ \`e una variabile aleatoria discreta e $f : \reals \to \reals$, allora:
+\[
+\expect{f(X)} = \sum_{x_i \in \image{X}} f(x_i) \cdot \mass{x_i}
+\]
+Ossia \`e la somma di tutti i possibili valori di $f(x_i)$ per la densit\`a discreta di $X$ valutata in $x_i$. 
+\end{prop}
+$X$ ha valori in $-1, 1, 2$. La densit\`a discreta $p_X$ in ciascuno di questi valori \`e $\frac{1}{3}$. Applicando la proposizione abbiamo:
+\[
+\expect{f(X)} = f(-1) \cdot \mass{-1} + f(1) \cdot \mass{1} + f(2) \cdot \mass{2} = 
+(-1)^{2} \cdot \frac{1}{3} + (1)^(2) \cdot \frac{1}{3} + (2)^2 \cdot \frac{1}{3} = 2
+\]
+\end{exmp}
+\begin{proof}
+\[
+\expect{f(X)} = \sum_{x_i \in \image{X}} f(x_i) \cdot \mass{x_i}
+\]
+Partiamo da destra e cerchiamo di arrivare a sinistra. $\{ x_i \}_i$ sono i possibili valori di $X$, $\{ y_j \}_j$ sono i possibili valori di $f(X)$.
+\[
+\sum_{x_i} f(x_i) \cdot \mass{x_i}
+\]
+$f$ mappa valori reali in valori reali. Alcuni valori potrebbero andare nello stesso punto.
+% disegnare le due rette, sopra e sotto, e la mappa da x_i a y_j
+\[
+\sum_{x_i} f(x_i) \cdot \mass{x_i} =
+\sum_{y_j} \sum_{x_i : f(x_i) = y_j} \underbrace{f(x_i)}_{y_j} \mass{x_i}
+\]
+Infatti $\{x_i\} = \bigcup_{y_j} \{x_i : f(x_i) = y_j \}$. $f$ partiziona $\{ x_i \}$.
+
+Ma adesso posso chiamare $f(x_i) = y_j$, e portare fuori il termine.
+\[
+\sum_{y_j} y_j \cdot \left( \sum_{x_i : f(x_i) = y_j} \mass{x_i} \right)
+\]
+\begin{oss}
+\[
+\sum_{x_i : f(x_i) = y_j} \mass{x_i} = \sum_{x_i : f(x_i) = y_j} \prob{X = x_i}
+\]
+Sappiamo che $\{X = x_i\}$ al variare di $x_i : f(x_i) = y_j$ formano una famiglia numerabile di eventi a due a due disgiunti.
+
+Quindi la somma di cui sopra \`e:
+\[
+\prob{\bigcup_{x_i : f(x_i) = y_j} \{X = x_i\}} =
+\prob{\bigcup_{x_i : f(x_i) = y_j} \{z \in S : X(z) = x_i\}}
+\]
+\`E un modo molto complesso per dire una cosa semplice:
+\[
+\prob{f(X) = y_j} = \mass[f(X)]{y_j}
+\]
+Ossia la densit\`a discreta di $f(X)$ in $y_j$.
+\end{oss}
+Quindi:
+\[
+\sum_{y_j} y_j \cdot \mass[f(X)]{y_j}
+\]
+che per definizione \`e il valore atteso di $f(X)$, ossia $\expect{f(X)}$
+\end{proof}
+
+\begin{exmp}
+Lancio 3 volte una moneta truccata. Testa esce con probabilit\`a $\frac{2}{3}$, croce esce con probabilit\`a $\frac{1}{3}$. Vinco dei soldi con la seguente regola: guardo il numero di teste uscite e vinco quel numero al quadrato meno 1 euro. 1 euro \`e il prezzo di entrata.
+
+Calcoliamo la variabile aleatoria della vincita. $X$ \`e il numero di teste uscite. I lanci della moneta sono esperimenti che non interferiscono, e sono identici.
+\[
+\mass{k} = \prob{X = k} = \frac{n}{k} \cdot p^{k} \cdot (1 - p)^{n - k}
+\]
+\begin{align*}
+\mass{0} &= {\left( \frac{1}{3} \right)}^{3} = \frac{1}{27} \\
+\mass{1} &= 3 \cdot \frac{2}{3} \cdot {\left( \frac{1}{3} \right)}^{2} = \frac{6}{27} \\
+\mass{2} &= 3 \cdot {\left( \frac{2}{3} \right)}^{2} \cdot \frac{1}{3} = \frac{12}{27} \\
+\mass{3} &= {\left( \frac{2}{3} \right)}^{3} = \frac{8}{27}
+\end{align*}
+La funzione da applicare alla variabile aleatoria \`e:
+\[
+f(u) = u^2 - 1
+\]
+Chiamiamo $Z$ la vincita algebrica, quindi $Z = f(X)$.
+\begin{align*}
+\expect{Z} = \expect{f(X)} &= f(0) \cdot \mass{0} + f(1) \cdot \mass{1} + f(2) \cdot \mass{2} + f(3) \cdot \mass{3} = \\
+&= -1 \cdot \frac{1}{27} + 3 \cdot \frac{12}{27} + 8 \cdot \frac{8}{27} = 
+\frac{-1 + 36 + 64}{27} = \frac{99}{27} = \frac{11}{3}
+\end{align*}
+\end{exmp}
+
+Vediamo alcune conseguenze dell'ultima proposizione vista. Una di queste \`e una forma debole di linearit\`a del valore atteso.
+\begin{prop}[Linearit\`a del valore atteso]
+Sia $X$ variabile aleatoria discreta, e siano $a, b \in \reals$. Allora $\expect{a \cdot X + b} = a \cdot \expect{X} + b$.
+\[
+a \cdot X + b : {z \in S} \mapsto {a \cdot X (z) + b \in \reals}
+\]
+\end{prop}
+\begin{proof}
+Consideriamo la funzione:
+\[
+f : \reals \to \reals \text{ dove } f(u) = a \cdot u + b.
+\]
+Quindi $a \cdot X + b = f(X)$. Possiamo applicare la proposizione di prima e attraverso questa calcolare il valore atteso.
+\begin{align*}
+\expect{a \cdot X + b} &= \expect{f(X)} = \sum_{x_i \in \image{X}} \left( a \cdot x_i + b \right) \mass{x_i} = \\
+&= a \cdot \underbrace{\sum_{x_i} x_i \cdot \mass{x_i}}_{\expect{X}} + b \cdot \underbrace{\sum_{x_i} \mass{x_i}}_{1} = a \cdot \expect{X} + b
+\end{align*}
+\end{proof}
+
+\subsection{Interpretazione frequentistica del valore atteso}
+
+Abbiamo un esperimento, descritto da uno spazio di probabilit\`a $(S, P)$. $X : S \to \reals$ \`e una variabile aleatoria discreta.
+
+Ripetiamo l'esperimento $n$ volte. Le ripetizioni non si influenzano fra loro. Siano $\{ x_i \}_{i}$ i possibili valori dela variabile aleatoria $X$.
+
+La densit\`a discreta ricordiamo che \`e: $\mass{x_i} = \prob{X = x_i}$. Per l'interpretazione frequentistica della probabilit\`a sappiamo che in circa $n \cdot \mass{x_i}$ esperimenti ho $X = x_i$. Quindi $\mass{x_1} \cdot n$ \`e circa il numero di volte in cui appare $x_1$.
+
+Sommiamo tutti i valori assunti da $X$ negli $n$ esperimenti: \`e circa $x_1 \cdot \mass{x_1} \cdot n + x_2 \cdot \mass{x_2} \cdot n + \ldots = n \cdot \expect{X}$.
+
+$\expect{X}$ \`e circa la somma dei valori assunti da $X$ in $n$ esperimenti diviso $n$, per $n$ grande.
+
+\begin{exmp}
+Vinco 2 euro con probabilit\`a $\frac{1}{3}$, vinco 1 euro con probabilit\`a $\frac{1}{2}$, perdo 10 euro con probabilit\`a $\frac{1}{6}$.
+
+La variabile aleatoria $X$ \`e la vincita in senso algebrico. $X$ assume valori $2, 1, -10$.
+\begin{align*}
+\mass{-10} &= \frac{1}{6} \\
+\mass{1} &= \frac{1}{2} \\
+\mass{2} &= \frac{1}{3}
+\end{align*}
+Sappiamo per l'interpretazione frequentistica della probabilit\`a che in circa $\frac{n}{6}$ partite perdo 10 euro, ossia $X = -10$, in circa $\frac{n}{2}$ partite vinco 1 euro, ossia $X = 1$, e in circa $\frac{n}{3}$ partite vinco 2 euro, ossia $X = 2$.
+
+La vincita totale \`e circa la somma di tutti i valori della $X$ per il numero di volte che sono usciti. Quindi \`e circa:
+\[
+-10 \cdot \frac{n}{6} + 1 \cdot \frac{n}{2} + 2 \cdot \frac{n}{3} =
+n \cdot (\frac{-10}{6} + \frac{1}{2} + \frac{2}{3}) = n \cdot \expect{X}
+\]
+\end{exmp}
+% \[
+% E(f(X)) = \sum_{x_i} f(x_i) p_X(x_i)
+% \]
+% \[
+% E(a \cdot X + b) = a \cdot E(X) + b
+% \]
+\begin{fact}\label{valore_atteso_non_negativo}
+Se $f : \reals \to \reals$ \`e non negativa, ossia $f(u) \ge 0$, allora anche $\expect{f(X)} \ge 0$. Vale anche se $f(u) \ge a$, allora $\expect{f(X)} \ge a$.
+\end{fact}
+\begin{proof}
+\[
+\expect{f(X)} = \sum_{x_i} \overbrace{f(x_i)}^{\ge a} \cdot \mass{x_i} \ge \sum_{x_i} a \cdot \mass{x_i} = a \cdot \sum_{x_i} \mass{x_i} = a \cdot 1 = a
+\]
+\end{proof}
+
+\subsection{Varianza e deviazione quadratica}
+
+\begin{defn}[Variabile aleatoria costante (o deterministica)]
+Sia $X$ una variabile aleatoria con $X(s) = a \forall s \in S$. Il valore atteso \`e $\expect{X} = a$, perch\'e $\expect{X} = a \cdot \prob{X = a} = a \cdot 1 = a$.
+\end{defn}
+
+Due variabili aleatorie possono avere lo stesso valor medio (o valore atteso), ma una potrebbe essere centrata sul valor medio e l'altra essere bilanciata su valori superiori e maggiori.
+
+Vogliamo trovare un indice quantitativo per discriminare e quantificare quanto la variabile aleatoria si discosti dal valor medio. Questo indice \`e la varianza.
+
+\begin{defn}[Varianza]
+La varianza di una variabile aleatoria $X$ \`e definita come:
+\[
+\var(X) = \expect{(X - \expect{X})^2}
+\]
+Valore atteso del quadrato di $X - \expect{X}$.
+\end{defn}
+La varianza \`e un indice quantitativo di quanto la variabile aleatoria si distanzia dal suo valore medio.
+\[
+X : S \to \reals, \expect{X} \in \reals
+\]
+La varianza \`e una funzione $(X - \expect{X})^2 : S \to \reals$ che mappa $s \mapsto (X(s) - \expect{X})^2$.
+% \[
+% X \cong 0
+% \]
+% \[
+% EX = 0
+% \]
+% \[
+% X - EX \cong 0
+% \]
+% \[
+% var (X) = E [ (X - EX)^2 ]
+% \]
+% \[
+% y = -10 con \frac{1}{2} 10 con \frac{1}{2}
+% \]
+% \[
+% EY = 0
+% \]
+% \[
+% \var Y = E[ (Y - EY)^2 ] = E(Y^2) = E(100) = 100
+% \]
+\begin{fact}
+La varianza \`e un numero sempre maggiore di o uguale a 0, ossia per ogni variabile aleatoria $X$ vale $\var (X) \ge 0$
+\end{fact}
+\begin{proof}
+$\var (X) = \expect{f(X)}$ dove $f : \reals \to \reals$ con $f(u) = (u - \expect{X})^2$.
+
+$f(u) \ge 0 \implies \var (X) \ge 0$ per il fatto \ref{valore_atteso_non_negativo}.
+\end{proof}
+
+\begin{defn}[Deviazione quadratica standard]
+Data $X$ variabile aleatoria, la sua deviazione standard $\sigma_X$ \`e definita come
+\[
+\sigma_X = \sqrt{ \var (X)}
+\]
+\end{defn}
+La deviazione quadratica standard ha un vantaggio dimensionale sulla varianza.
+\begin{fact}
+\[
+\var (X) = 0 \iff \prob{X = \expect{X}} = 1
+\]
+La varianza \`e nulla se e solo se la probabilit\`a che la variabile aleatoria $X$ sia il suo valor medio \`e 1.
+\end{fact}
+\begin{proof}
+Sia $1 = \prob{X = \expect{X}}$. Segue che $\prob{(X-\expect{X})^2 = 0}ß = 1$. Se assume altri valori li assume con probabilit\`a 0. Quindi la varianza \`e 0, per definizione di valore atteso.
+
+Sia $\var (X) = 0$.
+\[
+\var (X) = \sum_{x_i \in \image{X}} (x_i - \expect{X})^2 \prob{X = x_i}
+\]
+Se una somma di numeri non negativi \`e 0, allora ogni addendo \`e 0. Quindi $\forall x_i$, $ (x_i - \expect{X})^2 \prob{X = x_i} = 0$.
+
+Sia $x_i \neq \expect{X}$, allora $(x_i - \expect{X})^2 > 0$, ma il prodotto $(x_i - \expect{X})^2 \cdot \prob{X = x_i}$ deve essere 0, quindi la probabilit\`a $\prob{X = x_i}$ \`e nulla.
+
+Prendiamo l'evento certo $1 = \prob{X \in \{ x_i \}}$ per additivit\`a \`e $\sum_{x_i} \prob{X = x_i}$.
+
+Se $\expect{X} \notin \{ x_i \}$ abbiamo un assurdo, ossia che $\sum_{x_i} \prob{X = x_i} = 0$. Quindi necessariamente $\expect{X}$ \`e un possibile valore, ossia $\expect{X} \in \{x_i\}$.
+
+Quindi la somma $\sum_{x_i} \prob{X = x_i}$ si riduce a $\prob{X = \expect{X}} = 1$.
+\end{proof}
+
+\begin{prop}
+Sia $X$ una variabile aleatoria, allora:
+\[
+\var (X) = \expect{X^2} - {\left( \expect{X} \right)}^2
+\]
+\end{prop}
+\begin{proof}
+\[
+\var (X) = \sum_{x_i \in \image{X}} {\left( x_i - \expect{X} \right)}^2 \cdot \prob{X = x_i}
+\]
+Sviluppiamo il quadrato.
+\begin{align*}
+& \sum_{x_i} \left( x_i^2 - 2 \cdot x_i \cdot \expect{X} + {\left( \expect{X} \right)}^2 \right) \cdot \prob{X = x_i} = \\
+&= \sum_{x_i} x_i^2 \cdot \prob{X = x_i} - 2 \cdot \expect{X} \cdot \sum_{x_i} x_i \cdot \prob{X = x_i} + {\left( \expect{X} \right)}^2 \cdot \sum_{x_i} \prob{X = x_i} = \\
+&= \expect{X^2} - 2 \cdot \expect{X} \cdot \expect{X} + {\left( \expect{X} \right)}^2 \cdot 1 = \\
+&= \expect{X^2} - {\left( \expect{X} \right)}^2
+\end{align*}
+Tutto questo applicando la proposizione per trovare il valore atteso di una funzione, $\expect{f(X)} = \sum_{x_i} f(x_i) \prob{X = x_i}$.
+\end{proof}
+
+$\expect{X^2}$ \`e detto ``momento secondo'' della variabile aleatoria.
+
+\begin{defn}[Momento $n$-esimo di una variabile aleatoria]
+Dato $n$ intero, $\expect{X^n}$ \`e detto momento $n$-esimo della variabile aleatoria $X$.
+\end{defn}
+
+Abbiamo visto come si comporta il valore atteso nei confronti di trasformazioni lineari.
+\[
+\expect{a \cdot X + b} = a \cdot \expect{X} + b \text{ con } a,b \in \reals
+\]
+Anche la varianza ha la propriet\`a di linearit\`a? No.
+\begin{prop}[Non linearit\`a della varianza]
+\[
+\var (a \cdot X + b) = a^2 \cdot \var (X)
+\]
+\end{prop}
+\begin{proof}
+Abbiamo visto che: 
+\[
+\expect{a \cdot X + b} = a \cdot \expect{X} + b
+\]
+Quindi per definizione la varianza \`e:
+\begin{align*}
+\var (a \cdot X + b) &= \expect{ {\left( a \cdot X + b - \expect{a \cdot X + b} \right)}^2} = \\
+&= \expect{{\left( a \cdot X + b - a \cdot \expect{X} - b \right)}^2} = \tag{per linearit\`a del valore atteso} \\
+&= \expect{a^2 \cdot {\left( X - \expect{X} \right)}^2} = \\
+&= a^2 \cdot \expect{{\left( X - \expect{X} \right)}^2} = a^2 \var (X)
+\end{align*}
+Le costanti moltiplicative si possono portare fuori dal valore atteso, per la linearit\`a del valore atteso.
+\end{proof}
+
+\begin{exmp}
+Sia $X$ una variabile aleatoria che assume valori $-1, 0, 2, 5$ con probabilit\`a rispettivamente $\frac{1}{2}, \frac{1}{6}, \frac{1}{6}, \frac{1}{6}$.
+
+Determinare il valore atteso di $X$, $EX$ e la varianza di $X$, $\var X$.
+\[
+EX = -\frac{1}{2} + \frac{2}{6} + \frac{5}{6} = \frac{-3 + 2 + 5}{6} = \frac{2}{3}
+\]
+Abbiamo due possibilit\`a per trovare la varianza di $X$:
+\[
+\var X = (-1 - \frac{2}{3})^2 \frac{1}{2} + (0 - \frac{2}{3})^2 \frac{1}{6} + (2 - \frac{2}{3})^2 \frac{1}{6} + (5 - \frac{2}{3})^2 \frac{1}{6}
+\]
+Il secondo modo \`e calcolare il momento secondo di $X$:
+\[
+E(X^2) = (-1)^2 \frac{1}{2} + 2^2 \frac{1}{6} + 5^2 \frac{1}{6} = 
+\frac{1}{2} + \frac{4}{6} + \frac{25}{6} = \frac{32}{6} = \frac{16}{3}
+\]
+Poi usare il fatto che $\var X = E(X^2) - (EX)^2$:
+\[
+\frac{16}{3} - \left( \frac{2}{3} \right)^2 = \frac{48 - 4}{9} = \frac{44}{9}
+\]
+\end{exmp}
+
+\section{Famiglie di variabili aleatorie particolari}
+
+D'ora in avanti isoleremo famiglie di variabili aleatorie importanti nella risoluzione di problemi, e per ciascuna famiglia individueremo delle formule pratiche. Bleah.
+% Se $X = c$, $EX = c$, $X - EX = 0 \implies \var X = 0$. Variabili aleatorie costanti sono dette variabili aleatorie deterministiche.
+
+\subsection{Variabile aleatoria di Bernoulli}
+
+\begin{defn}[Variabile aleatoria di Bernoulli]
+Una variabile aleatorie $X$ si dice ``di Bernoulli'' di parametro $p \in [0,1]$ se:
+\[
+\mass{1} = p \text{ e } \mass{0} = 1 - p, \text{ e quindi } \mass{a} = 0 \forall a \neq 0,1
+\]
+\end{defn}
+\begin{fact}
+Se $X$ \`e una variabile aleatoria $\operatorname{Bernoulli}(p)$, allora la sua media \`e $\expect{X} = p$, e la sua varianza \`e $\var (X) = p \cdot (1-p)$.
+\end{fact}
+\begin{proof}
+Media di $X$:
+\[
+\expect{X} = \sum_{x_i} x_i \cdot \mass{x_i} = 1 \cdot p + 0 \cdot (1 - p) = p
+\]
+Momento secondo:
+\[
+\expect{X^2} = \sum_{x_i} x_i^2 \cdot \mass{x_i} = 1^2 \cdot p + 0^2 \cdot (1 - p) = p
+\]
+Quindi la varianza \`e:
+\[
+\var (X) = \expect{X^2} - {\left( \expect{X} \right)}^2 = p - p^2 = p \cdot (1 - p)
+\]
+\end{proof}
+
+\begin{esercizio}
+Calcolare $\expect{X}$, $\var (X)$, $\expect{X^3 - 5}$ dove $X$ \`e una variabile aleatoria che assume valori $-1$ e $6$ con probabilit\`a rispettivamente $\frac{1}{3}$ e $\frac{2}{3}$.
+\end{esercizio}
+
+\subsection{Variabile aleatoria binomiale}
+
+\begin{defn}[Variabile aleatoria binomiale]
+Una variabile aleatoria discreta $X$ si dice ``binomiale'' di parametri $n, p$ se:
+\[
+\mass{k} =
+\begin{cases}
+\binom{n}{k} \cdot p^k \cdot (1 - p)^{n - k} \text{ se } k = 1, \dots, n \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+$n$ \`e un intero $\ge 1$, mentre il parametro $p$ \`e $p \in [0,1]$.
+\end{defn}
+L'esempio classico \`e prendere $n$ prove operativamente indipendenti di tipo successo/insuccesso, dove il successo avviene con probabilit\`a $p$, e $X$ \`e il numero totale di successi.
+\begin{prop}
+Se $X = \operatorname{Bin}(n,p)$, ossia \`e una variabile aleatoria binomiale di parametri $n,p$, allora $\expect{X} = n \cdot p$ e $\var (X) = n \cdot p \cdot (1 - p)$.
+\end{prop}
+La dimostrazione \`e immediata conoscendo le variabili aleatorie congiunte. La rimandiamo a quel momento.
+
+\begin{oss}
+Una variabile binomiale $X = \operatorname{Bin}(1,p)$ \`e una variabile aleatoria di Bernoulli di parametro $p$.
+\end{oss}
+
+\subsection{Variabile aleatoria geometrica}
+
+\begin{defn}[Variabile aleatoria geometrica]
+Una variabile aleatoria discreta $X$ \`e detta geometrica di parametro $p \in [0,1]$ se:
+\[
+\mass{j} = 
+\begin{cases}
+p \cdot (1 - p)^{k-1} \text{ se } k = 1,2,3, \ldots \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+\end{defn}
+\begin{exmp}
+Considero un numero infinito di prove indipendenti di tipo successo/insuccesso. La variabile aleatoria $X = \min \{ k : \text{ ho successo alla prova } k \}$, ossia il primo $k$ a cui ho successo, \`e una variabile aleatoria geometrica.
+
+$\prob{X = k}$ \`e la probabilit\`a di avere alla $k$-esima prova successo, e nelle precedenti sempre insuccesso. Ci sono $k-1$ fattori del tipo $(1-p)$, e un fattore di tipo $p$.
+\[
+(1-p)^{k-1} \cdot p
+\]
+La probabilit\`a di avere tutti insuccessi \`e $0$, ossia $\prob{X = \infty} = 0$. Osserviamo che $X$ ha valori in $\{ 1, 2, \dots \infty \}$. La probabilit\`a che $X$ sia infinito \`e $1 - \prob{X \in \{1, 2 \dots\}}$ ossia 1 meno la probabilit\`a che $X$ abbia valore finito.
+\[
+1 - \sum_{k = 1}^{\infty} \prob{X = k} = 1 - \sum_{k = 0}^{\infty} (1-p)^{k-1} \cdot p = 1 - 1 = 0
+\]
+La serie geometrica, per $a < 1$, converge:
+\[
+\sum_{n = 0}^{\infty} a^n = \frac{1}{1 - a}
+\]
+\end{exmp}
+\begin{theorem}
+Se $X = \operatorname{Geom}(p)$, ossia \`e una variabile aleatoria geometrica di parametro $p$, allora:
+\[
+\expect{X} = \frac{1}{p}
+\]
+\end{theorem}
+\begin{proof}
+\begin{align*}
+\expect{X} &= \sum_{k = 1}^{\infty} k \cdot \prob{X = k} = \sum_{k = 1}^{\infty} k \cdot {\left( \underbrace{1 - p}_{q = 1 - p} \right)}^{k-1} \cdot p = \\
+&= \sum_{k = 1}^{\infty} k \cdot q^{k-1} \cdot p = p \cdot \sum_{k = 1}^{\infty} \underbrace{k \cdot q^{k-1}}_{\frac{d}{dq} (q^k)} = \\
+&= p \cdot \sum_{k = 1}^{\infty} \frac{d}{dq} (q^k) = p \cdot \sum_{k = 0}^{\infty} \frac{d}{dq} (q^k)
+\end{align*}
+$q^0 = 1$, quindi la sua derivata \`e 0, quindi nell'ultimo passaggio possiamo cambiare indice. Ora, in particolari condizioni serie e derivazione si possono scambiare. Non sappiamo quali. Quindi:
+\begin{align*}
+p \cdot \sum_{k = 0}^{\infty} \frac{d}{dq} (q^k) =
+p \cdot \frac{d}{dq} \left( \sum_{k = 0}^{\infty} q^k \right) =
+p \cdot \frac{d}{dq} \frac{1}{1 - q} = p \cdot \frac{1}{(1 - q)^2} = 
+\frac{p}{p^2} = \frac{1}{p}
+\end{align*}
+\end{proof}
+
+Se $X$ \`e una variabile geometrica di parametro $p$, la sua varianza \`e:
+\[
+\var (X) = \frac{1 - p}{p^2}
+\]
+ma non lo dimostriamo.
+
+\begin{theorem}[Perdita di memoria]
+Sia $X$ variabile aleatoria geometrica di parametro $p$, ossia $X = \operatorname{Geom}(p)$, e siano $n, m$ interi con $n \ge 0$ e $m \ge 1$. Troviamo la probabilit\`a che $X$ sia uguale a $n + m$, sapendo che $X$ \`e maggiore di $n$, ossia $\probcond{X = n + m}{X > n}$.
+
+Sappiamo quindi che nelle prime $n$ prove non c'\`e stato un successo. Qual \`e la probabilit\`a di dover aspettare ancora $m$ prove per avere un successo?
+\[
+\probcond{X = n + m}{X > n} = \prob{X = m}
+\]
+Abbiamo un'informazione ``vuota'' sul passato.
+\end{theorem}
+\begin{proof}
+\[
+\probcond{X = n + m}{X > n} = \frac{\prob{X = n + m, X > n}}{\prob{X > n}}
+\]
+L'evento $X > n$ implica (contiene) l'evento $X = n + m$, quindi la loro intersezione \`e $X = n + m$. $X > n$ vuol dire che nelle prime $n$ prove ho sempre insuccessi.
+\[
+\frac{X = n + m}{X > n} = \frac{(1-p)^{n + m - 1} \cdot p}{(1-p)^n} =
+(1-p)^{m - 1} \cdot p = \prob{X = m}
+\]
+\end{proof}
+
+\subsection{Variabile aleatoria di Poisson}
+
+\begin{defn}[Variabile aleatoria di Poisson]
+Una variabile aleatoria $X$ discreta si dice ``di Poisson'' di parametro $\lambda > 0$, se la sua densit\`a discreta \`e:
+\[
+\mass{k} =
+\begin{cases}
+e^{- \lambda} \frac{\lambda^k}{k!} \forall k \in \naturals \text{ (intero non negativo)} \\
+0 \text{ se } k \in \reals \setminus \naturals
+\end{cases}
+\]
+\end{defn}
+\begin{proof}
+Banalmente $\mass{k} \ge 0$, dobbiamo verificare che $\sum_{k = 0}^{\infty} \mass{k} = 1$. Se verifichiamo sappiamo che esiste questa variabile aleatoria.
+\[
+\sum_{k=0}^{\infty} e^{-\lambda} \frac{\lambda^k}{k!} = 1 \implies
+e^{-\lambda} \underbrace{\sum_{k = 0}^{\infty} \frac{\lambda^k}{k!}}_{e^{\lambda}} = e^{-\lambda} \cdot e^{\lambda} = 1
+\]
+\end{proof}
+Dovremmo fare le variabili esponenziali, per creare le variabili di Poisson.
+
+La variabile di Poisson approssima la variabile binomiale in un particolare ``regime''.
+
+\begin{prop}[Legge dei piccoli numeri]
+Per ogni $n = 1, 2, 3, \dots$, sia $p_n \in (0,1)$ un parametro. Abbiamo una successione di parametri tale che $\exists \lim_{n \to \infty} n \cdot p_n = \lambda > 0$. Se $X_n = \operatorname{Bin}(n, p_n)$ una variabile binomiale di parametri $n$ e $p_n$ e $Z = \operatorname{Poisson}(\lambda)$ \`e una variabile di Poisson di parametro $\lambda$, allora $\forall k = 0, 1, 2, \dots$ intero non negativo vale che:
+\[
+\lim_{n \to \infty} \prob{X_n = k} = \prob{Z = k} = e^{-\lambda} \cdot \frac{\lambda^k}{k!}
+\]
+\end{prop}
+Si pu\`o fare una stima dell'errore, ossia della differenza fra le due variabili.
+
+Quel che \`e piccolo nella legge dei piccoli numeri \`e $p_n$. Siccome $\lim_{n \to \infty} n \cdot p_n = \lambda$, vuol dire che $p_n$ tende a 0.
+
+Siano $A_n$ e $B_n$ serie, e $lim_{n \to \infty} A_n = A$, $\lim_{n \to \infty} B_n = B$, e sia $A$ che $B$ sono finiti, allora $\lim_{n \to \infty} A_n \cdot B_n = A \cdot B$.
+
+\begin{proof}
+\[
+\prob{X_n = k} = \binom{n}{k} \cdot p_n^k \cdot (1 - p_n)^{n-k}
+\]
+$k$ \`e fissato, dobbiamo fare il limite per $n \to \infty$. Non sappiamo niente di $p_n$, se non che \`e una successione e che $n \cdot p_n$ tende a $\lambda$.
+\[
+\lim_{n \to \infty} \prob{X_n = k} = \frac{n!}{k! \ (n-k)!} \cdot p_n^k \cdot \frac{(1-p_n)^n}{(1-p_n)^k}
+\]
+$n!$ tende a infinito, $p_n$ tende a 0 quindi anche $p_n^k$ tende a 0. Tocca stare attenti. Siccome $n \cdot p_n$ tende a $\lambda$, conviene moltiplicare e dividere per $n^k$.
+\[
+\frac{n!}{k! \ (n-k)! \ n^k} \cdot n^k \cdot p_n^k \cdot \frac{(1-p_n)^n}{(1-p_n)^k}
+\]
+Distinguiamo quattro limiti:
+\[
+\underbrace{\frac{n!}{k! \ (n-k)! \ n^k}}_{\text{limite 1}} \cdot \underbrace{n^k \cdot p_n^k}_{\text{limite 2}} \cdot \frac{\overbrace{(1-p_n)^n}^{\text{limite 3}}}{\underbrace{(1-p_n)^k}_{\text{limite 4}}}
+\]
+Vediamo il limite 1.
+\begin{align*}
+\frac{n!}{k! \ (n-k)! \ n^k} &= \frac{1}{n^k} \ \frac{n \ (n-1) \ (n-2) \ \ldots \ (n - k + 1)}{k!} = \\
+&= \frac{1}{k!} \ \frac{n}{n} \ \frac{n - 1}{n} \frac{n-2}{n} \ldots \frac{n - k + 1}{n} = \\
+&= \frac{1}{k!} \ 1 \ \left( 1 - \frac{1}{n} \right) \ \left( 1 - \frac{2}{n} \right) \ldots \left( 1 - \frac{k - 1}{n} \right)
+\end{align*}
+\`E il prodotto di un numero finito di fattori. $k$ \`e fissato. Quindi $\frac{1}{k!}$ \`e una costante. Tutti gli altri elementi tendono a 1. Quindi il limite 1 tende a $\frac{1}{k!}$.
+
+Vediamo il limite 2.
+\[
+n^k \cdot p_n^k = (n \cdot p_n)^k \to \lambda^k
+\]
+Perch\'e sappiamo che $n \cdot p_n$ tende a $\lambda$.
+
+Vediamo il limite 4.
+\[
+\left( 1 - p_n \right)^k = 1^k = 1
+\]
+Perch\'e sappiamo che $p_n$ tende a 0, quindi $1 - p_n$ tende a 1.
+
+L'unico rognoso \`e il limite 3.
+\[
+\left( 1 - p_n \right)^n = e^{n \ln (1 - p_n)} = e^{\overbrace{n \cdot p_n}^{\lambda} \cdot \overbrace{\frac{\ln(1-p_n)}{p_n}}^{\text{ultimo passo}}}
+\]
+L'ultimo limite:
+\[
+\lim_{n \to \infty}^{p_n \to 0} \frac{\ln(1 - p_n)}{p_n}
+\]
+equivale al seguente limite, su cui possiamo usare de l'Hopital:
+\[
+\lim_{x \downarrow 0} \frac{\ln(1-x)}{x} = \lim_{x \downarrow 0} \frac{- \frac{1}{1 - x}}{1} = \lim_{x \to 0} \left( - \frac{1}{1 - x} \right) = -1
+\]
+Quindi il limite 4 tende a $e^{-\lambda}$.
+
+Sostituendo nella formulona:
+\[
+\underbrace{\frac{n!}{k! \ (n-k)! \ n^k}}_{\text{limite 1}} \cdot \underbrace{n^k \cdot p_n^k}_{\text{limite 2}} \cdot \frac{\overbrace{(1-p_n)^n}^{\text{limite 3}}}{\underbrace{(1-p_n)^k}_{\text{limite 4}}} =
+ \frac{1}{k!} \cdot \lambda^k \cdot \frac{e^{-\lambda}}{1} = e^{-\lambda} \cdot \frac{\lambda^k}{k!}
+\]
+\end{proof}
+
+\begin{fact}
+Se $Z = \operatorname{Poisson}(\lambda)$, allora $\expect{Z} = \lambda$ e $\var (Z) = \lambda$. Il valore atteso \`e da sapere, la varianza no. Dimostriamo solo il valore atteso.
+\end{fact}
+\begin{proof}
+Per definizione:
+\[
+\expect{Z} = \sum_{k = 0}^{\infty} k \cdot \prob{Z = k} = 
+\sum_{k = 0}^{\infty} k \cdot e^{-\lambda} \cdot \frac{\lambda^k}{k!}
+\]
+Il termine con $k = 0$ non d\`a contributo, quindi si pu\`o togliere, e possiamo semplificare $k$ con il fattoriale di $k$.
+\[
+\sum_{k = 1}^{\infty} k \cdot e^{-\lambda} \cdot \frac{\lambda^k}{k!} =
+\sum_{k = 1}^{\infty} e^{- \lambda} \frac{\lambda^k}{(k-1)!}
+\]
+Chiamiamo $m = k - 1$. Tiriamo fuori quello che non dipende da $m$. Ci ritroviamo con una serie esponenziale.
+\[
+e^{-\lambda} \cdot \lambda \cdot \underbrace{\sum_{m = 0}^{\infty} \frac{\lambda^m}{m!}}_{e^{\lambda}} = e^{-\lambda} \cdot \lambda \cdot e^{\lambda} = \lambda
+\]
+\end{proof}
+
+\subsection{Variabile aleatoria binomiale negativa}
+
+\begin{defn}[Variabile binomiale negativa]
+Definiamo la variabile binomiale negativa di parametri $r \in \{ 1, 2, \dots \}$ e $p \in (0,1)$ (includiamo anche il caso degenere 0) facendo prima un esempio: consideriamo una successione di prove indipendenti di tipo successo/insuccesso, dove $p$ \`e la probabilit\`a di successo. Dato $r$, intero positivo, definisco la variabile aleatoria $X$ come il numero della prova dove si verifica l'$r$-esimo successo. Consideriamo ad esempio una successione di prove che ha dato $SIIISSISI$, con $S$ a indicare i successi e $I$ gli insuccessi. Se $r = 3$, $X = 6$. \`E il numero della prova in cui si \`e ottenuto il terzo successo. Se $r = 1$, $X$ \`e una variabile aleatoria geometrica di parametro $p$.
+
+Una variabile aleatoria discreta $Y$ si dice binomiale negativa di parametri $r \in \{ 1, 2, \dots \}$ e $p \in (0,1)$ se la sua densit\`a discreta \`e $p_Y = p_X$ con $X$ appena definita.
+
+Troviamo $p_X$. Consideriamo $k = 1, 2, 3 \dots$ come il numero della prova dove abbiamo l'$r$-esimo successo, e andiamo a calcolare $\mass{k} = \prob{X = k}$. Sappiamo quanti successi abbiamo avuto prima della $k$-esima prova, ossia $r-1$. Quindi abbiamo avuto $k-r$ insuccessi nelle prime $k$ prove. $\prob{X = k} = P($``nelle prime k-1 prove ho esattamente r-1 successi''$) \cdot P($``la prova k \`e successo''$)$. Quindi:
+\[
+\prob{X = k} = \binom{k-1}{r-1} \cdot p^{r-1} \cdot (1 - p)^{k - r} \cdot p = 
+\binom{k-1}{r-1} \cdot p^r \cdot (1-p)^{k - r}
+\]
+\end{defn}
+
+% SONO ARRIVATO QUI A SISTEMARE
+
+$\prob{X = \infty} = 0$. Definiamo in generale $X_i$ come la prova a cui abbiamo ottenuto l'$i$-esimo successo. $X_1$ \`e il numero della prova a cui abbiamo avuto il primo successo, e definite $X_1 \dots X_n$, se sono finite, $X_{n +1}$ \`e il numero di prove da fare dopo la prova $X_1 + X_2 + \dots + X_n$ per avere un successo. La somma di $X_1 + \dots + X_r$ \`e $X$, ed \`e una somma di $r$ termini finiti, quindi $X$ a sua volta \`e finita.
+
+Vedremo poi che il valore atteso di una somma di variabili aleatorie \`e la somma dei valori attesi. Quindi, valendo che $X = X_1 + \dots + X_r$, il suo valore atteso \`e $\expect{X} = \expect{X_1} + \dots + \expect{X_r} = \frac{r}{p}$.
+
+\subsection{Variabile aleatoria ipergeometrica}
+
+\begin{defn}[Variabile aleatoria ipergeometrica]
+Definiamo anche questa facendo prima un esempio. Abbiamo un'urna con $N$ palline, delle quali $m$ sono bianche e $N - m$ sono nere. Estraiamo $n$ palline. $X$ \`e il numero delle palline bianche tra le $n$ palline estratte. Vediamo la densit\`a discreta di $X$.
+\[
+\forall k \in \{ 0, 1, 2, \dots \} \qquad \prob{X = k} = \frac{\binom{m}{k} \cdot \binom{N - m}{n - k}}{\binom{N}{n}}
+\]
+Una variabile aleatoria discreta $X$ \`e detta ``ipergeometrica'' di parametri $N$, $m$, $n$ se ha questa densit\`a discreta.
+
+Il valor medio di una variabile aleatoria ipergeometrica \`e:
+\[
+\expect{X} = \frac{n \cdot m}{N}
+\]
+La varianza \`e:
+\[
+\var (X) = n \cdot p \cdot (1 - p) \cdot \left[ 1 - \frac{n - 1}{N - 1} \right]
+\]
+con $p = \frac{m}{N}$.
+\end{defn}
+\begin{exmp}[$8i$ del libro]
+Un rivenditore acquista componenti elettriche in lotti da 10. Controlla a caso 3 componenti in ogni lotto, e accetta il lotto solo se nessuno dei tre pezzi controllati risulta difettoso. Il 30\% dei lotti ha esattamente 4 pezzi difettosi, il 70\% ha esattamente 1 pezzo difettoso. Quale percentuale di lotti il rivenditore rifiuter\`a?
+
+$F = $ ``il lotto ha 4 pezzi difettosi''. $E = $ ``il lotto controllato \`e rifiutato''.
+\[
+\prob{E} = \probcond{E}{F} \ \prob{F} + \probcond{E}{F^{\compl}} \ \prob{F^{\compl}}
+\]
+Vediamo il valore di $\probcond{E}{F}$. Scegliamo tre pezzi da un lotto con quattro difettosi. $X$ \`e il numero di pezzi difettosi che estraiamo. Quindi $X = \operatorname{Iperg}(N = 10, n = 3, m = 4)$. Quindi:
+\[
+\probcond{E}{F} = \probcond{X \ge 1}{F} = 1 - \probcond{X = 0}{F} =
+1 - \frac{\binom{6}{3}}{10}{3}
+\]
+Analogamente si trova $\probcond{E}{F^{\compl}} = 1 - \probcond{X =0}{F}$, con questa volta $X = \operatorname{Iper}(N = 10, n = 3, m = 1)$. Che \`e:
+\[
+\probcond{E}{F^{\compl}} = 1 - \frac{\binom{9}{3}}{\binom{10}{3}}
+\]
+\end{exmp}
+
+\section{Variabili aleatorie multidimensionali, o vettori aleatori}
+
+Consideriamo pi\`u variabili aleatorie definite sullo stesso spazio di probabilit\`a $(S,P)$.
+
+\begin{defn}[Variabile aleatoria vettoriale, o multidimensionale]
+Una variabile aleatoria $m$-dimensionale (o vettoriale) discreta (detta anche vettore aleatorio discreto) \`e una funzione $X = (X_1, X_2, \ldots, X_m) : S \to \reals^m$ per cui le componenti $X_1$, $X_2$, $\ldots$, $X_m$ sono variabili aleatorie discrete, cio\`e assumono una famiglia numerabile di possibili valori.
+\end{defn}
+
+\begin{defn}[Densit\`a discreta di una variabile aleatoria multidimensionale]
+Sia $X$ una variabile aleatoria $m$-dimensionale discreta, la sua densit\`a discreta \`e la mappa $p_X : \reals^m \to [0,1]$ dove $\mass{a} = \prob{X = a} \forall a \in \reals^m$.
+\end{defn}
+Se scriviamo $X$ componente per componente, ossia $X = (X_1, X_2, \ldots, X_m)$, la sua densit\`a discreta $p_X$ \`e detta densit\`a congiunta delle variabili aleatorie $X_1, X_2, \ldots, X_m$.
+
+Se scriviamo il vettore $a$ componente per componente, ossia $a = (\seq{a}{1}{m})$, la densit\`a discreta si pu\`o scrivere come $\prob{X = a} = \prob{X_1 = a_1, X_2 = a_2, \ldots, X_m = a_m}$, o anche:
+\[
+\mass{a} = \mass[X_1, X_2, \ldots, X_m]{a_1, a_2, \ldots, a_m}
+\]
+
+\begin{oss}
+Sia $X$ una variabile aleatoria $m$-dimensionale discreta, l'insieme dei possibili valori di $X$ \`e numerabile (finito o infinito). Le componenti di $X$ sono tutte variabili aleatorie discrete, ossia i loro possibili valori formano un insieme numerabile. Il prodotto cartesiano di un numero finito di insiemi numerabili \`e un insieme numerabile.
+\end{oss}
+
+\begin{exmp}
+Ho un mazzo da 40 carte, estraggo 5 carte. X \`e la variabile aleatoria del numero di carte di bastoni estratte, Y \`e il numero di carte di denari estratte. Determinare la densit\`a congiunta di X e Y.
+\[
+\mass[X,Y]{a,b} = \prob{X = a, Y = b} =
+\begin{cases}
+\frac{\binom{10}{a} \ \binom{10}{b} \ \binom{20}{5 - a - b}}{\binom{40}{5}}
+\text{ se } a,b \in \naturals \text{ e } a + b \le 5 \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+\end{exmp}
+
+Siano $X_1, \ldots, X_m : S \to \reals$ variabili aleatorie discrete, le densit\`a discrete $p_{X_1}, p_{X_2}, \ldots, p_{X_m}$ si dicono densit\`a marginali.
+
+\begin{prop}
+Dalla densit\`a congiunta si ricavano le densit\`a marginali.
+\end{prop}
+\begin{exmp}
+$m = 2$, $X, Y : S \to \reals$. La densit\`a congiunta $\mass[X,Y]{a,b} = \prob{X = a, Y = b}$ \`e nota. Vogliamo ricavare le densit\`a marginali.
+\[
+\mass{a} = \prob{X = a} = \prob{X = a, Y \in B} = 
+\prob{ \bigcup_{b \in B} \{X = a, Y = b\}}
+\]
+Dove $B \subset \reals$ \`e l'insieme dei possibili valori di $Y$. La famiglia di eventi $\bigcup_{b \in B} \{X = a, Y = b\}$ \`e una famiglia numerabile di eventi a due a due disgiunti, quindi possiamo applicare l'additivit\`a numerabile.
+\[
+\mass{a} = \sum_{b \in B} \prob{X = a, Y = n} = \sum_{b \in B} \mass[X,Y]{a,b}
+\]
+Quindi, in conclusione:
+\[
+\mass{a} = \sum_{b \in \image{Y}} \mass[X,Y]{a,b}
+\]
+\end{exmp}
+
+\begin{oss}
+Le densit\`a marginali non determinano la densit\`a congiunta.
+\end{oss}
+
+\begin{defn}[Indipendenza di variabili aleatorie]
+L'indipendenza ha senso solo se le variabili aleatorie sono definite sullo stesso spazio campionario. Le variabili aleatorie $\seq{X}{1}{m} : S \to \reals$ si dicono indipendenti se per ogni scelta di sottoinsiemi $\seq{A}{1}{m} \subseteq \reals$ vale che:
+\[
+\prob{X_1 \in A_1, X_2 \in A_2, \ldots, X_m \in A_m} = \prob{X_1 \in A_1} \cdot \prob{X_2 \in A_2} \cdot \ldots \cdot \prob{X_m \in A_m}
+\]
+\end{defn}
+
+\begin{fact}
+Le variabili aleatorie $X_1, X_2, \ldots, X_m$ sono indipendenti $\iff \forall A_1 \subseteq \reals, A_2 \subseteq \reals, \ldots, A_M \subseteq \reals$ gli eventi $\{X_1 \in A_1\}$, $\{X_2 \in A_2\}$, $\ldots$, $\{ X_m \in A_m\}$ sono indipendenti.
+\end{fact}
+
+Bisogna saper dimostrare l'implicazione verso sinistra. \`E banale, sapendo che la virgola indica l'intersezione.
+
+Con le variabili aleatorie discrete c'\`e un criterio molto semplice per stabilire se le variabili sono indipendenti.
+
+\begin{prop}
+Siano $X_1, X_2, \ldots, X_m : S \to \reals$ variabili aleatorie discrete. Le variabili aleatorie sono indipendenti $\iff$ vale al variare di $a_1, a_2, \ldots, a_m \in \reals$ che:
+\[
+\mass[X_1, X_2, \ldots, X_m]{a_1, a_2, \ldots, a_m} = \mass[X_1]{a_1} \cdot \mass[X_2]{a_2} \cdot \ldots \cdot \mass[X_m]{a_m}
+\]
+Si pu\`o anche far variare $a_1, a_2, \ldots, a_m$ tra i possibili valori rispettivamente di $X_1, X_2, \ldots, X_m$.
+\end{prop}
+
+\section{Funzione di distribuzione}
+
+\begin{defn}[Funzione di distribuzione]
+Data una variabile aleatoria discreta $X$, la sua funzione di distribuzione $F_X : \reals \to [0,1]$ \`e definita come:
+\[
+\distr{a} = \prob{X \le a} \forall a \in \reals
+\]
+\end{defn}
+\`E detta anche ``funzione di ripartizione''.
+\begin{fact}
+\[
+\distr{a} = \sum_{x_i \in \image{X} : x_i \le a} \mass{x_i}
+\]
+\end{fact}
+\begin{proof}
+$\distr{a} = \prob{X \le a}$ per definizione. Si pu\`o scrivere come:
+\begin{align*}
+\prob{X \le a} &= \prob{\bigcup_{x_i \in \image{X} : x_i \le a} \{ X = x_i \}} = \\ \tag{per additivit\`a}
+&= \sum_{x_i \le a} \prob{X = x_i} = \sum_{x_i \le a} \mass{x_i}
+\end{align*}
+\end{proof}
+\begin{exmp}
+Sia X una variabile aleatoria che assume valori -2, 1, 10 con la seguente densit\`a discreta:
+\begin{align*}
+\mass{-2} &= \frac{1}{2} \\
+\mass{1} &= \frac{1}{4} \\
+\mass{10} &= \frac{1}{4}
+\end{align*}
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+    \begin{axis}[
+            xmin=-4,xmax=12,
+            ymin=0,ymax=1.2,
+            axis x line=middle,
+            axis y line=left,
+            axis line style={->},
+            xlabel={$\reals$},
+        ]
+        \addplot[line width=1pt,-,domain=-5:-2]{0};
+        \addplot[line width=1pt,-,domain=-2:1]{0.5};
+        \addplot[line width=1pt,-,domain=1:10]{0.75};
+        \addplot[line width=1pt,-,domain=10:15]{1};
+        \addplot[fill=black,only marks,mark=*]coordinates{(-2,0.5)(1,0.75)(10,1)};
+    \end{axis}
+\end{tikzpicture}
+\caption{\label{fig:distribuzione}La funzione di distribuzione}
+\end{figure}
+$X \le a$ con $a < -2$ non si verifica mai, quindi l\`i \`e 0. I valori che la funzione di distribuzione assume si vedono nella figura \ref{fig:distribuzione}.
+\end{exmp}
+\begin{esercizio}
+Lancio 5 volte una moneta. La variabile aleatoria $X$ \`e il numero delle teste ottenute. Calcolare la funzione di distribuzione di $X$.
+\end{esercizio}
+Si pu\`o trovare la densit\`a discreta in funzione della funzione (lol) di distribuzione. La densit\`a discreta in $x$ \`e la funzione di distribuzione di $x$ meno il suo limite sinistro.
+\[
+\mass{x} = \distr{x} - \distr{x^{-}}
+\]
+
+\begin{prop}
+Siano $X_1, X_2, \ldots, X_m : S \to \reals$ variabili aleatorie discrete, e sia $f : \reals^m \to \reals$ una funzione. La mappa composta $f \circ X = f(X_1, X_2, \ldots, X_m) : S \to \reals$ \`e variabile aleatoria discreta e soddisfa la seguente propriet\`a:
+\[
+\expect{f(X_1, \ldots, X_m)} = \sum_{(a_1, \ldots, a_m) \in (\image{X_1},  \ldots, \image{X_m})} f(a_1, \ldots, a_m) \cdot \mass[X_1 \ldots X_m]{a_1, \ldots, a_m}
+\]
+\end{prop}
+
+\begin{exmp}
+Abbiamo un'urna contenente 6 palline numerate. Estraiamo 2 palline senza rimpiazzo. $X_1$ \`e il valore della prima pallina, $X_2$ \`e il valore della seconda pallina. I valori di $X = (X_1, X_2)$ sono tutte le coppie $(a,b)$ con $a \neq b$ e $a,b \in \{ 1, \dots, 6\}$.
+
+Possiamo anche vedere lo spazio campionario come $S = \{ (a,b) : a,b \in \{1, \dots, 6\}$ e $a \neq b\}$, e le variabili aleatorie come $ X_1(a,b) = a$ e $X_2(a,b) = b$.
+\[
+\mass[X_1, X_2]{a,b} = 
+\begin{cases}
+\frac{1}{30} \text{ se } (a,b) \in S \\
+0 \text{ se } (a,b) \notin S
+\end{cases}
+\]
+Se ora vogliamo trovare il valore atteso di, ad esempio, $X_1 \cdot X_2$, usiamo il teorema e:
+\[
+\expect{X_1 \cdot X_2} = \sum_{a = 1}^{6} \sum_{b = 1}^{6} a \cdot b \cdot \mass[X_1, X_2]{a,b} =
+\frac{1}{30} \cdot \sum_{a = 1}^{6} \sum_{b = 1, b \neq a}^{6} a \cdot b
+\]
+\end{exmp}
+\begin{esercizio}
+Siano $X, Y$ variabili aleatorie a valori rispettivamente $\{1, 2\}$ e $\{-1, 0, 2\}$. La loro densit\`a congiunta \`e definita da questo schema:
+\begin{center}
+\begin{tabular}{c|ccc}
+$X / Y$ & -1 & 0 & 2 \\
+\hline
+1 & 0 & $\frac{1}{2}$ & $\frac{1}{2}$ \\
+2 & $\frac{1}{8}$ & 0 & $\frac{1}{8}$
+\end{tabular}
+\end{center}
+Trovare il valore atteso $\expect{X^2 \cdot Y + Y}$.
+\end{esercizio}
+
+\begin{prop}
+Siano $X_1 \ldots X_m : S \to \reals$ variabili aleatorie discrete e siano $c_1 \ldots c_m \in \reals$. Allora:
+\[
+\expect{c_1 \cdot X_1 + \ldots + c_m \cdot X_m} = c_1 \cdot \expect{X_1} + \ldots + c_m \cdot \expect{X_m}
+\]
+\end{prop}
+\begin{proof}
+Prendiamo $m = 2$ per semplicit\`a.
+\[
+\expect{c_1 \cdot X_1 + c_2 \cdot X_2} = \expect{f(X_1,X_2)}
+\]
+Dove $f : \reals^2 \to \reals f(u,v) = c_1 \cdot u + c_2 \cdot v$. Quindi, per la proposizione vista prima:
+\begin{align*}
+\expect{c_1 \cdot X_1 + c_2 \cdot X_2} &=
+\sum_{a \in \image{X_1}} \sum_{b \in \image{X_2}} \overbrace{f(a,b)}^{c_1 \cdot a + c_2 \cdot b} \cdot \mass[X_1, X_2]{a,b} = \\
+&= c_1 \cdot \underbrace{\sum_{a} \sum_{b} a \cdot \mass[X_1,X_2]{a,b}}_{\sum_{a} a \cdot \sum_{b} \mass[X_1,X_2]{a,b}} + c_2 \sum_{a} \sum_{b} b \cdot \mass[X_1,X_2]{a,b} = \tag{\`e la densit\`a marginale di $X_1$} \\
+&= c_1 \cdot \sum_{a} a \cdot \mass[X_1]{a} + c_2 \cdot \sum_{b} b \cdot \mass[X_2]{b} = 
+c_1 \cdot \expect{X_1} + c_2 \cdot \expect{X_2}
+\end{align*}
+\end{proof}
+\begin{prop}\label{prodotto_variabili_indipendenti}
+Se $X_1, \ldots X_m : S \to \reals$ sono variabili aleatorie discrete indipendenti, allora il valore atteso del prodotto si fattorizza nei singoli valori attesi.
+\[
+\expect{X_1 \cdot \ldots \cdot X_m} = \expect{X_1} \cdot \ldots \cdot \expect{X_m}
+\]
+\end{prop}
+\begin{proof}
+Per semplicit\`a prendiamo $m = 2$. $X_1, X_2$ sono variabili aleatorie indipendenti.
+\[
+\expect{X_1 \cdot X_2} = \expect{f(X_1,X_2)}
+\]
+Dove $f : \reals^2 \to \reals$ tale per cui $f(u,v) = u \cdot v$. Come con la dimostrazione precedente:
+\[
+\expect{f(X_1, X_2)} = \sum_{a} \sum_{b} \overbrace{f(a,b)}^{a \cdot b} \cdot \overbrace{\mass[X_1,X_2]{a,b}}^{\mass[X_1]{a} \cdot \mass[X_2]{b}}
+\]
+Se le variabili aleatorie sono indipendenti, la densit\`a congiunta \`e il prodotto delle densit\`a marginali. Quindi:
+\[
+\sum_{a} a \cdot \mass[X_1]{a} \cdot \sum_{b} b \cdot \mass[X_2]{b} =
+\expect{X_1} \cdot \expect{X_2}
+\]
+\end{proof}
+
+\begin{prop}
+Siano $X_1, X_2, \ldots, X_n$ variabili aleatorie indipendenti (quindi definite sullo stesso spazio campionario) e siano $f_1, f_2, \ldots, f_n$ funzioni $\reals \to \reals$. Allora le immagini $f_1(X_1), f_2(X_2), \ldots, f_n(X_n)$ sono variabili aleatorie indipendenti.
+\end{prop}
+In particolare per questa proposizione e il corollario visto prima (sul prodotto di variabili aleatorie indipendenti), si ha che:
+\[
+\expect{\prod_{i =1}^{n} f_i(X_i)} = \prod_{i = 1}^{n} \expect{f_i(X_i)}
+\]
+\begin{proof}
+Dimostriamolo per $n = 2$ per semplicit\`a di notazione. Il ragionamento \`e del tutto generale. Bisogna dimostrare che $f_1 (X_1)$ e $f_2(X_2)$ sono indipendenti, cio\`e $\forall A_1, A_2 \subset \reals$ vale, per definizione di indipendenza:
+\[
+\prob{f_1(X_1) \in A_1, f_2(X_2) \in A_2} = \prob{f_1(X_1) \in A_1} \cdot \prob{f_2(X_2) \in A_2}
+\]
+$f_1(X_1)$ \`e la solita mappa $S \ni s \mapsto f_1(X_1(s)) \in \reals$. Quindi possiamo scrivere:
+\begin{align*}
+\prob{f_1(X_1) \in A_1, f_2(X_2) \in A_2} = 
+\prob{X_1 \in \underbrace{f_1^{-1} (A_1)}_{\subset \reals}, X_2 \in f_2^{-1} (A_2)} \tag{le controimmagni} = \\
+\prob{X_1 \in f_1^{-1} (A_1)} \cdot \prob{X_2 \in f_2^{-1} (A_2)} \tag{per il corollario \ref{prodotto_variabili_indipendenti}} = \\
+\prob{f_1(X_1) \in A_1} \cdot \prob{f_2(X_2) \in A_2}
+\end{align*}
+Fine.
+\end{proof}
+
+\subsection{Covarianza di due variabili aleatorie}
+
+\begin{defn}[Covarianza di due variabili aleatorie]
+Siano $X_1, X_2 : S \to \reals$ variabili aleatorie definite sullo stesso spazio di probabilit\`a. La loro covarianza \`e definita come:
+\[
+\cov (X_1, X_2) = \expect{ \left( X_1 - \expect{X_1} \right) \cdot \left( X_2 - \expect{X_2} \right) }
+\]
+\end{defn}
+Due variabili aleatorie con covarianza nulla si dicono ``non correlate''.
+\begin{defn}[Variabili aleatorie non correlate]
+Se $\cov(X_1,X_2) = 0$, diciamo che $X_1$ e $X_2$ sono non correlate.
+\end{defn}
+
+La covarianza si potrebbe definire anche come:
+\begin{prop}\label{covarianza_1}
+\[
+\cov(X_1,X_2) = \expect{X_1 \cdot X_2} - \expect{X_1} \cdot \expect{X_2}
+\]
+\end{prop}
+
+\begin{oss}\label{covarianza_2}
+$\cov(X_1, X_1) = \var (X_1)$. La covarianza di una variabile aleatoria con s\'e stessa \`e la sua varianza.
+\end{oss}
+\begin{oss}\label{covarianza_3}
+La covarianza \`e simmetrica:
+\[
+\cov(X_1, X_2) = \cov (X_2,X_1)
+\]
+\end{oss}
+
+\begin{proof}[della proposizione \ref{covarianza_1}]
+Sviluppiamo il prodotto presente nella definizione di covarianza:
+\begin{align*}
+\cov (X_1, X_2) = \expect{ \left( X_1 - \expect{X_1} \right) \cdot \left( X_2 - \expect{X_2} \right) } =  \tag{sviluppiamo} \\
+\expect{X_1 \cdot X_2 - \expect{X_1} \cdot X_2 - \expect{X_2} \cdot X_1 + \expect{X_1} \cdot \expect{X_2}} = \tag{per linearit\`a del valore atteso} \\
+\expect{X_1 \cdot X_2} - \underbrace{\expect{X_1} \cdot \expect{X_2} - \expect{X_2} \cdot \expect{X_1}}_{\text{linearit\`a}} + \underbrace{\expect{X_1} \cdot \expect{X_2}}_{\text{il valore atteso di una costante}} = \\
+\expect{X_1 \cdot X_2} - \expect{X_1} \cdot \expect{X_2}
+\end{align*}
+Fine.
+\end{proof}
+
+\begin{proof}[dell'oservazione \ref{covarianza_2}]
+\[
+\cov (X_1, X_1) \definition \expect{(X_1 - \expect{X_1})^2} \definition \var (X_1)
+\]
+\end{proof}
+
+\begin{proof}[dell'osservazione \ref{covarianza_3}]
+\[
+\cov (X_1, X_2) \definition \expect{(X_1 - \expect{X_1}) \cdot (X_2 - \expect{X_2})} =
+\cov (X_2, X_1) \definition \expect{(X_2 - \expect{X_2}) \cdot (X_1 - \expect{X_1})}
+\]
+Il prodotto di funzioni reali \`e commutativo.
+\end{proof}
+
+La non correlazione \`e una forma debole di indipendenza.
+\begin{prop}
+Due variabili aleatorie $X_1, X_2$ indipendenti sono non correlate, ossia $\cov (X_1, X_2) = 0$. Il viceversa \`e falso.
+\end{prop}
+
+\begin{proof}
+Siano $X_1$ e $X_2$ variabili aleatorie indipendenti. Abbiamo appena visto che, in generale per la proposizione \ref{covarianza_1}, la covarianza \`e:
+\begin{align*}
+\cov(X_1, X_2) = \expect{X_1 \cdot X_2} - \expect{X_1} \cdot \expect{X_2} = \tag{per il corollario \ref{prodotto_variabili_indipendenti}} \\
+\expect{X_1} \cdot \expect{X_2} - \expect{X_1} \cdot \expect{X_2} = 0
+\end{align*}
+La non validit\`a del viceversa lo dimostriamo con un controesempio.
+
+Siano $X_1$ e $X_2$ variabili aleatorie a valori $-1, 0, 1$ tali che:
+\[
+\prob{X_1 = -1, X_2 = 0} = \prob{X_1 = 1, X_2 = 0} = \prob{X_1 = 0, X_2 = -1} = \prob{X_1 = 0, X_2 = 1} = \frac{1}{4}
+\]
+Proviamo che $X_1$ e $X_2$ sono dipendenti.
+\[
+0 = \prob{X_1 = 0, X_2 = 0} \neq \prob{X_1 = 0} \cdot \prob{X_2 = 0} > 0
+\]
+Ma la covarianza \`e nulla. Infatti:
+\[
+\cov (X_1, X_2) = \underbrace{\expect{X_1 \cdot X_2}}_{0} - \underbrace{\expect{X_1}}_{-\frac{1}{4} + \frac{1}{4} = 0} \cdot \underbrace{\expect{X_2}}_{0} = 0
+\]
+\end{proof}
+
+Il valore atteso della somma di $m$ variabili aleatorie definite sullo stesso spazio di probabilit\`a \`e \emph{sempre} la somma dei singoli valori attesi. Com'\`e la varianza della somma di variabili aleatorie?
+
+\begin{prop}\label{somma_varianza}
+Siano $X_1, X_2, \ldots, X_m : S \to \reals$ variabili aleatorie definite sullo stesso spazio di probabilit\`a, non necessariamente discrete, allora:
+\[
+\var (X_1 + X_2 + \ldots + X_m) = 
+\sum_{j = 1}^{m} \var (X_j) + 2 \sum_{1 \le i < j \le m} \cov (X_i, X_j)
+\]
+La varianza della somma \`e data dalla somma delle varianze pi\`u due volte la covarianza a coppie.
+\end{prop}
+In particolare, se $X_1 \ldots X_m$ sono indipendenti a due a due, o in generale se sono semplicemente a due a due non correlate, allora la varianza della somma \`e la somma delle varianze.
+\[
+\var (X_1 + X_2 + \ldots + X_m) = \var (X_1) + \var (X_2) + \ldots + \var (X_m)
+\]
+La struttura della formula nella proposizione \ref{somma_varianza} \`e simile a quella del quadrato di una somma. Il quadrato di una somma \`e la somma dei quadrati pi\`u due volte il prodotto degli addendi presi a coppie.
+\[
+(a_1 + a_2 + \ldots + a_m)^2 = \sum_{j = 1}^{m} a_j^2 + 2 \sum_{1 \le i < j \le m} a_i \cdot a_j
+\]
+\begin{proof}[della proposizione \ref{somma_varianza}]
+\begin{align*}
+\var \left( \sum_{j = 1}^{m} X_j \right) &\definition
+\expect{ {\left( \sum_{j = 1}^{m} X_j - \expect{\sum_{j = 1}^{m} X_j} \right)}^2 } \tag{per linearit\`a del valore atteso} \\
+&= \expect{ {\left( \sum_{j = 1}^{m} X_j - \sum_{j = 1}^{m} \expect{X_j} \right)}^2 }  = \tag{riorganizzando le somme} \\
+&= \expect{ {\left[ \sum_{j = 1}^{m} (X_j - \expect{X_j}) \right]}^2 } \tag{quadrato di una somma} = \\
+&= \expect{ \sum_{j = 1}^{m} {\left( X_j - \expect{X_j} \right)}^2 + 2 \sum_{1 \le i < j \le m} (X_i - \expect{X_i}) \cdot (X_j - \expect{X_j}) } \tag{per linearit\`a} = \\
+&= \underbrace{\sum_{j = 1}^{m} \expect{(X_j - \expect{X_j})^2}}_{\var (X_j)} + \underbrace{2 \sum_{1 \le i < j \le m} \expect{(X_i - \expect{X_i}) \cdot (X_j - \expect{X_j})}}_{\cov (X_i, X_j)}
+\end{align*}
+Fine.
+\end{proof}
+
+Riprendiamo le variabili aleatorie binomiali.
+\begin{fact}
+Sia $X$ una variabile aleatoria binomiale $\operatorname{Bin}(n,p)$ di parametri $n$ e $p$, il suo valore atteso \`e $\expect{X} = n \cdot p$, e la sua varianza \`e $\var X = n \cdot p \cdot (1 - p)$.
+\end{fact}
+\begin{proof}
+Consideriamo $n$ prove indipendenti di tipo successo/insuccesso, dove $p$ \`e la probablit\`a di successo. Chiamiamo $X$ la variabile aleatoria del numero totale di successo. \`E una variabile aleatoria binomiale di parametri $n, p$. Scriviamo $X$ come una somma di parametri pi\`u semplici:
+\[
+X = X_1 + X_2 + \ldots + X_n
+\]
+Dove $X_k$ vale:
+\[
+X_k =
+\begin{cases}
+1 \text{ se ho successo alla prova k-esima} \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+Ciascuna $X_k$ \`e una $\operatorname{Bernoulli}(p)$. Per linearit\`a del valore atteso, abbiamo che:
+\[
+\expect{X} = \underbrace{\expect{X_1}}_{p} + \ldots + \underbrace{\expect{X_n}}_{p} = n \cdot p
+\]
+Osserviamo che tutte le variabili aleatorie $X_1, \ldots, X_n$ sono indipendenti, essendo le variabili aleatorie riferite a prove distinte ed essendo le prove indipendenti. Quindi la varianza \`e la somma delle varianze.
+\[
+\var (X) = \underbrace{\var(X_1)}_{p \cdot (1-p)} + \ldots + \underbrace{\var(X_n)}_{p \cdot (1-p)} = n \cdot p \cdot (1 - p)
+\]
+\end{proof}
+Una variabile aleatoria binomiale $n, p$ \`e una variabile aleatoria con una certa densit\`a discreta. Tutte le variabili aleatorie con quella densit\`a discreta sono variabili aleatorie binomiali, quindi, e si comportano allo stesso modo.
+
+\begin{fact}
+Sia $X$ una variabile aleatoria binomiale negativa di parametri $r, p$. Allora $\expect{X}$ e $\var (X)$ sono $r$ volte l'analogo della variabile aleatoria geometrica di parametro $p$. In particolare: 
+\begin{gather*}
+\expect{X} = \frac{r}{p} \\
+\var (X) = r \cdot \frac{1 - p}{p^2}
+\end{gather*}
+\end{fact}
+
+\begin{proof}
+Prendiamo infinite prove indipendenti di tipo successo/insuccesso, dove il successo si verifica con probabilit\`a $p$. La variabile aleatoria $X$ \`e uguale a $k$ se alla prova $k$-esima si ha l'$r$-esimo successo. Abbiamo gi\`a visto che $X$ si pu\`o scrivere come una somma.
+\[
+X = X_1 + X_2 + \ldots + X_r
+\]
+$X_1$ indica la prova del primo successo, $X_1 + X_2$ indica la prova del secondo successo, ossia $X_2$ \`e il numero di prove da fare dopo il primo successo per avere un nuovo successo. In generale, per $k \ge 2$, $X_k$ \`e il numero di prove da fare dopo aver ottenuto il successo $(k-1)$-esimo per ottenere il successo $k$-esimo. Ciascuna di queste variabili aleatorie \`e una geometrica di parametro $p$. Perci\`o, essendo il valore atteso della somma la somma dei valori attesi, si ha che:
+\[
+\expect{X} = \expect{X_1} + \ldots + \expect{X_r} = \underbrace{\frac{1}{p} + \ldots + \frac{1}{p}}_{r \text{ volte}} = \frac{r}{p}
+\]
+Per la varianza, dobbiamo far vedere che ciascuna variabile aleatoria $X_i$ \`e indipendente dalle altre. \`E abbastanza ovvio, sapendo che ciascuna prova \`e operativamente indipendente dalle altre. Quindi:
+\[
+\var(X) = \var(X_1) + \ldots + \var(X_r) = r \cdot \var \left( \operatorname{Geom}(p) \right)
+\]
+\end{proof}
+
+\begin{exmp}
+Abbiamo $N$ persone, ciascuna con il suo cappello. Ridistribuiamo a caso i cappelli.
+
+$X$ \`e il numero di persone che si ritrovano con il proprio cappello. Vogliamo trovare il valore atteso di $X$. La densit\`a discreta \`e difficile da trovare, ma possiamo scrivere $X$ come somma di variabili aleatorie pi\`u semplici.
+
+Abbiamo $P_1, P_2, \ldots, P_N$ persone, e $X_1, X_2, \ldots, X_N$ variabili aleatorie definite come:
+\[
+X_k = 
+\begin{cases}
+1 \text{ se $P_k$ riprende il suo cappello} \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+La variabile aleatoria $X$ \`e la somma di tutte le $X_k$, che sono solo delle Bernoulli.
+\[
+X = X_1 + X_2 + \ldots + X_N.
+\]
+Quindi il valore atteso di $X$ \`e la somma dei valori attesi delle $X_k$.
+\[
+\expect{X} = \expect{X_1} + \ldots + \expect{X_N}
+\]
+Troviamo il valore atteso di $X_k$. $\expect{X_k} = 1 \cdot P (P_k$ prende il suo cappello$)$.
+\[
+\expect{X_k} = \frac{1}{N}
+\]
+Quindi $\expect{X} = 1$.
+\end{exmp}
+
+\begin{prop}[Bilinearit\`a della covarianza]
+Siano $X_1, \ldots, X_m : S \to \reals$ variabili aleatorie e $a_1, \ldots a_m \in \reals$, e siano $Y_1, \ldots Y_m : S \to \reals$ e $b_1, \ldots b_n \in \reals$, allora:
+\[
+\cov \left( \sum_{i = 1}^{m} a_i \cdot X_i, \sum_{j = 1}^{n} b_j \cdot Y_j \right) = 
+\sum_{i = 1}^{m} \sum_{j = 1}^{n} a_i \cdot b_j \cdot \cov (X_i, Y_j)
+\]
+\end{prop}
+
+\begin{exmp}
+\[
+\cov (3X - Y, X^2 + Y) = 3 \cov (X, X^2) + 3 \cov (X,Y) - \cov (Y, X^2) - \cov (Y,Y)
+\]
+\end{exmp}
+
+\begin{proof}
+Consideriamo prima il caso pi\`u semplice:
+\[
+\cov \left( \sum_{i = 1}^{n} a_i \cdot X_i, Y \right) = \sum_{i = 1}^{n} a_i \cdot \cov(X_i, Y)
+\]
+Prendiamo la parte sinistra:
+\begin{align*}
+\cov \left( \sum_{i = 1}^{n} a_i \cdot X_i, Y \right) &\definition \expect{ \left[ \sum_{i = 1}^{n} a_i \cdot X_i - \expect{ \sum_{i = 1}^{n} a_i \cdot X_i} \right] \cdot \left[ Y - \expect{Y} \right]} = \tag{linearit\`a del valore atteso} \\
+&= \expect{ \left[ \sum_{i = 1}^{n} a_i \cdot \left( X_i - \expect{X_i} \right) \right] \cdot \left[ Y - \expect{Y} \right] } = \tag{sempre per linearit\`a} \\
+&= \sum_{i = 1}^{n} a_i \cdot \expect{ \left[ X_i - \expect{X_i} \right] \cdot \left[ Y - \expect{Y} \right] } = \tag{per definizione} \\
+&= \sum_{i = 1}^{n} a_i \cdot \cov \left( X_i, Y \right)
+\end{align*}
+La linearit\`a usata \`e quella che ci permette di dire che:
+\[
+\expect{\sum_{i = 1}^{n} a_i \cdot X_i} = \sum_{i=1}^{n} a_i \cdot \expect{X_i}
+\]
+Abbiamo dimostrato la linearit\`a a sinistra, ed essendo la covarianza simmetrica, quindi vale anche a destra. Ma passiamo al case generale.
+\begin{align*}
+\cov \left( \sum_{i = 1}^{n} a_i \cdot X_i, \underbrace{\sum_{j = 1}^{m} b_j \cdot Y_j}_Y \right) = \tag{per quanto appena visto} \\
+= \sum_{i = 1}^{n} a_i \cdot \cov \left( X_i, \sum_{j = 1}^{m} b_j \cdot Y_j \right) = \tag{per simmetria} \\
+= \sum_{i = 1}^{n} a_i \cdot \cov \left( \sum_{j = 1}^{m} b_j \cdot Y_j, X_i \right) = \tag{di nuovo, linearit\`a a sinistra} \\
+= \sum_{i = 1}^{n} a_i \cdot \left[ \sum_{j = 1}^{m} b_j \cdot \cov \left( Y_j, X_i \right) \right] = \tag{ancora per simmetria} \\
+= \sum_{i = 1}^{n} \sum_{j = 1}^{m} a_i \cdot b_j \cdot \cov \left( X_i, Y_j \right)
+\end{align*}
+\end{proof}
+
+\begin{fact}
+Sia $X$ una variabile aleatoria ipergeometrica di parametri $N, m, n$, il suo valore atteso \`e:
+\[
+\expect{X} = \frac{n \cdot m}{N}
+\]
+\end{fact}
+
+\begin{proof}
+Troviamo il valore atteso in un caso particolare, sappiamo poi che il valore atteso di variabili aleatorie ipergeometriche sar\`a sempre quello. Consideriamo un'urna contenente $N$ palline, di cui $n$ bianche, da cui si estraggono $m$ paline. Consideriamo le variabili aleatorie $X_i$ tali che:
+\[
+X_k = 
+\begin{cases}
+1 \text{ se all'estrazione $k$-esima la pallina \`e bianca} \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+La variabile aleatoria ipergeometrica $X$ del numero di palline bianche fra le $m$ estratte \`e:
+\[
+\expect{X} = \overbrace{\underbrace{\expect{X_1}}_{\frac{m}{N}} + \ldots + \underbrace{\expect{X_m}}_{\frac{m}{N}}}^{\text{n volte}} =
+\frac{n \cdot m}{N}
+\]
+\end{proof}
+
+\section{Leggi dei grandi numeri}
+
+\subsection{Variabili aleatorie identicamente distribuite}
+
+\begin{defn}{Variabili aleatorie identicamente distribuite}
+La famiglia di variabili aleatorie $\{X_i\}_{i \in I}$ si dicono identicamente distribuite se $\forall A \subseteq \reals$:
+\[
+\prob{X_i \in A} = \prob{X_j \in A} \forall i, j \in I
+\]
+Nel caso di variabili aleatorie discrete, si pu\`o scrivere:
+\[
+p_{X_i} = p_{X_j} \forall i, j \in I
+\]
+Ossia, per variabili aleatorie discrete essere identicamente distribuite vuol dire avere la stessa densit\`a discreta.
+\end{defn}
+\begin{exmp}
+Lancio 2 dadi. Chiamo $X_1$ il risultato del primo lancio, $X_2$ il risultato del secondo lancio. $X_1$ non \`e uguale a $X_2$, ma sono identicamente distribuite.
+\end{exmp}
+
+Consideriamo successioni di variabili aleatorie indipendenti e identicamente distribuite (i.i.d.), come ad esempio $\{ X_n \}_{n \ge 1}$, ossia $X_1, X_2, \ldots$, con $n \in [1, \infty]$.
+
+\begin{exmp}
+Lancio $\infty$ volte una moneta.
+\[
+X_k = 
+\begin{cases}
+1 \text{ se al $k$-esimo lancio esce testa} \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+Sono tutte variabili aleatorie indipendenti e identicamente distribuite. O meglio, lo spazio di probabilit\`a che descrive il lancio di infinite volte di monete esiste, e su questo spazio le variabili aleatorie $X_k$ sono matematicamente indipendenti.
+
+Tutte le $X_i$ hanno la stessa media. Ossia $\expect{X_n} = \expect{X_m}$, ossia $\expect{X_n} = \mu$ non dipende da $n$.
+\end{exmp}
+
+\subsection{Legge forte dei grandi numeri}
+
+\begin{theorem}[Legge (forte) dei grandi numeri]
+Sia $\{X_n\}_{n \ge 1}$ una successione di variabili aleatorie indipendenti e identicamente distribuite aventi media $\mu$. Allora:
+\[
+\prob{ \lim_{n \to \infty} \frac{X_1 + \ldots + X_n}{n} = \mu} = 1
+\]
+Ossia il limite delle somme parziali divise per $n$ esiste, ed \`e uguale a $\mu$ con probabilit\`a 1.
+\end{theorem}
+
+Le funzioni $X_1, X_2, \ldots : S \to \reals$ sono definite sullo stesso spazio campionario. Il teorema si pu\`o scrivere come:
+\[
+\prob{ \left\{ s \in S : \frac{X_1(s) + \ldots + X_n(s)}{n} \xrightarrow{n \to \infty} \mu \right\}} = 1
+\]
+\begin{exmp}
+Vediamo un'applicazione fondamentale del teorema: consideriamo un esperimento modellizzato dallo spazio di probabilit\`a $(\hat{S}, \hat{P})$. Ad esempio, lancio (una volta) un dado non truccato.
+\begin{align*}
+\hat{S} &= \{1, \ldots, 6\} \\
+\hat{P}(E) &= \frac{\abs{E}}{\abs{\hat{S}}} \forall E \subseteq \hat{S}
+\end{align*}
+Fisso un evento $E$ in $\hat{S}$. Immagino di ripetere l'esperimento infinite volte, in modo operativamente indipendente. Ossia, prendo lo spazio di probabilit\`a $(S,P)$ che modellizza infinite prove operativamente indipendenti, e tutte uguali (come modalit\`a) all'esperimento da cui sono partito. Questo spazio di probabilit\`a esiste.
+\[
+S = \{ (a_1, a_2, \ldots) : a_1, a_2, \ldots \in \hat{S} \}
+\]
+Introduco le variabili aleatorie $\{X_n\}_{n \ge 1}$ cos\`i definite:
+\[
+X_n =
+\begin{cases}
+1 \text{ se alla prova $n$-esima si verifica $E$} \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+$E$ \`e un evento riferito alla singola prova, e non al meta-spazio di probabilit\`a $(S,P)$. La successione \`e una successione di variabili aleatorie indipendenti e identicamente distribuite. Sono tutte di Bernoulli.
+\begin{align*}
+\prob{X_n = 1} &= \prob[\hat{P}]{E} \\
+\prob{X_n = 0} &= 1 - \prob[\hat{P}]{E}
+\end{align*}
+$X_1 + \ldots + X_n$ \`e il numero di prove in cui si verifica $E$. Quindi:
+\[
+\frac{X_1 + \ldots + X_n}{n}
+\]
+\`e un numero aleatorio, ed \`e la frequenza relativa con cui l'evento $E$ si verifica nelle prime $n$ prove. Il valore atteso \`e:
+\[
+\expect{X_n} = \prob[\hat{P}]{E} = \mu
+\]
+La legge dei grandi numeri ci dice che:
+\[
+\prob{\lim_{n \to \infty} \frac{X_1 + \ldots + X_n}{n} = \mu} = 1
+\]
+Possiamo riscriverla come la probabilit\`a che la frequenza relativa di $E$ nelle prime n prove, con $n$ che tende all'infinito, \`e 1.
+\[
+\prob{\lim_{n \to \infty} \{\text{frequenza relativa di $E$ nelle prime $n$ prove}\} = \mu} = 1
+\]
+\end{exmp}
+
+\subsection{Legge debole dei grandi numeri}
+
+\begin{theorem}[Legge debole dei grandi numeri]
+Sia $\{X_n\}_{n \ge 0}$ una successione di variabile aleatorie i.i.d., e sia $\mu$ il loro valore atteso comune, ossia $\expect{X_n} = \mu$. Allora $\forall \varepsilon \ge 0$ vale che:
+\[
+\lim_{n \to \infty} \prob{\abs{\frac{X_1 + \ldots + X_n}{n} - \mu} \ge \varepsilon} = 0
+\]
+\end{theorem}
+Sommare $n$ variabili aleatorie e dividerle per $n$ si chiama ``media campionaria''.
+
+Si pu\`o trovare la probabilit\`a che la media campionaria si discosti dal valore medio di una certa quantit\`a.
+
+% \begin{prop}[Disuguaglianza di Markov]
+% Sia $Y$ una variabile aleatoria $Y \ge 0$, allora la probabilit\`a che $Y$ sia maggiore di un certo $a$ \`e:
+% \[
+% \prob{Y \ge a} \le \frac{\expect{Y}}{a} \forall a > 0
+% \]
+% \end{prop}
+
+\begin{proof}
+Vediamo la probabilit\`a di questo evento:
+\begin{align*}
+\prob{\abs{\frac{X_1 + \ldots + X_n}{n} - \mu} \ge \varepsilon} &=
+\prob{\underbrace{{\left(\frac{X_1 + \ldots + X_n}{n} - \mu \right)}^2}_{Y} \ge \underbrace{\varepsilon^2}_{a}} \le \tag{per Markov} \\
+&= \frac{1}{\varepsilon^2} \expect{{\left(\frac{X_1 + \ldots + X_n}{n} - \mu \right)}^2}
+\end{align*}
+Vediamo quanto vale l'ultima parte:
+\begin{align*}
+\expect{{\left(\frac{X_1 + \ldots + X_n}{n} - \mu \right)}^2} &= 
+\expect{\frac{(X_1 + \ldots + X_2 - n \cdot \mu)^2}{n^2}} = \tag{per linearit\`a} \\
+&= \frac{1}{n^2} \cdot \expect{(X_1 + \ldots + X_n - n \cdot \mu)^2} 
+\end{align*}
+Possiamo vedere che, essendo $\expect{X_n} = \mu$:
+\[
+\expect{X_1 + \ldots + X_n} = \expect{X_1} + \ldots + \expect{X_n} = n \cdot \mu
+\]
+Quindi:
+\begin{align*}
+\frac{1}{n^2} \cdot \expect{(X_1 + \ldots + X_n - n \cdot \mu)^2} = \\
+= \frac{1}{n^2} \cdot \expect{(X_1 + \ldots + X_n - \expect{X_1 + \ldots + X_n})^2} = \\
+= \frac{1}{n^2} \cdot \var (X_1 + \ldots + X_n) = \\
+= \frac{\var (X_1) + \ldots + \var (X_n)}{n^2} = \frac{\sigma^2}{n^2}
+\end{align*}
+La varianza solitamente si indica con $\sigma^2$.
+
+Quindi, tornando all'applicazione di Markov, abbiamo che:
+\begin{align*}
+\prob{\underbrace{{\left(\frac{X_1 + \ldots + X_n}{n} - \mu \right)}^2}_{Y} \ge \underbrace{\varepsilon^2}_{a}} \le \tag{per Markov} \\
+\le \frac{1}{\varepsilon^2} \cdot \frac{\sigma^2}{n^2}
+\end{align*}
+Per $n$ che tende all'infinito, la parte destra tende a 0, e quindi anche la probabilit\`a tende a 0.
+\end{proof}
+
+\subsection{Disuguaglianza di Markov}
+
+\begin{prop}[Disuguaglianza di Markov]
+Sia $X$ una variabile aleatoria tale per cui $X \ge 0$, allora $\forall a > 0$ vale che:
+\[
+\prob{X \ge a} \le \frac{\expect{X}}{a}
+\]
+\end{prop}
+\begin{proof}
+Sia $Y$ una variabile aleatoria definita come:
+\[
+Y = 
+\begin{cases}
+1 \text{ se } X \ge a \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+Che \`e anche:
+\[
+Y(s) = 
+\begin{cases}
+1 \text{ se } X(s) \ge a \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+\`E la funzione caratteristica dell'evento $X \ge a$. Si osservi che $Y \le \frac{X}{a}$. Infatti, se $X(s) \ge a$, allora $Y(s) = 1$, mentre $\frac{X(s)}{a} \ge \frac{a}{a} = 1$. Quindi \`e verificato che $Y(s) \le \frac{X(s)}{a}$.
+
+Se invece $X(s) < a$, allora $Y(s) = 0$. Per ipotesi $X(s) \ge 0$ e $a > 0$, quindi $\frac{X(s)}{a} \ge 0 = Y(s)$.
+
+Concludiamo che \`e vero che $Y \le \frac{X}{a}$. Per il lemma \ref{monotonia_valore_atteso}, $\expect{Y} \le \expect{\frac{X}{a}}$.
+\begin{gather*}
+\expect{Y} = \prob{X \ge a} \\
+\expect{\frac{X}{a}} = \frac{\expect{X}}{a}
+\end{gather*}
+Quindi viene che:
+\[
+\prob{X \ge a} \le \frac{\expect{X}}{a}
+\]
+\end{proof}
+
+\begin{exmp}
+Sia $X$ una variabile aleatoria $\operatorname{Poisson} (100)$. Qual \`e la probabilit\`a che $X \ge 1000$? $X$ \`e positiva, a \`e positivo, quindi:
+\[
+\prob{X \ge 1000} \le \frac{100}{1000} = \frac{1}{10}
+\]
+\end{exmp}
+
+\begin{lem}[Monotonia del valore atteso]\label{monotonia_valore_atteso}
+Siano $X, Y : S \to \reals$ con $X \le Y$. $X \le Y$ significa che $X(s) \le Y(s) \forall s \in S$. Allora $\expect{X} \le \expect{Y}$.
+\end{lem}
+\begin{proof}
+Sia $Z = Y - X$, abbiamo che $Z(s) = Y(s) - X(s) \ge 0$ per le ipotesi. Quindi $Z : S \to \reals$ ed \`e non negativa, ossia i suoi possibili valori $\{ z_i \}_{i}$ sono tutti maggiori di o uguali a zero.
+\begin{align*}
+\expect{Z} &= \expect{Y - X} = \expect{Y} - \expect{X} = \tag{per linearit\`a} \\
+&= \sum_{z_i} \underbrace{z_i}_{\ge 0} \cdot \underbrace{\prob{Z = z_i}}_{\ge 0} \ge 0
+\end{align*}
+Finito, avendo dimostrato che $\expect{Y} - \expect{X} \ge 0$.
+\end{proof}
+
+Isoliamo un passaggio della dimostrazione precedente: la disuguaglianza di Chebyshev. Sia $X$ una variabile aleatoria di media $\mu$ e di varianza $\sigma^2$. Allora $\forall s > 0$ vale che:
+\[
+\prob{\abs{X - \mu} > s} \le \frac{\sigma^2}{s^2}
+\]
+\begin{proof}
+\[
+\abs{X - \mu} \ge s \iff (X - \mu)^2 \ge s^2
+\]
+Applichiamo Markov considerando $(X - \mu)^2$ come variabile aleatoria non negativa (\`e un quadrato) e $s^2$ come il valore $a$.
+\[
+\prob{(X - \mu)^2 \ge s^2} \le \frac{\expect{(X - \mu)^2}}{s^2} = \frac{\var (X)}{s^2} = \frac{\sigma^2}{s^2}
+\]
+\end{proof}
+
+Quando scrivemmo questo:
+\[
+\prob{\abs{\frac{\sum_{i = 1}^{n} X_i}{n} - \mu} \ge \varepsilon}
+\]
+lo stimammo come minore di:
+\[
+\frac{1}{\varepsilon^2} \var \left( \frac{\sum_{i = 1}^{n} X_i}{n} \right)
+\]
+proprio grazie alla disuguaglianza di Chebyshev.
+
+\section{Variabili aleatorie continue}
+
+\begin{defn}[Variabile aleatoria continua]
+Una variabile aleatoria $X : S \to \reals$ si dice \emph{continua} se esiste una funzione non negativa $f : \reals \to \left[ 0, + \infty \right)$ definita su tutto $\reals$, tale che:
+\[
+\forall B \subseteq \reals \qquad \prob{X \in B} = \int_{B} f(u) \, du
+\]
+Ossia la probabilit\`a che $X$ sia in $B$ \`e uguale all'integrale sull'intervallo $B$. $B$ deve essere misurabile, e tipicamente \`e un intervallo o una semiretta. $f$ \`e chiamata \emph{funzione di densit\`a}.
+\end{defn}
+
+Se una variabile aleatoria \`e continua, lo spazio campionario non \`e numerabile.
+
+La funzione di densit\`a sta alla variabile aleatoria continua come la densit\`a discreta sta alla variabile aleatoria discreta.
+
+Se $X$ \`e una variabile aleatoria continua, il suo valore atteso \`e:
+\[
+\expect{X} = \int x \cdot f(x) \, dx
+\]
+Il parallelismo arriva fino a un certo punto. Se \`e vero che $\mass{u} = \prob{X = u}$, non \`e invece assolutamente vero che $f(u) = \prob{X = u}$. Infatti, se $X$ \`e una variabile aleatoria continua, allora:
+\[
+\prob{X = u} = \prob{X \in \{u\}} = \int_{\{u\}} f(z) \, dz
+\]
+L'integrale su un intervallo degenere (come $[u,u]$) vale 0. Le variabili aleatorie continue sono tali che $\prob{X = u} = 0 \forall u \in \reals$. I possibili valori di una variabile aleatoria continua non sono un insieme numerabile.
+
+\begin{oss}
+\[
+\int_{-\infty}^{+\infty} f(z) \, dz = 1
+\]
+\end{oss}
+
+\begin{proof}
+\[
+1 = \prob{X \in \reals}
+\]
+L'evento certo \`e che $X$ assuma valore nei numeri reali.
+\[
+1 = \int_{\reals} f(z) \, dz = \int_{-\infty}^{+\infty} f(z) \, dz
+\]
+\end{proof}
+
+\subsection{Variabile aleatoria uniformemente distribuita}
+
+\begin{defn}[Variabile aleatoria uniformemente distribuita]
+Dati $a < b$ reali, la variabile aleatoria $X$ uniforme su $[a,b]$ (o uniformemente distribuita su $[a,b]$) \`e la variabile aleatoria $X$ continua con funzione di densit\`a cos\`i definita:
+\[
+f(u) =
+\begin{cases}
+\frac{1}{b - a} \text{ se } a \le u \le b \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+\end{defn}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+    \coordinate (Origin)   at (0,0);
+    \coordinate (XAxisMin) at (-3,0);
+    \coordinate (XAxisMax) at (5,0);
+    \coordinate (YAxisMin) at (0,-1);
+    \coordinate (YAxisMax) at (0,2);
+    \draw [thin, gray,-latex] (XAxisMin) -- (XAxisMax);% Draw x axis
+    \draw [thin, gray,-latex] (YAxisMin) -- (YAxisMax);% Draw y axis
+    \draw (-1,0) node [below] {$a$};
+    \draw (2,0) node [below] {$b$};
+    \draw [ultra thick, red] (XAxisMin) -- (-1, 0);
+    \draw [ultra thick, red] (-1, 1) -- (2, 1);
+    \draw [ultra thick, red] (2, 0) -- (XAxisMax);
+\end{tikzpicture}
+\caption{\label{fig:distribuzione}Esempio di variabile aleatoria uniformemente distribuita su $[a,b]$}
+\end{figure}
+\[
+\prob{X < a \lor X > b} =
+\int_{(-\infty,a) \cup (b,+\infty)} f(z) \, dz = 0
+\]
+E inoltre:
+\[
+\prob{X \in [a,b]} =
+\int_{[a,b]} f(z) \, dz = \int_{a}^{b} \frac{1}{b - a} \, dz = 
+\frac{b - a}{b - a} = 1
+\]
+Nel caso particolare in cui $a = 0$ e $b = 1$, qual \`e la probabiit\`a che $X$ sia in $[0, \sfrac{1}{2}]$? Proprio $\sfrac{1}{2}$. La probabilit\`a che la variabile aleatoria assuma valori in un intervallo \`e la lunghezza dell'intervallo. La funzione di probabilit\`a \`e omogenea.
+
+\subsection{Variabile aleatoria normale (o gaussiana)}
+
+\begin{defn}[Variabile aleatoria gaussiana]
+Una variabile aleatoria $X$ si dice gaussiana di media $\mu \in \reals$ e varianza $\sigma^2$ se $X$ \`e continua con:
+\[
+f(z) = \frac{1}{\sqrt{2 \pi \sigma^2}} \cdot e^{-\frac{(z - \mu)^2}{2 \sigma^2}}
+\]
+\end{defn}
+
+La funzione di densit\`a \`e una funzione a campana, sempre positiva, centrata rispetto a $\mu$, e fa cos\`i:
+
+\pgfmathdeclarefunction{gauss}{2}{%
+  \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\begin{axis}[every axis plot post/.append style={
+  mark=none,domain=-2:3,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
+  axis x line*=bottom, % no box around the plot, only x and y axis
+  axis y line*=left, % the * suppresses the arrow tips
+  enlargelimits=upper] % extend the axes a bit to the right and top
+  \addplot {gauss(0,0.5)};
+\end{axis}
+\end{tikzpicture}
+\caption{Esempio di variabile aleatoria normale}
+\end{figure}
+
+Quando $\mu = 0$ e $\sigma^2 = 1$, la variabile aleatoria \`e detta \emph{normale standard}. La sua funzione di densit\`a \`e:
+\[
+\frac{1}{\sqrt{2 \pi}} \cdot e^{-\frac{x^2}{2}}
+\]
+\begin{theorem}[Teorema del limite centrale]
+Sia $X_1, X_2, X_3, \ldots$ una successione di variabili aleatorie i.i.d. Sia $\mu = \expect{X_i}$ il loro valore atteso comune, e sia la loro varianza $\var(X_i) = \sigma^2$. $S_n$ \`e la somma delle prime $n$ variabili aleatorie.
+\[
+S_n = X_1 + \ldots + X_n
+\]
+Per la legge debole dei grandi numeri:
+\[
+\lim_{n \to \infty} \prob{ \abs{ \frac{S_n}{n} - \mu} > \varepsilon} = 0 \forall \varepsilon > 0
+\]
+Si pu\`o anche scrivere come:
+\[
+\prob{ \abs{\frac{S_n - n \cdot \mu}{n}} > \varepsilon} \to 0
+\]
+\[
+n \cdot \mu = \expect{S_n}
+\]
+Se divido per qualcosa di pi\`u ``debole'' di $n$, ossia di ordine minore, quando $n$ tende all'infinito, cosa succede? Ho un limite diverso? Se si divide per $\sqrt{n}$ succede questo, $\forall a < b$:
+\[
+\lim_{n \to \infty} 
+\prob{a \le \frac{S_n - n \cdot \mu}{\sigma \sqrt{n}} \le b} = 
+\frac{1}{\sqrt{2 \pi}} \int_{a}^{b} e^{-\frac{z^2}{2}} \, dz = 
+\prob{a \le Z \le b}
+\]
+Con $Z$ una variabile aleatoria gaussiana standard.
+\end{theorem}
+
+Abbiamo visto che $S_n = X_1 + \ldots + X_n$, e la sua media quindi \`e $\expect{S_n} = \expect{X_1} + \ldots + \expect{X_n} = n \cdot \mu$. La sua varianza, essendo tutte variabili i.i.d., \`e:
+\[
+\var{S_n} = \var{X_1} + \ldots + \var{X_n} = \sigma^2 n
+\]
+Quindi $\sigma \sqrt{n}$ \`e la sua deviazione standard.
+
+Quindi:
+\[
+\frac{S_n - n \cdot \mu}{\sigma \sqrt{n}}
+\]
+Questo mostro ha media 0 e varianza 1. Si pu\`o controllare. La sottrazione e la divisione \`e servita per \emph{centrare} questo mostro, e confrontarlo con la gaussiana.
+
+\begin{exmp}
+Lancio una moneta 10000 volte. Testa esce 5800 volte. La moneta \`e truccata? Consideriamo le variabili $X_i$:
+\[
+X_i =
+\begin{cases}
+1 \text{ se al lancio $i$ esce Testa} \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+$S_n = X_1 + \ldots + X_n$ \`e il numero di teste nei primi $n$ lanci. Immaginiamo la moneta sia onesta, quindi $\mu = \frac{1}{2}$, e $\sigma^2 = p \cdot (1 - p) = \frac{1}{4}$.
+
+Per il teorema del limite centrale:
+\[
+\frac{S_n - n \cdot \mu}{\sigma \sqrt{n}} \approx Z
+\]
+Con $Z$ \`e una gaussiana standard, e per $n$ grande approssima il mostro a sinistra. $n = 10000$ lo consideriamo grande a sufficienza.
+\[
+\frac{S_{10000} - 5000}{50}
+\]
+Quindi il numero di teste meno 5000 diviso 50 \`e ben approssimato da una gaussiana standard. Qual \`e la probabilit\`a che questo valore sia maggiore di $a$?
+\[
+\prob{ \frac{S_{10000} - 5000}{50} > a} \approx \prob{Z > a}
+\]
+In particolar modo, si \`e verificato che:
+\[
+\frac{S_{10000} - 5000}{50} \ge \frac{800}{50} = 16
+\]
+Quindi:
+\[
+\prob{\frac{S_{10000} - 5000}{50} \ge 16} \approx \prob{Z \ge 16}
+\]
+\end{exmp}
+
+
+
+% NON SCRIVERE OLTRE QUI
+
+\section{Parentesi sui vettori}
+
+Prodotto scalare fra vettori:
+\[
+(x,y) = \sum_{i = 1}^{d} x_i y_i
+\]
+\[
+\norm{x} = (x,x)^{\frac{1}{2}} = \sqrt{\sum_{i = 1}^{d} x_i^2}
+\]
+La norma (euclidea) di un vettore \`e la lunghezza del vettore. Valgono le seguenti disuguaglianze.
+\[
+\abs{(x,y)} \le \norm{x} \cdot \norm{y}
+\]
+\[
+\sum_{i = 1}^{d} x_i y_i \le {\left( \sum_{i = 1}^{d} x_i^2 \right)}^{\frac{1}{2}} \cdot {\left( \sum_{i = 1}^{d} y_i^2 \right)}^{\frac{1}{2}}
+\]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,405 @@
+\section{Esercitazione 3 marzo}
+
+\subsection{Tornei di Go}
+
+Cosa ci serve:
+\begin{enumerate}
+    \item Giocatore
+    \begin{enumerate}[label*=\arabic*.]
+        \item Nickname (identificativo)
+        \item Nome
+        \item Cognome
+        \item Rank dichiarato
+        \item Indirizzo
+        \begin{enumerate}[label*=\arabic*.]
+            \item Via
+            \item Numero civico
+            \item CAP
+            \item Citt\`a (req. \ref{itm:req_citta})
+        \end{enumerate}
+    \end{enumerate}
+    \item \label{itm:req_citta} Citt\`a
+    \begin{enumerate}[label*=\arabic*.]
+        \item Nome
+        \item Provincia
+        \item Stato
+    \end{enumerate}
+    \item \label{itm:partita} Partita
+    \begin{enumerate}[label*=\arabic*.]
+        \item Data
+        \item Luogo (req. \ref{itm:req_citta}) - consideriamo il luogo unicamente come una citt\`a
+        \item Regole usate (giapponesi o cinesi)
+        \item Giocatore con pietre bianche
+        \item Giocatore con pietre nere
+        \item Fattore di deficit o \emph{komi} - numero reale compreso tra 0 e 10
+        \item Esito della partita
+        \begin{enumerate}[label*=\arabic*.]
+            \item Rinuncia del bianco
+            \item Rinuncia del nero
+            \item Nessuno rinuncia
+            \begin{enumerate}[label*=\arabic*.]
+                \item Punteggio del bianco
+                \item Punteggio del nero
+            \end{enumerate}
+        \end{enumerate}
+    \end{enumerate}
+    \item Torneo
+    \begin{enumerate}[label*=\arabic*.]
+        \item Nome
+        \item Descrizione testuale
+        \item Anno (intero)
+        \item Insieme delle partite giocate (req \ref{itm:partita})
+    \end{enumerate}
+\end{enumerate}
+Serve sempre capire, quando si analizzano i requisiti, qual \`e il livello di dettaglio che si intende raggiungere.
+
+Il fatto che le partite si \emph{possa} riferire a un torneo, vuol dire che le partite possono essere giocate fuori da un torneo. Modifica la specifica. Se non ci fosse, le partite sarebbero solo all'interno di un torneo.
+
+\begin{figure}[h]
+\centerin
+\begin{tikzpicture}
+    \node[entity] (giocatore) {Giocatore};
+    \node[attribute] (nickname) [above left of=entity] {Nickname} edge (giocatore);
+    \node[attribute] (nome) [above of=entity] {Nome} edge (giocatore);
+    \node[attribute] (cognome) [above right of=entity] {Cognome} edge (giocatore);
+    \node[attribute] (rank) [right of=entity] {Rank} edge (giocatore);
+
+    \node[entity] 
+
+\end{tikzpicture}
+\end{figure}
+
+Si usa un ``fiammifero nero'' per identificativi.
+
+\subsection{eBuy}
+
+Analisi dei requisiti.
+
+\begin{enumerate}
+    \item \label{itm:ebuy_utente} Utente registrato
+    \begin{enumerate}
+        \item Nome
+        \item Data di registrazione
+        \item Tipo utente (privato o professionale)
+        \item Dei venditori privati interessano:
+        \begin{enumerate}
+            \item URL del sito
+        \end{enumerate}
+    \end{enumerate}
+    \item Post
+    \begin{enumerate}
+        \item Descrizione oggetto in vendita
+        \item Categoria (req. \ref{itm:ebuy_categoria})
+        \item Pagamenti accettati
+        \item Utente venditore (req. \ref{itm:ebuy_utente})
+        \item Modalit\`a di vendita
+        \begin{enumerate}
+            \item Asta
+            \begin{enumerate}
+                \item Prezzo iniziale
+                \item Data e ora di scadenza
+                \item Ammontare del rialzo
+                \item Elenco dei \emph{bid} (req. \ref{itm:ebuy_bid})
+            \end{enumerate}
+            \item Compralo subito
+            \begin{enumerate}
+                \item Prezzo di vendita
+            \end{enumerate}
+        \end{enumerate}
+    \end{enumerate}
+    \item \label{itm:ebuy_bid} Bid
+    \item \label{itm:ebuy_categoria} Categoria
+\end{enumerate}
+
+Il prezzo finale \`e determinato univocamente dal prezzo iniziale, dall'ammontare del rialzo e dall'elenco dei bid. Quindi non serve inserirlo. Non dobbiamo mettere qui le funzionalit\`a del sistema.
+
+\section{Esercitazione 5 marzo}
+
+\subsection{Database universit\`a}
+
+Analizziamo i requisiti.
+\begin{enumerate}
+    \item Studente
+    \begin{enumerate}
+        \item Nome
+        \item Matricola
+        \item Data di nascita
+        \item Luogo di nascita (req...)
+        \item Facolt\`a
+        \begin{enumerate}
+            \item Anno di iscrizione
+        \end{enumerate}
+        \item Corsi superati
+    \end{enumerate}
+    \item Citt\`a
+    \begin{enumerate}
+        \item Nome
+        \item Regione (req...)
+    \end{enumerate}
+    \item Regione
+    \begin{enumerate}
+        \item Nome
+    \end{enumerate}
+    \item Facolt\`a
+    \item Professore
+    \item Corso
+\end{enumerate}
+
+\begin{tikzpicture}
+
+\node[entity] (studente) {Studente};
+\node[entity] (professore) [above = of nascitaProfessore] {Professore};
+\node[entity] (corso) [right = of insegna] {Corso};
+\node[entity] (corso2) [below = of esame] {Corso};
+\node[entity] (citta) [below right = of nascitaStudente] {Citt\`a};
+\node[entity] (regione) [right = of regioneCitta] {Regione};
+\node[entity] (facolta) [left = of facoltaStudente] {Facolt\`a};
+\node[entity] (facolta2) [right = of facoltaCorso] {Facolt\`a}; % tratteggiare
+
+% studente
+\node[attribute] (studenteNome) [above = of studente, label=Nome] edge (studente);
+\node[attribute] (studenteCognome) [above = of studente, label=Cognome] edge (studente);
+\node[attribute] (studenteMatricola) [above = of studente, label=Matricola] edge (studente);
+\node[attribute] (studenteData) [above = of studente, label=Data di nascita] edge (studente);
+
+% studente
+\node[attribute] (professoreNome) [above = of professore, label=Nome] edge (professore);
+\node[attribute] (professoreCognome) [above = of professore, label=Cognome] edge (professore);
+\node[attribute] (professoreData) [above = of professore, label=Data di nascita] edge (professore);
+
+% citta
+\node[attribute] (cittaNome) [above = of citta, label=Nome] edge (citta);
+
+% regione
+\node[attribute] (regioneNome) [above = of regione, label=Nome] edge (regione);
+
+% facolta
+\node[attribute] (facoltaNome) [above = of facolta, label=Nome] edge (facolta);
+\node[attribute] (facoltaTipo) [above = of facolta, label=Tipo] edge (facolta);
+
+% corso
+\node[attribute] (corsoCodice) [above = of corso, label=Codice] edge (corso);
+\node[attribute] (corsoNome) [above = of corso, label=Nome] edge (corso);
+\node[attribute] (corsoOre) [above = of corso, label=Ore] edge (corso);
+
+
+% relationships
+\node[relationship] (regioneCitta) [right = of citta] {RegioneCitt\`a};
+\node[relationship] (nascitaStudente) [below right = of studente] {NascitaStudente};
+\node[relationship] (nascitaProfessore) [above = of citta] {NascitaProfessore};
+\node[relationship] (facoltaStudente) [left = of studente] {Facolt\`aaStudente};
+\node[relationship] (insegna) [right = of professore] {Insegna};
+\node[relationship] (facoltaCorso) [below right = of corso] {InsegFacolt\`aCorso};
+\node[relationship] (esame) [below = of studente] {Esame};
+
+% facoltaStudente
+\node[attribute] [label=Anno Iscrizione];
+
+% links
+\draw[link] (facolta) -- node [pos=0.1, auto] {(0,N)} (facoltaStudente);
+\draw[link] (studente) -- node [pos=0.1, auto] {(1,1)} (facoltaStudente);
+\draw[link] (regione) -- node [pos=0.1, auto] {(0,N)} (regioneCitta);
+\draw[link] (citta) -- node [pos=0.1, auto] {(1,1)} (regioneCitta);
+\draw[link] (studente) -- node [pos=0.1, auto] {(1,1)} (nascitaStudente);
+\draw[link] (citta) -- node [pos=0.1, auto] {(0,N)} (nascitaStudente);
+\draw[link] (professore) -- node [pos=0.1, auto] {(1,1)} (insegna);
+\draw[link] (corso) -- node [pos=0.1, auto] {(0,N)} (insegna);
+\draw[link] (corso) -- node [pos=0.1, auto] {(1,1)} (facoltaCorso);
+\draw[link] (facolta2) -- node [pos=0.1, auto] {(0,N)} (facoltaCorso);
+
+\end{tikzpicture}
+
+Studente
+Nome & stringa
+Cognome & stringa
+Matricola & stringa
+Data di nascita & data
+
+Citt\`a
+Nome & stringa
+
+Regione
+Nome & stringa
+
+
+\subsection{Esercitazioni universitarie}
+
+Raffinamento dei requisiti:
+\begin{enumerate}
+    \item Corso
+    \begin{enumerate}
+        \item Nome
+        \item CFU (intero $> 0$)
+        \item Anno accademico (intero $> 0$)
+        \item Docenti di riferimento (req \ref{itm:esercitazioni_docente})
+        \item Lista delle esercitazioni (req \ref{itm:esercitazioni_esercitazioni})
+    \end{enumerate}
+    \item \label{itm:esercitazioni_docente} Docente
+    \begin{enumerate}
+        \item Nome
+        \item Cognome
+    \end{enumerate}
+    \item \label{itm:esercitazioni_esercitazioni} Esercitazione
+    \begin{enumerate}
+        \item Codice (una stringa)
+        \item Lista degli esercizi presentati (req \ref{itm:esercitazioni_esercizi})
+        \item Lista degli esercizi risolti (req \ref{itm:esercitazioni_esercizi})
+    \end{enumerate}
+    \item \label{itm:esercitazioni_esercizi} Esercizio
+    \begin{enumerate}
+        \item Testo
+        \item Soluzione
+    \end{enumerate}
+\end{enumerate}
+
+
+\node[entity] (corso) {Corso};
+
+\node[attribute] (corsoNome) [label=Nome] {};
+\node[attribute] (corsoCFU) [label=CFU] {};
+\node[attribute] (corsoAA) [label=AA] {};
+\node[attribute] (corsoNome) [label=Nome] {};
+
+
+Corso
+Nome & stringa
+CFU & intero > 0
+Anno Accademico & intero > 0
+
+\subsection{Dormo da te}
+
+Raffinamento dei requisiti:
+\begin{enumerate}
+    \item Utente
+    \begin{enumerate}
+        \item Nome
+        \item Cognome
+        \item Sesso
+        \item Data di nascita
+        \item Citt\`a di residenza
+        \item Abitazioni a disposizione (req. \ref{itm:dormodate_abitazione})
+    \end{enumerate}
+    \item \label{itm:dormodate_abitazione} Abitazione
+    \begin{enumerate}
+        \item Citt\`a
+        \item Distanza dal centro
+        \item Distanza stazione (metro, autobus, treno) pi\`u vicina
+        \item Numero membri famiglia (adulti e bambini)
+        \item Sistemazioni offerte (req. \ref{itm:dormodate_sistemazioni})
+    \end{enumerate}
+    \item \label{itm:dormodate_sistemazioni} Sistemazioni
+    \begin{enumerate}
+        \item Tipologia (letto o divano)
+        \item Numero di posti
+        \item Stanza (req. \ref{itm:dormodate_stanza})
+    \end{enumerate}
+    \item \label{itm:dormodate_stanza} Stanza
+    \begin{enumerate}
+        \item Abitazione in cui si trova (req. \ref{itm:dormodate_abitazione})
+        \item Tipologia (privata o pubblica)
+    \end{enumerate}
+    \item Il sistema offre le seguenti funzionalit\`a
+    \begin{enumerate}
+        \item Un utente deve potersi registrare
+        \item Un utente deve poter inserire i propri dati
+    \end{enumerate}
+\end{enumerate}
+
+\section{Esercitazione 17 marzo}
+
+\subsection{Banca del Tempo}
+
+Analisi dei requisiti:
+\begin{enumerate}
+    \item Correntista
+    \begin{enumerate}
+        \item Nome
+        \item Cognome
+        \item Codice Fiscale
+        \item Telefono
+        \item Indirizzo
+        \item Scambi richiesti (req \ref{itm:bdt_scambio})
+        \item Scambi offerti (req \ref{itm:bdt_scambio})
+        \item Abilit\`a possedute (req \ref{itm:bdt_abilita})
+        \begin{enumerate}
+            \item Competenza in una abilit\`a (intero da 6 a 10)
+        \end{enumerate}
+        \item Categoria (req \ref{itm:bdt_categoria})
+        \item Monte ore mensile (intero > 0)
+    \end{enumerate}
+    \item \label{itm:bdt_categoria} Categoria
+    \begin{enumerate}
+        \item Nome
+        \item Valore ora
+    \end{enumerate}
+    \item \label{itm:bdt_abilita} Abilit\`a
+    \begin{enumerate}
+        \item Nome
+    \end{enumerate}
+    \item \label{itm:bdt_scambio} Scambio di tempo
+    \begin{enumerate}
+        \item Richiedente (req \ref{itm:bdt_abilita})
+        \item Offerente (req \ref{itm:bdt_abilita})
+        \item Feedback del richiedente sull'offerente
+        \item Data e ora di inizio
+        \item Durata in ore (intero o reale? sicuramente > 0)
+        \item Abilit\`a richiesta (req \ref{itm:bdt_abilita})
+    \end{enumerate}
+    \item Giudizio sul servizio offerto
+    \item Il saldo non pu\`o mai essere negativo
+    \item Il saldo iniziale \`e 10 ore
+    \item Il saldo viene calcolato attraverso una funzionalit\`a
+    \item Il sistema deve impedire prenotazioni se il monte ore mensile dell'offerente non \`e sufficiente
+    \item Fra le categorie devono essere presenti le seguenti categorie
+    \begin{enumerate}
+        \item Lavoratore - Valore ora: 1.5
+        \item Non lavoratore - Valore ora: 1.2
+        \item Pensionato - Valore ora: 1
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{TuTubi}
+
+Analisi dei requisiti.
+
+\begin{enumerate}
+    \item Utente
+    \item Video
+    \item Categoria
+    \item Tag
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

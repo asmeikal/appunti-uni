@@ -1,0 +1,275 @@
+\input{../../Common/common.tex}
+
+\begin{document}
+
+\section{Disuguaglianza di Markov}
+
+\begin{prop}[Disuguaglianza di Markov]
+Sia $X$ una variabile aleatoria tale per cui $X \ge 0$, allora $\forall a > 0$ vale che:
+\[
+\prob{X \ge a} \le \frac{\expect{X}}{a}
+\]
+\end{prop}
+\begin{proof}
+Sia $Y$ una variabile aleatoria definita come:
+\[
+Y = 
+\begin{cases}
+1 \text{ se } X \ge a \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+Che \`e anche:
+\[
+Y(s) = 
+\begin{cases}
+1 \text{ se } X(s) \ge a \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+\`E la funzione caratteristica dell'evento $X \ge a$. Si osservi che $Y \le \frac{X}{a}$. Infatti, se $X(s) \ge a$, allora $Y(s) = 1$, mentre $\frac{X(s)}{a} \ge \frac{a}{a} = 1$. Quindi \`e verificato che $Y(s) \le \frac{X(s)}{a}$.
+
+Se invece $X(s) < a$, allora $Y(s) = 0$. Per ipotesi $X(s) \ge 0$ e $a > 0$, quindi $\frac{X(s)}{a} \ge 0 = Y(s)$.
+
+Concludiamo che \`e vero che $Y \le \frac{X}{a}$. Per il lemma \ref{monotonia_valore_atteso}, $\expect{Y} \le \expect{\frac{X}{a}}$.
+\begin{gather*}
+\expect{Y} = \prob{X \ge a} \\
+\expect{\frac{X}{a}} = \frac{\expect{X}}{a}
+\end{gather*}
+Quindi viene che:
+\[
+\prob{X \ge a} \le \frac{\expect{X}}{a}
+\]
+\end{proof}
+
+\begin{exmp}
+Sia $X$ una variabile aleatoria $\operatorname{Poisson} (100)$. Qual \`e la probabilit\`a che $X \ge 1000$? $X$ \`e positiva, a \`e positivo, quindi:
+\[
+\prob{X \ge 1000} \le \frac{100}{1000} = \frac{1}{10}
+\]
+\end{exmp}
+
+\begin{lem}[Monotonia del valore atteso]\label{monotonia_valore_atteso}
+Siano $X, Y : S \to \reals$ con $X \le Y$. $X \le Y$ significa che $X(s) \le Y(s) \forall s \in S$. Allora $\expect{X} \le \expect{Y}$.
+\end{lem}
+\begin{proof}
+Sia $Z = Y - X$, abbiamo che $Z(s) = Y(s) - X(s) \ge 0$ per le ipotesi. Quindi $Z : S \to \reals$ ed \`e non negativa, ossia i suoi possibili valori $\{ z_i \}_{i}$ sono tutti maggiori di o uguali a zero.
+\begin{align*}
+\expect{Z} &= \expect{Y - X} = \expect{Y} - \expect{X} = \tag{per linearit\`a} \\
+= \sum_{z_i} \underbrace{z_i}_{\ge 0} \cdot \underbrace{\prob{Z = z_i}}_{\ge 0} \ge 0
+\end{align*}
+Finito, avendo dimostrato che $\expect{Y} - \expect{X} \ge 0$.
+\end{proof}
+
+Isoliamo un passaggio della dimostrazione precedente: la disuguaglianza di Chebyshev. Sia $X$ una variabile aleatoria di media $\mu$ e di varianza $\sigma^2$. Allora $\forall s > 0$ vale che:
+\[
+\prob{\abs{X - \mu} > s} \le \frac{\sigma^2}{s^2}
+\]
+\begin{proof}
+\[
+\abs{X - \mu} \ge s \iff (X - \mu)^2 \ge s^2
+\]
+Applichiamo Markov considerando $(X - \mu)^2$ come variabile aleatoria non negativa (\`e un quadrato) e $s^2$ come il valore $a$.
+\[
+\prob{(X - \mu)^2 \ge s^2} \le \frac{\expect{(X - \mu)^2}}{s^2} = \frac{\var (X)}{s^2} = \frac{\sigma^2}{s^2}
+\]
+\end{proof}
+
+Quando scrivemmo questo:
+\[
+\prob{\abs{\frac{\sum_{i = 1}^{n} X_i}{n} - \mu} \ge \varepsilon}
+\]
+lo stimammo come minore di:
+\[
+\frac{1}{\varepsilon^2} \var \left( \frac{\sum_{i = 1}^{n} X_i}{n} \right)
+\]
+proprio grazie alla disuguaglianza di Chebyshev.
+
+\section{Variabili aleatorie continue}
+
+\begin{defn}[Variabile aleatoria continua]
+Una variabile aleatoria $X : S \to \reals$ si dice \emph{continua} se esiste una funzione non negativa $f : \reals \to \left[ 0, + \infty \right)$ definita su tutto $\reals$, tale che:
+\[
+\forall B \subseteq \reals \prob{X \in B} = \int_{B} f(u) \, du
+\]
+Ossia la probabilit\`a che $X$ sia in $B$ \`e uguale all'integrale sull'intervallo $B$. $B$ deve essere misurabile, e tipicamente \`e un intervallo o una semiretta. $f$ \`e chiamata \emph{funzione di densit\`a}.
+\end{defn}
+
+Se una variabile aleatoria \`e continua, lo spazio campionario non \`e numerabile.
+
+La funzione di densit\`a sta alla variabile aleatoria continua come la densit\`a discreta sta alla variabile aleatoria discreta.
+
+Se $X$ \`e una variabile aleatoria continua, il suo valore atteso \`e:
+\[
+\expect{X} = \int x \cdot f(x) \, dx
+\]
+Il parallelismo arriva fino a un certo punto. Se \`e vero che $\mass{u} = \prob{X = u}$, non \`e invece assolutamente vero che $f(u) = \prob{X = u}$. Infatti, se $X$ \`e una variabile aleatoria continua, allora:
+\[
+\prob{X = u} = \prob{X \in \{u\}} = \int_{\{u\}} f(z) \, dz
+\]
+L'integrale su un intervallo degenere (come $[u,u]$) vale 0. Le variabili aleatorie continue sono tali che $\prob{X = u} = 0 \forall u \in \reals$. I possibili valori di una variabile aleatoria continua non sono un insieme numerabile.
+
+\begin{oss}
+\[
+\int_{-\infty}^{+\infty} f(z) \, dz = 1
+\]
+\end{oss}
+
+\begin{proof}
+\[
+1 = \prob{X \in \reals}
+\]
+L'evento certo \`e che $X$ assuma valore nei numeri reali.
+\[
+1 = \int_{\reals} f(z) \, dz = \int_{-\infty}^{+\infty} f(z) \, dz
+\]
+\end{proof}
+
+\subsection{Variabile aleatoria uniformemente distribuita}
+
+\begin{defn}[Variabile aleatoria (continua) uniformemente distribuita]
+Dati $a < b$ reali, la variabile aleatoria $X$ uniforme su $[a,b]$ (o uniformemente distribuita su $[a,b]$) \`e la variabile aleatoria $X$ continua con funzione di densit\`a cos\`i definita:
+\[
+f(u) =
+\begin{cases}
+\frac{1}{b - a} \text{ se } a \le u \le b \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+\end{defn}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+    \coordinate (Origin)   at (0,0);
+    \coordinate (XAxisMin) at (-3,0);
+    \coordinate (XAxisMax) at (5,0);
+    \coordinate (YAxisMin) at (0,-1);
+    \coordinate (YAxisMax) at (0,2);
+    \draw [thin, gray,-latex] (XAxisMin) -- (XAxisMax);% Draw x axis
+    \draw [thin, gray,-latex] (YAxisMin) -- (YAxisMax);% Draw y axis
+    \draw (-1,0) node [below] {$a$};
+    \draw (2,0) node [below] {$b$};
+    \draw [ultra thick, red] (XAxisMin) -- (-1, 0);
+    \draw [ultra thick, red] (-1, 1) -- (2, 1);
+    \draw [ultra thick, red] (2, 0) -- (XAxisMax);
+\end{tikzpicture}
+\caption{\label{fig:distribuzione}Esempio di variabile aleatoria uniformemente distribuita su $[a,b]$}
+\end{figure}
+\[
+\prob{X < a \lor X > b} =
+\int_{(-\infty,a) \cup (b,+\infty)} f(z) \, dz = 0
+\]
+E inoltre:
+\[
+\prob{X \in [a,b]} =
+\int_{[a,b]} f(z) \, dz = \int_{a}^{b} \frac{1}{b - a} \, dz = 
+\frac{b - a}{b - a} = 1
+\]
+Nel caso particolare in cui $a = 0$ e $b = 1$, qual \`e la probabiit\`a che $X$ sia in $[0, \sfrac{1}{2}]$? Proprio $\sfrac{1}{2}$. La probabilit\`a che la variabile aleatoria assuma valori in un intervallo \`e la lunghezza dell'intervallo. La funzione di probabilit\`a \`e omogenea.
+
+\subsection{Variabile aleatoria normale (o gaussiana)}
+
+\begin{defn}[Variabile aleatoria gaussiana]
+Una variabile aleatoria $X$ si dice gaussiana di media $\mu \in \reals$ e varianza $\sigma^2$ se $X$ \`e continua con:
+\[
+f(z) = \frac{1}{\sqrt{2 \pi \sigma^2}} \cdot e^{-\frac{(z - mu)^2}{2 \sigma^2}}
+\]
+\end{defn}
+
+La funzione di densit\`a \`e una funzione a campana, sempre positiva, centrata rispetto a $\mu$, e fa cos\`i:
+
+\pgfmathdeclarefunction{gauss}{2}{%
+  \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\begin{axis}[every axis plot post/.append style={
+  mark=none,domain=-2:3,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
+  axis x line*=bottom, % no box around the plot, only x and y axis
+  axis y line*=left, % the * suppresses the arrow tips
+  enlargelimits=upper] % extend the axes a bit to the right and top
+  \addplot {gauss(0,0.5)};
+\end{axis}
+\end{tikzpicture}
+\caption{Esempio di variabile aleatoria normale}
+\end{figure}
+
+Quando $\mu = 0$ e $\sigma^2 = 1$, la variabile aleatoria \`e detta \emph{normale standard}. La sua funzione di densit\`a \`e:
+\[
+\frac{1}{\sqrt{2 \pi}} \cdot e^{-\frac{x^2}{2}}
+\]
+\begin{theorem}[Teorema del limite centrale]
+Sia $X_1, X_2, X_3, \ldots$ una successione di variabili aleatorie i.i.d. Sia $\mu = \expect{X_i}$ il loro valore atteso comune, e sia la loro varianza $\var(X_i) = \sigma^2$. $S_n$ \`e la somma delle prime $n$ variabili aleatorie.
+\[
+S_n = X_1 + \ldots + X_n
+\]
+Per la legge debole dei grandi numeri:
+\[
+\lim_{n \to \infty} \prob{ \abs{ \frac{S_n}{n} - \mu} > \varepsilon} = 0 \forall \varepsilon > 0
+\]
+Si pu\`o anche scrivere come:
+\[
+\prob{ \abs{\frac{S_n - n \cdot \mu}{n}} > \varepsilon} \to 0
+\]
+\[
+n \cdot \mu = \expect{S_n}
+\]
+Se divido per qualcosa di pi\`u ``debole'' di $n$, ossia di ordine minore, quando $n$ tende all'infinito, cosa succede? Ho un limite diverso? Se si divide per $\sqrt{n}$ succede questo, $\forall a < b$:
+\[
+\lim_{n \to \infty} 
+\prob{a \le \frac{S_n - n \cdot \mu}{\sigma \sqrt{n}} \le b} = 
+\frac{1}{\sqrt{2 \pi}} \int_{a}^{b} e^{-\frac{z^2}{2}} \, dz = 
+\prob{a \le Z \le b}
+\]
+Con $Z$ una variabile aleatoria gaussiana standard.
+\end{theorem}
+
+Abbiamo visto che $S_n = X_1 + \ldots + X_n$, e la sua media quindi \`e $\expect{S_n} = \expect{X_1} + \ldots + \expect{X_n} = n \cdot \mu$. La sua varianza, essendo tutte variabili i.i.d., \`e:
+\[
+\var{S_n} = \var{X_1} + \ldots + \var{X_n} = \sigma^2 n
+\]
+Quindi $\sigma \sqrt{n}$ \`e la sua deviazione standard.
+
+Quindi:
+\[
+\frac{S_n - n \cdot \mu}{\sigma \sqrt{n}}
+\]
+Questo mostro ha media 0 e varianza 1. Si pu\`o controllare. La sottrazione e la divisione \`e servita per \emph{centrare} questo mostro, e confrontarlo con la gaussiana.
+
+\begin{exmp}
+Lancio una moneta 10000 volte. Testa esce 5800 volte. La moneta \`e truccata? Consideriamo le variabili $X_i$:
+\[
+X_i =
+\begin{cases}
+1 \text{ se al lancio $i$ esce Testa} \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+$S_n = X_1 + \ldots + X_n$ \`e il numero di teste nei primi $n$ lanci. Immaginiamo la moneta sia onesta, quindi $\mu = \frac{1}{2}$, e $\sigma^2 = p \cdot (1 - p) = \frac{1}{4}$.
+
+Per il teorema del limite centrale:
+\[
+\frac{S_n - n \cdot \mu}{\sigma \sqrt{n}} \approx Z
+\]
+Con $Z$ \`e una gaussiana standard, e per $n$ grande approssima il mostro a sinistra. $n = 10000$ lo consideriamo grande a sufficienza.
+\[
+\frac{S_{10000} - 5000}{50}
+\]
+Quindi il numero di teste meno 5000 diviso 50 \`e ben approssimato da una gaussiana standard. Qual \`e la probabilit\`a che questo valore sia maggiore di $a$?
+\[
+\prob{ \frac{S_{10000} - 5000}{50} > a} \approx \prob{Z > a}
+\]
+In particolar modo, si \`e verificato che:
+\[
+\frac{S_{10000} - 5000}{50} \ge \frac{800}{50} = 16
+\]
+Quindi:
+\[
+\prob{\frac{S_{10000} - 5000}{50} \ge 16} \approx \prob{Z \ge 16}
+\]
+\end{exmp}
+
+\end{document}

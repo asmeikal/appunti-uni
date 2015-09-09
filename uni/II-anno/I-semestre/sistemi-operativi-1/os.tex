@@ -1,0 +1,45 @@
+\documentclass[12pt,a4paper]{article}
+% caratteri grandi
+
+\usepackage[italian]{babel}
+% per date e ToC in italiano
+
+\usepackage{amsmath}        % matematica
+\usepackage{amsfonts}       % font matematici
+\usepackage{centernot}      % per semplificare
+\usepackage{pgfplots}       % grafici
+\pgfplotsset{compat=1.5}    % consigliata compatibilita'
+                            % con la versione 1.5
+
+\usepackage{fullpage}       % troppo margine normalmente
+\usepackage{parskip}        % preferisco spazio fra i paragrafi
+                            % all'indentazione sulla prima riga
+\usetikzlibrary{shapes,arrows,calc,fit,backgrounds}
+
+% per le liste non numeriche preferisco un dash
+\renewcommand{\labelitemi}{-}
+
+\begin{document}
+
+\title{Sistemi Operativi 1}
+\author{Michele Laurenti}
+\date{\today}
+
+\maketitle
+
+\newpage
+
+% la ToC viene ricostruita ad ogni compilazione, ma per 
+% creare il pdf LaTex usa l'ultima versione disponibile,
+% quella precedente. se si aggiunge qualcosa alla ToC,
+% o la si modifica, e' necessario RICOMPILARE DUE VOLTE
+% prima di vedere i cambiamenti nel file pdf
+
+\tableofcontents
+\newpage
+
+\section{Introduzione}
+
+\input{introduzione.tex}
+
+\end{document}

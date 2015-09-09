@@ -1,0 +1,355 @@
+\input{../common/common.tex}
+\renewcommand*\rmdefault{ppl}
+
+\begin{document}
+
+\chapter{Integrali}
+
+Con il simbolo di \emph{integrale} si indicano tutte le primitive di una funzione $f(x)$:
+\[
+\int f(x) \dx = F(x) + c
+\]
+Una primitiva di $f(x)$ verifica la propriet\`a $[F(x)]' = f(x)$, ossia
+la sua derivata \`e $f(x)$.
+Il simbolo $\diff x$ significa ``rispetto a $x$'', e indica la variabile 
+che si sta integrando.
+
+\emph{In un intervallo}, le primitive di una funzione differiscono tutte 
+di una costante. Quindi se $F(x)$ \`e una primitiva di $f(x)$, scrivendo
+$F(x) + c$ stiamo indicando \emph{tutte} le primitive di $f(x)$ 
+(nell'intervallo di integrazione).
+
+\emph{L'integrale \`e l'operazione inversa della derivata.}
+
+\section{Regole di derivazione}
+
+Dalle regole di derivazione si ricavano diverse regole di integrazione 
+facilmente applicabili.
+
+La prima regola da ricordare \`e che la derivata \`e \emph{lineare}:
+\[
+\left[ a \cdot f(x) + b \cdot g(x) \right]' =
+a \cdot f'(x) + b \cdot g'(x)
+\]
+
+La derivata di una costante $c$ \`e sempre 0.
+
+La derivata di una potenza di $x$ \`e:
+\[
+\left[ x^{\alpha} \right]' = \alpha \cdot x^{\alpha - 1}
+\]
+Chiaramente se $\alpha = 1$, la derivata di $x^{\alpha}$ \`e $x^0 = 1$.
+
+La derivata di un prodotto di funzioni \`e:
+\[
+\left[ F(x) \cdot G(x) \right]' = 
+f(x) \cdot G(x) + F(x) \cdot g(x)
+\]
+Indichiamo con $f(x)$ la derivata di $F(x)$, e con $g(x)$ la derivata 
+di $G(x)$.
+
+La derivata del rapporto di due funzioni \`e:
+\[
+\left[ \frac{F(x)}{G(x)} \right]' =
+\frac{f(x) \cdot G(x) - F(x) \cdot g(x)}{\left(G(x)\right)^2}
+\]
+Da questa regola si ricava anche una regola per la derivata del
+reciproco di una funzione:
+\[
+\left[ \frac{1}{G(x)} \right]' =
+- \frac{g(x)}{\left(G(x)\right)^2}
+\]
+\`E come se avessimo applicato la regola della derivata del rapporto, 
+ponendo $F(x) = 1$, e quindi $f(x) = 0$.
+
+La derivata di una funzione composta \`e:
+\[
+\left[ F \left(G(x) \right) \right]' =
+f \left( G(x) \right) \cdot g(x)
+\]
+Si legge come ``la derivata della funzione $F(x)$ \emph{calcolata} 
+in $G(x)$, per la derivata della funzione $G(x)$''.
+
+\section{Metodo di sostituzione}
+La regola di derivazione delle funzioni composte ci dice questo:
+\[
+\left[ F \left(G(x) \right) \right]' =
+f \left( G(x) \right) \cdot g(x)
+\]
+Quindi, integrando entrambi i membri (e tenendo a mente che l'integrale
+\`e l'operazione inversa della derivata):
+\[
+\int f \left( G(x) \right) \cdot g(x) \dx =
+F \left(G(x) \right) + C
+\]
+Tipicamente si scrive cos\`i:
+\begin{align*}
+\int f \left( G(x) \right) \cdot g(x) \dx &=
+\int \substitute{f (y) \dx[y]}{y = G(x) ,\, \dx[y] = g(x) \dx} = \\
+&= \substitute{F(y) + C}{y = G(x)} = \\
+&= F \left( G(x) \right) + C
+\end{align*}
+Bisogna riconoscere una funzione $G(x)$, composta per una funzione $f(x)$,
+e la sua derivata $g(x)$. $G(x)$ diventa la nuova variabile di integrazione
+$y$, e $g(x) \dx$ diventa la nuova $\diff y$.
+
+\section{Integrali per parti}
+
+La regola di derivazione del prodotto ci dice:
+\[
+\left[ F(x) \cdot G(x) \right]' = 
+f(x) \cdot G(x) + F(x) \cdot g(x)
+\]
+Possiamo riscriverla cos\`i:
+\[
+f(x) \cdot G(x) = 
+\left[ F(x) \cdot G(x) \right]' - F(x) \cdot g(x)
+\]
+Integrando entrambi i membri (e tenendo a mente che l'integrale \`e
+l'operazione inversa della derivata):
+\[
+\int \left( f(x) \cdot G(x) \right) \dx = F(x) \cdot G(x) - \int \left( F(x) \cdot g(x) \right) \dx
+\]
+Per risolvere un integrale per parti, bisogna riconoscere due funzioni:
+una funzione $f(x)$ che si sa integrare, e una funzione $G(x)$ che si sa
+derivare.
+
+\section{Integrali razionali}
+
+Gli integrali razionali sono integrali del tipo:
+\[
+\int \frac{p(x)}{q(x)}
+\]
+dove $p(x)$ e $q(x)$ sono funzioni razionali (ossia, polinomi).
+
+Se il grado di $p(x)$ \`e maggiore o uguale al grado di $q(x)$,
+va fatta una divisione fra polinomi. Il grado di una funzione 
+razionale \`e l'esponente maggiore delle $x$ nella funzione.
+
+Un esempio di divisione fra polinomi:
+\[
+\int \frac{x^2}{x - 4} \dx
+\]
+Il grado al numeratore \`e maggiore del grado al numeratore, quindi
+possiamo dividere:
+\begin{center}
+\begin{tabular}{rrr|r}
+$x^2$ & & & $x - 4$ \\ \cline{4-4}
+$-x^2$ & $+4 \, x$ & & $x + 4$ \\ \cline{1-2}
+$0$ & $4 \, x$ & & \\
+& $- 4 \, x$ & $+ 16$ & \\ \cline{2-3}
+& $0$ & $16$ & 
+\end{tabular}
+\end{center}
+Il risultato della divisione \`e quindi:
+\[
+\int \left[ x + 4 + \frac{16}{x-4} \right] \dx 
+\]
+Nel caso generale, abbiamo una funzione $\frac{p(x)}{q(x)}$, con il grado 
+di $p(x)$ maggiore o uguale al grado di $q(x)$. La divisione sar\`a:
+\begin{center}
+\begin{tabular}{c|r}
+$p(x)$ & $q(x)$ \\ \cline{2-2}
+$\vdots$ & $h(x)$ \\ \cline{1-1}
+$r(x)$ & 
+\end{tabular}
+\end{center}
+E il risultato, quindi:
+\[
+h(x) + \frac{r(x)}{q(x)}
+\]
+Ora il grado di $r(x)$ \`e minore del grado di $q(x)$ (grazie all'algebra).
+
+Gli integrali di funzioni razionali sono \emph{sempre} combinazioni 
+lineari di polinomi, logaritmi e arcotangenti.
+
+\subsection{Integrali razionali di secondo grado con $\Delta < 0$}
+
+Consideriamo integrali del tipo:
+\[
+\int \frac{\diff x}{x^2 \pm b \, x + c}
+\]
+In cui l'equazione di secondo grado al denominatore non ha soluzioni reali.
+Se il coefficiente di $x^2$ non \`e 1, possiamo sempre riscriverlo in questo
+modo:
+\[
+\int \frac{\diff x}{a \, x^2 + b \, x + c} = 
+\frac{1}{a} \int \frac{\diff x}{x^2 + \frac{b}{a} \, x + \frac{c}{a}}
+\]
+Per risolvere l'integrale, riscriviamolo come:
+\[
+\int \frac{\diff x}{\left( x \pm \sqrt{\frac{b}{2}} \right)^2 + 
+\left( c - \frac{b}{2} \right)}
+\]
+\emph{Attenzione:} il segno di $\sqrt{\frac{b}{2}}$ concorda con il segno 
+di $b \, x$.
+Poniamo $d = c - \frac{b}{2}$, per semplicit\`a, e facciamo la 
+sostituzione $y = x \pm \sqrt{\frac{b}{2}}$ (e $\diff y = \diff x$).
+\[
+\int \frac{\diff y}{y^2 + d}
+\]
+Vogliamo che questo integrale ci dia un'arcotangente. Per ottenerlo, dobbiamo
+avere un 1 al posto della $d$. Mettiamo quindi in evidenza in questo modo:
+\[
+\frac{1}{d} \int \frac{\diff y}{\frac{y^2}{d} + 1}
+\]
+Ora, sostituiamo $z^2 = \frac{y^2}{d}$, ossia $z = \frac{y}{\sqrt{d}}$, 
+e quindi $\diff y = \sqrt{d} \dx[z]$, ottenendo:
+\[
+\frac{\sqrt{d}}{d} \int \frac{\diff z}{z^2 + 1} =
+\frac{1}{\sqrt{d}} \int \frac{\diff z}{z^2 + 1}
+\]
+La soluzione \`e, quindi:
+\begin{align*}
+\frac{1}{\sqrt{d}} \, \arctan \left( z \right) + C &=
+\frac{1}{\sqrt{d}} \, \arctan \left( \frac{y}{\sqrt{d}} \right) + C = \\
+&= \frac{1}{\sqrt{d}} \, \arctan \left( \frac{x \pm \sqrt{\frac{b}{2}}}{\sqrt{d}} \right) + C = \\
+&= \frac{1}{\sqrt{c - \frac{b}{2}}} \, \arctan \left( \frac{x \pm \sqrt{\frac{b}{2}}}{\sqrt{c - \frac{b}{2}}} \right) + C
+\end{align*}
+
+
+\chapter{Integrali definiti}
+
+\section{Integrali impropri}
+
+\chapter{Equazioni differenziali}
+
+\chapter{Serie}
+
+\section{Criteri di convergenza}
+
+Si parla di convergenza assoluta quando vale:
+\[
+\lim_{N \to \infty} \sum_{n = n_0}^{N} \abs{a_n} = L
+\]
+Si parla di convergenza semplice quando vale:
+\[
+\lim_{N \to \infty} \sum_{n = n_0}^{N} a_n = L
+\]
+Le serie a termini di segno alterno spesso convergono semplicemente,
+senza convergere assolutamente. Le serie a termini di segno concorde
+se convergono semplicemente convergono anche assolutamente, e viceversa.
+
+Si parla di divergenza quando il limite o non esiste, o tende all'infinito.
+
+\subsection{Criterio del confronto}
+
+Consideriamo due serie $\sum a_n$ e $\sum b_n$, e supponiamo valga questo:
+\[
+a_n \le b_n \forall n \ge n_0
+\]
+Vale, di conseguenza, questo:
+\[
+\sum_{n = n_0}^{\infty} a_n \le \sum_{n = n_0}^{\infty} b_n
+\]
+Il criterio del confronto ci dice, in questo caso, che:
+\begin{itemize}
+    \item se $a_n$ diverge, anche $b_n$ diverge;
+    \item se $b_n$ converge, anche $a_n$ converge.
+\end{itemize}
+Se $b_n$ diverge, non sappiamo nulla su $a_n$, e se $a_n$ converge, non 
+sappiamo nulla su $b_n$.
+
+\subsection{Criterio integrale}
+
+\subsection{Criterio asintotico}
+
+Consideriamo due serie $\sum a_n$ e $\sum b_n$. Supponiamo valga quanto
+segue:
+\[
+\lim_{n \to \infty} \frac{a_n}{b_n} = L \in \ooint{0}{\infty}
+\]
+Se questa ipotesi \`e verificata, alla le due serie $\sum a_n$ e $\sum b_n$ 
+o convergono entrambe o divergono entrambe.
+
+\subsection{Criterio del rapporto}
+
+Consideriamo una serie $\sum a_n$ tale per cui $a_n \ge 0$. Studiamo il 
+limite per $n$ che tende all'infinito del rapporto fra il termine $n$-esimo
+e il termine che lo precede. Vale questo:
+\[
+\lim_{n \to \infty} \frac{a_{n+1}}{a_n} =
+\begin{cases}
+L < 1 &\implies \text{ la serie converge} \\
+L > 1 &\implies \text{ la serie diverge} \\
+L = 1 &\implies \text{ il criterio non dice niente sulla serie}
+\end{cases}
+\]
+
+\subsection{Criterio della radice}
+
+Consideriamo una serie $\sum a_n$ tale per cui $a_n \ge 0$. Studiamo il 
+limite per $n$ che tende all'infinito della radice $n$-esima del termine
+$n$-esimo. Vale questo:
+\[
+\lim_{n \to \infty} \sqrt[n]{a_n} =
+\begin{cases}
+L < 1 &\implies \text{ la serie converge} \\
+L > 1 &\implies \text{ la serie diverge} \\
+L = 1 &\implies \text{ il criterio non dice niente sulla serie}
+\end{cases}
+\]
+
+\subsection{Criterio di Leibniz}
+
+Il criterio di Leibniz si applica a serie di segno alterno.
+Sia $\sum a_n$ una serie, e supponiamo valga questo:
+\begin{enumerate}
+    \item la serie \`e a termini di segno alterno, ossia ogni termine
+    ha segno opposto rispetto al successivo;
+    \item $\abs{a_n} \ge \abs{a_{n+1}}$, ossia i termini della serie
+    sono decrescenti (non strettamente);
+    \item $\lim_{n \to \infty} a_n = 0$, ossia i termini della serie 
+    tendono a 0.
+\end{enumerate}
+Se queste tre ipotesi sono verificate, allora la serie $\sum a_n$ converge
+semplicemente.
+
+\section{Serie armonica generalizzata}
+
+La serie armonica generalizzata \`e una serie del tipo:
+\[
+\sum_{n = n_0}^{\infty} \frac{1}{n^p}
+\]
+Si distinguono due casi per la convergenza:
+\[
+\sum_{n = n_0}^{\infty} \frac{1}{n^p} =
+\begin{cases}
+\text{converge } &  \text{se } p > 1 \\
+\text{diverge } & \text{se } p \le 1
+\end{cases}
+\]
+
+\section{Serie di potenze}
+
+Una serie di potenze \`e una serie del tipo:
+\[
+\sum_{n = n_0}^{\infty} \frac{\left[ f(x) \right]^{a \, n + b}}{a_n}
+\]
+Il centro di una serie di potenze \`e un valore $x_0$ tale per cui
+$f(x_0) = 0$. Tipicamente le serie che si incontrano hanno la forma:
+\[
+\sum_{n = n_0}^{\infty} \frac{\left( x - x_0 \right)^{a \, n + b}}{a_n}
+\]
+In questo caso il centro \`e proprio $x_0$.
+
+Di una serie di potenze, oltre al centro, vogliamo conoscere il raggio
+di convergenza (per cui la serie converge assolutamente), e vogliamo poi
+studiare se la serie converge semplicemente, converge assolutamente, o
+diverge agli estremi dell'intervallo di convergenza.
+
+Sia $R$ il raggio di convergenza di una serie di potenze, l'intervallo di 
+convergenza \`e l'intervallo $\ooint{x_0 - R}{x_0 + R}$. Per trovare il 
+raggio di convergenza di una serie di potenze, si risolve il seguente
+limite:
+\[
+\lim_{n \to \infty} \abs{\frac{\left[f(x)\right^{a \, (n+1) + b}}{\left[f(x)\right]^{{a \, n + b}}} \cdot \frac{a_n}{a_{n+1}}} = R(x)
+\]
+Il risultato sar\`a una funzione $R(x)$. Si impone $R(x) < 1$, per trovare
+per quali valori di $x$ la serie converge assolutamente.
+
+Si studiano infine i casi in cui $R(x) = 1$, e per ciascun caso si determina
+se la serie converge semplicemente, converge assolutamente, o diverge.
+
+
+\end{document}

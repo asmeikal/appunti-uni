@@ -1,0 +1,23 @@
+\section{13 ottobre 2014}
+
+\begin{enumerate}
+    \item (2.10) Il 60 per cento degli studenti di una scuola non indossano n\'e un anello n\'e una collana. Il 20 per cento porta un anello e il 30 per cento una collana. Se scegliamo uno studente a caso, qual \`e la probabilit\`a che indossi:
+    \begin{enumerate}
+        \item un anello o una collana? $P(A \cup C) = 1 - P((A \cup C)^{\mathsf{c}}) = 1 - 0{,}6 = 0{,}4$
+        \item un anello e una collana? $P(A \cup C) = P(A) + P(C) - P(A \cap C) \Rightarrow P(A \cap C) = P(A) + P(C) - P(A \cup C) = 0{,}2 + 0{,}3 - 0{,}4 = 0{,}1$
+    \end{enumerate}
+    \item (2.12) Una scuola elementare offre corsi di tre lingue: uno dispagnolo, uno di francese e uno di tedesco. Ognuna di queste classi \`e aperta a ognuno dei 100 studenti della scuola. Nella classe di spagnolo ci sono 28 studenti, 26 in quella di francese e 16 in quella di tedesco. 12 studenti frequentano sia il corso di spagnolo che di francese, 4 sia quello di spagnolo che quello di tedesco e 6 sia quello di francese che di tedesco. Inoltre ci sono due studenti che frequentano tutti e tre i corsi di lingua.
+    \begin{enumerate}
+        \item Se scegliamo uno studente a caso, qual \`e la probabilit\`a che non segua alcun corso di lingua? $P(S^{\mathsf{c}} \cap F^{\mathsf{c}} \cap T^{\mathsf{c}}) = P((S \cup F \cup T)^{\mathsf{c}}) = 1 - P(S \cup F \cup T)$. Usiamo quindi il principio di inclusione ed esclusione per trovare $P(S \cup F \cup T) = P(S) + P(F) + P(T) - P(SF) - P(ST) -P(FT) + P(SFT) = \frac{28}{100} + \frac{26}{100} + \frac{16}{100} - \frac{12}{100} - \frac{4}{100} - \frac{6}{100} + \frac{2}{100} = \frac{1}{2}$.
+        \item Se scegliamo uno studente a caso, qual \`e la probabilit\`a che frequenti un solo corso di lingua?
+        \item Se scegliamo a caso 2 studenti, qual \`e la probabilit\`a che almeno 1 segua un corso di lingua?
+    \end{enumerate}
+    \item (2.15) Se supponiamo che tutte le $\binom{52}{5}$ mani di poker siano equiprobabili, qual \`e la probabilit\`a che venga servito:
+    \begin{enumerate}
+        \item un colore? (Una mano si definisce un colore se tutte e 5 le carte hanno lo stesso seme) Le possibili combinazioni di colore sono $4 \times \binom{13}{5}$.
+        \item una coppia? (Questo capiter\`a quando le carte saranno $a, a, b, c, d$ con $a, b, c,$ e $d$ con valori distinti tra loro) Le possibili coppie sono $\frac{52 \times 48 \times 44 \times 40 \times 3}{5!}$, ossia il numero di modi in cui posso scegliere 4 carte con valori distinti per il numero di modi in cui posso scegliere la quinta carta in modo che abbia lo stesso valore della prima.
+        \item una doppia coppia? (Questo capiter\`a quando le carte saranno $a, a, b, b, c$ con $a, b,$ e $c$ con valori distinti tra loro) Le possibili doppie coppie sono $\frac{52 \times 48 \times 44 \times 3^2}{5!} $, ossia il numero di modi in cui posso scegliere 3 carte con valori distinti per il numero di modi in cui posso scegliere la quarta e la quinta carta in modo che siano uguali rispettivamente alla prima ed alla seconda.
+        \item un tris? (Questo capiter\`a quando le carte saranno $a, a, a, b, c$ con $a, b$ e $c$ con valori distinti tra loro)  I possibili tris sono $\frac{52 \times 48 \times 44 \times 6}{5!}$, ossia il numero di modi in cui posso scegliere 3 carte con valori distinti per il numero di modi in cui posso scegliere la quarta e la quinta carta in modo che siano uguali alla prima.
+        \item un poker? (Questo capiter\`a quando le carte saranno $a, a, a, a, b$ con $a$ e $b$ con valori distinti tra loro) I possibili poker sono $\frac{52 \times 48 \times 6}{5!}$, ossia il numero di modi in cui posso scegliere 2 carte con valori distinti per il numero di modi in cui posso scegliere la terza, la quarta e la quinta carta in modo che siano uguali  alla prima.
+    \end{enumerate}
+\end{enumerate}

@@ -1,0 +1,522 @@
+\section{6 marzo}
+
+\subsection{Contare gli archi in una visita DFS}
+
+\begin{esercizio}
+Vogliamo un algoritmo con ricerca $DFS$ che conti:
+\begin{itemize}
+    \item il numero di archi nell'albero;
+    \item il numero di archi all'indietro;
+    \item il numero di archi in avanti;
+    \item il numero di archi di attraversamento.
+\end{itemize}
+\end{esercizio}
+
+Vogliamo aggiungere al $DFS$ quattro contatori: \code{te} (tree edges), \code{ce} (cross edges), \code{be} (back edges), \code{fe} (forward edges). Riusiamo il trucco del vettore dei padri, indicando con 0 un nodo non visitato, con un numero negativo un nodo che non abbiamo finito di visitare, e con un numero positivo un nodo che abbiamo finito di visitare.
+
+\begin{algorithm}
+\caption{Contare gli archi in una visita $DFS$}
+\begin{algorithmic}[1]
+\State $VIS \gets$ vettore dei vertici gi\`a visti, inizializzato a 0
+\State $c \gets 0$
+\State $te \gets 0$
+\State $ce \gets 0$
+\State $be \gets 0$
+\State $fe \gets 0$
+\Function{DFS\_Count}{$G$ grafo, $u$ nodo, $VIS$ vettore, $c$, $te$, $ce$, $be$, $fe$ contatori}
+    \State $c \gets c + 1$
+    \State $VIS[u] = -c$
+    \ForAll{$w$ nodo $: \exists$ arco $(u,w)$}
+        \If{$VIS[w] = 0$}
+            \State $te \gets te + 1$
+            \State \Call{DFS\_Count}{$G, V, w, c, te, ce, be, fe$}
+        \ElsIf{$VIS[w] < 0$}
+            \State $be \gets be + 1$
+        \ElsIf{$VIS[w] > - VIS[u]$}
+            \State $fe \gets fe + 1$
+        \Else
+            \State $ce \gets ce + 1$
+        \EndIf
+    \EndFor
+    \State $VIS[u] = - VIS[u]$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\clearpage
+
+\subsection{Grafo trasposto}
+
+\begin{esercizio}
+$G$ \`e un grafo diretto. $G^t$ \`e il grafo con gli stessi nodi, ma con gli archi con direzione inversa.
+
+Si chiama grafo trasposto, perch\'e la matrice di adiacenza di $G^t$ \`e la matrice trasposta della matrice di adiacenza di $G$.
+
+Dato un grafo come lista di adiacenze, ritornare la lista di adiacenze di $G^t$.
+\end{esercizio}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+    \node (1) [circle, draw] {};
+    \node (2) [circle, draw, above right = of 1] {};
+    \node (3) [circle, draw, below right = of 1] {};
+    \node (4) [circle, draw, below right = of 2] {};
+
+    \node (1b) [circle, draw, right = of 4] {};
+    \node (2b) [circle, draw, above right = of 1b] {};
+    \node (3b) [circle, draw, below right = of 1b] {};
+    \node (4b) [circle, draw, below right = of 2b] {};
+
+    \path[->]   (1) edge (2)
+                (1) edge (3)
+                (3) edge (2)
+                (4) edge (3)
+                (4) edge (2);
+
+    \path[<-]   (1b) edge (2b)
+                (1b) edge (3b)
+                (3b) edge (2b)
+                (4b) edge (3b)
+                (4b) edge (2b);
+\end{tikzpicture}
+\caption{Grafi trasposti}
+\end{figure}
+
+Risolvere il problema creando la matrice di adiacenza, facendo la traspsota, e ricreando la lista richiederebbe un tempo $O(m^2)$. Noi vogliamo farlo in $O(m + n)$.
+
+\begin{algorithm}
+\caption{Algoritmo per trasporre un grafo}
+\begin{algorithmic}[1]
+\Function{Trasp}{$L$ lista}
+    \State $L_o \gets$ una lista vuota
+    \ForAll{$u \in L$}
+        \ForAll{$v \in L[u]$}
+            \State $L_o[v]$.append($u$)
+        \EndFor
+    \EndFor
+    \State \Return $L_o$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\clearpage
+
+\subsection{Trovare cicli con un DFS}
+
+\begin{esercizio}
+Se un grafo non diretto ha grado almeno 2 per ogni vertice, allora esiste un ciclo. Dimostriamolo algoritmicamente con il DFS.
+\end{esercizio}
+
+In un grafo non diretto, ogni arco non appartenente all'albero di visita DFS \`e un arco all'indietro.
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+    \node (1) [circle, draw] {1};
+    \node (2) [circle, draw, above right = of 1] {2};
+    \node (3) [circle, draw, below right = of 1] {3};
+    \node (4) [circle, draw, below right = of 2] {4};
+    \node (5) [circle, draw, below right = of 4] {5};
+
+    \path[->, very thick]   (1) edge (2)
+                (1) edge (3)
+                (3) edge (4)
+                (4) edge [color=red, dashed] (1)
+                (4) edge (5)
+                (3) edge [color=blue, dashed] (5)
+                (4) edge [color=green, dashed] (2);
+\end{tikzpicture}
+\caption{L'arco rosso \`e un arco all'indietro, l'arco blu \`e un arco in avanti, l'arco verde \`e un arco di attraversamento. Gli altri sono archi dell'albero.}
+\end{figure}
+
+Scegliamo un vertice $v$ e costruiamo l'albero di visita di una DFS partendo da $v$. Scegliamo una foglia $u$ dall'albero di visita: necessariamente $u$ ha un arco incidente che non pu\`o appartenere all'albero, e che quindi \`e un arco all'indietro. Quindi esiste un ciclo.
+
+\clearpage
+
+\subsection{Ponti}
+ 
+\begin{esercizio}
+Un ponte in un grafo non diretto \`e un arco che non appartiene a nessun ciclo. Trovare un algoritmo per stabilire se un dato arco $f$ \`e un ponte.
+\end{esercizio}
+
+Togliamo prima di tutto l'arco $f$ dal grafo $G$. Si indica con $G - f$. Siano $u$ e $v$ gli archi coinvolti nell'arco $f$, l'algoritmo \`e un DFS partendo da uno dei due. L'idea \`e di stabilire se esiste un cammino che parte da $v$ e arriva a $u$. Se esiste, allora $f$ non \`e un ponte, se invece il cammino non esiste, allora $f$ \`e un ponte.
+
+In generale, l'arco $\{u,v\}$ \`e un ponte se e solo se non esiste un cammino che parte da $v$ e arriva a $u$ nel grafo da cui abbiamo tolto l'arco $\{u,v\}$.
+
+Si parla di ponte perch\'e i nodi raggiungibili da $u$ e i nodi raggiungibili da $v$ sono connesso \emph{solo} dall'arco $\{u,v\}$. Senza l'arco $\{u,v\}$, il grafo si spezza in due componenti.
+
+\clearpage
+
+\subsection{Pozzo universale}
+
+\begin{esercizio}
+Un pozzo universale in un grafo diretto \`e un nodo $v$ con $\operatorname{indeg}(v) = n - 1$ e $\operatorname{outdeg}(v) = 0$. Troviamo un algoritmo per stabilire se esiste un pozzo universale.
+\end{esercizio}
+
+Prima cosa da notare: in un grafo non possono esistere pi\`u di un pozzo universale.
+
+Con un grafo dato come matrice di adiacenze, si pu\`o trovare un pozzo universale in $O(n^2)$. Bisogna cercare l'$i$-esima riga con tutti 1 e l'$i$-esima colonna con tutti 0.
+
+Ma vogliamo farlo in $O(n)$. Con qualche considerazione il lavoro si semplifica. Consideriamo due nodi $u$ e $v$.
+\begin{itemize}
+    \item Se non esiste un arco fra loro, n\'e $u$ n\'e $v$ sono pozzi universali.
+    \item Se esiste un arco $(u,v)$, $u$ non \`e un pozzo universale, e viceversa se esiste un arco $(v,u)$, $v$ non \`e un pozzo universale.
+\end{itemize}
+L'algoritmo prevede il confronto di tutti gli $n$ nodi, presi a coppie. Ogni confronto prende tempo costante, quindi il tempo \`e $O(n)$.
+
+\begin{algorithm}
+\caption{Algoritmo per trovare un pozzo universale}
+\begin{algorithmic}[1]
+\Function{Pozzo}{$A$ matrice di adiacenze}
+    \State $p \gets$ un nodo del grafo
+    \ForAll{$u$ nodo del grafo}
+        \If{$(u \neq p) \land A[p][u] = 1$}
+            \State $p \gets u$
+        \EndIf
+    \EndFor
+    \ForAll{$u$ nodo nel grafo}
+        \If{$A[p][u] = 1 \lor A[u][p] = 0$}
+            \State \Return 0
+        \EndIf
+    \EndFor
+    \State \Return $p$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+Con una lista di adiacenze, il tempo minimo \`e $O(n \, \log(n))$
+
+\clearpage
+
+\section{31 marzo}
+
+\subsection{Numero di cammini minimi}
+
+\begin{esercizio}
+Calcolare il numero di cammini di lunghezza minima tra due vertici $u$ e $v$.
+\end{esercizio}
+
+Il numero di cammini minimi da $u$ a $v$ sar\`a sempre minore o uguale del numero di cammini dai vicini di $u$ al nodo $v$. Ossia, il numero di cammini da $u$ a $v$ di lunghezza $c$ \`e minore o uguale al numero di cammini dai vicini di $u$ al nodo $v$ di lunghezza $c-1$.
+
+In realt\`a, sono proprio uguali. I cammini da $u$ a $v$ di lunghezza minima sono tanti quanti i cammini dai vicini di $u$ a $v$ di lunghezza minima: per ogni cammino minimo $P$ da $N(u)$ (i vicini $u'$ di $u$) $\to v$ esiste un cammino da $u$ a $N(u)$ e da $N(u)$ a $v$ ancora minimo, ossia il cammino $(u, u') P$ (ossia, composto dall'arco $(u,u')$ e da $P$).
+
+Sia $N(u) = \{ u_1, u_2, \ldots, u_l \}$, il numero di cammini di lunghezza minima da $u$ a $v$ \`e uguale a:
+\[
+\sum_{i = 1}^{l} \text{ numero di cammini di lunghezza minima da $u_i$ a $v$}
+\]
+\begin{algorithm}
+\caption{Algoritmo per trovare il numero di cammini minimi}
+\begin{algorithmic}[1]
+\Function{BSF\_M}{$G$ grafo, $u$ nodo}
+    \State $Dist \gets$ array di distanze dei nodi da $u$, inizializzato a $-1$
+    \State $m \gets$ array che conta il numero di cammini minimi dal nodo $x$ alla radice, inizializzato a 0
+    \State $Dist[u] \gets 0$
+    \State $m[u] \gets 1$
+    \State $Q \gets$ coda vuota
+    \State $Q$.enqueue($u$)
+    \While{$Q \neq \emptyset$}
+        \State $v \gets Q$.dequeue()
+        \ForAll{$w \adj v$}
+            \If{$Dist[w] = -1$}
+                \State $Dist[w] \gets Dist[v] + 1$
+                \State $m[w] \gets m[v]$
+                \State $Q$.enqueue($w$)
+            \ElsIf{$Dist[w] = Dist[v] + 1$}
+                \State $m[w] \gets m[w] + m[v]$
+            \EndIf
+        \EndFor
+    \EndWhile
+    \State \Return $m$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\clearpage
+
+\subsection{Alberi di visita dei DFS e BFS}
+
+\begin{esercizio}
+Per quali grafi l'albero di visita del $DFS$ \`e uguale a quello del $BFS$?
+\end{esercizio}
+
+\begin{oss}
+Se $G$ \`e un albero, sia il $DFS$ che il BFS trovano lo stesso albero di visita (anche se con ordini differenti).
+\end{oss}
+
+Se c'\`e un ciclo, ossia un arco all'indietro nell'albero di visita, le cose diventano interessanti. Se c'\`e un ciclo in $G \implies \exists (v, w) \notin E(T_{DFS})$. $(v,w)$ deve essere un arco all'indietro (assumiamo che $t[v] < t[w]$), quindi $v$ deve essere un antenato di $w$. La distanza dalla radice dell'albero a $v$ e la distanza dalla radice dell'albero a $w$ differiscono di almeno due archi. Ossia, siccome $(v,w) \notin E(T_{DFS})$, $dist_{T_{DFS}} (u,w) \ge dist_{T_{DFS}} (u,v) + 2$.
+
+Per la $DFS$, invece, vale che $D_G(u,w) = D_{T_{BFS}} (u,w)$. Inoltre la distanza nel grafo \`e al maggiorabile con $D_G(u,w) \le D_{T_{DFS}} (u,v) + 1$.
+
+Se $T_{DFS} = T_{BFS}$, allora $D_{T_{DFS}} (u,w) = D_{T_{BFS}} (u,w)$. Ma abbiamo visto che $D_{T_{DFS}} (u,w) \ge D_{T_{DFS}} (u,v) + 2 > D_{T_{DFS}} (u,v) + 1 \ge D_{T_{BFS}} (u,w)$, quindi non pu\`o essere.
+
+$T_{DFS} = T_{BFS} \iff G$ \`e un albero.
+
+\clearpage
+
+\subsection{Distanza di un nodo}
+
+\begin{esercizio}
+Dato il vettore dei padri $P$ di un $BFS$ con radice $u$, troviamo in tempo $O(n)$ il vettore $D$ di distanza da $u$.
+\end{esercizio}
+
+Per trovare la distanza di un dato nodo $v$, si segue il vettore dei padri partendo da $v$ e contando gli archi fino ad arrivare a $u$.
+
+\begin{algorithm}
+\caption{Algoritmo per determinare la distanza di un nodo}
+\begin{algorithmic}[1]
+\State $d \gets 0$
+\State $w \gets x$
+\While{$P[w] \neq u$}
+    \State $d \gets d + 1$
+    \State $w \gets P[w]$
+\EndWhile
+\State \Return $d$
+\end{algorithmic}
+\end{algorithm}
+
+Se vogliamo trovare tutte le distanze dovremmo ripetere questo algoritmo per ciascun nodo. Ma il tempo sarebbe $O(n^2)$. Possiamo abbassarlo a $O(n)$ evitando di ripetere il procedimento per ogni nodo, ma solo fino al primo nodo di cui non conosciamo la distanza.
+
+\begin{algorithm}
+\caption{Algoritmo per determinare la distanza di \emph{tutti} i nodi}
+\begin{algorithmic}[1]
+\Function{Distanza}{$P$ vettore}
+    \State $Dist \gets$ array, inizializzato a $-1$
+    \ForAll{$v \in V$}
+        \If{$Dist[w] = -1$}
+            \State $Dist[w] \gets$ \Call{DistP}{$P$, $w$, $Dist$}
+        \EndIf
+    \EndFor
+    \State \Return $Dist$
+\EndFunction
+\Function{DistP}{$P$ vettore, $w$ nodo, $Dist$ array}
+    \If{$Dist[w] = -1$}
+        \If{$P[w] = w$}
+            \State $Dist[w] \gets 0$
+        \Else{}
+            \State $Dist[w] \gets$ \Call{DistP}{$P$, $P[w]$, $Dist$} $+ 1$
+        \EndIf
+    \EndIf
+    \State \Return $Dist[w]$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\clearpage
+
+\subsection{Vertici equidistanti}
+
+\begin{esercizio}
+Dati due vertici $u$ e $v$, trovare tutti i vertici $x$ equidistanti da $u$ e $v$, ossia tali che $dist(u,x) = dist(v,x)$.
+\end{esercizio}
+
+Si fa un $BFS$ a partire da $u$, e salviamo le distanze dei vertici da $u$ in un vettore, e ripetiamo tutto con $v$. Per ogni vertice in questi vettori, se la loro distanza \`e uguale a quella fra $u$ e $v$, li mettiamo da parte. La complessit\`a \`e $O(n+m+n+m+n+n) = O(n+m)$.
+
+\clearpage
+
+\subsection{Distanza tra insiemi}
+
+\begin{esercizio}
+Dati due insiemi di vertici $A$ e $B$, vogliamo trovare la distanza minima tra un vertice in $A$ e un vertice in $B$, ossia la distanza $(x,y)$ con $x \in A$ e $y \in B$.
+\end{esercizio}
+
+Un modo inefficiente \`e fare una $BFS$ per ciascun nodo in $A$, e tener traccia del minimo. La complessit\`a sar\`a qualcosa come $O(n \cdot (n+m))$.
+
+Il modo migliore \`e fare una $BFS$ mettendo all'inizio tutti i vertici in $A$ in coda.
+
+\begin{algorithm}
+\caption{Algoritmo per trovare la distanza dei nodi di un grafo da un insieme di nodi}
+\begin{algorithmic}[1]
+\Function{BFS\_Set}{$G$ grafo, $A$ insieme di nodi}
+    \State $Dist\_A \gets$ array, inizializzato a $-1$
+    \State $Q \gets$ coda vuota
+    \ForAll{$a \in A$}
+        \State $Dist\_A[a] \gets 0$
+        \State $Q$.enqueue($a$)
+    \EndFor
+    \While{$Q \neq \emptyset$}
+        \State $v \gets Q$.dequeue()
+        \ForAll{$w \adj v$}
+            \If{$Dist\_A[w] = -1$}
+                \State $Dist\_A[w] \gets Dist\_A[v] + 1$
+                \State $Q$.enqueue($w$)
+            \EndIf
+        \EndFor
+    \EndWhile
+    \State \Return $Dist\_A$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+Supponiamo di aggiungere due vertici $x_A$ e $x_B$, ciascuno con vicini rispettivamente tutti i vertici di $A$ e di $B$. La distanza fra $x_A$ e $x_B$ \`e esattamente la distanza fra $A$ e $B$ pi\`u 2.
+
+Quindi un'altra idea \`e aggiungere questi due vertici e fare una $BFS$ a partire da $x_A$, e ritornare la distanza di $x_B - 2$.
+
+\clearpage
+
+\section{14 aprile}
+
+\subsection{Primo esercizio}
+
+% grafo 
+% B A C F
+%  D E G H
+% nodi
+% (BA) (BD) (AD) (AC) (CD) (DE) (EG) (GH) (CE) (CG) (CF) (FG) (FH)
+% albero
+% B - A - D - E - G - F
+% G - H
+% D - C
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+    \node (B) [circle, draw] {B};
+    \node (A) [circle, draw, right = of B] {A};
+    \node (C) [circle, draw, right = of A] {C};
+    \node (F) [circle, draw, right = of C] {F};
+    \node (D) [circle, draw, below right = of B] {D};
+    \node (E) [circle, draw, right = of D] {E};
+    \node (G) [circle, draw, right = of E] {G};
+    \node (H) [circle, draw, right = of G] {H};
+
+    \path[-, very thick] 
+        (A) edge (B)
+        (A) edge (D)
+        (C) edge (D)
+        (D) edge (E)
+        (E) edge (G)
+        (F) edge (G)
+        (G) edge (H)
+        ;
+    \path[-]
+        (A) edge (C)
+        (B) edge (D)
+        (C) edge (E)
+        (C) edge (G)
+        (C) edge (F)
+        (F) edge (H)
+        ;
+\end{tikzpicture}
+\caption{\label{fig:primo_esercizio_esonero}Un grafo, con un albero di visita}
+\end{figure}
+
+Per quali di questi vertici l'albero di visita (indicato dagli archi pi\`u scuri) del grafo in figura \ref{fig:primo_esercizio_esonero} pu\`o essere un $DFS$ o un $BFS$?
+
+Nessuno per il $BFS$, perch\'e dovrebbe esserci almeno un nodo che ha tutti gli archi incidenti nell'albero di visita.
+
+Per il $DFS$, n\'e $C$ n\'e $H$ possono essere radici. Non possono esserci due foglie nell'albero $DFS$ che sono adiacenti nel grafo. Detto in un altro modo, non possono esserci due vertici di grado 1 nell'albero di visita che sono adiacenti nel grafo. $F$ per\`o pu\`o essere radice. Bisogna quindi dare l'ordine di visita di tutti i vertici. Ma non esiste un ordine di visita che rispetti il $DFS$, quindi non esiste un nodo che pu\`o essere radice di un $DFS$ con l'albero dato.
+
+\clearpage
+
+\subsection{Secondo esercizio}
+
+Scrivere lo pseudocodice di un algoritmo in input un grafo non diretto e connesso, un suo nodo $u$, un vettore dei padri $P$ relativo ad un $BFS$ da $u$ e un arco $(v,w)$ ritorna \code{True} se cancellando $(v,w)$ non cambia la distanza da $u$ di nessun vertice. La complessit\`a deve essere $O(n)$.
+
+Si pu\`o trovare la distanza di ogni vertice, dato il vettore dei padri, in tempo $O(n)$. Conoscendo la distanza dei vertici, il lavoro \`e semplice.
+
+Se l'arco $(v,w)$ non fa parte dell'albero, si ritorna \code{True}. Se $(v,w)$ fa parte dell'albero, assumiamo (senza perdita di generalit\`a) che la distanza di $w$ \`e maggiore della distanza di $v$. Se esiste un nodo $v'$ adiacente a $w$ che \`e alla stessa distanza di $v$, allora il grafo non cambia.
+
+\clearpage
+
+\subsection{Terzo esercizio}
+
+Abbiamo il grafo diretto di una rete ferroviaria. I nodi sono le stazioni. Gli archi sono i treni che collegano le stazioni. Ogni arco ha un peso $p_1$, che \`e il tempo di percorrenza da una stazione all'altra. Per ogni stazione c'\`e un tempo di attesa ($p_2$).
+
+Dato un nodo $u$, vogliamo trovare il tempo (minimo) per arrivare dal nodo $u$ a tutti gli altri nodi.
+
+Il modo pi\`u diretto \`e modificare l'algoritmo di Dijkstra. 
+
+Il tempo di percorso dal vertice $u$ ad un vertice $x$ \`e dato dalla somma dei pesi degli archi da $u$ a $x$ pi\`u il peso dei singoli nodi nel cammino escluso il peso di $x$. Quello che vogliamo minimizzare, al variare di $r \in R$, \`e:
+\[
+dist(u,r) + p_2(r) + p_1(r,x)
+\]
+In realt\`a basta definire la funzione $P(r,x) = p_2(r) + p_1(r,x)$, e fare Dijkstra con questa funzione.
+
+\clearpage
+
+\subsection{Quarto esercizio}
+
+In un museo, c'\`e un corridoio. In punti diversi del corridoio ci sono dei quadri. $x_i$ indica la posizione di un quadro nel corridoio.
+
+Il corridoio \`e rappresentato come una retta. Vogliamo mettere delle telecamere, ma le telecamere possono vedere solo 5 unit\`a a destra e 5 unit\`a a sinistra. Vogliamo trovare un algoritmo efficiente per posizionare il numero minore di telecamere per coprire tutti i quadri.
+
+Ci vuole un algoritmo greedy. Siano $c_1, \ldots c_k$ le telecamere gi\`a messe, e sia $x_i$ il quadro pi\`u a sinistra non ancora coperto da una telecamera, si posiziona la telecamera $c_{k+1}$ 5 unit\`a a destra della posizione del quadro $i$.
+
+Per dimostrare la correttezza di questo algoritmo, bisogna dimostrare che per $i \ge 0 \exists$ una soluzione ottimale $S^{o}$ che include la soluzione parziale $c_1, \ldots, c_i$. La soluzione ottimale sar\`a del tipo:
+\[
+S^{o} = \{ c_1, \ldots, c_i, u_1, \ldots, u_k \}
+\]
+Consideriamo il primo quadro non coperto da $c_1, \ldots, c_i$. Questo quadro sar\`a coperto da una telecamera $u_j$ nella soluzione ottimale. $c_{i+1}$ coprir\`a questo quadro e i quadri nelle 10 unit\`a successive. $c_{i+1}$ pu\`o essere sostituito alla telecamera $u_j$ che copre il quadro non coperto dalla soluzione parziale al passo $i$.
+
+\clearpage
+
+\section{29 maggio}
+
+\subsection{Archi interni ed esterni}
+
+Un arco (u,v) in un grafo diretto \`e detto interno se u e v appartengono alla stessa componente fortemente connessa.
+
+Dato l'albero di visita di un DFS di un grafo diretto:
+\begin{enumerate}
+    \item \`e possibile che un arco (u,v) sia un arco all'indietro e anche un arco esterno? No. Un arco all'indietro individua un ciclo, e un ciclo \`e una componente fortemente connessa.
+    \item \`e possibile che un arco in avanti sia un arco esterno? S\`i, con tre nodi A, B, C e archi A->B, B->C, e A->C.
+    \item un arco in avanti \`e sempre un arco esterno? No. Stesso esempio di prima, con l'arco C->A.
+\end{enumerate}
+
+\clearpage
+
+\subsection{???}
+
+Scrivere lo pseudo codice di un algoritmo che prende in input un grafo G indiretto, un arco (x,y) in G e un albero di visita BFS T con radice in u, e stabilisce in tempo O(n) se cancellando l'arco (x,y) cambia la distanza per raggiungere o x o y da u.
+
+Se l'arco non fa parte dell'albero, la distanza fra u e x o y non cambia.
+
+Altrimenti, si trova la distanza da u per tutti i nodi. 
+
+Poi, se dist[y] < dist[x] allora z = x, altrimenti z = y.
+
+\forall w \adj z tale che w \neq x, y, se dist[w] = dist[z] - 1, allora la distanza non cambia. Altrimenti, la distanza cambia.
+
+\clearpage
+
+\section{???}
+
+Abbiamo n case, il costo di ogni casa per costrure un pozzo nella casa i \`e p[i], e il costo per costruire una tubatura dalla casa i alla casa j \`e C[i,j]. In tempo O(n^2), trovare un sistema di pozzi e tubature tale per cui arriva acqua ad ogni casa o con un pozzo o con un sistema di tubature da una casa con una pozza, con costo minimo.
+
+Consideriamo un grafo con n+1 nodi, di cui n nodi a rappresentare le case e con un nodo ``pozzo'' a cui colleghiamo tutti gli altri nodi con un arco. Chiamiamo O questo nodo, il peso p(O,i) \`e p[i], e il peso p(i,j) = c[i,j]. Ora basta trovare un Minimum Spanning Tree per il grafo.
+
+I nodi adiacenti a O nel MST devono costruire un pozzo.
+
+\clearpage
+
+\section{???}
+
+Data una sringa S trovare la sottostringa palindroma pi\`u lunga in tempo O(n^2).
+
+S = a b b a c c d a b a
+= a b a c c a b a
+
+Togliendo una b e una d.
+
+La soluzione parziale dipende da due indice i e j. Sia Sol[i,j] la sottostringa pi\`u lunga in S[i,j]. Sol[i,i] = 1 \forall i. Poi, se S[i] \neq S[j] \implies Sol[i,j] = \max( Sol[i+1,j], Sol[i,j-1]). Altrimenti, Sol[i,j] = \max( Sol[i+1,j], Sol[i,j-1], 2 + Sol[i+1,j-1] )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

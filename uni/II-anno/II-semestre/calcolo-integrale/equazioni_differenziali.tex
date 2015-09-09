@@ -1,0 +1,377 @@
+La forma generale delle equazioni differenziali \`e:
+\[
+y' = f(t,y)
+\]
+Le soluzioni saranno tutte le funzioni $y(t)$ tali che $y'(t) = f(t, y(t)) \forall t$.
+
+Facciamo un esempio: l'accelerazione \`e la derivata seconda dello spostamento. Quindi il secondo principio della dinamica (forza = massa per accelerazione) si pu\`o scrivere come:
+\[
+f(t, y, y') = F = m \cdot a = m \cdot y''
+\]
+indicando con $y(t)$ lo spostamento al tempo $t$. La forza \`e una funzione dell'istante, dello spostamento e della velocit\`a.
+
+Il caso pi\`u semplice che possiamo affrontare \`e:
+\[
+y' = a \cdot y
+\]
+\`E, ad esempio, l'equazione che governa il decadimento radioattivo. E si potrebbe usare per trovare l'equazione di crescita di una popolazione, indicando con $a$ il tasso di natalit\`a meno il tasso di mortalit\`a. O almeno, questa legge \emph{dovrebbe} governare il tasso di crescita (o decrescita) di una popolazione.
+
+Una funzione che verifica $y' = a \cdot y$, per $a = 1$, \`e $e^x$. Generalizzando, ovviamente, la funzione \`e $e^{a \cdot x}$.
+
+Quindi, $y = C \, e^{a \cdot t}$ rappresenta le infinite soluzioni di $y' = a \cdot y$. \`E facilmente verificabile. Ma noi vogliamo una soluzione unica. L'univocit\`a della risposta dipende dal \emph{dato iniziale}. Se stiamo considerando, ad esempio, una popolazione, il numero della popolazione in un certo istante $t'$ dipende dal numero della popolazione all'istante iniziale $t_0$.
+
+Si vede subito che la funzione, all'istante iniziale, vale $y(0) = C$.
+
+\section{Problemi di Cauchy}
+
+Si chiama \emph{problema di Cauchy} la combo di equazione differenziale e valore iniziale:
+\[
+y' = a \cdot y , \, y(0) = C
+\]
+La soluzione (ossia la funzione $y$) \`e univoca.
+
+Un'equazione del genere, usata per descrivere la crescita di una popolazione, \`e chiamato \emph{modello maltusiano}.
+
+In realt\`a, l'andamento di una popolazione \`e descritta meglio da un'equazione differenziale del tipo:
+\[
+y' = a \, y - b \, y^2
+\]
+detta \emph{equazione logistica}.
+
+Queste sono dette equazioni differenziali del primo ordine. Equazioni differenziali del secondo ordine sono equazioni differenziali contenenti una derivata seconda, come l'equazione differenziale vista all'inizio, per il secondo principio della dinamica, o l'equazione che descrive l'andamento di una molla.
+
+%y'' = y + \omega^2
+% CONTROLLARE
+
+\subsubsection{Equazioni differenziali banali}
+
+Un'equazione differenziale del primo ordine molto banale \`e:
+\[
+y' = f(t)
+\]
+Non merita neanche di essere chiamata un'equazione differenziale: il problema \`e soltanto trovare le primitive di $f(t)$. Le primitive sono infinite, e questo lo sappiamo. Le soluzioni sono del tipo:
+\[
+y(t) = \int f(t) \dx[t] = \int_{t_0}^{t} f(s) \dx[s] + C
+\]
+Per rendere una ricerca di primitive un problema di Cauchy, si deve imporre una condizione del tipo $y(t_0) = y_0$ (detta \emph{condizione di Cauchyt}). Ponendo $t = t_0$, l'integrale \`e 0, e quindi deve essere $C = y_0$. 
+
+Quindi la soluzione generale di $y' = f(t)$ (con condizione di Cauchy $y(t_0) = y_0$) \`e:
+\[
+y(t) = \int_{t_0}^{t} f(s) \dx[s] + y_0
+\]
+Fine.
+
+Le equazioni differenziali \emph{banali} sono quelle in cui il secondo membro non dipende dall'incognita, ossia quelle, come appena visto, nella forma:
+\[
+y' = f(t)
+\]
+Le equazioni differenziali (del primo ordine) interessanti sono tutte:
+\[
+y' = f(y)
+\]
+Torniamo al caso particolare in cui $f(y) = a \, y$. Una funzione che vale identicamente 0 \`e soluzione dell'equazione. Escludiamo questo caso, e scriviamo questo (nei punti in cui $y$ \`e diversa da 0):
+\[
+y'(t) = a \, y(t) \implies \frac{y'(t)}{y(t)} = a
+\]
+Se vale questo, possiamo integrare in $\diff t$.
+\[
+\int_{t_0}^{t} \frac{y'(s) \dx[s]}{y(s)} = a \cdot (t - t_0)
+\]
+Che possiamo scrivere come:
+\[
+\int_{y(t_0)}^{y(t)} \frac{\diff y}{y} =
+\abslog{y(t)} - \abslog{y(t_0)} =
+\log \left( \frac{y(t)}{y(t_0)} \right)
+\]
+\`E un integrale che sappiamo (e che scriviamo come frazione, senza modulo, perch\'e siamo svegli).
+
+Tornando all'uguaglianza di prima, scriviamo questo:
+\[
+\log \left( \frac{y(t)}{y(t_0)} \right) = a \, (t - t_0) \implies
+\frac{y(t)}{y(t_0)} = e^{a \, (t - t_0)} \implies
+y(t) = y(t_0) \, e^{a \, (t - t_0)} = y(t_0) \, e^{- a \, t_0} \, e^{a \, t}
+\]
+La parte dipendente da $t_0$, ossia $y(t_0) \, e^{- a \, t_0}$, l'abbiamo messa all'inizio per evidenziarla meglio.
+
+\subsection{Equazioni a variabili separabili}
+
+Studiamo una classe delle equazioni differenziali, quella delle equazioni differenziali a variabili separabili.
+
+Le equazioni differenziali a variabili separabili sono le equazioni differenziali riscrivibili come:
+\[
+y' = a(t) \cdot b(y)
+\]
+Ossia, per cui riusciamo a identificare e a separare due funzioni dipendenti una dalla $y$ e una dalla $t$ (con $y = y(t)$). Queste equazioni si possono riscrivere cos\`i:
+\[
+\int \frac{\diff y}{b(y)} = \int a(t) \dx[t]
+\]
+solo negli intervalli in cui $b(y)$ \`e diversa da 0, ovviamente.
+\begin{exmp}[di equazione a variabili separabili]
+L'equazione che descrive l'andamento di una popolazione \`e l'equazione logistica:
+\[
+y' = a \, y - b \, y^2
+\]
+$a$ indica la differenza fra tasso di natalit\`a e tasso di mortalit\`a. $b$ indica le interazioni (negative, due a due - da cui il segno meno e il quadrato) fra membri della popolazione. Per $b = 0$, \`e l'equazione maltusiana. 
+
+Come si proceder\`a con la risoluzione? Scriveremo questo:
+\[
+\frac{y'}{a \, y - b \, y^2} = 1
+\]
+Da cui ricaveremo questo integrale da calcolare:
+\[
+\int \frac{\diff y}{a \, y - b \, y^2}
+\]
+
+Prima, per\`o, si pu\`o riscrivere l'equazione logistica in questo modo (per $b$ diverso da 0):
+\[
+y' = k \, y \cdot \left( 1 - \frac{y}{L} \right)
+\]
+$L = \frac{a}{b}$ rappresenta il massimo di popolazione sostenibile, e $k = a$.
+
+Vedendo quest'equazione come un'equazione differenziale a variabili separabili, si vede che $a(t) = k$ e $b(y) = y \cdot \left( 1 - \frac{y}{L} \right)$.
+
+Dobbiamo calcolare questo integrale indefinito:
+\begin{align*}
+\int \frac{\diff y}{y \, \left( 1 - \frac{y}{L} \right)} &= \int k \dx[t] \implies \\
+\int \frac{\diff y}{y} + \int \frac{\diff x}{L - y} &= k \, t + C \implies \\
+\abslog{y} - \abslog{L - y} &= \abslog{\frac{y}{L - y}} = k \, t + C 
+\end{align*}
+Scriviamo, esponenziando entrambi i membri, questo:
+\[
+\abs{\frac{y}{L - y}} = e^{k \, t} \, e^C
+\]
+$e^C$ \`e una costante positiva (e quindi il secondo membro \`e sempre positivo). Togliamo il modulo, e prendiamo quindi al suo posto una costante $C_1$ qualsiasi (negativa o positiva):
+\begin{align*}
+y &= C_1 \, e^{k \, t} \cdot (L - y) \implies \\
+y \cdot (1 + C_1 \, e^{k \, t}) &= C_1 \, L \, e^{k \, t} \implies \\
+y(t) &= \frac{C_1 \, L \, e^{k \, t}}{1 + C_1 \, e^{k \, t}}
+\end{align*}
+Con un ultimo passaggio (dividendo numeratore e denominatore per $e^{k \, t})$ otteniamo questa forma della soluzione:
+\[
+y(t) = \frac{C_1 \, L}{e^{- k \, t} + C_1}
+\]
+Il valore iniziale $u = y(0)$ sar\`a:
+\[
+u = \frac{C_1 \, L}{1 + C_1}
+\]
+Per $t \to \infty$, la funzione che abbiamo trovato tende a $L$. Quindi la popolazione tende alla soglia massima.
+
+Nota a margine: esiste anche una versione discreta dell'equazione logistica.
+\[
+y_{n+1} = k \, y_n \cdot \left( 1 - \frac{y_n}{L} \right)
+\]
+\end{exmp}
+
+Facciamo qualche esercizio con equazioni a variabili separabili:
+\[
+y' = ( \sin (t) ) \cdot (1 + y^2)
+\]
+Come fatto sopra, la riscriviamo in questo modo e la risolviamo:
+\begin{align*}
+\int \frac{\diff y}{1+y^2} &= \int \sin (t) \dx[t] \implies \\
+\arctan (y) &= - \cos(t) + C \implies \\
+y(t) &= \tan \left( -\cos(t) + C \right)
+\end{align*}
+Per quali valori di $t$ \`e definita? Dipende tutto dal valore che si vuole avere all'istante iniziale. La tangente non \`e definita in $t = \frac{\pi}{2} + k \, \pi$.
+
+Potremmo associare, ad esempio, la condizione di Cauchy che $y(0) = 0$. Dobbiamo trovare $C$:
+\[
+\tan \left( -1 + C \right) = 0 \implies C = \arctan ( 0 ) + 1 = 1
+\]
+\subsubsection{Equazioni differenziali lineari omogenee}
+
+Considerando l'equazione differenziale generale seguente:
+\[
+y' = a(t) \, y
+\]
+La soluzione generale sar\`a:
+\[
+y(t) = K \, e^{A(t)}
+\]
+con $A'(t) = a(t)$ (ossia, $A(t)$ \`e una primitiva di $a(t)$. Equazioni differenziali di questo tipo sono dette \emph{lineari omogenee}.
+
+\subsection{Equazioni non a variabili separabili}
+
+Sommando a un'equazione lineare omogenea una quantit\`a dipendente solamente dalla $t$, otteniamo un'equazione non pi\`u separabile:
+\begin{equation}
+\label{lineare_non_omogenea}
+y' = a(t) \, y + f(t)
+\end{equation}
+Se $f(t)$ fosse identicamente nullo, la totalit\`a delle soluzioni l'abbiamo vista poco sopra, con le equazioni differenziali lineari omogenee.
+
+Andiamo a studiare una funzione del tipo:
+\begin{equation}
+\label{variazione_costante}
+y(t) = v(t) \, e^{A(t)}
+\end{equation}
+cercando una funzione $v(t)$ (``variazione della costante'') tale per cui questa $y(t)$ sia soluzione dell'equazione differenziale \ref{lineare_non_omogenea}. Quest'equazione \`e detta \emph{lineare non omogenea}.
+
+Allora: noi vogliamo che $y(t)$ (nell'equazione \ref{variazione_costante}) sia soluzione dell'equazione lineare non omogenea \ref{lineare_non_omogenea}. Quindi, consideriamo solo una parte di quest'ultima (ossia, la parte lineare \emph{omogenea}). Chiamiamola $y_0$:
+\[
+y_0' = a(t) \, y_0
+\]
+\`E evidente che $y'(t) = y_0'(t) + f(t)$. La soluzione di questa parte dell'equazione \`e $y_0 (t) = e^{A(t)}$. Ora l'equazione \ref{variazione_costante} si pu\`o scrivere come:
+\begin{equation}
+\label{variazione_costante_riscritta}
+y(t) = v(t) \, y_0 (t)
+\end{equation}
+Dobbiamo trovare $v(t)$, e nel trovarlo vogliamo imporre quanto segue:
+\[
+v'(t) \, y_0 (t) + v(t) \, y_0'(t) = a(t) \, v(t) \, y_0 (t) + f(t)
+\]
+Ossia, vogliamo imporre che la derivata prima dell'equazione \ref{variazione_costante_riscritta} sia uguale all'equazione iniziale \ref{lineare_non_omogenea}.
+
+Per come abbiamo definito la soluzione $y_0 (t)$ dell'omogenea parziale, vale che $y_0' (t) = a(t) \, y_0 (t)$. Possiamo semplificare queste due parti, essendo $v(t) \, y_0' (t) = a(t) \, v(t) \, y_0 (t)$. Ci\`o che resta da imporre \`e:
+\[
+v'(t) \, y_0 (t) = f(t) \implies v'(t) = \frac{f(t)}{y_0 (t)}
+\]
+Da qui possiamo trovare $v(t)$, e avere la soluzione dell'equazione lineare non omogenea, data da:
+\[
+y(t) = v(t) \, y_0 (t)
+\]
+
+\begin{exmp}
+Consideriamo la lineare non omogenea:
+\[
+y' + x \, y = x^3
+\]
+Il primo passo \`e trovare la soluzione dell'omogenea $y_0' = - x \, y_0$.
+\[
+\int \frac{\diff y_0}{y_0} = - \int x \dx
+\]
+Abbiamo gi\`a visto quale \`e la soluzione di quest'equazione, ossia:
+\[
+\abslog{y_0 (x)} = - \frac{x^2}{2} + C \implies
+y_0 (x) = K \, e^{- \frac{x^2}{2}}
+\]
+La costante non \`e importante, per ora.
+
+Siamo arrivati ad una soluzione parziale:
+\[
+y(x) = v(x) \, e^{-\frac{x^2}{2}}
+\]
+Quello che ci manca \`e trovare $v(t)$.
+
+La condizione da imporre \`e:
+\begin{align*}
+v' (x) \, e^{-\frac{x^2}{2}} &= x^3 \implies \\
+v'(x) &= x^3 \, e^{\frac{x^2}{2}} \implies \\
+v(x) &= \int x^3 \, e^{\frac{x^2}{2}} \dx =
+x^2 \, e^{\frac{x^2}{2}} - 2 \, e^{\frac{x^2}{2}} 
+\end{align*}
+La totalit\`a delle soluzioni \`e data da:
+\[
+y(x) = \left[ \left( x^2 - 2 \right) e^{\frac{x^2}{2}} + C \right] \, e^{- \frac{x^2}{2}} = 
+x^2 - 2 + C \, e^{-\frac{x^2}{2}}
+\]
+\end{exmp}
+
+\subsection{Equazioni integrali}
+
+Le equazioni integrali sono equazioni di questo tipo:
+\[
+y(x) = - \int_{\pi}^{x} \left[ y(t) \, \cos(t) - 2 \, t \, e^{- \sin(t)} \right] \dx[t]
+\]
+Equivalgono a una coppia equazione differenziale + condizione di Cauchy. L'equazione differenziale si ottiene derivando entrambi i membri (come visto nella sezione \ref{derivate_di_integrali}):
+\[
+y'(x) = y(x) \, \cos(x) - 2 \, x \, e^{-\sin(x)}
+\]
+La condizione di Cauchy si trova sostituendo nell'equazione integrale la parte inferiore dell'integrale (in questo caso, $\pi$):
+\[
+y(\pi) = - \int_{\pi}^{\pi} \left[ y(t) \, \cos(t) - 2 \, t \, e^{- \sin(t)} \right] \dx[t] = 0
+\]
+\section{Equazioni differenziali del secondo ordine}
+
+L'equazione di Newton:
+\[
+F = m \cdot a
+\]
+\`e un'equazione differenziale del secondo ordine.
+\[
+F(t, y(t), y'(t)) = m \cdot y''(t)
+\]
+L'equazione differenziale pi\`u facile da studiare all'interno del mondo delle equazioni differenziali \`e l'equazione differenziale dell'\emph{oscillatore armonico}:
+\[
+x'' + \omega^2 \, x = 0 \implies x'' = - \omega^2 \, x
+\]
+Questa legge ci dice che l'accelerazione \`e proporzionale allo spostamento, ma procede nella direzione opposta. Tanto pi\`u si  tira una molla, tanto pi\`u la forza della molla sar\`a ``forte'' e rivolta nella direzione opposta dello spostamento.
+
+Se si volesse considerare anche l'attrito, questo sarebbe proporzionale alla velocit\`a:
+\[
+x'' = - \omega^2 \, x + k \, x'
+\]
+Intuitivamente, si pu\`o pensare al fatto che questo moto \`e periodico. E infatti la totalit\`a delle soluzioni sono:
+\[
+x(t) = C_1 \, \cos ( \omega \, t) + C_2 \, \sin ( \omega \, t )
+\]
+Questa espressione di solito si scrive, essendo $C_1$ e $C_2$ costanti arbitrarie, come:
+\[
+x(t) = A \, \cos (\omega \, t + \varphi )
+\]
+Con le regole di prostaferesi, si trova facilmente $A$ e $\varphi$ che soddisfino l'equazione. $A$ \`e detta ``ampiezza'', $\varphi$ \`e detta ``fase'', e $\omega$ \`e detto ``periodo''.
+
+A un'equazione differenziale (generica) di secondo grado:
+\[
+x'' + a \, x' + b \, x = 0
+\]
+si associa un'equazione algebrica in $\lambda$:
+\[
+\lambda^2 + a \, \lambda + b = 0
+\]
+Con:
+\[
+\lambda = \frac{- a \pm \sqrt{a^2 - 4 \, b}}{2}
+\]
+Se andiamo a vedere in questo modo l'equazione del moto della molla, vediamo che $\lambda^2 = - \omega^2$, e quindi che $\lambda = \pm i \, \omega$. Abbiamo due soluzioni complesse coniugate (ossia, nella forma $\alpha \pm i \, \beta$).
+
+La regola dice che, in questo caso, le soluzioni sono:
+\[
+y(x) = C_1 \, e^{\alpha \, t} \, \cos ( \beta \, t) + C_2 \, e^{\alpha \, t} \, \sin( \beta \, t )
+\]
+Se invece $\lambda_1 = \alpha$ e $\lambda_2 = \beta$, con $\alpha \neq \beta$, la totalit\`a delle soluzioni \`e:
+\[
+C_1 \, e^{\alpha \, t} + C_2 \, e^{\beta \, t}
+\]
+Se $\alpha = \beta$:
+\[
+C_1 \, e^{\alpha \, t} + C_2 \, t \, e^{\alpha \, t}
+\]
+Per capire come si trovano queste soluzioni, il modo migliore \`e osservare un caso reale.
+
+Noi stiamo andando a cercare una soluzione in questa forma:
+\[
+x(t) = e^{\lambda \, t}
+\]
+Quel che viene fuori, sostituendo questo in $x'' + a \, x' + b \, x = 0$:
+\[
+e^{\lambda \, t} \, \left[ \lambda^2 + a \, \lambda + b \right] = 0
+\]
+Le soluzioni dell'equazione differenziale sono le soluzioni dell'equazione algebrica di secondo grado.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

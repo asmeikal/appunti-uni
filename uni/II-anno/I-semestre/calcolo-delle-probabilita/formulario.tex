@@ -1,0 +1,450 @@
+\input{../../Common/common.tex}
+
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=1cm plus .2cm minus .5cm
+  \thm@postskip=\thm@preskip % or whatever, if you don't want them to be equal
+}
+\makeatother
+
+\begin{document}
+
+% \chapter{Formulario}
+
+\section{Probabilit\`a}
+
+\begin{axiom}[Assioma di numerabile additivit\`a]
+Sia $E_1, E_2, \dots$ \`e una successione di eventi a 2 a 2 disgiunti, vale che:
+\[
+\prob{\bigcup_{i=1}^{\infty} E_i} = \sum_{i=1}^{\infty} \prob{E_i}
+\]
+\end{axiom}
+
+\begin{prop}[Additivit\`a finita]
+Considerata una famiglia finita $E_1, E_2, \dots, E_k$ di eventi a due a due disgiunti, vale che:
+\[
+\prob{\bigcup_{n=1}^{k} E_n} = \sum_{n=1}^{k} \prob{E_n}
+\]
+\end{prop}
+
+\begin{prop}[Monotonia della compatibilit\`a]
+Se $E$ e $F$ sono eventi compatibili (in particolare $E \subset F$), allora $\prob{E} \le \prob{F}$.
+\end{prop}
+
+\begin{defn}[Probabilit\`a condizionata]
+Dati due eventi $E$ e $F$ con $\prob{F} > 0$ si definisce la probabilit\`a di $E$ condizionata dall'evento $F$ come:
+\[
+\probcond{E}{F} = \frac{\prob{E \cap F}}{\prob{F}} 
+\]
+Se $S$ ha esiti equiprobabili e se $\abs{S} < + \infty$, allora:
+\[
+\probcond{E}{F} = \frac{\abs{E \cap F}}{\abs{F}}
+\]
+\end{defn}
+
+\begin{theorem}[Legge del prodotto (o legge delle probabilit\`a composte)]
+Siano $E_1, \ldots, E_n$ eventi con $\prob{E_1 \ldots E_{n-1}} > 0$, allora:
+\[
+\prob{E_1 \ldots E_{n}} = \prob{E_1} \cdot \probcond{E_2}{E_1} \cdot \probcond{E_3}{E_1 E_2} \cdot \ldots \cdot \probcond{E_n }{E_1 E_2 \ldots E_{n-1}}
+\]
+\end{theorem}
+
+\begin{theorem}[Legge della probabilit\`a totale]
+Siano $F_1, \ldots F_n$ eventi a due a due disgiunti la cui unione \`e $S$, ossia $F_1, \dots, F_n$ \`e una partizione di $S$. Supponiamo che $\prob{F_i} > 0 \forall i = 1 \dots n$. Allora $\forall E \in S$ vale:
+\[
+\prob{E} = \sum_{1 = 1}^{n} \probcond{E}{F_i} \cdot \prob{F_i}
+\]
+\end{theorem}
+
+\begin{theorem}[Teorema generale di Bayes]
+Sia $F_1 \dots F_n$ una partizione dello spazio campionario $S$ (ossia una famiglia di eventi a due a due disgiunti e la cui unione da tutto $S$), allora per ogni evento $E \subset S$ e $\forall i = 1 \dots n$ vale:
+\[
+\probcond{F_i}{E} = \frac{\probcond{E}{F_i} \cdot \prob{F_i}}{\prob{E}} = \frac{\probcond{E}{F_i} \cdot \prob{F_i}}{\sum_{j = 1}^{n} \probcond{E}{F_j} \cdot \prob{F_j}}
+\]
+\end{theorem}
+
+\begin{defn}[Rapporto a favore di un evento]
+Il rapporto a favore di un evento $A$ \`e definito come:
+\[
+\frac{\prob{A}}{\prob{A^{\compl}}}
+\]
+\end{defn}
+
+\begin{defn}[Indipendenza probabilistica]
+Due eventi E e F si dicono \emph{indipendenti} se:
+\[
+\prob{E F} = \prob{E} \cdot \prob{F}
+\]
+\end{defn}
+
+\begin{prop}
+Se $E$ e $F$ sono indipendenti, allora $E$ e $F^{\compl}$ sono indipendenti.
+\end{prop}
+
+\begin{defn}[Indipendenza generalizzata]
+Dati $n$ eventi $E_1, E_2, \ldots, E_n$, questi sono detti indipendenti se comunque ne prendo una sottofamiglia, la probabilit\`a dell'intersezione \`e il prodotto delle singole probabilit\`a.
+\begin{gather*}
+\forall r \ge 2, \forall i_1, i_2, \ldots, i_r : 1 \le i_1 < i_2 < \ldots < i_r \le n \\ 
+\prob{E_{i_1} E_{i_2} \ldots E_{i_r}} = \prob{E_{i_1}} \cdot \prob{E_{i_2}} \cdot \ldots \cdot \prob{E_{i_r}}
+\end{gather*}
+\end{defn}
+Consideriamo un esperimento fatto da $n$ o $\infty$ sottoesperimenti che tra loro non interferiscono. Quando i sottoesperimenti sono identici, vengono detti \emph{prove}. Se $P$ descrive l'esperimento (ossia, se $P$ \`e una buona descrizione dell'esperimento), vale la seguente propriet\`a: eventi riferiti a sottoesperimenti diversi sono matematicamente indipendenti.
+
+Consideriamo un esperimento fatto da $n$ sottoesperimenti operativamente indipendenti. Supponiamo che il $k$-esimo sottoesperimento sia modellizato (ossia, descritto) da uno spazio di probabilit\`a $(S_k, P_k) \forall k = 1 \ldots n$. Abbiamo $S_1, S_2, \ldots, S_k$ spazi numerabili. L'esperimento si modellizza con lo spazio di probabilit\`a $(S, P)$ dove $S = S_1 \times S_2 \times \ldots \times S_n = \{ (x_1, x_2, \ldots, x_n) : x_i \in S_i$ con $i = 1, \ldots, n \}$. $P$ \`e l'unica funzione di probabilit\`a definita su $\parts(S)$ tale che:
+\[
+\prob{\{(x_1, x_2, \ldots, x_n)\}} = \prob[P_1]{\{x_1\}} \cdot \prob[P_2]{\{x_2\}} \cdot \ldots \cdot \prob[P_n]{\{x_n\}}
+\]
+Se vale che $\abs{S_k} < \infty \forall  k = 1, \ldots, n$ e che $(S_k, P_k)$ ha esiti equiprobabili $\forall  k = 1 \dots n$, allora $(S,P)$ ha esiti equiprobabili.
+
+\section{Variabili aleatorie}
+
+\begin{defn}[Variabile aleatoria]
+Una variabile aleatoria (reale) \`e una funzione $X : S \to \reals$, ossia \`e una funzione definita sullo spazio campionario a valori reali.
+\end{defn}
+
+\begin{defn}[Variabile aleatoria discreta]
+Una variabile aleatoria $X$ si dice discreta se i suoi possibili valori formano un insieme numerabile (finito o infinito).
+\end{defn}
+
+\begin{defn}[Densit\`a discreta di una variabile aleatoria]
+Data una variabile aleatoria $X$, definisco la sua densit\`a, denotata con $p_X$, come la funzione:
+\[
+p_X : \reals \to [0,1] : \mass{a} = \prob{\{X = a\}}
+\]
+Cosa vuol dire $\{X = a\}$?
+\[
+\{X = a\} = \{ s \in S : X(s) = a\}
+\]
+\end{defn}
+Data una certa densit\`a discreta $p_X$, esiste una variabile aleatoria $X$ con quella densit\`a discreta se $\forall a \in \image{X}$ vale che $\mass{a} \in [0,1]$ e che:
+\[
+\sum_{a \in \image{X}} \mass{a} = 1
+\]
+
+\begin{oss}
+Se $a$ non \`e tra i possibili valori di $X$, allora l'evento $\{X = a\}$ \`e vuoto, quindi \`e impossibile.
+\[
+\mass{a} = \prob{\{X = a\}} = 0
+\]
+\end{oss}
+
+\begin{prop}
+Se $X$ \`e una variabile aleatoria discreta con possibili valori $\{x_i\}_{i \in I}$ ($I$ \`e l'insieme degli indici), allora:
+\[
+\sum_{i \in I} \mass{x_i} = 1
+\]
+\end{prop}
+
+\begin{defn}[Valore atteso di una variabile aleatoria]
+Data una variabile aleatoria discreta $X$ con possibili valori $\{x_i\}_{i \in I}$, il suo valore atteso $\expect{X}$ \`e definito come:
+\[
+\expect{X} = \sum_{i \in I} x_i \cdot \prob{X = x_i} = \sum_{i \in I} x_i \cdot \mass{x_i}
+\]
+Ossia \`e una somma \emph{pesata} dei possibili valori. Si dice anche \emph{speranza matematica} o \emph{valor medio}.
+\end{defn}
+
+\begin{prop}
+Se $S$ \`e numerabie (finito o infinito) ogni variabile aleatoria $X$ \`e discreta, e vale che:
+\[
+\expect{X} = \sum_{z \in S} X(z) \cdot \prob{\{z\}}
+\]
+\end{prop}
+
+\begin{fact}
+Sia $X : S \to \reals$ una generica variabile aleatoria (discreta), e $f : \reals \to \reals$ \`e una funzione. La funzione composta $f \circ X = f(X) : S \to \reals$, che dato $z \in S$ applica la mappa $z \mapsto f(X(z))$, \`e una variabile aleatoria discreta. Il suo valore atteso \`e:
+\[
+\expect{f(X)} = \sum_{x_i \in \image{X}} f(x_i) \cdot \mass{x_i}
+\]
+\end{fact}
+
+\begin{prop}[Linearit\`a del valore atteso]
+Sia $X$ variabile aleatoria discreta, e siano $a, b \in \reals$. Allora:
+\[
+\expect{a \cdot X + b} = a \cdot \expect{X} + b
+\]
+\end{prop}
+
+\begin{fact}
+Se $f : \reals \to \reals$ \`e non negativa, ossia $f(u) \ge 0$, allora anche $\expect{f(X)} \ge 0$. Vale anche se $f(u) \ge a$, allora $\expect{f(X)} \ge a$.
+\end{fact}
+
+\begin{defn}[Variabile aleatoria costante (o deterministica)]
+Sia $X$ una variabile aleatoria con $X(s) = a \forall s \in S$. Il valore atteso \`e $\expect{X} = a$, poich\'e $\expect{X} = a \cdot \prob{X = a} = a \cdot 1 = a$.
+\end{defn}
+
+\begin{defn}[Varianza]
+La varianza di una variabile aleatoria $X$ \`e definita come:
+\[
+\var(X) = \expect{(X - \expect{X})^2}
+\]
+Valore atteso del quadrato di $X - \expect{X}$.
+\end{defn}
+
+\begin{defn}[Deviazione quadratica standard]
+Data $X$ variabile aleatoria, la sua deviazione standard $\sigma_X$ \`e definita come
+\[
+\sigma_X = \sqrt{ \var (X)}
+\]
+\end{defn}
+
+\begin{prop}
+Sia $X$ una variabile aleatoria, allora:
+\[
+\var (X) = \expect{X^2} - {\left( \expect{X} \right)}^2
+\]
+\end{prop}
+
+\begin{defn}[Momento $n$-esimo di una variabile aleatoria]
+Dato $n$ intero, $\expect{X^n}$ \`e detto momento $n$-esimo della variabile aleatoria $X$.
+\end{defn}
+
+\begin{prop}[Non linearit\`a della varianza]
+\[
+\var (a \cdot X + b) = a^2 \cdot \var (X)
+\]
+\end{prop}
+
+\subsection{Variabile aleatoria di Bernoulli}
+
+\begin{defn}[Variabile aleatoria di Bernoulli]
+Una variabile aleatorie $X$ si dice \emph{di Bernoulli} di parametro $p \in [0,1]$ se:
+\[
+\mass{1} = p \text{ e } \mass{0} = 1 - p, \text{ e quindi } \mass{a} = 0 \forall a \neq 0,1
+\]
+\end{defn}
+\begin{fact}
+Se $X$ \`e una variabile aleatoria $\operatorname{Bernoulli}(p)$, allora la sua media \`e:
+\[
+\expect{X} = p
+\]
+e la sua varianza \`e:
+\[
+\var (X) = p \cdot (1-p)
+\]
+\end{fact}
+
+\subsection{Variabile aleatoria binomiale}
+
+\begin{defn}[Variabile aleatoria binomiale]
+Una variabile aleatoria discreta $X$ si dice \emph{binomiale} di parametri $n, p$ se:
+\[
+\mass{k} =
+\begin{cases}
+\binom{n}{k} \cdot p^k \cdot (1 - p)^{n - k} \text{ se } k = 1, \dots, n \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+$n$ \`e un intero $\ge 1$, mentre il parametro $p$ \`e $p \in [0,1]$.
+\end{defn}
+L'esempio classico \`e prendere $n$ prove operativamente indipendenti di tipo successo/insuccesso, dove il successo avviene con probabilit\`a $p$, e $X$ \`e il numero totale di successi.
+
+\subsection{Variabile aleatoria geometrica}
+
+\begin{defn}[Variabile aleatoria geometrica]
+Una variabile aleatoria discreta $X$ \`e detta geometrica di parametro $p \in [0,1]$ se:
+\[
+\mass{j} = 
+\begin{cases}
+p \cdot (1 - p)^{k-1} \text{ se } k = 1,2,3, \ldots \\
+0 \text{ altrimenti}
+\end{cases}
+\]
+\end{defn}
+Considero un numero infinito di prove indipendenti di tipo successo/insuccesso. La variabile aleatoria $X = \min \{ k : \text{ ho successo alla prova } k \}$, ossia il primo $k$ a cui ho successo, \`e una variabile aleatoria geometrica.
+
+\begin{theorem}
+Se $X = \operatorname{Geom}(p)$, ossia \`e una variabile aleatoria geometrica di parametro $p$, allora:
+\[
+\expect{X} = \frac{1}{p}
+\]
+La sua varianza \`e:
+\[
+\var (X) = \frac{1 - p}{p^2}
+\]
+\end{theorem}
+
+\begin{theorem}[Perdita di memoria]
+Sia $X$ variabile aleatoria geometrica di parametro $p$, ossia $X = \operatorname{Geom}(p)$, e siano $n, m$ interi con $n \ge 0$ e $m \ge 1$. Troviamo la probabilit\`a che $X$ sia uguale a $n + m$, sapendo che $X$ \`e maggiore di $n$, ossia $\probcond{X = n + m}{X > n}$.
+
+Sappiamo quindi che nelle prime $n$ prove non c'\`e stato un successo. Qual \`e la probabilit\`a di dover aspettare ancora $m$ prove per avere un successo?
+\[
+\probcond{X = n + m}{X > n} = \prob{X = m}
+\]
+\end{theorem}
+
+\subsection{Variabile aleatoria di Poisson}
+
+\begin{defn}[Variabile aleatoria di Poisson]
+Una variabile aleatoria $X$ discreta si dice ``di Poisson'' di parametro $\lambda > 0$, se la sua densit\`a discreta \`e:
+\[
+\mass{k} =
+\begin{cases}
+e^{- \lambda} \frac{\lambda^k}{k!} \forall k \in \naturals \text{ (intero non negativo)} \\
+0 \text{ se } k \in \reals \setminus \naturals
+\end{cases}
+\]
+\end{defn}
+
+\begin{prop}[Legge dei piccoli numeri]
+Per ogni $n = 1, 2, 3, \dots$, sia $p_n \in (0,1)$ un parametro. Abbiamo una successione di parametri tale che $\exists \lim_{n \to \infty} n \cdot p_n = \lambda > 0$. Se $X_n = \operatorname{Bin}(n, p_n)$ una variabile binomiale di parametri $n$ e $p_n$ e $Z = \operatorname{Poisson}(\lambda)$ \`e una variabile di Poisson di parametro $\lambda$, allora $\forall k = 0, 1, 2, \dots$ intero non negativo vale che:
+\[
+\lim_{n \to \infty} \prob{X_n = k} = \prob{Z = k} = e^{-\lambda} \cdot \frac{\lambda^k}{k!}
+\]
+\end{prop}
+
+\begin{fact}
+Se $Z = \operatorname{Poisson}(\lambda)$, allora $\expect{Z} = \lambda$ e $\var (Z) = \lambda$.
+\end{fact}
+
+\subsection{Variabile aleatoria binomiale negativa}
+
+\begin{defn}[Variabile binomiale negativa]
+Definiamo la variabile binomiale negativa di parametri $r \in \{ 1, 2, \dots \}$ e $p \in (0,1)$ (includiamo anche il caso degenere 0) facendo prima un esempio: consideriamo una successione di prove indipendenti di tipo successo/insuccesso, dove $p$ \`e la probabilit\`a di successo. Dato $r$, intero positivo, definisco la variabile aleatoria $X$ come il numero della prova dove si verifica l'$r$-esimo successo. Consideriamo ad esempio una successione di prove che ha dato $SIIISSISI$, con $S$ a indicare i successi e $I$ gli insuccessi. Se $r = 3$, $X = 6$. \`E il numero della prova in cui si \`e ottenuto il terzo successo. Se $r = 1$, $X$ \`e una variabile aleatoria geometrica di parametro $p$.
+
+Una variabile aleatoria discreta $Y$ si dice binomiale negativa di parametri $r \in \{ 1, 2, \dots \}$ e $p \in (0,1)$ se la sua densit\`a discreta \`e $p_Y = p_X$ con $X$ appena definita.
+
+Troviamo $p_X$. Consideriamo $k = 1, 2, 3 \dots$ come il numero della prova dove abbiamo l'$r$-esimo successo, e andiamo a calcolare $\mass{k} = \prob{X = k}$. Sappiamo quanti successi abbiamo avuto prima della $k$-esima prova, ossia $r-1$. Quindi abbiamo avuto $k-r$ insuccessi nelle prime $k$ prove. $\prob{X = k} = P($``nelle prime k-1 prove ho esattamente r-1 successi''$) \cdot P($``la prova k \`e successo''$)$. Quindi:
+\[
+\prob{X = k} = \binom{k-1}{r-1} \cdot p^{r-1} \cdot (1 - p)^{k - r} \cdot p = 
+\binom{k-1}{r-1} \cdot p^r \cdot (1-p)^{k - r}
+\]
+\end{defn}
+Il suo valore atteso \`e $\expect{X} = \expect{X_1} + \ldots + \expect{X_r} = \frac{r}{p}$.
+
+\subsection{Variabile aleatoria ipergeometrica}
+
+\begin{defn}[Variabile aleatoria ipergeometrica]
+Definiamo anche questa facendo prima un esempio. Abbiamo un'urna con $N$ palline, delle quali $m$ sono bianche e $N - m$ sono nere. Estraiamo $n$ piccolo palline. $X$ \`e il numero delle palline bianche tra le $n$ palline estratte. Vediamo la densit\`a discreta di $X$.
+\[
+\forall k \in \{ 0, 1, 2, \dots \} \qquad \prob{X = k} = \frac{\binom{m}{k} \cdot \binom{N - m}{n - k}}{\binom{N}{n}}
+\]
+Una variabile aleatoria discreta $X$ \`e detta \emph{ipergeometrica} di parametri $N$, $m$, $n$ se ha questa densit\`a discreta.
+
+Il valor medio di una variabile aleatoria ipergeometrica \`e:
+\[
+\expect{X} = \frac{n \cdot m}{N}
+\]
+La varianza \`e:
+\[
+\var (X) = n \cdot p \cdot (1 - p) \cdot \left[ 1 - \frac{n - 1}{N - 1} \right]
+\]
+con $p = \frac{m}{N}$.
+\end{defn}
+
+\begin{defn}[Variabile aleatoria vettoriale, o multidimensionale]
+Una variabile aleatoria $m$-dimensionale (o vettoriale) discreta (detta anche vettore aleatorio discreto) \`e una funzione $X = (X_1, X_2, \ldots, X_m) : S \to \reals^m$ per cui le componenti $X_1$, $X_2$, $\ldots$, $X_m$ sono variabili aleatorie discrete, cio\`e assumono una famiglia numerabile di possibili valori.
+\end{defn}
+
+\begin{defn}[Densit\`a discreta di una variabile aleatoria multidimensionale]
+Sia $X$ una variabile aleatoria $m$-dimensionale discreta, la sua densit\`a discreta \`e la mappa $p_X : \reals^m \to [0,1]$ dove $\mass{a} = \prob{X = a} \forall a \in \reals^m$.
+\end{defn}
+Siano $X_1, \ldots, X_m : S \to \reals$ variabili aleatorie discrete, le densit\`a discrete $p_{X_1}, p_{X_2}, \ldots, p_{X_m}$ si dicono densit\`a marginali.
+
+\begin{prop}[Densit\`a marginali di una densit\`a congiunta]
+Dalla densit\`a congiunta si ricavano le densit\`a marginali.
+\[
+\mass{a} = \sum_{b \in \image{Y}} \mass[X,Y]{a,b}
+\]
+\end{prop}
+
+\begin{prop}
+Siano $X_1, X_2, \ldots, X_m : S \to \reals$ variabili aleatorie discrete, e sia $f : \reals^m \to \reals$ una funzione. La mappa composta $f \circ X = f(X_1, X_2, \ldots, X_m) : S \to \reals$ \`e variabile aleatoria discreta e soddisfa la seguente propriet\`a:
+\[
+\expect{f(X_1, \ldots, X_m)} = \sum_{(a_1, \ldots, a_m) \in (\image{X_1},  \ldots, \image{X_m})} f(a_1, \ldots, a_m) \cdot \mass[X_1 \ldots X_m]{a_1, \ldots, a_m}
+\]
+\end{prop}
+
+\begin{defn}[Indipendenza di variabili aleatorie]
+L'indipendenza ha senso solo se le variabili aleatorie sono definite sullo stesso spazio campionario. Le variabili aleatorie $\seq{X}{1}{m} : S \to \reals$ si dicono indipendenti se per ogni scelta di sottoinsiemi $\seq{A}{1}{m} \subseteq \reals$ vale che:
+\[
+\prob{X_1 \in A_1, X_2 \in A_2, \ldots, X_m \in A_m} = \prob{X_1 \in A_1} \cdot \prob{X_2 \in A_2} \cdot \ldots \cdot \prob{X_m \in A_m}
+\]
+Siano $X_1, X_2, \ldots, X_m : S \to \reals$ variabili aleatorie \emph{discrete}. Le variabili aleatorie sono indipendenti $\iff$ vale al variare di $a_1, a_2, \ldots, a_m \in \reals$ che:
+\[
+\mass[X_1, X_2, \ldots, X_m]{a_1, a_2, \ldots, a_m} = \mass[X_1]{a_1} \cdot \mass[X_2]{a_2} \cdot \ldots \cdot \mass[X_m]{a_m}
+\]
+Si pu\`o anche far variare $a_1, a_2, \ldots, a_m$ tra i possibili valori rispettivamente di $X_1, X_2, \ldots, X_m$.
+\end{defn}
+
+\begin{fact}
+Le variabili aleatorie $X_1, X_2, \ldots, X_m$ sono indipendenti $\iff \forall A_1 \subseteq \reals$, $A_2 \subseteq \reals$, $\ldots$, $A_M \subseteq \reals$ gli eventi $\{X_1 \in A_1\}$, $\{X_2 \in A_2\}$, $\ldots$, $\{ X_m \in A_m\}$ sono indipendenti.
+\end{fact}
+
+\begin{prop}
+Siano $X_1, X_2, \ldots, X_n$ variabili aleatorie indipendenti (quindi definite sullo stesso spazio campionario) e siano $f_1, f_2, \ldots, f_n$ funzioni $\reals \to \reals$. Allora le immagini $f_1(X_1), f_2(X_2), \ldots, f_n(X_n)$ sono variabili aleatorie indipendenti.
+\end{prop}
+
+\begin{defn}[Funzione di distribuzione]
+Data una variabile aleatoria discreta $X$, la sua funzione di distribuzione $F_X : \reals \to [0,1]$ \`e definita come:
+\[
+\distr{a} = \prob{X \le a} \forall a \in \reals
+\]
+\`E detta anche ``funzione di ripartizione''.
+\[
+\distr{a} = \sum_{x_i \in \image{X} : x_i \le a} \mass{x_i}
+\]
+\end{defn}
+
+\begin{prop}[Valore atteso di una combinazione lineare]
+Siano $X_1 \ldots X_m : S \to \reals$ variabili aleatorie discrete e siano $c_1 \ldots c_m \in \reals$. Allora:
+\[
+\expect{c_1 \cdot X_1 + \ldots + c_m \cdot X_m} = c_1 \cdot \expect{X_1} + \ldots + c_m \cdot \expect{X_m}
+\]
+\end{prop}
+
+\begin{prop}[Valore atteso del prodotto]
+Se $X_1, \ldots X_m : S \to \reals$ sono variabili aleatorie discrete indipendenti, allora il valore atteso del prodotto si fattorizza nei singoli valori attesi.
+\[
+\expect{X_1 \cdot \ldots \cdot X_m} = \expect{X_1} \cdot \ldots \cdot \expect{X_m}
+\]
+\end{prop}
+
+\begin{defn}[Covarianza di due variabili aleatorie]
+Siano $X_1, X_2 : S \to \reals$ variabili aleatorie definite sullo stesso spazio di probabilit\`a. La loro covarianza \`e definita come:
+\[
+\cov (X_1, X_2) = \expect{ \left( X_1 - \expect{X_1} \right) \cdot \left( X_2 - \expect{X_2} \right) }
+\]
+O anche:
+\[
+\cov(X_1,X_2) = \expect{X_1 \cdot X_2} - \expect{X_1} \cdot \expect{X_2}
+\]
+\end{defn}
+La covarianza \`e simmetrica:
+\[
+\cov(X_1, X_2) = \cov (X_2,X_1)
+\]
+
+\begin{defn}[Variabili aleatorie non correlate]
+Se $\cov(X_1,X_2) = 0$, diciamo che $X_1$ e $X_2$ sono non correlate. Due variabili aleatorie $X_1, X_2$ indipendenti sono non correlate, ossia $\cov (X_1, X_2) = 0$. Il viceversa \`e falso.
+\end{defn}
+
+\begin{prop}
+Siano $X_1, \ldots, X_m : S \to \reals$ variabili aleatorie definite sullo stesso spazio di probabilit\`a, non necessariamente discrete, allora:
+\[
+\var (X_1 + \ldots + X_m) = 
+\sum_{j = 1}^{m} \var (X_j) + 2 \sum_{1 \le i < j \le m} \cov (X_i, X_j)
+\]
+La varianza della somma \`e data dalla somma delle varianze pi\`u due volte la covarianza a coppie.
+\end{prop}
+
+\begin{prop}[Bilinearit\`a della covarianza]
+Siano $X_1, \ldots, X_m : S \to \reals$ variabili aleatorie e $a_1, \ldots a_m \in \reals$, e siano $Y_1, \ldots Y_m : S \to \reals$ e $b_1, \ldots b_n \in \reals$, allora:
+\[
+\cov \left( \sum_{i = 1}^{m} a_i \cdot X_i, \sum_{j = 1}^{n} b_j \cdot Y_j \right) = 
+\sum_{i = 1}^{m} \sum_{j = 1}^{n} a_i \cdot b_j \cdot \cov (X_i, Y_j)
+\]
+\end{prop}
+
+\begin{defn}[Variabili aleatorie identicamente distribuite]
+La famiglia di variabili aleatorie $\{X_i\}_{i \in I}$ si dicono identicamente distribuite se $\forall A \subseteq R$:
+\[
+\prob{X_i \in A} = \prob{X_k \in A} \forall i, j \in I
+\]
+Nel caso di variabili aleatorie discrete, si pu\`o scrivere:
+\[
+p_{X_i} = p_{X_j} \forall i, j \in I
+\]
+Ossia, per variabili aleatorie discrete essere identicamente distribuite vuol dire avere la stessa densit\`a discreta.
+\end{defn}
+
+\end{document}

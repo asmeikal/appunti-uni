@@ -1,0 +1,265 @@
+
+Quando andiamo a studiare le successioni di numeri reali dipendenti da un parametro discreto (ossia, da un numero naturale), che sono qualcosa del tipo:
+\[
+\{ a_n \}_{n \in \naturals}
+\]
+quello che ci interessa \`e studiare il limite:
+\[
+\lim_{n \to \infty} \{ a_n \}
+\]
+Dobbiamo distinguere i casi in cui il limite, quando esiste, o \`e un numero finito, o \`e $+\infty$ o \`e $-\infty$.
+
+\begin{defn}[Convergenza e divergenza delle successioni]
+Si dice che la successione $a_n$ ``diverge'' se $\nexists$ il limite $l$ per $n \to \infty$. Se invece $l$ \`e $+ \infty$, si dice che $a_n$ diverge positivamente, se $l$ \`e $- \infty$, si dice che $a_n$ diverge negativamente, e se invece $l$ \`e un numero reale, si dice che $a_n$ converge a $l$.
+\[
+\lim_{n \to \infty} \{ a_n \} = 
+\begin{cases}
+l = \infty \definition \{ a_n \} \text{ diverge positivamente} \\
+l = - \infty \definition \{ a_n \} \text{ diverge negativamente} \\
+l \in \reals \definition \{ a_n \} \text{ converge a } l
+\end{cases}
+\]
+\end{defn}
+
+Una successione ``divergente'' \`e:
+\[
+a_n = {\left( -1 \right)}^{n}
+\]
+Non pu\`o esistere il limite per questa successione. Se per\`o prendiamo i termini con $n$ pari (di grado pari), questa serie converge a 1, e se invece prendiamo i termini di grado dispari, questa serie converge a $-1$.
+
+Una successione che diverge positivamente \`e:
+\[
+a_n = n
+\]
+E una che diverge negativamente \`e:
+\[
+a_n = -n
+\]
+Una successione che sui termini pari diverge positivamente e sui termini dispari diverge negativamente quindi \`e:
+\[
+a_n = {\left( -1 \right)}^{n} \cdot n
+\]
+Anche la successione che segue diverge positivamente sui termini pari e diverge negativamente sui termini dispari. Si spezza, infatti:
+\[
+a_n = {\left( -2 \right)}^{n} = {\left( -1 \right)}^{n} \cdot 2^n
+\]
+E questa successione diverge positivamente:
+\[
+a_n = 2^n
+\]
+
+\section{Successioni convergenti}
+
+Passiamo a formalizzare le definizioni date. $\varepsilon$ \`e tipicamente un numero ``piccolo a piacere''. 
+\begin{defn}[Successione convergente]
+Dire che una successione $a_n$ converge a un certo valore $l$, vuol dire dire che:
+\[
+\forall \varepsilon > 0 , \exists n_{\varepsilon} \text{ t.c. } \abs{a_n - l} < \varepsilon \text{ se } n > n_{\varepsilon}
+\]
+\end{defn}
+Vuol dire che possiamo rendere lo scarto (la differenza fra $a_n$ e l) \emph{arbitrariamente} piccolo, per un $n$ opportunamente grande.
+
+Consideriamo la successione:
+\[
+a_n = \frac{1}{n}
+\]
+\`E evidente che converge a 0. Quindi:
+\[
+\abs{a_n - 0} = \abs{a_n} = \frac{1}{n} < \varepsilon
+\]
+Nel caso di $\varepsilon = \frac{1}{1000}$, quanto deve valere $n$? Noi vogliamo questo:
+\[
+\frac{1}{n} < \frac{1}{1000} \iff n > 1000
+\]
+Quindi $n$ deve essere almeno 1001.
+
+Andiamo a prendere una successione che sappiamo divergere:
+\[
+a_n = {\left( -1 \right)}^{n}
+\]
+Potremmo pensare che converge a 1. Ma non va bene, infatti, andando a formalizzare:
+\[
+\abs{ {\left( -1 \right)}^{n} - 1} < \varepsilon
+\]
+Prendiamo, ad esempio, $\varepsilon = \frac{1}{2}$. Per $n$ pari, $\abs{{\left( -1 \right)}^{n} - 1}$ vale 0, quindi la condizione \`e verificata. Ma per $n$ dispari, $\abs{ {\left( -1 \right)}^{n} - 1} = 2$! Sempre!
+
+\section{Successioni divergenti (positivamente o negativamente)}
+
+Formalizziamo la definizione di successioni divergenti. Lasciamo da parte $\varepsilon$, e iniziamo a pensare a un numero $k$. 
+\begin{defn}[Successione divergente positivamente]
+Dire che una successione diverge positivamente, vuol dire dire che:
+\[
+\forall k \in \reals , \exists n_k \text{ t.c. } a_n > k \text{ se } n > n_k
+\]
+\end{defn}
+Ossia, possiamo rendere arbitrariamente grandi gli elementi della successione. Possiamo fissare un numero arbitrariamente grande, e fare in modo che tutti i termini della successione siano sempre maggior di questo numero, a partire da un certo numero. 
+\begin{defn}[Successione divergente negativamente]
+Allo stesso modo, dire che una successione diverge negativamente, vuol dire dire che:
+\[
+\forall k \in \reals , \exists n_k \text{ t.c. } a_n < k \text{ se } n > n_k
+\]
+\end{defn}
+Ossia, possiamo fissare un numero arbitrariamente \emph{piccolo} (inteso come ``molto negativo'') e trovare un indice per cui la serie sar\`a sempre \emph{minore} di questo numero a partire da questo indice.
+
+Ora che abbiamo la definizione, come vediamo che la successione $a_n = 2^n$ diverge positivamente?
+
+Fissiamo $k = {10}^6$. Bisogna trovare un $n_k$ tale per cui $2^{n} > {10}^6 \forall n > n_k$.
+\[
+2^n > {10}^6 \iff e^{n \, \log (2)} > e^{\log \left( {10}^6 \right)} \iff n > \frac{6 \, \log (10 )}{\log (2)}
+\]
+Quel che \`e importante, \`e che questo si pu\`o fare \emph{per ogni} $k$.
+
+Come facciamo con questa successione?
+\[
+a_n = \frac{2^n}{n!}
+\]
+Sappiamo che il fattoriale \`e pi\`u forte di tutti, e quindi questa successione converge a 0. Ma come facciamo a dimostrarlo? Dobbiamo maggiorarla. In $2^n$ ci sono n fattori (pari tutti a 2). In $n!$ anche ci sono $n$ fattori. Quindi:
+\[
+\frac{2^n}{n!} = \overbrace{\frac{2 \cdot 2 \cdot 2 \cdot \ldots \cdot 2}{1 \cdot 2 \cdot 3 \cdot \ldots \cdot n}}^{n \text{ volte}}
+\]
+Dobbiamo trovare un numero minore di 1 elevato alla $n$, che all'infinito tende a 0... Qui, quel numero \`e $\frac{2}{3}$. Vale infatti che $\frac{2}{n} < \frac{2}{3}$ se $n > 3$.
+
+Quindi, se al posto di tutti i fattori maggiori di 3 mettiamo proprio 3, otteniamo una quantit\`a maggiore. Se questa quantit\`a tende a 0, stiamo a posto.
+\[
+\frac{2 \cdot 2 \cdot 2 \cdot \ldots \cdot 2}{1 \cdot 2 \cdot 3 \cdot \ldots \cdot n} < \frac{2 \cdot 2}{1 \cdot 2} \cdot \overbrace{\frac{2 \cdot 2 \cdot 2 \cdot \ldots \cdot 2}{3 \cdot 3 \cdot 3 \cdot \ldots \cdot 3}}^{n-2 \text{ volte}} =
+2 \cdot {\left( \frac{2}{3} \right)}^{n-2}
+\]
+Stiamo sfruttando teoremi di confronto. Siccome la parte pi\`u a destra, all'infinito, tende a 0, anche quello che avevamo all'inizio tende a 0.
+\[
+\lim_{n \to \infty} {\left( \frac{2}{3} \right)}^{n} = 0
+\]
+Ma stiamo dando qualcosa per scontato... Come facciamo a vedere questo?
+\[
+\lim_{a \to \infty} \alpha^n = 0 \text{ se } \alpha \in \coint{0}{1}
+\]
+Dobbiamo passare anche qui ai logaritmi:
+\[
+\alpha^n = e^{n \, \log (\alpha)} = \frac{1}{e^{-n \, \log(\alpha)}}
+\]
+$\log{\alpha}$ \`e un numero negativo, se $\alpha \in \coint{0}{1}$ (e quindi, $- \log{\alpha}$ \`e positivo). Al denominatore, quindi, abbiamo una quantit\`a che tende all'infinito ($e^k$ tende all'infinito, per $k \to \infty$). Quindi, il tutto tende a 0.
+
+Remember: l'esponenziale tende all'infinito pi\`u velocemente di ogni potenza. Nel caso uno se ne dimenticasse, basta usare la regola di de l'H\^{o}pital.
+
+Il limite di successioni si pu\`o spesso ricondurre a limiti di funzioni. Ma non sempre! Mentre ha senso parlare di $f(x) = e^x$, non ha alcun senso una funzione del tipo:
+\[
+f(x) = x!
+\]
+Quindi, purtroppo, serve studiare i limiti di successioni...
+
+Possiamo estendere quanto visto per $\alpha^n$ anche ai casi in cui $\alpha \in \ocint{-1}{0}$? Non possiamo fare questo:
+\[
+\alpha^n = e^{n \, \log(\alpha)}
+\]
+Perch\'e $\alpha$ \`e un numero negativo, e il logaritmo di un numero negativo (o di 0) non \`e definito. Ma stiamo trattando successioni, non funzioni, quindi possiamo far questo:
+\[
+\alpha^n = {\left( -1 \right)}^n \cdot {\abs{\alpha}}^n \text{ se } \alpha < 0
+\]
+Abbiamo visto prima che la successione a sinistra diverge, ma quella a destra, essendo $\abs{\alpha} \in \coint{0}{1}$, converge a 0. 
+
+Vale quindi questo:
+\[
+\lim_{n \to \infty} \abs{a_n} = 0 \implies \lim_{n \to \infty} a_n = 0
+\]
+\begin{theorem}
+Ogni successione convergente \`e limitata.
+\end{theorem}
+
+Infatti, vale questa disuguaglianza qui:
+\[
+\abs{\abs{a_n} - \abs{l}} \le \abs{a_n - l}
+\]
+Che equivale a scrivere questa disuguaglianza:
+\[
+\abs{a_n} \le \abs{l} + \abs{a_n - l}
+\]
+Che, a sua volta, equivale a \emph{questa} disuguaglianza:
+\[
+\abs{l} \le \abs{a_n} + \abs{a_n - l}
+\]
+Stiamo usando questa banalissima identit\`a:
+\[
+a_n = l + a_n - l
+\]
+La somma dei moduli \`e sempre maggiore del modulo della somma!
+
+Quindi, tornando alla definizione di convergenza di una successione:
+\[
+\abs{a_n} \le \abs{l} + \abs{a_n - l} \le \abs{l} + \varepsilon
+\]
+Essendo che:
+\[
+\abs{a_n - l} \le \varepsilon
+\]
+Una cosa importante \`e che questo teorema \emph{non si inverte}. Ossia, non \`e vero che ogni successione limitata \`e convergente.
+\begin{align*}
+\text{successione convergente } \implies \text{ successione limitata} \\
+\text{successione limitata } \not\implies \text{ successione convergente}
+\end{align*}
+\begin{theorem}
+Ogni successione \emph{monotona} ammette limite. Ossia, ogni successione monotona non diverge, ma o diverge positivamente, o diverge negativamente, o converge.
+\end{theorem}
+
+\begin{defn}[Successioni crescenti e decrescenti]
+Una successione \`e crescente se:
+\[
+a_n \le a_{n+1} \forall n
+\]
+Una successione \`e decrescente se:
+\[
+a_n \ge a_{n+1} \forall n
+\]
+Una successione crescente o decrescente \`e monotona.
+\end{defn}
+
+Spesso, con successioni di questo tipo:
+\[
+\sqrt{a_n} - \sqrt{b_n}
+\]
+Si pu\`o razionalizzare, e ricondursi allo studio di successioni di questo tipo:
+\[
+\sqrt{a_n} - \sqrt{b_n} = \frac{a_n - b_n}{\sqrt{a_n} + \sqrt{b_n}}
+\]
+
+\section{Limiti di successioni}
+
+Il logaritmo tende all'infinito \emph{pi\`u lentamente} di ogni potenza positiva del suo argomento. L'esponenziale tende all'infinito pi\`u velocemente di ogni potenza positiva del suo argomento.
+
+Per studiare il limite di successioni oscillanti, se si vuole dimostrare che $\lim_{n \to \infty} a_n = 0$, basta dimostrare che:
+\[
+\lim_{n \to \infty} \abs{a_n} = 0
+\]
+Passare dall'esponenziale al logaritmo: l'esponente diventa un coefficiente, e si studia a cosa tende l'esponente.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

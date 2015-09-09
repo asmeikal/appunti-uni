@@ -1,0 +1,81 @@
+\documentclass[12pt,a4paper,draft]{article}
+% caratteri grandi che non ci vedo!
+
+\usepackage[italian]{babel}
+% per date e ToC in italiano
+
+\usepackage{amsmath}        % matematica
+\usepackage{amsthm}         % teoremi
+\usepackage{amssymb}
+\usepackage{amsfonts}       % font matematicosi
+\usepackage{centernot}      % per semplificare
+\usepackage{pgfplots}       % per i grafici
+\pgfplotsset{compat=1.5}    % consigliata compatibilita'
+                            % con la versione 1.5
+
+\usepackage{fullpage}       % troppo margine normalmente
+\usepackage{parskip}        % preferisco spazio fra i paragrafi
+                            % all'indentazione sulla prima riga
+
+% per le liste non numeriche preferisco un bel dash
+\renewcommand{\labelitemi}{$-$}
+
+\theoremstyle{plain}% default
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{lem}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposizione}
+\newtheorem*{cor}{Corollario}
+\newtheorem*{KL}{Lemma di Klein}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definizione}[section]
+\newtheorem{conj}{Congettura}[section]
+\newtheorem{exmp}{Esempio}[section]
+\newtheorem{esercizio}{Esercizio}[section]
+
+\theoremstyle{remark}
+\newtheorem*{oss}{Osservazione}
+\newtheorem*{comm}{Commento}
+\newtheorem*{note}{Nota}
+\newtheorem*{fact}{Fatto}
+\newtheorem{caso}{Caso}
+
+\newcommand{\compl}{\mathsf{c}}
+\newcommand{\abs}[1]{\left\lvert{#1}\right\rvert}
+\newcommand{\norm}[1]{\left\lVert{#1}\right\rVert}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\var}{\operatorname{Var}} % varianza 
+
+\begin{document}
+
+\title{Calcolo delle probabilit\`a}
+\author{Michele Laurenti}
+\date{\today}
+
+\maketitle
+
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Calcolo combinatorio}
+
+\subsection{Principio fondamentale del calcolo combinatorio}
+
+\input{principio_fondamentale.tex}
+
+\newpage
+
+\section{Calcolo della Probabilit\`a}
+
+\input{calcolo_aleatorio.tex}
+
+\newpage
+
+\section{Esercizi}
+
+\input{esercizi.tex}
+
+\end{document}

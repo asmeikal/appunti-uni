@@ -1,0 +1,1907 @@
+\chapter{Introduzione}
+
+Il modello di database relazionale viene definito da Edward Codd nel 1970 come struttura matematica. Sistemi di basi di dati orientati agli oggetti vengono utilizzati per applicazioni con necessit\`a specifiche.
+
+Una base di dati \`e:
+\begin{itemize}
+    \item Multiuso. I dati sono condivisi da pi\`u applicazioni.
+    \item Integrata. Un sistema unico per diverse applicazioni all'interno della stessa organizzazione.
+    \item Non ridontante nei dati. La stessa informazione non \`e replicata in due file diversi (non ci sono due file diversi). La non ridondanza evita i problemi di inconsistenza fra copie del dato memorizzate in posizioni diverse.
+    \item I dati sono indipendenti dalle applicazioni. Si ha una visione pi\`u astratta dei dati, meno legata alla loro rappresentazione o ordinamento. Si pu\`o modificare la rappresentazione dei dati senza modificare il programma applicativo che li utilizza.
+\end{itemize}
+
+Poich\'e i dati sono integrati all'interno dell'organizzazione, qualcuno deve sapere di quali dati ha bisogno ogni applicazione. Ciascuna applicazione pu\`o vedere una parte dei dati, ad esempio. Deve esistere per questo la figura del \emph{Data Base Administrator} (DBA).
+
+Cosa vuol dire progettare una base di dati? Cercare di rappresentare una porzione di ``realt\`a''. La rappresentazione deve essere fedele alla realt\`a. Che condizioni devo rispettare?
+
+\begin{itemize}
+    \item La matricola identifica uno studente;
+    \item Il voto di un esame \`e un intero compreso fra 18 e 31;
+    \item Il numero di matricola in un verbale di esame deve essere il numero di matricola di uno studente.
+\end{itemize}
+
+Ogni condizione viene rappresentata nella base di dati con un vincolo. Il corso parler\`a moltissimo di \emph{dipendenze funzionali}.
+
+\begin{itemize}
+    \item La matricola ha un vincolo di chiave;
+    \item Il voto ha un vincolo di dominio;
+    \item La matricola in un verbale ha un vincolo di contenimento di dominio.
+\end{itemize}
+
+Possono esistere vincoli dinamici, che per verificare che siano soddisfatti devo considerare due stati distinti della base di dati. Ad esempio: il salario del dipendente di un'azienda non pu\`o diminuire.
+
+Il DBA deve assicurare l'integrit\`a della base di dati. Deve occuparsi anche dei problemi di sicurezza. Le informazioni immagazzinate nella base di dati sono informazioni preziose, ed \`e importante che non vengano persi per malfunzionamenti software o hardware. Le informazioni possono essere riservate. Quanto intende ``spendere'' l'organizzazione per proteggere i dati? Quanto intende spendere ``l'avversario'' per ottenere accesso ai dati?
+
+Il DBA deve definire i profili utenti ed il regolamento di accesso: chi pu\`o accedere a quale dato, in quale modo (scrittura o lettura). Deve stabilire gli effetti di una violazione: un messaggio di avvertimento per un'operazione non consentita, o il blocco del database.
+
+Alcuni malfunzionamenti possono essere causati da una gestione errata della \emph{concorrenza}, o accessi concorrenti. Per comprendere il concetto di concorrenza, serve introdurre prima l'idea di \emph{transazione}. \`E un insieme di operazioni che dal punto di vista logico costituisce un tutt'uno.
+
+Nel database di una banca, l'accredito di una somma di denaro su un certo conto corrente \`e composta da una serie di operazioni: ricercare il conto, modificarne il saldo aggiungendo la somma depositata, e scrivere il saldo nel database. Non posso eseguire solo parte di queste operazioni: hanno senso solo nell'insieme, come transazione.
+
+Se la transazione viene interrotta prima della conclusione, il database deve poter tornare alla condizione precedente (roll back). Una transazione eseguita \`e detta ``committed''. Per evitare questi problemi, il database mantiene copia del valore precedente, ed effettua inoltre regolarmente un ``dump''.
+
+Il \emph{dump} (copia) del database viene effettuato in momenti in cui il database ha pochi accessi, ad una frequenza regolata sul numero di aggiornamenti che il database riceve.
+
+Compiti del DBA:
+
+\begin{itemize}
+    \item Progettazione e manutenzione;
+    \item Integrit\`a;
+    \item Sicurezza.
+\end{itemize}
+
+\chapter{Modello relazionale}
+
+Alla base del modello relazionale \`e (incredibile a dirsi) il concetto matematico di ``relazione''.
+
+Supponiamo di avere $n$ Domini (insiemi di valori). Non devono essere necessariamente distinti.
+
+Una relazione $r$ sui domini $D_1, D_2, \dots , D_n$ \`e un sottoinsieme del prodotto cartesiano $ D_1 \times D_2 \times \dots \times D_n $.
+
+\[
+r \subseteq D_1 \times D_2 \times \dots \times D_n = 
+\left\{ \left( d_1, d_2, \dots , d_n \right) : d_i \in D_i \right\}
+\]
+
+Prendiamo i domini $D_1 = \left \{ 1, 2, 3 \right \}$ e $D_2 = \left \{a, b, c, d \right \}$. Il loro prodotto cartesiano \`e:
+
+\[
+D_1 \times D_2 = \left \{
+(1,a), (1,b), (1,c), (1,d), 
+(2,a), (2,b), (2,c), (2,d), 
+(3,a), (3,b), (3,c), (3,d)
+ \right \}
+\]
+
+Una relazione $r$ potrebbe essere $\left \{ (1,a), (2,b) , (3,c) , (3,d) \right \}$. Posso rappresentarla in forma tabellare:
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+1 & a \\
+\hline
+2 & b \\
+\hline
+3 & c \\
+\hline
+3 & d \\
+\hline
+\end{tabular}
+\end{center}
+
+Prendiamo una relazione i cui elementi fanno parte dei domini \{String, String, Integer, Real\}.
+
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
+\hline
+Rossi & Paola & 2 & 27 \\
+\hline
+Verdi & Mario & 3 & 27,5 \\
+\hline
+Verdi & Claudia & 5 & 29 \\
+\hline
+\end{tabular}
+\end{center}
+
+Non so interpretare i dati finch\'e non do un nome alla tabella (\emph{nome della relazione}), e dei nomi alle colonne (\emph{attributi della relazione}).
+
+\begin{center}
+\begin{tabular}{llll}
+\multicolumn{4}{c}{Studenti} \\
+Cognome & Nome & Matricola & Media \\
+\hline
+Rossi & Paola & 2 & 27 \\
+Verdi & Mario & 3 & 27,5 \\
+Verdi & Claudia & 5 & 29 \\
+\end{tabular}
+\end{center}
+
+L'insieme di \emph{nome della relazione} e \emph{attributi della relazione} prendono il nome di \emph{schema della relazione}. I dati contenuti nella tabella sono chiamati \emph{istanza della relazione}.
+
+Ciascuna riga della tabella \`e chiamata ``tupla''. Viene dall'inglese, essendo ``quadrupla'' tradotto con ``4-\emph{tuple}''.
+
+Lo \emph{schema di una base di dati} \`e l'insieme degli schemi delle sue relazioni.
+
+\section{Interrogazione di un database relazionale}
+
+Codd introdusse due linguaggi di interrogazione per un database relazionale: l'algebra relazionale, che prevede l'interrogazione applicando operatori al database, ed il calcolo relazionale, basato sulla logica del primo ordine. SQL \`e orientato al calcolo relazionale. Qualunque linguaggio reale, anche se non implementa direttamente l'algebra relazionale, deve implementare le sue ``capacit\`a''.
+
+SQL e calcolo relazionale = tipo dichiarativo. Algebra relazionale = linguaggio procedurale.
+
+Gli operatori dell'algebra relazionale si applicano all'istanza della relazione.
+
+L'algebra relazionale ha operatori unari e binari.
+
+\subsection{Operatore di proiezione}
+
+\`E un operatore unario. Seleziona da una tabella solo certe ``colonne'' o attributi. Si denota con il simbolo $\pi$. A pedice del $\pi$ si elencano gli attributi che si vogliono estrarre dalla tabella. $R$ \`e l'istanza della relazione a cui voglio applicare l'operatore.
+\[
+\pi_{A_1, A_2, \dots, A_k} (R)
+\]
+Ho questa istanza di relazione:
+
+\begin{center}
+\begin{tabular}{lll}
+\multicolumn{3}{c}{Clienti} \\
+Nome & C\# & Citt\`a \\
+\hline
+Rossi & C1 & Roma \\
+Rossi & C2 & Milano \\
+Bianchi & C3 & Roma \\
+Verdi & C4 & Roma
+\end{tabular}
+\end{center}
+
+Voglio conoscere i nomi dei clienti.
+
+Gli operatori dell'algebra relazionale si applicano ad istanze di relazioni e restituiscono un'istanza di relazione. Un'istanza di relazione \`e un sottoinsieme del prodotto cartesiano di un certo numero di Domini. In un insieme non ci possono essere elementi ripetuti.
+
+Quindi l'interrogazione $\pi_{\text{Nome}}(\text{Clienti})$ restituisce l'istanza di relazione:
+
+\begin{center}
+\begin{tabular}{l}
+Nome \\
+\hline
+Rossi \\
+Bianchi \\
+Verdi
+\end{tabular}
+\end{center}
+
+Adesso voglio conoscere nomi e codici dei clienti. L'interrogazione \`e $\pi_{\text{Nome, C\#}}({\text{Clienti}})$. Il risultato \`e:
+
+\begin{center}
+\begin{tabular}{ll}
+Nome & C\# \\
+\hline
+Rossi & C1 \\
+Rossi & C2 \\
+Bianchi & C3 \\
+Verdi & C4
+\end{tabular}
+\end{center}
+
+\subsection{Operatore di selezione}
+
+\'E un operatore unario. La selezione fa fare tagli orizzontali. Seleziona dall'istanza di relazione soltanto le tuple che soddisfano la condizione specificata. Si denota con il simbolo $\sigma$. A pedice del simbolo sono le condizioni che devono essere rispettate dalle tuple selezionate.
+\[
+\sigma_{C}(R)
+\]
+La condizione \`e un'espressione booleana. I suoi operatori sono $\land, \lor, \neg$. La precedenza \`e $\neg, \land, \lor$. Se voglio modificare l'ordine in cui vengono eseguiti gli operatori devo inserire delle parentesi. Gli elementi semplici sono del tipo:
+\[
+A \theta B
+\text{ oppure }
+A \theta a
+\]
+dove:
+\begin{itemize}
+    \item $\theta$ \`e un operatore di confronto ($\theta \in \left\{  \le, =, \neq, \ge, \leq, \geq \right\}$)
+    \item $A$ e $B$ sono due attributi dello stesso dominio (dom($A$) = dom($B$))
+    \item $a$ \`e un elemento del Dominio di $A$ ($a \in$ dom($A$))
+\end{itemize}
+
+Voglio i dati dei clienti che risiedono a Roma.
+\[
+\sigma_{\text{Citt\`a = `Roma'}}(\text{Clienti})
+\]
+Il risultato sar\`a questa tabella:
+
+\begin{center}
+\begin{tabular}{lll}
+Nome & C\# & Citt\`a \\
+\hline
+Rossi & C1 & Roma \\
+Bianchi & C3 & Roma \\
+Verdi & C4 & Roma
+\end{tabular}
+\end{center}
+
+Voglio i dati dei clienti che si chiamano Rossi e che risiedono a Roma.
+\[
+\sigma_{\text{Citt\`a = `Roma' } \land \text{ Nome = `Rossi'}}(\text{Clienti})
+\]
+Il risultato \`e:
+
+\begin{center}
+\begin{tabular}{lll}
+Nome & C\# & Citt\`a \\
+\hline
+Rossi & C1 & Roma
+\end{tabular}
+\end{center}
+
+Dati dei clienti che si chiamano Rossi e risiedono a Roma o a Milano.
+\[
+\sigma_{\text{Nome = `Rossi' } \land \ \left( \text{Citt\`a = `Roma' } \lor \text{ Citt\`a = `Milano'} \right)}(\text{Clienti})
+\]
+Dati dei clienti che si chiamano Rossi e risiedono a Roma oppure risiedono a Milano.
+\[
+\sigma_{\left(\text{Nome = `Rossi' } \land \text{ Citt\`a = `Roma'} \right) \ \lor \text{ Citt\`a = `Milano'}}(\text{Clienti})
+\]
+Il risultato di entrambe le interrogazioni \`e:
+
+\begin{center}
+\begin{tabular}{lll}
+Nome & C\# & Citt\`a \\
+\hline
+Rossi & C1 & Roma \\
+Rossi & C2 & Milano \\
+\end{tabular}
+\end{center}
+
+Ma \`e solo un caso!
+
+Codici dei clienti che si chiamano Rossi e risiedono a Roma o a Milano.
+\[
+\pi_{\text{C\#}}
+\left( \sigma_{\text{Nome = `Rossi' } \land \ \left( \text{Citt\`a = `Roma' } \lor \text{ Citt\`a = `Milano'} \right)}(\text{Clienti}) \right)
+\]
+Codici dei clienti che si chiamano Rossi e risiedono a Roma oppure risiedono a Milano.
+\[
+\pi_{\text{C\#}}
+\left( \sigma_{\left(\text{Nome = `Rossi' } \land \text{ Citt\`a = `Roma'} \right) \ \lor \text{ Citt\`a = `Milano'}}(\text{Clienti}) \right)
+\]
+
+\subsection{Operatore di unione, intersezione e differenza}
+
+Sulle relazioni posso eseguire, con alcuni accorgimenti, le tipiche operazioni che posso eseguire sugli insiemi. Sono operatori binari. Consentono di costruire una relazione contenente tutte le tuple che appartengono ad almeno uno dei due operandi. Si denotano con i simboli $\cup, \cap, -$.
+\begin{gather*}
+r_1 \cup r_2 \\
+r_1 \cap r_2 = \left( r_1 - \left( r_1 - r_2 \right)\right) \\
+r_1 - r_2 
+\end{gather*}
+Le relazioni devono:
+\begin{itemize}
+    \item avere lo stesso numero di attributi;
+    \item gli attributi corrispondenti devono essere definiti sullo stesso Dominio.
+\end{itemize} 
+
+\begin{center}
+\begin{tabular}{ll}
+\multicolumn{2}{c}{$r$} \\
+A & B \\
+\hline
+\dots & \dots \\
+\dots & \dots \\
+\dots & \dots 
+\end{tabular}
+\quad
+\begin{tabular}{lll}
+\multicolumn{3}{c}{$s$} \\
+C & D & E \\
+\hline
+\dots & \dots & \dots \\
+\dots & \dots & \dots \\
+\dots & \dots & \dots
+\end{tabular}
+\quad
+\begin{tabular}{ll}
+\multicolumn{2}{c}{$t$} \\
+F & G \\
+\hline
+\dots & \dots \\
+\dots & \dots \\
+\dots & \dots 
+\end{tabular}
+\end{center}
+
+Non posso fare $r \cup s$, ma forse posso fare $r \cup t$ se dom(A) = dom(F) $\land$ dom(B) = dom(G).
+
+Ora posso risolvere in modo diverso i problemi precedenti.
+
+Dati dei clienti che si chiamano Rossi e non risiedono a Milano.
+\[
+\sigma_{\text{Nome = `Rossi'}}(\text{Clienti})
+-
+\sigma_{\neg \text{ Citt\`a = `Milano'}}(\text{Clienti})
+\]
+O anche:
+\[
+\sigma_{\neg \text{ Citt\`a = `Milano'}}(\text{Clienti})
+\cap
+\sigma_{\text{Nome = `Rossi'}}(\text{Clienti})
+\]
+Dati dei clienti che si chiamano Rossi e risiedono a Roma, oppure risiedono a Milano.
+\[
+\left(
+\sigma_{\text{Nome = `Rossi'}}(\text{Clienti})
+\cap
+\sigma_{\text{Citt\`a = `Roma'}}(\text{Clienti})
+\right)
+\cup
+\sigma_{\text{Citt\`a = `Milano'}}(\text{Clienti})
+\]
+
+\subsection{Prodotto cartesiano}
+
+\`E un operatore binario. Prendo tutte le tuple che si ottengono concatenando una tupla del primo operando con una tupla del secondo operando.
+
+Il prodotto cartesiano ha tanti attributi quanti sono gli attributi del primo pi\`u gli attributi del secondo.
+
+\begin{center}
+\begin{tabular}{ccc}
+A & B & C \\
+\hline
+$a_1$ & $b_1$ & $c_1$ \\
+$a_2$ & $b_2$ & $c_2$
+\end{tabular}
+$\times$
+\begin{tabular}{cc}
+A & D \\
+\hline
+$a_1$ & $d_1$ \\
+$a_2$ & $d_2$ \\
+$a_3$ & $d_3$ 
+\end{tabular}
+$=$
+\begin{tabular}{ccccc}
+A & B & C & A & D \\
+\hline
+$a_1$ & $b_1$ & $c_1$ & $a_1$ & $d_1$ \\
+$a_1$ & $b_1$ & $c_1$ & $a_2$ & $d_2$ \\
+$a_1$ & $b_1$ & $c_1$ & $a_3$ & $d_3$ \\
+$a_2$ & $b_2$ & $c_2$ & $a_1$ & $d_1$ \\
+$a_2$ & $b_2$ & $c_2$ & $a_2$ & $d_2$ \\
+$a_2$ & $b_2$ & $c_2$ & $a_3$ & $d_3$ 
+\end{tabular}
+\end{center}
+
+Ho una nuova tabella, ``Ordini''.
+
+\begin{center}
+\begin{tabular}{lll}
+\multicolumn{3}{c}{Ordini} \\
+C\# & A\# & N-pezzi \\
+\hline
+C1 & A1 & 100 \\
+C2 & A2 & 200 \\
+C3 & A2 & 150 \\
+C4 & A3 & 200 \\
+C1 & A2 & 200 \\
+C1 & A3 & 100 \\
+\end{tabular}
+\end{center}
+
+Per ogni cliente, voglio sapere i dati del cliente e degli ordini che lui ha effettuato. Un semplice prodotto cartesiano non \`e significativo. Devo effettuare anche una selezione.
+\[
+\sigma_{\text{Clienti.C\# = Ordini.C\#}} \left( \text{Clienti } \times \text{ Ordini} \right)
+\]
+Per ogni cliente voglio sapere il codice del cliente ed i codici degli articoli che ha ordinato. Aggiungo una proiezione.
+\[
+\pi_{\text{Clienti.C\#, A\#}}
+\left(
+\sigma_{\text{Clienti.C\# = Ordini.C\#}} \left( \text{Clienti } \times \text{ Ordini} \right)
+\right)
+\]
+Il costrutto base di SQL, il SELECT, fa esattamente questo: un prodotto cartesiano, una selezione e una proiezione.
+
+\begin{lstlisting}
+SELECT A_1, A_2, ..., A_x
+FROM R_1, R_2, ..., R_n
+WHERE C
+\end{lstlisting}
+
+Corrisponde, in algebra relazionale a: 
+\[
+\pi_{A_1, A_2, \dots, A_x} \left( \sigma_{C} \left( R_1 \times R_2 \times \dots \times R_n \right) \right)
+\]
+
+\subsection{Prodotto cartesiano e selezione: operatore di Join naturale}
+
+L'esistenza di attributi comuni \`e quello che mi permette di mettere insieme concetti legati fra loro. L'operatore di Join naturale mi permette di ricostruire le associazioni fra concetti diversi.
+
+L'operatore di Join naturale prende il prodotto cartesiano delle relazioni operando, selezionando le tuple che hanno lo stesso valore sugli attributi comuni (in AND fra loro, se gli attributi in comune sono pi\`u di uno). La proiezione elimina gli attributi ripetuti.
+
+\[
+r_1 \Join r_2 = \pi_{XY} \left( \sigma_{C} \left( r_1 \times r_2 \right) \right)
+\]
+dove:
+\[
+C: R_1 . A_1 = R_2 . A_1 \land \dots \land R_1 . A_k = R_2 A_k
+\]
+Il Join naturale senza attributi in comune \`e esattamente come il prodotto cartesiano.
+
+Se gli attributi che voglio siano in comune hanno nomi diversi, faccio un ``$\theta$-Join''. Si indica con:
+\[
+\text{Clienti} \underset{\text{CodC } = \text{ C\#}}{\Join} \text{Ordini}
+\]
+
+Il $\theta$-Join consente di selezionare le tuple del prodotto cartesiano dei due operandi che soddisfano una condizione del tipo 
+\[
+A \theta B
+\]
+dove:
+\begin{itemize}
+    \item $\theta$ \`e un operatore di confronto
+    \item $A$ \`e un attributo dello schema del primo oeprando
+    \item $B$ \`e un attributo dello schema del secondo operando
+    \item dom($A$) = dom($B$)
+\end{itemize}
+\[
+r_1 \underset{A \theta B}{\Join} r_2 = \sigma_{A \theta B} \left( r_1 \Join r_2 \right)
+\]
+
+\section{Interrogazioni pi\`u complesse}
+
+Voglio i nomi dei clienti che hanno ordinato pi\`u di 100 pezzi per almeno un articolo.
+\[
+\pi_{\text{Nome}} \left( \sigma_{\text{N-pezzi } > 100} \left( \text{Clienti} \Join \text{Ordini} \right) \right)
+\]
+Posso farlo in altri modi. Seleziono prima gli ordini in cui N-pezzi \`e maggiore di 100:
+\[
+\sigma_{\text{N-pezzi } > 100} \left( \text{Ordini} \right)
+\]
+Ottengo questa tabella:
+
+\begin{center}
+\begin{tabular}{*{3}{l}}
+C\# & A\# & N-pezzi \\
+\hline
+C2 & A2 & 200 \\
+C3 & A2 & 150 \\
+C4 & A3 & 200 \\
+C1 & A2 & 200 \\
+\end{tabular}
+\end{center}
+
+Faccio il Join naturale con la tabella dei Clienti.
+\[
+\text{Clienti} \Join \sigma_{\text{N-pezzi } > 100} \left( \text{Ordini} \right)
+\]
+E la tabella diventa cos\`i:
+
+\begin{center}
+\begin{tabular}{*{5}{l}}
+Nome & C\# & Citt\`a & A\# & N-pezzi \\
+\hline
+Rossi & C2 & Milano & A2 & 200 \\
+Bianchi & C3 & Roma & A2 & 150 \\
+Verdi & C4 & Roma & A3 & 200 \\
+Rossi & C1 & Roma & A2 & 200 \\
+\end{tabular}
+\end{center}
+
+Ottengo il risultato che cerco con una proiezione:
+\[
+\pi_{\text{Nome}} \left(
+\text{Clienti} \Join \sigma_{\text{N-pezzi } > 100} \left( \text{Ordini} \right) \right)
+\]
+Posso aggiungere ancora pi\`u proiezioni per prendere ad ogni passo solo gli attributi che mi servono per ottenere il risultato che voglio.
+\[
+\pi_{\text{Nome}} \left(
+\pi_{\text{Nome, C\#}} \left(
+\text{Clienti} \right)
+\Join
+\pi_{\text{C\#}} \left(
+\sigma_{\text{N-pezzi } > 100} \left( \text{Ordini} \right) \right)
+\right)
+\]
+Aggiungo una nuova relazione, ``Articoli''.
+
+\begin{center}
+\begin{tabular}{*{3}{l}}
+\multicolumn{3}{c}{Articoli} \\
+A\# & Denominazione & Prezzo \\
+\hline
+A1 & Piatto & 3 \\
+A2 & Bicchiere & 2 \\
+A3 & Tazza & 4 \\
+\end{tabular}
+\end{center}
+
+Voglio nomi e citt\`a dei clienti che hanno ordinato pi\`u di 100 pezzi per almeno un articolo con prezzo superiore a 2.
+\[
+\pi_{\text{Nome, Citt\`a}} \left( \sigma_{\text{Prezzo } > 2} (\text{Articoli}) \Join \sigma_{\text{N-pezzi } > 100} \left( \text{Ordini} \right) \Join \text{Clienti} \right)
+\]
+
+\chapter{Progettazione di una base di dati relazionale}
+
+Supponiamo di voler progettare un database che contiene i dati degli studenti di un'Universit\`a. Mi servono dei dati anagrafici ed identificativi: nome, cognome, data, comune e provincia di nascita, matricola e codice fiscale. Poi ho bisogno di dati curricolari per ogni esame sostenuto, voto, data, codice, titolo e docendete del corso.
+
+Mettere tutto in una sola relazione, con un attributo per ciascuno dei dati di cui ho bisogno, mi porta a creare una tabella ridondante. Una tabella ridondante causa delle anomalie di aggiornamento, inserimento e cancellazione.
+
+Separo i dati in tre relazioni differenti, con questi schemi:
+\begin{itemize}
+    \item Studente (Matr, CF, Cogn, Nome, Data, Com, Prov)
+    \item Corso (C\#, Tit, Doc)
+    \item Esame (Matr, C\#, Data, Voto)
+\end{itemize}
+Non subisco pi\`u anomalie, ma anche questa soluzione ha dei problemi. Un comune si trova in una sola provincia, per cui se molti studenti sono nati nello stesso comune il fatto che il comune si trova in quella provincia viene ripetuto una volta per ogni studente. Quindi:
+\begin{itemize}
+    \item Studente (Matr, CF, Cogn, Nome, Data, Com)
+    \item Corso (C\#, Tit, Doc)
+    \item Esame (Matr, C\#, Data, Voto)
+    \item Comune (Com, Prov)
+\end{itemize}
+Non ho pi\`u ridondanza o anomalie.
+
+Un sistema di basi di dati ``buono'' \`e un sistema che non presenta ridondanze n\'e anomalie di inserimento, modifica o cancellazione. Ma come faccio a progettarlo?
+
+I problemi sorgono quando in un unico schema di relazione cerco di rappresentare pi\`u concetti. Quindi ogni concetto deve avere una relazione distinta.
+
+La seconda fase di progettazione \`e detta ``progettazione concettuale'', in cui devo individuare i concetti che sto cercando di rappresentare. Il modello concettuale \`e chiamato entit\`a di relazione. Se la progettazione concettuale \`e fatta bene, lo schema relazionale che ne deriva \`e uno schema buono.
+
+Ma ho solo spostato il problema. Come faccio a capire quali sono i concetti che individuano una relazione? 
+
+Il concetto di \textbf{chiave} di una relazione, basato sulla \textbf{dipendenza funzionale}, che \`e un particolare tipo di \textbf{vincolo}, mi permette di inviduare i concetti che costituiscono una relazione.
+
+\section{Vincoli}
+
+Nella realt\`a di una base di dati ci sono particolari condizioni che devono essere rispettate per rappresentare la realt\`a correttamente. La rappresentazione nella base di dati delle condizioni valide del mondo reale \`e il \textbf{vincolo}. Un'istanza della base di dati \`e \textbf{legale} se soddisfa tutti i vincoli.
+
+Un DBMS deve permettere:
+\begin{itemize}
+    \item di definire insieme allo schema della base di dati i vincoli;
+    \item di verificare che un'istanza della base di dati sia legale.
+\end{itemize}
+I DBMS mettono a disposizione strumenti utili in situazioni che si incontrano spesso, nella creazione di vincoli:
+\begin{itemize}
+    \item Vincolo di dominio: un attributo deve essere compreso in un certo insieme.
+    \item Vincolo di Chiave: un attributo identifica univocamente uno studente.
+    \item Contenimento di domini: i valori di un attributo devono essere un sottoinsieme dell'insieme di un altro attributo, ad esempio i numeri di matricola in un verbale devono essere i numeri di matricola di uno studente.
+\end{itemize}
+Vincoli pi\`u complessi vanno verificati con delle procedure scritte dal progettista.
+
+Avevamo detto che uno schema di relazione \`e dato da un nome della relazione seguito dai nomi degli attributi. Il nome della relazione e i nomi degli attributi mi danno la semantica di quello che trovo nella tabella. Possiamo ignorare il nome della relazione ed usare solamente i nomi degli attributi per definire uno schema di relazione.
+
+Ridefiniamo alcuni elementi.
+
+\subsection{Schema di relazione}
+
+Uno schema di relazione $R$ \`e un insieme di attributi $\{ A_2, A_2, \dots, A_n \}$. Lo denotiamo in questo modo:
+\[
+R = A_1 A_2 \dots A_n
+\]
+
+Tipicamente le prime lettere dell'alfabeto $(A,B,C, \dots)$ indicano un singolo attributo. Le ultime lettere dell'alfabeto $(X, Y, \dots)$ indicano insiemi di attributi.
+
+Sempre per semplificare la relazione, se $X$ ed $Y$ sono insiemi di attributi $XY$ denota l'unione $X \cup Y$.
+\begin{gather*}
+X = AB \\
+Y = BCD \\
+XY = X \cup Y = ABCD
+\end{gather*}
+
+\subsection{Tupla}
+
+Dato uno schema di relazione $R = A_1 A_2 \dots A_n$, una tupla $t$ su $R$ \`e una funzione che associa ad ogni attributo $A_i$ in $R$ un valore $t[A_i]$ nel corrispondente dominio dom($A_i$).
+\[
+t : R \to \text{dom($A$)}
+\]
+La funzione tupla la denotiamo con $t[x]$.
+
+Se $X$ \`e un sottoinsieme di $R$ e $t_1$ e $t_2$ sono due tuple su $R$, $t_1$ e $t_2$ coincidono su $X$ ($t_1[X] = t_2[X]$) se $\forall \ A \in X (t_1[A] = t_2[A])$.
+
+\subsection{Istanza di relazione}
+
+Dato uno schema di relazione $R$, un'istanza di $R$ \`e un insieme di tuple su $R$.
+
+\subsection{Dipendenze funzionali}
+
+Una dipendenza funzionale \`e un vincolo valido su uno schema di relazione. Dato uno schema $R$, una dipendenza funzionale su $R$ \`e una coppia ordinata di sottoinsiemi non vuoti $X$ ed $Y$ di $R$.
+
+La notazione usata per rappresentare una dipendenza funzionale \`e:
+\[
+X \to Y
+\]
+e si legge ``$X$ determina funzionalmente $Y$'', o che ``$Y$ dipende funzionalmente da $X$''.
+
+Dati uno schema $R$ e una dipendenza funzionale $X \to Y$ su $R$, un'istanza di $R$ soddisfa la dipendenza funzionale $X \to Y$ se:
+\[
+\forall \ t_1, t_2 \in r : t_1[X]=t_2[X] \implies t_1[Y] = t_2[Y]
+\]
+
+Cosa significa dipendenza funzionale? Una funzione $f: X \to Y$ ha un dominio $X$ e un codominio $Y$, ed associa ad ogni elemento nel dominio un solo elemento nel codominio. In generale una dipendenza funzionale non \`e una funzione calcolabile, nonostante sia una funzione. In parole povere, ad un valore di $X$ non possono corrispondere due valori distinti di $Y$ in due tuple differenti.
+
+\begin{center}
+\begin{tabular}{cccc}
+\multicolumn{4}{c}{R}\\
+A & B & C & D \\
+\hline
+$a_1$ & $b_1$ & $c_1$ & $d_1$ \\
+$a_1$ & $b_2$ & $c_1$ & $d_2$ \\
+$a_1$ & $b_1$ & $c_1$ & $d_3$ 
+\end{tabular}
+\end{center}
+In questo esempio, $AB \to C$. Ma non $AB \to D$. Neghiamo la formula di prima per vedere a cosa ci porta:
+\begin{align*}
+\neg \forall \ t_1, t_2 \in r &: t_1[X]=t_2[X] \implies t_1[Y] = t_2[Y] \\
+\exists \ t_1, t_2 \in r &: \neg (t_1[X]=t_2[X] \implies t_1[Y] = t_2[Y]) \\
+\exists \ t_1, t_2 \in r &: \neg ( \neg (t_1[X]=t_2[X]) \lor (t_1[Y] = t_2[Y])) \\
+\exists \ t_1, t_2 \in r &: (t_1[X]=t_2[X]) \land \neg  (t_1[Y] = t_2[Y])
+\end{align*}
+
+Dato uno schema di relazione $R$ e un'insieme $F$ di dipendenze funzionali definite su $R$, un'istanza di $R$ \`e legale se soddisfa tutte le dipendenze in $F$.
+
+Dato un insieme di dipendenze funzionali $F = \{ A \to B, B \to C\}$, ogni istanza legale soddisfa anche la dipendenza funzionale $A \to C$.
+
+La chiusura dell'insieme $F$ \`e l'insieme delle dipendenze funzionali che sono soddisfatte da ogni istanza legale di $R$. Si indica con $F^+$. Ovviamente $F \subseteq F^+$.
+
+\subsection{Chiave}
+
+Dato uno schema di relazione $R$ e un insieme $F$ di dipendenze funzionali, un sottoinsieme $K$ di uno schema di relazione $R$ \`e una chiave di $R$ se:
+\begin{itemize}
+    \item $K \to R \in F^+$, ossia due tuple non possono avere lo stesso valore su $K$. 
+    \item Non esiste un sottoinsiemie proprio $K'$ di $K$ tale che $K' \to R \in F^+$. $R$ non pu\`o essere una chiave, $K$ deve essere un insieme minimale.
+\end{itemize}
+Ma se $F$ \`e vuoto tutto $R$ \`e chiave. Una chiave pu\`o essere costituita da un insieme di attributi.
+
+Uno schema di relazione pu\`o avere pi\`u di una chiave. Dati uno schema di relazione $R$ e un insieme $F$ di dipendenze funzionali, possono esistere pi\`u chiavi di $R$. Una di esse viene scelta come chiave primaria (non pu\`o assumere valore nullo).
+
+Alcune dipendenze funzionali sono dipendenze funzionali banali, quelle in cui la parte destra \`e contenuta nella parte sinistra. Dati uno schema di relazione $R$ e due sottoinsiemi non vuoti $X, Y$ di $R$ tali che $Y \subseteq X$, si ha che ogni istanza $r$ di $R$ soddisfa la dipendenza funzionale $X \to Y$.
+
+\subsection{Propriet\`a delle dipendenze funzionali}
+
+Dati uno schema di relazione $R$ e un insieme di dipendenze funzionali $F$, si ha:
+\[
+X \to Y \in F^+ \iff \forall \ A \in Y , X \to A \in F^+
+\]
+
+\section{Schemi di relazione in terza forma normale}
+
+Sono gli ``schemi buoni''. La terza forma normale \`e una propriet\`a di uno schema. Dati uno schema di relazione $R$ e un insieme di dipendenze funzionali $F$ su $R$, dico che $R$ \`e in 3NF se $\forall X \to A \in F^+$ t.c. $ A \notin X$ (con $A$ con un solo attributo) \`e vera una delle due:
+\begin{itemize}
+    \item $A$ appartiene ad una chiave (\`e primo)
+    \item $X$ contiene una chiave (\`e una superchiave)
+\end{itemize}
+
+Avere uno schema in terza forma normale vuol dire che tutti gli attributi sono determinati funzionalmente da una chiave.
+
+Data una certa realt\`a che intendo rappresentare in una base di dati: 
+\begin{itemize}
+    \item esiste una base di dati in cui ogni schema \`e in 3NF.
+    \item \`e sempre possibile progettare un database in cui ogni schema di relazione \`e in 3NF.
+    \item esiste un algoritmo polinomiale che produce un database in cui ogni schema di relazione \`e in 3NF.
+\end{itemize}
+
+Dati uno schema $R$ e un insieme $F$ di dipendenze funzionali su $R$, $F^+ $ \`e l'insieme di dipendenze funzionali che sono soddisfatte da ogni istanza legale (che soddisfa tutte le dipendenze funzionali in $F$) di $R$.
+
+Posso calcolare $F^+$ a partire da $F$, ma richiede molto tempo. 
+
+Per dimostrare che posso calcolarlo, devo dimostrare che $F^+ = F^A$ (coincide con $F^A$). $F^A$ \`e definito in maniera ricorsiva a partire da $F$ secondo gli assiomi di Armstrong.
+\begin{defn}[Assioni di Armstrong]
+\begin{description}
+    \item[Caso base] se $f \in F$ allora $f \in F^A$
+    \item[Riflessivit\`a\label{itm:armstrong_riflessivita}] se $Y \subseteq X \subseteq R$ allora $X \to Y \in F^A$ (ossia prendo tutte le dipendenze banali).
+    \item[Aumento\label{itm:armstrong_aumento}] se $X \to Y \in F^A$ e $Z \in R$, allora posso aggiungere $Z$ da una parte e dall'altra della dipendenza funzionale (isotonia) e ottengo ancora una dipendenza funzionale $XZ \to YZ \in F^A$.
+    \item[Transitivit\`a\label{itm:armstrong_transitivita}] se $X \to Y \in F^A$ e $Y \to Z \in F^A$ allora $X \to Z \in F^A$ (transitivit\`a).
+\end{description}
+\end{defn}
+
+Si possono derivare alcune regole dagli assiomi:
+
+\begin{description}
+    \item[Regola dell'unione\label{itm:regola_unione}] se $X \to Y \in F^A$ e $X \to Z \in F^A$ allora $X \to YZ \in F^A$.
+    \item[Regola della decomposizione\label{itm:regola_decomposizione}] se $X \to Y \in F^A$ e $Z \subseteq Y$ allora $X \to Z \in F^A$.
+    \item[Regola della pseudo-transitivit\`a\label{itm:regola_pseudo_transitivita}] $X \to Y \in F^A$ e $WY \to Z \in F^A$ allora $WX \to Z \in F^A$.
+\end{description}
+
+\begin{proof}[della \ref{itm:regola_unione}]
+$X \to Y \in F^A$, $X \to Z \in F^A$. Applico l'assioma dell'aumento e ottengo $X \to XY \in F^A$ e $XY \to YZ \in F^A$. Per transitivit\`a $X \to YZ \in F^A$.
+\end{proof}
+
+\begin{proof}[della \ref{itm:regola_decomposizione}]
+$X \to Y \in F^A$ e $Z \subseteq Y$. Applicando la riflessivit\`a, $Y \to Z \in F^A$. Per transitivit\`a, $X \to Z \in F^A$.
+\end{proof}
+
+\begin{proof}[della \ref{itm:regola_pseudo_transitivita}]
+$X \to Y \in F^A$ e $WY \to Z \in F^A$. Applico l'aumento e ottengo $WX \to WY \in F^A$, per transitivit\`a $WX \to Z \in F^A$.
+\end{proof}
+
+Bisogna dimostrare per doppia inclusione che $F^+ = F^A$.
+
+\begin{esercizio}
+FILM(Cod, Titolo, AnnoProd) \\
+REGIA(CodFilm, CodReg) \\
+REGISTA(Cod, Nome, Cognome, Nazionalit\`a)
+
+\begin{itemize}
+    \item Cognome dei registi che hanno diretto un film prodotto nel 2013.
+    \item Cognome dei registi che non hanno diretto alcun film prodotto nel 2013.
+\end{itemize}
+\end{esercizio}
+
+\begin{proof}
+Dimostriamo inizialmente che $F^A \subseteq F^+$, ossia che se $X \to Y \in F^A \implies X \to Y \in F^+$.
+
+Prendiamo una qualsiasi dipendenza $X \to Y \in F^A$. Questa dipendenza pu\`o essere ottenuta da una qualsiasi dipendenza contenuta in $F$ applicando gli assiomi di Armstrong. 
+
+Ad esempio, $R = ABCD$ e $F = \{ A \to B, B \to C \}$, quindi $AD \to C \in F^A$. Infatti per \ref{itm:armstrong_transitivita} $A \to C \in F^A$ e per \ref{itm:armstrong_riflessivita} $AD \to A \in F^A$, quindi di nuovo per \ref{itm:armstrong_transitivita} $AD \to C \in F^A$. $AD \to C \in F^A$ si ottiene applicando gli assiomi 3 volte.
+
+Dimostriamo per induzione sul numero di applicazione degli assiomi di Armstrong che $X \to Y \in F^A$ \`e anche in $F^+$, poich\'e $X \to Y$ \`e derivabile da $F$ con un certo numero $i$ di applicazioni degli assiomi di Armstrong.
+  
+La base dell'induzione \`e per $i = 0$, che vuol dire che $X \to Y \in F \subseteq F^+$.
+
+Per l'induzione con $i > 0$ devo distinguere tre casi (uno per ogni assioma). Vado a studiare l'ultima applicazione di un assioma di Armstrong.
+\begin{enumerate}
+    \item L'ultimo assioma \`e \ref{itm:armstrong_riflessivita}: $Y \subseteq X$. Se $r$ \`e una qualsiasi istanza di $R$ ed esistono in $r$ due tuple $t_1, t_2$ tali che $t_1[X] = t_2[X]$. Segue che anche $t_1[Y] = t_2[Y]$. Quindi $X \to Y$ \`e soddisfatta da qualsiasi istanza di $R$, ed in particolare da qualsiasi istanza legale di $R$. Perci\`o $X \to Y \in F^+$.
+    \item L'ultimo assioma \`e \ref{itm:armstrong_aumento}: in questo caso deve esistere una dipendenza $V \to W \in F^A$ tale che $X = VZ$ e $Y = WZ$, dove $Z \subseteq R$. La dipendenza $V \to W \in F^A$ pu\`o essere derivata da $F$ mediante un numero minore o uguael a $i$ di applicazioni degli assiomi di Armstrong. Quindi per l'ipotesi induttiva $V \to W \in F^+$. 
+
+    Sia $r$ una qualsiasi istanza legale di $R$, e siano $t_1, t_2$ due tuple di $r$ tali che $t_1[X] = t_2[X]$. Allora $t_1[V] = t_2[V]$ e $t_1[Z] = t_2[Z]$. Poich\'e $V \to W \in F^+$ ed $r$ \`e legale, significa che $r$ soddisfa $V \to W$ per definizione di istanza legale. Allora le due tuple $t_1, t_2$ devono essere uguali anche su $W$, o non sarebbe soddisfatta la dipendenza. Quindi $t_1[Y] = t_2[Y]$. Segue che $X \to Y \in F^+$.
+\end{enumerate}
+\end{proof}
+
+\begin{defn}
+Dati $R$ schema di relazione ed $F$ insieme di dipendenze funzionali su $R$, ed $X \subseteq R$ insieme di attributi di $R$. La chiusura di $X$ rispetto ad $F$, denotata con $X_F^+ = \{ A : X \to A \in F^A\}$, ossia \`e l'insieme di attributi $A$ tale che la dipendenza $X \to A \in F^A$. Se \`e evidente dal contesto quale \`e l'insieme di dipendenze rispetto al quale sto realizzando la chiusura, posso omettere la $F$ e scrivere semplicemente $X^+$.
+\begin{lem}\label{chiusura_attributi}
+$Y \subseteq X^+ \iff X \to Y \in F^A$. Ossia, se $Y \subseteq X^+$, per la definizione di $X^+$, $\forall \ A \in Y$ si ha che $X \to A \in F^A$. Quindi per la regola dell'unione $X \to Y \in F^A$.
+\end{lem}
+\end{defn}
+
+Passiamo a $X \to Y \in F^+ \implies X \to Y \in F^A$.
+Supponiamo per assurdo che $X \to Y \in F^+$ e $X \to Y \notin F^A$. $\neg ( \neg ( p \implies q)) = \neg ( \neg ( \neg p \lor q)) = \neg (p \land \neg q) = p \implies q$. Mostriamo che esiste un'istanza legale che non soddisfa $X \to Y$, e che quindi $X \to Y \notin F^+$ in contraddizione con l'ipotesi.
+
+Prendiamo un'istanza $r$ con solo due tuple $t_1, t_2$ che per tutti gli attributi in $X^+$ hanno gli stessi valori, e hanno valori diversi su tutti gli altri attributi $R \setminus X^+$.
+
+\begin{tabular}{|l |*{9}{c|}}
+\hline
+$t_1$ & 1 & 1 & $\dots$ & 1 & 1 & 1 & $\dots$ & 1 \\
+\hline
+$t_2$ & 1 & 1 & $\dots$ & 1 & 0 & 0 & $\dots$ & 0 \\
+\hline 
+\end{tabular}
+
+Supponiamo sia un'istanza legale, e mostriamo che $r$ non soddisfa $X \to Y$.
+
+Supponiamo soddisfi $X \to Y$, ossia se $t_1[X] = t_2[X]$ allora $t_1[Y] = t_2[Y]$. Poich\'e $X \subseteq X^+$ e $t_1[X^+] = t_2[X^+]$ si ha che $t_1[X] = t_2[X]$. Ma poich\'e $X \to Y$, si deve avere che $t_1[Y] = t_2[Y]$. Ma per il lemma di prima $X \to Y \in F^A$.
+
+Supponiamo $r$ non sia legale, e che quindi esiste $V \to W \in F$ che non \`e soddisfatta da $r$. Allora esistono due tuple $t_1, t_2$ tali che $t_1[V] = t_2[V]$ ma $t_1[W] \neq t_2[W]$. Quindi $V \subseteq X^+$ e $W \cap (R \setminus X^+) \neq \emptyset$. Per il lemma $X \to V \in F^A$. Se applichiamo l'assioma della transitivit\`a otteniamo che $X \to W \in F^A$, ma di nuovo per il lemma $W \subseteq X^+$.
+
+\begin{esercizio}
+STUD(Matr, Nome, Cognome) \\
+ESAME(Matr, C\#, Voto) \\
+CORSO(C\#, Titolo, Anno)
+
+\begin{itemize}
+    \item Cognome degli studenti che hanno sostenuto almeno un esame del II anno.
+    \[
+    \pi_{\text{Cognome}}(\text{Stud} \Join \pi_{\text{Matr}}(\text{Esame} \Join \sigma_{\text{Anno = II}}(\text{Corso})))
+    \]
+    \item Cognome degli studenti che non hanno sostenuto alcun esame del II anno.
+    \[
+    \pi_{\text{Cognome}}(\pi_{\text{Matr, Cognome}}(\text{Stud}) - \pi_{\text{Matr, Cognome}}(\text{Stud} \Join \pi_{\text{Matr}}(\text{Esame} \Join \sigma_{\text{Anno = II}}(\text{Corso}))))
+    \]
+    O anche:
+    \[
+    \pi_{\text{Cognome}} \left( \left( \pi_{\text{Matr}} \left( \text{Stud} \right) - \pi_{\text{Matr}} \left(\text{Esame} \Join \sigma_{\text{Anno = II}} \left(\text{Corso} \right) \right) \right) \Join \text{Stud} \right)
+    \]
+    \item Matricola degli studenti che non hanno sostenuto almeno un esame del II anno.
+    \[
+    \pi_{\text{Matr}} \left(
+    \pi_{\text{Matr, C\#}}(\text{Stud} \Join \sigma_{\text{Anno = II}}(\text{Corso})) - \pi_{\text{Matr, C\#}} (\text{Esame} \Join \sigma_{\text{Anno = II}}(\text{Corso}) )
+    \right)
+    \]
+    O anche:
+    \[
+    \pi_{\text{Matr}} \left(
+    \pi_{\text{Matr, C\#}}(\text{Stud} \Join \sigma_{\text{Anno = II}}(\text{Corso})) - \pi_{\text{Matr, C\#}} \text{Esame}
+    \right)
+    \]
+    \item Matricola degli studenti che hanno sostenuto tutti gli esami del II anno.
+    \[
+    \pi_{\text{Matr}} (\text{Stud}) - 
+    \pi_{\text{Matr}} \left(
+    \pi_{\text{Matr, C\#}}(\text{Stud} \Join \sigma_{\text{Anno = II}}(\text{Corso})) - \pi_{\text{Matr, C\#}} (\text{Esame} \Join \sigma_{\text{Anno = II}}(\text{Corso}) )
+    \right)
+    \]
+\end{itemize}
+\end{esercizio}
+
+Dato un insieme di dipendenze funzionali $F = \{ B \to A_1, B \to A_2, \dots  B \to A_n \}$ con $|F| = n$, ho che:
+\[
+F^+ = F^A \supseteq \{ B \to X : X \subseteq A_1 A_2 \dots A_n \}
+\]
+Ho quindi che $|F^+| \ge 2^{n} - 1$, poich\'e l'insieme qui sopra ha la stessa cardinalit\`a dell'insieme delle parti di $F$. Vuol dire che il numero delle dipendenze funzionali che possono trovarsi nella chiusura di $F$ \`e esponenziale rispetto al numero di dipendenze funzionali in $F$.
+
+Ma quello che interessa nella realizzazione di database \`e sapere se una certa dipendenza $f \in F^+$. Non \`e sempre necessario calcolare \emph{tutto} $F^+$ per saperlo.
+
+Abbiamo visto per il lemma \ref{chiusura_attributi} che $X \to Y \in F^A \iff Y \subseteq X^+_F$. Calcolare la chiusura di un insieme di attributi si pu\`o fare in tempo polinomiale.
+
+\subsection{Determinare la chiusura di un insieme di attributi}
+
+% write in pseudocode
+% \begin{lstlisting}
+% begin
+%     $Z$ := $X$;
+%     $S$ := $\{ A | Y \to V \in F \land Y \sibseteq Z \land A \in V\}$;
+%     while $S \not\subseteq Z$ do
+%         begin
+%             $Z$ := $Z \cup S$;
+%             $S$ := $\{ A | Y \to V \in F \land Y \sibseteq Z \land A \in V\}$;
+%         end
+% end
+% \end{lstlisting}
+
+\begin{algorithm}[ht]
+\caption{Algoritmo per il calcolo della chiusura di un insieme di attribbuti rispetto a un insieme di dipendenze funzionali}
+\label{algoritmo_chiusura}
+\begin{algorithmic}
+\Require uno schema di relazione $R$, un insieme di dipendenze funzionali $F$ e un insieme di attributi $X \subseteq R$
+\Ensure la chiusura di $X$ rispetto ad $F$ ($X^+_F$) nella variabile $Z$
+\State $Z\gets X$
+\State $S\gets \{ A : Y \to V \in F \land Y \subseteq Z \land A \in V \}$
+\While{$S \not\subseteq Z$}
+    \State $Z\gets Z \cup S$
+    \State $S\gets \{ A : Y \to V \in F \land Y \subseteq Z \land A \in V \}$
+\EndWhile
+\State \Return $Z$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{proof}[dell'algoritmo \ref{algoritmo_chiusura}]
+Dato il valore di $Z$ all'istante $i$ ed il valore di $Z$ all'istante $i + 1$, $Z^{(i)} \subseteq Z^{(i+1)} \forall \ i$. Al termine del ciclo, $S^{(f)} \subseteq Z^{(f)}$. Dobbiamo dimostrare che $X^+ = Z^{(f)}$ per doppia inclusione.
+
+Dimostriamo $Z^{(f)} \subseteq X^+$ che $\forall \ i $ $Z^{(i)} \subseteq X^+$ per induzione su $i$.
+
+La base dell'induzione si ha per $i = 0$. $Z^{(0)} = X \subseteq X^+$.
+
+Per ipotesi induttiva $Z^{(i-1)} \subseteq X^+$. $Z^{(i-1)} \subseteq Z^{(i)}$, per cui devo dimostrare che ogni elemento in $Z^{(i)} \setminus Z^{(i - 1)}$ \`e in $X^+$.
+
+Sia $A \in Z^{(i)} \setminus Z^{(i - 1)}$. So che $Z^{(i)} = Z^{(i - 1)} \cup S^{(i - 1)}$, quindi $A \in S^{(i-1)} = \{ A : Y \to V \in F \land Y \subseteq Z^{(i-1)} \land A \in V\}$. Quindi esiste una dipendenza $Y \to V \in F$ tale che $Y \in Z^{(i-1)}$ e $A \in V$. Per ipotesi induttiva $Y \in X^+$. Per il solito lemma $Y \subseteq X^+ \iff X \to Y \in F^A$, quindi $X \to Y \in F^A$.
+
+Per la transitivit\`a, $X \to V \in F^A$, quindi $V \subseteq X^+$ e $A \in X^+$.
+
+Ora dobbiamo dimostrare che $X^+ \subseteq Z^{(f)}$. Preso un qualsiasi $A \in X^+$, dobbiamo dimostrare che $A \in Z^{(f)}$.
+
+Sia $A \in X^+$, segue che $X \to A \in F^A = F^+$, quindi $X \to A$ deve essere soddisfatta da ogni istanza legale. Prendiamo un'istanza $r$:
+
+\begin{center}
+\begin{tabular}{|l |*{8}{c|}}
+\hline
+& \multicolumn{4}{|c|}{$Z^{(f)}$} & \multicolumn{4}{|c|}{$R \setminus Z^{(f)}$} \\
+\hline
+$t_1$ & 1 & 1 & $\dots$ & 1 & 1 & 1 & $\dots$ & 1 \\
+\hline
+$t_2$ & 1 & 1 & $\dots$ & 1 & 0 & 0 & $\dots$ & 0 \\
+\hline 
+\end{tabular}
+\end{center}
+
+Le due tuple di questa istanza coincidono su $Z^{(f)}$, e non coincidono su $R \setminus Z^{(f)}$. $r$ \`e un'istanza legale, ma lo dimostreremo dopo. Quindi $X \to A$ deve essere soddisfatta da $r$.
+
+Poich\'e $Z^{(0)} = X$ e $\forall i$ $Z^{(i)} \subseteq Z^{(i+1)}$, si ha che $X \subseteq Z^{(f)}$. Quindi $t_1[X] = t_2[X]$. Siccome la dipendenza funzionale $X \to A$ deve essere soddisfatta da $r$, devo avere che $t_1[A] = t_2[A]$, quindi $A \in Z^{(f)}$.
+
+Supponiamo per assurdo che $r$ non sia legale, ne segue che esiste $V \to W \in F$ tale che $r$ non soddisfa $V \to W$. Pertanto esistono due tuple che coincidono su $V$ e che non coincidono su $W$. Quindi $V \subseteq Z^{(f)}$ e $W \cap (R \setminus Z^{(f)}) \neq \emptyset$. Quindi $S^{(f)} \supseteq W$. Ne segue che $S^{(f)} \not\subseteq Z^{(f)}$, in contraddizione con la condizione di uscita dall'algoritmo.
+\end{proof}
+
+Ricordiamo cos'\`e una chiave. Dato uno schema di relazione $R$ ed un insieme di dipendenze funzionali $F$ su $R$, diciamo che $K \subseteq R$ \`e una chiave per $R$ se:
+\begin{enumerate}
+    \item $K \to R \in F^+$ e
+    \item $\neg \exists K' \subset K$ t.c. $K' \to R \in F^+$.
+\end{enumerate}
+Sappiamo che $Y \subseteq X^+ \iff X \to Y \in F^A = F^+$. Quindi possiamo dire che:
+\begin{enumerate}
+    \item $R \subseteq K^+$ ossia $K^+ = R$
+    \item $\neg \exists K' \subset K $ t.c. $R \subseteq (K')^+$
+\end{enumerate}
+
+\begin{esercizio}
+$R = ABCDEI$, $F = \{ A \to B, BC \to D, D \to E \}$. $ACE$ \`e chiave di $R$? Devo verificare se $(ACE)^+ = R$. $(ACE)^+ = ACEBD$, quindi no.
+
+E $(ACI)$ \`e chiave? $(ACI)^+ = ACIBDE$, quindi la prima condizione ($(ACI)^+ = R$) \`e soddisfatta. Devo controllare la seconda condizione, e controllare se $(AC)^+$, $(AI)^+$ o $(CI)^+$ coincidono con $R$.
+
+$(AC)^+ = ACBDE$, $(AI)^+ = AIB$, $(CI)^+ = CI$. Basta considerare gli insiemi con $n-1$ attributi, perché se quelli non sono chiave allora nessun loro sottoinsieme proprio pu\`o esserlo. Nessun sottoinsieme proprio di $ACI$ pu\`o essere chiave, quindi $ACI$ \`e chiave.
+\end{esercizio}
+
+\begin{esercizio}
+$R = ABCDEI$, $F = \{ AB \to C, C \to D, D \to AC \}$. $ABEI$ \`e chiave di $R$?
+\end{esercizio}
+
+\section{Decomposizioni adeguate}
+
+Una qualsiasi decomposizione di uno schema, in cui ogni schema di relazione \`e in 3NF rappresenta adeguatamente la realt\`a di interesse?
+
+Studente = Matr Com Prov
+
+$F = \{$Matr $\to$ Com, Matr $\to$ Prov, Com $\to$ Prov$\}$. \\
+$R1 =$ Matr Com \\
+$R2 =$ Matr Prov
+
+$F1 = \{$Matr $\to$ Com$\}$ \\
+$F2 = \{$Matr $\to$ Prov$\}$
+
+\begin{center}
+\begin{tabular}{|*{2}{c|}}
+\hline
+\multicolumn{2}{|c|}{R1} \\
+\hline
+Matr & Com \\
+\hline
+01 & Marino \\
+\hline
+02 & Marino \\
+\hline
+\end{tabular}
+\qquad
+\begin{tabular}{|*{2}{c|}}
+\hline
+\multicolumn{2}{|c|}{R2} \\
+\hline
+Matr & Prov \\
+\hline
+01 & Roma \\
+\hline
+02 & Latina \\
+\hline
+\end{tabular}
+\end{center}
+
+Se faccio il Join fra le due relazioni $R1$ e $R2$, ottengo una relazione non legale secondo $F$:
+
+\begin{center}
+\begin{tabular}{|*{3}{c|}}
+\hline
+Matr & Com & Prov \\
+\hline
+01 & Marino & Roma \\
+\hline
+02 & Marino & Latina \\
+\hline
+\end{tabular}
+\end{center}
+
+Questo \`e un esempio di decomposizione in cui, pur essendo entrambi gli schemi in 3NF, non ho conservato le dipendenze funzionali che avevo in partenza.
+
+Voglio alcune cose nella realizzazione di una decomposizione:
+\begin{description}
+    \item[1\label{itm:dec_1}] La decomposizione deve preservare le dipendenze funzionali, per essere una rappresentazione adeguata della realt\`a.
+    \item[2\label{itm:dec_2}] La decomposizione non deve avere perdita di informazione.
+\end{description}
+
+Abbiamo uno schema di relazione Ordine(C\#, A\#, Data). Su questo schema non valgono dipendenze funzionali non banali, quindi $F = \emptyset$.
+
+Decomponiamolo in R1(C\#, A\#), $F1 = \emptyset$, e R2(A\#, Data), $F2 = \emptyset$. Entrambi sono in 3NF.
+
+Consideriamo la seguente istanza di Ordine:
+
+\begin{center}
+\begin{tabular}{|*{3}{c|}}
+\hline
+C\# & A\# & Data \\
+\hline
+c1 & a1 & 28/10/2014 \\
+\hline
+c2 & a1 & 30/9/2014 \\
+\hline
+\end{tabular}
+\end{center}
+
+Le decomposizioni le otteniamo con due proiezioni, $\pi_{\text{C\#, A\#}}$ e $\pi_{\text{A\#, Data}}$.
+
+\begin{center}
+\begin{tabular}{|*{2}{c|}}
+\hline
+C\# & A\# \\
+\hline
+c1 & a1 \\
+\hline
+c2 & a1 \\
+\hline
+\end{tabular}
+\qquad
+\begin{tabular}{|*{2}{c|}}
+\hline
+A\# & Data \\
+\hline
+a1 & 28/10/2014 \\
+\hline
+a1 & 30/9/2014 \\
+\hline
+\end{tabular}
+\end{center}
+
+Se voglio ricostruire le informazioni da queste due decomposizioni, devo fare il Join, ma non ottengo l'istanza di relazione che avevo prima:
+
+\begin{center}
+\begin{tabular}{|*{3}{c|}}
+\hline
+C\# & A\# & Data \\
+\hline
+c1 & a1 & 28/10/2014 \\
+\hline
+c1 & a1 & 30/9/2014 \\
+\hline
+c2 & a1 & 28/10/2014 \\
+\hline
+c2 & a1 & 30/9/2014 \\
+\hline
+\end{tabular}
+\end{center}
+
+Definiamo adesso una decomposizione, e vediamo quando una decomposizione preserva le dipendenze funzionali e quando una decomposizione ha un join senza perdita, ossia quando formalizza le due condizioni \ref{itm:dec_1} e \ref{itm:dec_2}.
+
+\begin{defn}
+Dato uno schema di relazione $R$ e un insieme $F$ di dipendenze funzionali su $R$, una decomposizione $\rho$ di $R$ \`e una famiglia $\{R_1, R_2, \dots R_k\}$ di sottoinsiemi di $R$ che ricopre $R$, ossia tale che $R = \bigcup_{i = 1}^{k} R_i$.
+\end{defn}
+
+\begin{defn}[Equivalenza fra insiemi di dipendenze funzionali]
+Siano $F$ e $G$ due insiemi di dipendenze funzionali, dico che $F$ e $G$ sono equivalenti ($F \equiv G$) se le loro chiusure coincidono, ossia $F^+ = G^+$.
+\end{defn}
+
+\begin{defn}[Preservare le dipendenze funzionali]
+\label{definizione_insieme_G}
+Dati $R$ ed $F$, una decomposizione $C = \{ R_1, R_2 \dots R_k\}$ di $R$ preserva $F$ se $F \equiv G$ dove:
+\[
+G = \bigcup_{i = 1}^{k} \{ X \to Y \in F^+ : X, Y \subseteq R_i \}
+\]
+\end{defn}
+
+Torniamo all'esempio di prima:
+
+Studente = Matr Com Prov
+
+$F = \{$Matr $\to$ Com, Matr $\to$ Prov, Com $\to$ Prov$\}$.
+
+$R1 =$ Matr Com \\
+$R2 =$ Matr Prov
+
+$F1 = \{$Matr $\to$ Com$\}$ \\
+$F2 = \{$Matr $\to$ Prov$\}$
+
+Si \`e persa la dipendenza Com $\to$ Prov. Ossia, Com $\to$ Prov $\in F$ ma Com $\to$ Prov $\notin G$. Se invece uso come decomposizione:
+
+$R1 =$ Matr Com \\
+$R2 =$ Com Prov
+
+$F1 = \{$Matr $\to$ Com$\}$ \\
+$F2 = \{$Com $\to$ Prov$\}$
+
+non perdo niente, perch\`e Matr $\to$ Prov la posso riottenre per transitivit\`a. Questo \`e un esempio di decomposizione che preserva $F$.
+
+\begin{defn}[Join senza perdita]
+Dati $R$ ed $F$, una decomposizione $\rho = \{ R_1, R_2 \dots R_k \}$ di $R$ ha un join senza perdita se $\forall $ istanza legale $r$ di $R$:
+\[
+r = \pi_{R_1}(r) \Join \dots \Join \pi_{R_k}(r)
+\]
+\end{defn}
+
+\subsection{Decomposizioni che preservano le dipendenze funzionali}
+
+Dobbiamo capire, data una decomposizione, se questa preserva le dipendenze funzionali.
+
+Per dimostrare se $F \equiv G$ usiamo la doppia inclusione: $F^+ \subseteq G^+$ e $G^+ \subseteq F^+$. Possiamo semplificare ulteriormente il compito:
+\begin{lem}
+Dati due insiemi di dipendenze funzionali $F$ e $G$:
+\[
+F^+ \subseteq G^+ \iff F \subseteq G^+
+\]
+Verso destra \`e evidente: $F \subseteq F^+ \subseteq G^+$.
+
+Verso sinistra, se ogni dipendenza in $F$ si pu\`o ottenere da una dipendenza in $G$ applicando gli assiomi di Armstrong, allora ogni dipendenza in $F^+$ si pu\`o ottenere da $F$ (e quindi da $G$) applicando gli assiomi di Armstrong.
+\end{lem}
+Quindi devo verificare solo che $F \subseteq G^+$ e $G \subseteq F^+$. $G \subseteq F^+$ \`e evidente per definizione di $G$.
+
+Per $F \subseteq G^+$ usiamo il solito lemma:
+\[
+X \to Y \in F^+ \iff Y \subseteq X^{+}_{F}
+\]
+Devo quindi vedere che $\forall \ X \to Y \in F$, $X \to Y \in G^+ \iff Y \subseteq X_{G}^{+}$.
+
+\begin{algorithm}[ht]
+\caption{Algoritmo per decidere se una decomposizione $\rho$ di $R$ preserva l'insieme di dipendenze funzionali $F$}
+\begin{algorithmic}
+\Require $R$, $F$, $\rho$
+% \Ensure decide se $\rho$ preserva $F$
+\Ensure decide se $F \equiv G$ dove $G = \bigcup_{i = 1}^{k} \{ X \to Y \in F^+ : X, Y \subseteq R_i \}$
+\State successo $\gets$ true
+\ForAll{$X \to Y \in F$}
+    \State Calcola $X_{G}^{+}$
+    \If{$Y \not\subseteq X^{+}_{G}$}
+        \State successo $\gets$ false
+    \EndIf
+\EndFor
+\State \Return successo
+\end{algorithmic}
+\end{algorithm}
+Il problema \`e nel ``Calcola $X_{G}^{+}$''. Non sappiamo chi \`e $G$, e per calcolarlo dovremmo saper calcolare $F^+$.
+
+Per fortuna abbiamo un algoritmo polinomiale per calcolare $X_{G}^{+}$ senza sapere $G$.
+ 
+\begin{algorithm}[ht]
+\caption{Calcola la chiusura dell'insieme di attributi $X$ rispetto all'insieme $G$ definito secondo la definizione \ref{definizione_insieme_G}}
+\begin{algorithmic}
+\Require $R$, $F$, $X \subseteq R$, una decomposizione $C = \{R_1, \dots R_k\}$
+\Ensure $X^{+}_{G}$ con $G$ definito rispetto a $F$ secondo la definizione \ref{definizione_insieme_G}, nella variabile $Z$
+\State $Z\gets X$
+\State $S\gets \emptyset$
+\For{$j \gets 1 \dots K$}
+    \State $S \gets S \cup (Z \cap R_j)_{F}^{+} \cap R_j$
+\EndFor
+\While{$S \not\subseteq Z$}
+    \State $Z\gets Z \cup S$
+    \For{$j \gets 1 \dots K$}
+        \State $S \gets S \cup (Z \cap R_j)_{F}^{+} \cap R_j$
+    \EndFor
+\EndWhile
+\State \Return $Z$
+\end{algorithmic}
+\end{algorithm}
+\`E fondamentale ricordare che l'intersezione ha precedenza rispetto all'unione.
+
+\begin{proof}
+Indichiamo con $Z^{(0)}$ e $S^{(0)}$ i valori di $Z$ ed $S$ prima di entrare nel ciclo while, e con $Z^{(i)}$ e $S^{(i)}$ il valore di $Z$ ed $S$ dopo l'$i$-esima esecuzione del ciclo while. Come nel caso dell'altro algoritmo, $\forall \ i $ $Z^{(i)} \subseteq Z^{(i+1)}$. $Z^{(f)}$ \`e il valore di $Z$ alla fine dell'esecuzione dell'algoritmo.
+
+Dobbiamo dimostrare che $X^{+}_{G} = Z^{(f)}$ per doppia inclusione. Ci limitiamo a dimostrare che $X^{+}_{G} \supseteq Z^{(f)}$, l'altro lato della dimostrazione \`e pi\`u complesso.
+
+Dimostriamo per induzione che $Z^{(i)} \subseteq X^{+}_{G} \forall \ i$.
+
+La base dell'induzione \`e per $i = 0$. $Z^{(0)} = X \subseteq X^{+}_{G}$.
+
+Ipotesi induttiva: $Z^{(i-1)} \subseteq X^{+}_{G}$. Quindi $X \to Z^{(i-1)} \in G^A$, essendo che $X \to Y \in G^{A} \iff Y \subseteq X^{+}_{G}$.
+
+Per dimostrare che $Z^{(i)} \subseteq X^{+}_{G}$ devo dimostrare che $Z^{(i)} \setminus Z^{(i-1)} \subseteq X^{+}_{G}$. Sia $A \in Z^{(i)} \setminus Z^{(i-1)}$. 
+
+So che $Z^{(i)} = Z^{(i-1)} \cup S^{(i-1)}$. $A \notin Z^{(i-1)} \implies A \in S^{(i-1)} \setminus Z^{(i-1)}$. Quindi $\exists \ j $ tale che $A \in (Z^{(i-1)} \cap R_j)_{F}^{+} \cap R_j$, cio\`e $A \in (Z^{(i-1)} \cap R_j)_{F}^{+}$ e $A \in R_j$. Da $A \in (Z^{(i-1)} \cap R_j)_{F}^{+}$ si ha che $Z^{(i-1)} \cap R_j \to A \in F^A$. Inoltre poich\'e $A \in R_j$, $(Z^{(i - 1)} \cap R_j) \cup A \subseteq R_j$.
+
+Ricordiamo come \`e definito $G = \bigcup_{i = 1}^{k} \{X \to Y \in F^{+} : X Y \subseteq R_i \}$. Quindi $(Z^{(i - 1)} \cap R_j) \to A \in G \subseteq G^A$. Per la regola della composizione da $X \to Z^{(i-1)} \in G^A$ segue che $Z \to (Z^{(i-1)} ca\ R_j) \in G^A$.
+
+Perci\`o $X \to A \in G^A$. Per definizione di $G^A$, $A \in X^{+}_G$.
+\end{proof}
+
+\begin{exmp}
+$R = ABC$ \\
+$F = \{A \to B, B \to C, C \to A\}$ \\
+$C = \{AB, BC\}$
+
+C preserva F? Ossia: \\
+$A \to B \in G^{+}$? \\
+$B \to C \in G^{+}$? \\
+$C \to A \in G^{+}$?
+
+$A \to B \in F \subseteq F^{+}$, $AB \in C$, quindi $A \to B \in G \subseteq G^{+}$, quindi rispondiamo s\`i alla prima domanda. Stesso discorso per $B \to C$.
+
+Lo stesso ragionamento non vale per $C \to A$. Possiamo dire che \`e vero solo se $A \in C^{+}_{G}$. Usiamo l'algoritmo.
+
+$Z^{(0)} = C$
+\begin{align*}
+S^{(0)} &= \emptyset \cup (Z^{(0)} \cap AB)^{+}_{F} \cap AB = \\
+&= \emptyset \cup (C \cap AB)^{+}_{F} \cap AB = \\
+&= \emptyset \cup \emptyset = \emptyset \\
+S^{(0)} &= \emptyset \cup (C \cap BC)^{+}_{F} \cap BC = \\
+&= \emptyset \cup (C)^{+}_{F} \cap BC = \\
+&= \emptyset \cup ABC \cap BC = BC
+\end{align*}
+$S$ non \`e contenuto in $Z$ quindi entro nel while.
+\begin{align*}
+Z^{(1)} &= C \cup BC = BC \\
+S^{(1)} &= BC \cup (BC \cap AB)^{+}_{F} \cap AB = \\
+&= BC \cup (B)^{+}_{F} \cap AB = \\
+&= BC \cup ABC \cap AB = BC \cup AB = ABC
+\end{align*}
+Si potrebbe continuare ad eseguire l'algoritmo, ma \`e evidente che $ABC$ unito qualsiasi altra cosa sar\`a sempre $ABC$. $Z^{(f)} = ABC$, ed $A \in X^{+}_{G}$
+\end{exmp}
+
+\begin{exmp}
+$R = ABC$ \\
+$F = \{ A \to B, B \to C \}$ \\
+$C = \{AB, AC\}$
+
+$C$ preserva $F$? Ossia: \\
+$A \to B \in G^{+}$? \\
+$B \to C \in G^{+}$?
+
+La prima \`e evidente. $A \to B \in F \subseteq F^{+}$, \`e una dipendenza in $F^{+}$ con parte destra e parte sinistra contenute in uno schema di $C$, quindi \`e in $G^{+}$.
+
+Bisogna verificare se $C \in B^{+}_{G}$
+\begin{align*}
+Z &= B \\
+S &= \emptyset \cup (B \cap AB)^{+}_{F} \cap AB = \\
+&= \emptyset \cup (B)^{+}_{F} \cap AB = \\
+&= \emptyset \cup BC \cap AB = \emptyset \cup B = B \\
+S &= B \cup (B \cap AC)^{+}_{F} \cap AC = \\
+&= B \cup (\emptyset)^{+}_{F} \cap AC = B \cup \emptyset = B
+\end{align*}
+Non entro neanche nel ciclo while, perch\'e $S \subseteq Z$. Quindi $C \notin B^{+}_{G} = B$, quindi $F \not\subseteq G^{+}$.
+\end{exmp}
+
+\begin{esercizio}
+MUSEO(\underline{M\#}, Nome, Indirizzo, Citt\`a) \\
+OPERA(\underline{O\#}, Titolo, M\#, A\#) \\
+ARTISTA(\underline{A\#}, Nome, Cognome, Periodo)
+\begin{enumerate}
+    \item Dati dei musei di Torino in cui sono conservate opere di autori del Rinascimento.
+    \begin{align*}
+    \pi_{\text{M\#, Museo.Nome, Indirizzo, Citt\`a}} \left(
+    \sigma_{\text{Citt\`a = Torino}} (\text{Museo}) \Join
+    \pi_{\text{M\#}} \left( \left( \text{Opera}
+    \Join 
+    \sigma_{\text{Periodo = Rinascimento}} (\text{Artista}) \right) \right) \right)
+    \end{align*}
+    \item Dati dei musei in cui sono conservate esclusivamente opere di autori del Rinascimento.
+    \begin{align*}
+    \pi_{\text{M\#, A\#}} ( \text{Museo} \Join \text{Opera} ) -
+    \left( \pi_{\text{M\#, A\#}} ( \text{Museo} \Join \text{Opera} ) - 
+    \pi_{\text{M\#, A\#}} ( \text{Museo} \Join \sigma_{\text{Periodo = Rinascimento}} (\text{Artista}) ) \right)
+    \end{align*}
+    Poi posso proiettare su M\# e fare un Join con Museo per avere i dati dei musei.
+\end{enumerate}
+\end{esercizio}
+
+\begin{esercizio}
+$R = ABCDEH$
+
+$F = \{ AB \to CD, C \to DE, E \to AC \}$
+
+Mostrare
+\begin{itemize}
+    \item $ABH$ \`e chiave per $R$
+    \item sapendo che \`e l'unica chiave di $R$ dire perch\'e $R$ non \`e in 3NF
+\end{itemize}
+\end{esercizio}
+
+\begin{esercizio}
+$R = ABCDEH$ \\
+$F = \{ AB \to CD, E \to H, CD \to E, H \to AB \}$ \\
+$C = \{ ABCD, CDEH \}$
+
+$C$ preserva $F$?
+\end{esercizio}
+
+\subsection{Decomposizioni con Join senza perdita}
+
+\begin{defn}[Decomposizione con Join senza perdita]
+Dati uno schema di relazione $R$ e un insieme di dipendenze funzionali $F$ definite su $R$, una decomposizione $\rho = R_1, R_2 \dots R_k$ ha un Join senza perdita se $\forall$ istanza legale $r$ di $R$, si ha che:
+\[
+r = \pi_{R_1} (r) \Join \pi_{R_2} (r) \Join \dots \Join \pi_{R_k} (r)
+\]
+$R_1 \dots R_k$ sono insiemi di attributi sottoinsiemi di $R$, quindi proietto $r$ su degli insiemi di attributi (che sono tutti $R_i \subseteq R$).
+\end{defn}
+
+\begin{exmp}
+Consideriamo $R = ABC$, $F = \emptyset$, $C = \{AB, BC\}$.
+
+\begin{center}
+\begin{tabular}{*{3}{c}}
+\multicolumn{3}{c}{$r$} \\ 
+$A$ & $B$ & $C$ \\
+\hline
+$a_1$ & $b_1$ & $c_1$ \\
+$a_2$ & $b_1$ & $c_2$
+\end{tabular}
+\\
+\begin{tabular}{*{2}{c}}
+\multicolumn{2}{c}{$\pi_{AB} (r)$} \\
+$A$ & $B$ \\
+\hline
+$a_1$ & $b_1$ \\
+$a_2$ & $b_1$
+\end{tabular}
+\qquad
+\begin{tabular}{*{2}{c}}
+\multicolumn{2}{c}{$\pi_{BC} (r)$} \\
+$B$ & $C$ \\
+\hline
+$b_1$ & $c_1$ \\
+$b_1$ & $c_2$
+\end{tabular}
+\\
+\begin{tabular}{*{3}{c}}
+\multicolumn{3}{c}{$\pi_{AB} (r) \Join \pi_{BC} (r)$} \\
+$A$ & $B$ & $C$ \\
+\hline
+$a_1$ & $b_1$ & $c_1$ \\
+$a_1$ & $b_1$ & $c_2$ \\
+$a_2$ & $b_1$ & $c_1$ \\
+$a_2$ & $b_1$ & $c_2$
+\end{tabular}
+\end{center}
+
+La decomposizione $C$ non ha un Join senza perdita.
+\end{exmp}
+
+Introduciamo un algoritmo per calcolare se una decomposizione ha un Join senza perdita.
+\begin{algorithm}[ht]
+\caption{Algoritmo per calcolare se una decomposizione $\rho$ di $R$ ha un Join senza perdita}
+\begin{algorithmic}
+\Require uno schema di relazione $R$, un insieme di dipendenze funzionali $F$ su $R$, e una decomposizione $\rho = \{R_1, \dots R_k\}$
+\Ensure decide se $\rho$ ha un Join senza perdita
+\State $r \gets$ una tabella con $\abs{R}$ colonne e $\abs{\rho}$ righe, che all'$i$-esima riga e alla $j$-esima colonna ha $a_j$ se $A_j \in R_i$, $b_{i,j}$ altrimenti
+\Repeat
+    \ForAll{$X \to Y \in F$}
+        \ForAll{$t_1, t_2 \in r$ tali che $t_1[X] = t_2[X] \land t_1[Y] \neq t_2[Y]$}
+            \ForAll{$A_j \in Y$}
+                \If{$t_1[A_j] = a_j$}
+                    \State $t_2[A_j] \gets t_1[A_j]$
+                \Else
+                    \State $t_1[A_j] \gets t_2[A_j]$
+                \EndIf
+            \EndFor
+        \EndFor
+    \EndFor
+\Until{la tabella $r$ non \`e variata}
+\If{$r$ ha una riga con tutte $a$}
+    \State \Return $r$ ha un Join senza perdita
+\Else
+    \State \Return $r$ non ha un Join senza perdita
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+% begin
+% costruisce una tabella r. la tabella r ha \abs{R} colonne e \abs{\rho} righe. all'incrocio della i esima riga con la j-esima colonna inserisce a_j se A_j \in R_i, b_{i,j} altrimenti
+% repeat: esamina tutte le dipendenze in F
+%     for every X \to Y \in F do:
+%         for every t_1, t_2 \in r tali che t_1[X] = t_2[X] \land t_1[Y] \neq t_2[Y] ossia se c'\`e una violazione modifica le tuple per eliminare quella violazione
+%             for every A_j \in Y do:
+%             if t_1[A_j] = a_j then:
+%                 t_2[A_j] := t_1[A_j]
+%             else:
+%                 t_1[A_j] := t_2[A_j]
+% until la tabella r non \`e variata
+% if r ha una riga con tutte `a'
+% then r ha un join senza perdita
+% else r non ha un join senza perdita
+
+Come \`e fatta la tabella: sia $R = A_1 A_2 \dots A_n$,
+
+\begin{center}
+\begin{tabular}{l | *{6}{c}}
+& $A_1$ & $A_2$ & $\dots$ & $A_j$ & $\dots$ & $A_n$ \\
+\hline
+$R_1$ & $a_{1} / b_{1,1}$ & $a_{1} / b_{1,2}$ & \dots & $a_{1} / b_{1,j}$ & \dots & $a_{1} / b_{1,n}$ \\
+$R_2$ & $a_{2} / b_{2,1}$ & $a_{2} / b_{2,2}$ & \dots & $a_{2} / b_{2,j}$ & \dots & $a_{2} / b_{2,n}$ \\
+$\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ & $\vdots$ & $\ddots$ & $\vdots$ \\
+$R_i$ & $a_{i} / b_{i,1}$ & $a_{i} / b_{i,2}$ & \dots & $a_{i} / b_{i,j}$ & \dots & $a_{i} / b_{i,n}$ \\
+$\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ & $\vdots$ & $\ddots$ & $\vdots$ \\
+$R_k$ & $a_{k} / b_{k,1}$ & $a_{k} / b_{k,2}$ & \dots & $a_{k} / b_{k,j}$ & \dots & $a_{k} / b_{k,n}$
+\end{tabular}
+\end{center}
+
+Le colonne corrispondono agli attributi di $R$, le righe agli schemi della decomposizione. Alla casella $(i, j)$ mettiamo $a_j$ se l'attributo $A_j$ appartiene alla decomposizione $R_i$, altrimenti mettiamo $b_{i,j}$ (con due indici). $a$ e $b$ sono simboli.
+
+La tabella ha $\abs{R}$ colonne e $\abs{\rho}$ righe.
+
+\begin{exmp}
+$R = ABCDE$ \\
+$F = \{ AB \to C, D \to CE, B \to AE \}$ \\
+$C = \{ ACD, BD, BCE \}$
+
+\begin{tabular}{l | *{5}{c}}
+ & $A$ & $B$ & $C$ & $D$ & $E$ \\
+\hline
+$ACD$ & $a_1$ & $b_{1,2}$ & $a_3$ & $a_4$ & $b_{1,5}$ \\
+$BD$ & $b_{2,1}$ & $a_2$ & $b_{2,3}$ & $a_4$ & $b_{2,5}$ \\
+$BCE$ & $b_{3,1}$ & $a_2$ & $a_3$ & $b_{3,4}$ & $a_5$
+\end{tabular}
+
+Consideriamo $AB \to C$. Non ci sono tuple con valori uguali su $AB$ ma diversi su $C$. Non genera cambiamenti.
+
+Consideriamo $D \to CE$. Ci sono tuple con valori uguali su $D$ ma valori diversi su $CE$. Cambiamo la seconda riga: $b_{2,3}$ diventa $a_3$ e $b_{2,5}$ diventa $b_{1,5}$. $D \to CE$ genera quindi cambiamenti.
+
+\begin{tabular}{l | *{5}{c}}
+ & $A$ & $B$ & $C$ & $D$ & $E$ \\
+\hline
+$ACD$ & $a_1$ & $b_{1,2}$ & $a_3$ & $a_4$ & $b_{1,5}$ \\
+$BD$ & $b_{2,1}$ & $a_2$ & \cellcolor{green!20} $a_3$ & $a_4$ & \cellcolor{green!20} $b_{1,5}$ \\
+$BCE$ & $b_{3,1}$ & $a_2$ & $a_3$ & $b_{3,4}$ & $a_5$
+\end{tabular}
+
+Consideriamo $B \to AE$. La seconda e la terza riga hanno valori uguali su $B$ ma diversi su $AE$. Cambia la seconda riga: $b_{2,1}$ diventa $b_{3,1}$ e $b_{1,5}$ diventa $a_5$.
+
+\begin{tabular}{l | *{5}{c}}
+ & $A$ & $B$ & $C$ & $D$ & $E$ \\
+\hline
+$ACD$ & $a_1$ & $b_{1,2}$ & $a_3$ & $a_4$ & $b_{1,5}$ \\
+$BD$ & \cellcolor{green!20} $b_{3,1}$ & $a_2$ & $a_3$ & $a_4$ & \cellcolor{green!20} $a_5$ \\
+$BCE$ & $b_{3,1}$ & $a_2$ & $a_3$ & $b_{3,4}$ & $a_5$
+\end{tabular}
+
+Ci sono stati cambiamenti, quindi ricominciamo il ciclo.
+
+Consideriamo $AB \to C$. Non ci sono tuple con valori uguali su $AB$ ma diversi su $C$. Non genera cambiamenti.
+
+Consideriamo $D \to CE$. Ci sono valori diversi su $CE$ nella prima e seconda riga.
+
+\begin{tabular}{l | *{5}{c}}
+ & $A$ & $B$ & $C$ & $D$ & $E$ \\
+\hline
+$ACD$ & $a_1$ & $b_{1,2}$ & $a_3$ & $a_4$ & \cellcolor{green!20} $a_5$ \\
+$BD$ & $b_{3,1}$ & $a_2$ & $a_3$ & $a_4$ & $a_5$ \\
+$BCE$ & $b_{3,1}$ & $a_2$ & $a_3$ & $b_{3,4}$ & $a_5$
+\end{tabular}
+
+Consideriamo $B \to AE$. Non ci sono tuple con valori uguali su $B$ ma diversi su $AE$. Non genera cambiamenti.
+
+La tabella \`e variata. Ricominciamo il ciclo.
+
+Consideriamo $AB \to C$. Non ci sono tuple con valori uguali su $AB$ ma diversi su $C$. Non genera cambiamenti.
+
+Consideriamo $D \to CE$. Non ci sono tuple con valori uguali su $D$ ma diversi su $CE$. Non genera cambiamenti.
+
+Consideriamo $B \to AE$. Non ci sono tuple con valori uguali su $B$ ma diversi su $AE$. Non genera cambiamenti.
+
+Usciamo dal ciclo. La tabella non \`e variata.
+\end{exmp}
+
+\begin{proof}
+Chiamiamo $r_0$ la tabella costruita all'inizio dell'algoritmo, ed $r_f$ il valore finale della tabella.
+
+Abbiamo detto $\rho$ ha un Join senza perdita $\iff r_f$ ha una riga con tutte `$a$'.
+
+Vediamo l'implicazione solo verso destra.
+
+L'algoritmo si ferma quando la tabella non varia. La tabella varia quando ci sono violazioni delle dipendenze funzionali, quindi quando si ferma nessuna dipendenza funzionale \`e violata. Possiamo interpretare $r_f$ come una istanza legale $R$.
+
+Pensiamo a come abbiamo costruito la tabella all'inizio.
+
+La proiezione $\pi_{ACD} (r_0)$ contiene una riga con tutte `$a$'. Quindi $\forall R_1 \pi_{R_i} (r_0)$ ha una riga con tutte `$a$'.
+
+Sugli attributi comuni, $R_i$ e $R_j$ hanno lo stesso indice, quindi quando vado a fare il Join si combinano.
+
+L'algoritmo modifica la tabella, ma le `$a$' restano dove sono. Le `$b$' o diventano `$a$' o diventano altre `$b$'.
+
+Quindi poich\'e l'algoritmo non modifica le `$a$', le righe con tutte `$a$' saranno anche nelle proiezioni della tabella $r_f$.
+
+\begin{itemize}
+    \item Possiamo interpretare $r_f$ come una istanza legale $R$
+    \item $\forall R_i , \pi_{R_i} (r_0)$ ha una riga con tutte `$a$' e $\forall R_i , \pi_{R_i} (r_f)$ ha una riga con tutte `$a$'. Ne segue che $\pi_{R_1} (r_f) \Join \pi_{R_2} (r_f) \Join \dots \Join \pi_{R_k} (r_f)$ ha una riga con tutte `$a$'
+\end{itemize}
+
+Supponiamo per assurdo che non sia vero quel che vogliamo dimostrare, e che quindi $\rho$ ha un $\Join$ senza perdita ma $r_f$ non ha una riga con tutte `$a$'.
+
+Pertanto $r_f \neq \pi_{R_1} (r_f) \Join \pi_{R_2} (r_f) \Join \dots \Join \pi_{R_k} (r_f)$.
+
+Siamo arrivati all'assurdo: esiste un'istanza legale di $r$ che non \`e ricostruibile mediante il Join naturale dalle sue proiezioni. Stiamo negando quanto detto prima, ossia stiamo dicendo che $\rho$ non ha un $\Join$ senza perdita.
+\end{proof}
+
+\subsection{Copertura minimale}
+
+Dato un insieme $F$ di dipendenze funzionali, diciamo che l'insieme $G$ di dipendenze funzionali \`e una ``copertura minimale di $F$'' se:
+\begin{itemize}
+    \item $F \equiv G (F^+ = G^+)$
+    \item ogni dipendenza di $G$ a destra ha un solo attributo, ossia sono tutte nella forma $X \to A$
+    \item non esiste una dipendenza $A_1 \dots A_i \dots A_n \to B \in G$ tale che $G \equiv (G \setminus \{ A_1 \dots A_i \dots A_n \to B \}) \cup \{A_1 \dots A_{i-1} A_{i+1} \dots A_n \to B \}$, ossia non c'\`e una dipendenza che pu\`o essere sostituita da un'altra dipendenza senza un attributo nella parte sinistra. Posso scrivere anche: non esiste una dipendenza $X \to B \in G$ tale che $G \equiv (G \setminus{ X \to B}) \cup \{ X \setminus \{A\} \to B \}$
+    \item non esiste una dipendenza $X \to A \in G$ tale che $G \equiv (G \setminus \{X \to A\})$
+\end{itemize}
+
+Perch\'e si dice copertura? Perch\'e $F$ e $G$ sono equivalenti, ossia $G$ ``copre'' $F$.
+
+Perch\'e \`e minimale? La propriet\`a 2 mi dice che nella parte destra non ho niente di ridontante, la propriet\`a 3 mi dice che non ho ridondanza a sinistra, perch\'e non posso eliminare un attributo e ottenere un insieme equivalente all'insieme dato, la propriet\`a 4 mi dice che nessuna dipendenza \`e di troppo, ossia non ne posso eliminare nessuna ed ottenere un insieme equivalente all'insieme dato.
+
+Vedremo poi come ottenere una copertura minimale da un'insieme di dipendenze funzionali.
+
+\begin{exmp}
+$R = ABCDEH$ \\
+$F = \{ C \to D, DH \to C, DE \to H, A \to BC \}$ \\
+$\rho = \{ AE, ABDH, CDE\}$
+
+$\rho$ ha un Join senza perdita?
+
+\begin{tabular}{l|*{6}{c}}
+& $A$ & $B$ & $C$ & $D$ & $E$ & $H$ \\
+\hline
+$AE$ & $a_1$ & $b_{1,2}$ & $b_{1,3}$ & $b_{1,4}$ & $a_5$ & $b_{1,6}$ \\
+$ABDH$ & $a_1$ & $a_2$ & $b_{2,3}$ & $a_4$ & $b_{2,5}$ & $a_6$ \\
+$CDE$ & $b_{3,1}$ & $b_{3,2}$ & $a_3$ & $a_4$ & $a_5$ & $b_{3,6}$
+\end{tabular}
+
+Consideriamo la prima dipendenza $C \to D$. Non ci sono tuple con lo stesso valore su $C$. Non mi provoca cambiamenti.
+
+Consideriamo $DH \to C$. Non ci sono tuple con lo stesso valore su $D$ e su $H$. Non mi provoca cambiamenti.
+
+Consideriamo $DE \to H$. Non ci sono tuple con lo stesso valore su $D$ e su $E$. Non mi provoca cambiamenti.
+
+Consideriamo $A \to BC$. La prima e la seconda tupla hanno lo stesso valore per $A$.
+
+\begin{tabular}{l|*{6}{c}}
+& $A$ & $B$ & $C$ & $D$ & $E$ & $H$ \\
+\hline
+$AE$ & $a_1$ & \cellcolor{green!20} $a_2$ & $b_{1,3}$ & $b_{1,4}$ & $a_5$ & $b_{1,6}$ \\
+$ABDH$ & $a_1$ & $a_2$ & \cellcolor{green!20} $b_{1,3}$ & $a_4$ & $b_{2,5}$ & $a_6$ \\
+$CDE$ & $b_{3,1}$ & $b_{3,2}$ & $a_3$ & $a_4$ & $a_5$ & $b_{3,6}$
+\end{tabular}
+
+Ci sono stati cambiamenti, ricomincia il ciclo.
+
+Consideriamo $C \to D$. La prima e la seconda tupla hanno lo stesso valore per $C$.
+
+\begin{tabular}{l|*{6}{c}}
+& $A$ & $B$ & $C$ & $D$ & $E$ & $H$ \\
+\hline
+$AE$ & $a_1$ & $a_2$ & $b_{1,3}$ & \cellcolor{green!20} $a_4$ & $a_5$ & $b_{1,6}$ \\
+$ABDH$ & $a_1$ & $a_2$ & $b_{1,3}$ & $a_4$ & $b_{2,5}$ & $a_6$ \\
+$CDE$ & $b_{3,1}$ & $b_{3,2}$ & $a_3$ & $a_4$ & $a_5$ & $b_{3,6}$
+\end{tabular}
+
+Niente cambiamenti per $DH \to C$, mentre ci sono cambiamenti per $DE \to H$.
+
+\begin{tabular}{l|*{6}{c}}
+& $A$ & $B$ & $C$ & $D$ & $E$ & $H$ \\
+\hline
+$AE$ & $a_1$ & $a_2$ & $b_{1,3}$ & $a_4$ & $a_5$ & $b_{1,6}$ \\
+$ABDH$ & $a_1$ & $a_2$ & $b_{1,3}$ & $a_4$ & $b_{2,5}$ & $a_6$ \\
+$CDE$ & $b_{3,1}$ & $b_{3,2}$ & $a_3$ & $a_4$ & $a_5$ & \cellcolor{green!20} $b_{1,6}$
+\end{tabular}
+
+Niente cambiamenti per $A \to BC$.
+
+Ci sono stati cambiamenti. Ricomincia il ciclo.
+
+$C \to D$ non provoca cambiamenti, $DH \to C$ provoca cambiamenti.
+
+\begin{tabular}{l|*{6}{c}}
+& $A$ & $B$ & $C$ & $D$ & $E$ & $H$ \\
+\hline
+$AE$ & $a_1$ & $a_2$ & \cellcolor{green!20} $a_3$ & $a_4$ & $a_5$ & $b_{1,6}$ \\
+$ABDH$ & $a_1$ & $a_2$ & $b_{1,3}$ & $a_4$ & $b_{2,5}$ & $a_6$ \\
+$CDE$ & $b_{3,1}$ & $b_{3,2}$ & $a_3$ & $a_4$ & $a_5$ & $b_{1,6}$
+\end{tabular}
+
+$DE \to H$ non provoca cambiamenti, $A \to BC$ provoca cambiamenti.
+
+\begin{tabular}{l|*{6}{c}}
+& $A$ & $B$ & $C$ & $D$ & $E$ & $H$ \\
+\hline
+$AE$ & $a_1$ & $a_2$ & $a_3$ & $a_4$ & $a_5$ & $b_{1,6}$ \\
+$ABDH$ & $a_1$ & $a_2$ & \cellcolor{green!20} $a_3$ & $a_4$ & $b_{2,5}$ & $a_6$ \\
+$CDE$ & $b_{3,1}$ & $b_{3,2}$ & $a_3$ & $a_4$ & $a_5$ & $b_{1,6}$
+\end{tabular}
+
+Ricomincio il ciclo.
+
+$C \to D$ non provoca cambiamenti. $DH \to C$ non provoca cambiamenti. $DE \to H$ non provoca cambiamenti. $A \to BC$ non provoca cambiamenti.
+
+Esco dal ciclo. Non ho un Join senza perdita.
+\end{exmp}
+
+\begin{esercizio}
+$R = ABC$ \\ 
+$F = \{ B \to C \}$ \\
+$\rho = \{ AB, BC \}$
+\end{esercizio}
+
+Ricordiamo che $F \equiv G$ se $F^+ = G^+$, e che $F^+ = G^+ \iff F^+ \subseteq G^+ \land G^+ \subseteq F^+ \iff F \subseteq G^+ \land G \subseteq F^+$. Vediamo ora come trovare algoritmicamente una copertura minimale a partire da un'insieme $F$ di dipendenze funzionali. Consideriamo come esempio $F = \{ AB \to CD, A \to CH, H \to D \}$.
+
+La prima parte dell'algoritmo \`e che ogni dipendenza funzionale a destra deve avere un solo attributo. Come lo otteniamo?
+
+Si parte da un insieme $F$ e si vuole ottenere un insieme $G$ equivalente, con la condizione che a destra in $G$ ci sia un solo attributo.
+
+Consideriamo $X \to A_1A_2A_n \in F$. Sostituiamola in $G$ con $X \to A_1$, $X \to A_2$, $\dots X \to A_n$.
+
+Se $X \to A_1A_2A_n \in F$, per la regola della decomposizione $X \to A_i$ (con $i = 1 \dots n$) $\in F^A = F^+$. Quindi $G \subseteq F^+$.
+
+Se $X \to A_1$, $X \to A_2$, $\dots X \to A_n$ sono tutte in $G$, per la regola dell'unione abbiamo che $X \to A_1A_2A_n \in G^+$. Quindi anche $F \subseteq G^+$. Quindi $F \equiv G$.
+
+Quindi l'insieme $G = \{ AB \to C, AB \to D, A \to C, A \to H, H \to D\}$ \`e equivalente all'insieme $F$ dato prima.
+
+Immaginiamo ora di avere un insieme $F$ in cui ogni dipendenza funzionale ha a destra un solo attributo. Vogliamo capire se $X$ ha ``qualcosa di troppo'', ossia che se sostuitiamo in $G \equiv F$ la dipendenza $X \to A$ con $X \setminus B \to A$, con $B \subseteq X$, abbiamo ancora che $G \equiv F$.
+
+Applicando l'assioma del'aumento a $X \setminus B \to A$ e aggiungendoci $B$, otteniamo che $X \to AB \in G^A = G^+$, e applicando di nuovo la regola della decomposizione abbiamo che $X \to A \in G^+$. Quindi $F \subseteq G^+$.
+
+Dobbiamo vedere se $X \setminus B \to A \in F^+$. Questo \`e vero $\iff A \in (X \setminus B)^+_F$, ossia se appartiene alla chiusura di $X \setminus B$ rispetto ad $F$. 
+
+Torniamo all'esempio di prima. Prendiamo $AB \to C$ e gli togliamo una $A$.
+
+Abbiamo $G = \{ B \to C, AB \to D, A \to C, A \to H, H \to D \}$. Dobbiamo verificare se $C \in B^+_F$. La chiusura di $B$ \`e $B$ stesso, quindi non \`e vero che $G \equiv F$.
+
+Proviamo a eliminare $B$. Abbiamo $A \to C$. Dobbiamo vedere se $C \in A^+_F$. Vero, essendo la chiusura di $A$ uguale a $ACDH$.
+
+Vediamo se anche $AB \to D$ si pu\`o ridurre. $B \to D$ non va bene, perch\'e $D \notin B^+_F = B$. Mentre $A \to D$ va bene, perch\'e $D \in A^+_F = ACDH$.
+
+Quindi adesso $G = \{ A \to C, A \to D, A \to H, H \to D \}$, ed \`e equivalente all'insieme $F$ dato all'inizio.
+
+Dobbiamo controllare che non ci siano dipendenze funzionali ridondanti.
+
+Abbiamo $X \to A \in F$, vogliamo vedere se $G = F \setminus \{ X \to A \}$ \`e equivalente a $F$, ossia $G \equiv F$.
+
+Ovviamente $G \subseteq F \implies G \subseteq F^+$.
+
+Dobbiamo verificare l'altro lato, ossia se $F \subseteq G^+$. Basta verificare che $X \to A \in G^+$, che al solito \`e vero se $A \in X^+_G$.
+
+Riprendiamo $G = \{ A \to C, A \to D, A \to H, H \to D \}$.
+
+Non si pu\`o eliminare $A \to C$, perch\'e $C \notin A^+_G$ con $G = \{ A \to D, A \to H, H \to D \}$, che \`e $ADH$.
+
+$G = \{ A \to C, A \to H, H \to D \}$ \`e equivalente: $D \in A^+_G = ACDH$.
+
+$A \to H$ e $H \to D$ non si possono eliminare. Nel primo caso $A^+_G = AC$, nel secondo caso $H^+_G = H$.
+
+Ricordando che $F$ indica l'insieme di dipendenze funzionali iniziale, e $G$ l'insieme di dipendenze funzionali modificato, i tre passi dell'algoritmo sono:
+\begin{enumerate}
+    \item Spezzare dipendenze funzionali nella forma $X \to AB$ in dipendenze del tipo $X \to A$ e $X \to B$. Ossia, a destra devono avere un solo attributo.
+    \item Provare a togliere attributi a sinistra. Si pu\`o sostituire $X \to A$ con $X \setminus B \to A$ se e solo se $A \in (X \setminus B)^+_F$, ossia se e solo se $A$ appartiene alla chiusura di $X$ meno $B$ rispetto a $F$.
+    \item Infine, provare a togliere dipendenze funzionali. Una dipendenza funzionale $X \to A$ si pu\`o togliere da $G$ se $G \equiv G' = G \setminus \{ X \to A \}$, che \`e vero se e solo se $A \in X^+_{G'}$. $A$ deve appartenere alla chiusura di $X$ rispetto a $G$ \emph{togliendo} da $G$ la dipendenza $X \to A$.
+\end{enumerate}
+
+Vediamo l'algoritmo super fico di cui parlavamo l'altra volta.
+\begin{algorithm}[ht]
+\caption{Algoritmo per la creazione di una decomposizione $\rho$ di $R$ che preserva $F$ e \`e in 3NF}
+\label{algoritmo_definitivo}
+\begin{algorithmic}
+\Require $R$ schema di relazione e $F$ insieme di dipendenze funzionali su $R$, e una copertura minimale
+\Ensure una decomposizione $\rho = \{ R_1, \dots R_k\}$ di $R$ tale che $\rho$ preserva $F$ e ogni $R_i$ \`e in 3NF
+\State $S \gets \emptyset$
+\State $\rho \gets \emptyset$
+\ForAll{$A \in R$ tale che $A$ non compare in nessuna dipendenza funzionale in $F$}
+    \State $S \gets S \cup \{ A \}$
+\EndFor
+\If{$S \neq \emptyset$}
+    \State $R \gets R \setminus S$
+    \State $\rho \gets \rho \cup \{ S \}$ ($S$ diventa uno degli schemi della decomposizione)
+\EndIf
+\If{esiste una dipendenza funzionale che coinvolge tutto $R$}
+    \State $\rho \gets \rho \cup \{ R \}$
+\Else
+    \ForAll{$X \to A \in F$}
+        \State $\rho \gets \rho \cup \{ XA \}$ (aggiungi unione di parte destra e parte sinisra)
+    \EndFor
+\EndIf
+\State \Return $\rho$
+\end{algorithmic}
+\end{algorithm}
+
+% begin
+% S := \emptyset
+% R := \emptyset
+% for every A \in R che non compare in nessuna dipendenza funzionale nell'insieme F do:
+%     S := S \cup \{ A \}
+% if S \neq \emptyset then:
+%     begin
+%         R := R \setminus S
+%         \rho := \rho \cup \{ S \} S diventa uno degli schemi della decomposizione
+%     end
+% if esiste una dipendenza funzionale che coinvolge tutto R then:
+%     \rho := \rho = \rho \cup \{ R \}
+% else:
+%     for every X \to A \in F do:
+%         \rho := \rho \cup \{ X A \} aggiungi unione di parte destra e parte sinistra come schema in \rho
+% end
+
+\begin{exmp}
+$R = ABCDEHI$ \\
+$F = \{ AB \to CD, A \to CH, H \to D \}$
+
+$F$ non \`e una copertura minimale. $G = \{ A \to C, A \to H, H \to D \}$ lo \`e.
+
+L'input sono $R$ e $F$.
+
+$S = BEI$ \\
+$R = ABCDEHI \setminus BEI = ACDH$ \\
+$\rho = BEI$ \\
+$\rho = BEI, AC, AH, HD$
+\end{exmp}
+
+\begin{proof}
+Dobbiamo dimostrare che l'algoritmo \`e corretto.
+
+Prima cosa da dimostrare: $\rho$ preserva $R$.
+
+Ricordiamo: dati $R$ e $F$, una decomposizione $\rho = \{ R_1, R_2, R_k \}$ preserva $F$ se $F \equiv G$ dove $G = \bigcup_{i = 1}^k \{ X \to Y \in F^+ : XY \subseteq R_i \}$
+
+Essendo $G$ definito in questo modo, \`e sempre vero che $G \subseteq F^+$. Resta da verificare che $F \subseteq G^+$.
+
+Osserviamo che l'algoritmo, per ogni dipendenza in $X \to A \in F$ (ricordando che $F$ \`e una copertura minimale), pone in $\rho$ lo schema $XA$. Quindi per ogni dipendenza in $F$ esiste uno schema che contiene l'unione di parte destra e parte sinistra. Quindi, per come \`e definito $G$, ogni dipendenza di $F$ \`e in $G$. Quindi $F \subseteq G^+$.
+
+Dobbiamo dimostrare ora che ogni schema in $\rho$ \`e in 3NF.
+
+Mostriamo che $XA$ \`e in 3NF.
+
+Cominciamo facendo vedere che $X$ \`e chiave per lo schema $XA$. $X \to A \in F \subseteq F^+$. La prima condizione che garantisce che un insieme sia una chiave \`e verificata.
+
+Non pu\`o esistere $X' \subset X$ tale che $X' \to A \in F$, essendo $F$ copertura minimale. Seconda condizione verificata.
+
+Sia $Y \to B \in F^+$ tale che $YB \subseteq XA$, e $B \notin Y$. O $B$ \`e in una chiave, o $B$ non \`e in una chiave. Consideriamo i due casi:
+\begin{itemize}
+    \item Se $B = A$, allora $Y \to A$. Ma non pu\`o essere che $Y \subset X$, sempre per il solito motivo che $F$ \`e una copertura minimale. $X$ non \`e ridondante. Quindi $Y = X$.
+    \item $B \neq A$. Allora $B \in X$, quindi $B$ \`e contenuto in una chiave.  Lo schema \`e in 3NF.
+\end{itemize}
+\end{proof}
+
+Se alla decomposizione $\rho$ aggiungiamo una chiave $K$ di $R$, otteniamo la decomposizione $\sigma$ che ha un Join senza perdita.
+
+Una decomposizione $\sigma$ ottenuta da $\rho$ aggiungendo una chiave $K$ di $R$, ossia $\sigma = \rho \cup \{ K \}$, ha le seguenti propriet\`a:
+\begin{itemize}
+    \item ogni schema di $\sigma$ \`e in 3NF
+    \item $\sigma$ preserva $F$
+    \item $\sigma$ ha un Join senza perdita
+\end{itemize}
+
+\begin{exmp}
+$R = ABCDEH$ \\
+$F = \{ C \to D, DH \to C, DE \to H, A \to BC \}$ \\
+$\rho = \{AE, ABDH, CDE\}$
+
+$\rho$ ha un Join senza perdita?
+
+L'algoritmo costruisce prima una tabella con tante colonne quanti sono gli attributi dello schema di relazione, e tante righe quante sono gli schemi nella decomposizione.
+
+\begin{tabular}{l|*{6}{c}}
+& $A$ & $B$ & $C$ & $D$ & $E$ & $H$ \\
+\hline
+$AE$ & $a_1$ & $b_{1,2}$ & $b_{1,3}$ & $b_{1,4}$ & $a_5$ & $b_{1,6}$ \\
+$ABDH$ & $a_1$ & $a_2$ & $b_{2,3}$ & $a_4$ & $b_{2,5}$ & $a_6$ \\
+$CDE$ & $b_{3,1}$ & $b_{3,2}$ & $a_3$ & $a_4$ & $a_5$ & $b_{3,6}$
+\end{tabular}
+
+Consideriamo ciascuna dipendenza funzionale in $F$, e modifichiamo la tabella in caso di incongruenze.
+
+$C \to D$, $DH \to C$, $DE \to H$ non provocano cambiamenti. $A \to BC$ invece genera cambiamenti nella prima e nella seconda riga.
+
+\begin{tabular}{l|*{6}{c}}
+& $A$ & $B$ & $C$ & $D$ & $E$ & $H$ \\
+\hline
+$AE$ & $a_1$ & \cellcolor{green!20} $a_2$ & $b_{1,3}$ & $b_{1,4}$ & $a_5$ & $b_{1,6}$ \\
+$ABDH$ & $a_1$ & $a_2$ & \cellcolor{green!20} $b_{1,3}$ & $a_4$ & $b_{2,5}$ & $a_6$ \\
+$CDE$ & $b_{3,1}$ & $b_{3,2}$ & $a_3$ & $a_4$ & $a_5$ & $b_{3,6}$
+\end{tabular}
+
+Ci sono stati cambiamenti, quindi l'algoritmo riparte.
+
+$C \to D$ genera cambiamenti nella prima e nella seconda riga.
+
+\begin{tabular}{l|*{6}{c}}
+& $A$ & $B$ & $C$ & $D$ & $E$ & $H$ \\
+\hline
+$AE$ & $a_1$ & $a_2$ & $b_{1,3}$ & \cellcolor{green!20} $a_4$ & $a_5$ & $b_{1,6}$ \\
+$ABDH$ & $a_1$ & $a_2$ & $b_{1,3}$ & $a_4$ & $b_{2,5}$ & $a_6$ \\
+$CDE$ & $b_{3,1}$ & $b_{3,2}$ & $a_3$ & $a_4$ & $a_5$ & $b_{3,6}$
+\end{tabular}
+
+$DH \to C$ non genera cambiamenti. $DE \to H$ genera cambiamenti.
+
+\begin{tabular}{l|*{6}{c}}
+& $A$ & $B$ & $C$ & $D$ & $E$ & $H$ \\
+\hline
+$AE$ & $a_1$ & $a_2$ & $b_{1,3}$ & $a_4$ & $a_5$ & $b_{1,6}$ \\
+$ABDH$ & $a_1$ & $a_2$ & $b_{1,3}$ & $a_4$ & $b_{2,5}$ & $a_6$ \\
+$CDE$ & $b_{3,1}$ & $b_{3,2}$ & $a_3$ & $a_4$ & $a_5$ & \cellcolor{green!20} $b_{1,6}$
+\end{tabular}
+
+$A \to BC$ non genera cambiamenti. Ci sono stati cambiamenti, quindi l'algoritmo riparte.
+
+$C \to D$ non genera cambiamenti. $DH \to C$ genera cambiamenti nella prima e nella terza riga.
+
+\begin{tabular}{l|*{6}{c}}
+& $A$ & $B$ & $C$ & $D$ & $E$ & $H$ \\
+\hline
+$AE$ & $a_1$ & $a_2$ & \cellcolor{green!20} $a_3$ & $a_4$ & $a_5$ & $b_{1,6}$ \\
+$ABDH$ & $a_1$ & $a_2$ & $b_{1,3}$ & $a_4$ & $b_{2,5}$ & $a_6$ \\
+$CDE$ & $b_{3,1}$ & $b_{3,2}$ & $a_3$ & $a_4$ & $a_5$ & $b_{1,6}$
+\end{tabular}
+
+$DE \to H$ non genera cambiamenti. $A \to BC$ genera cambiamenti nella prima e nella seconda riga.
+
+\begin{tabular}{l|*{6}{c}}
+& $A$ & $B$ & $C$ & $D$ & $E$ & $H$ \\
+\hline
+$AE$ & $a_1$ & $a_2$ & $a_3$ & $a_4$ & $a_5$ & $b_{1,6}$ \\
+$ABDH$ & $a_1$ & $a_2$ & \cellcolor{green!20} $a_3$ & $a_4$ & $b_{2,5}$ & $a_6$ \\
+$CDE$ & $b_{3,1}$ & $b_{3,2}$ & $a_3$ & $a_4$ & $a_5$ & $b_{1,6}$
+\end{tabular}
+
+Ci sono stati cambiamenti, quindi l'algoritmo riparte.
+
+L'ultima passata non genera cambiamenti. Non c'\`e una riga con tutte a, quindi $\rho$ non ha un Join senza perdita.
+\end{exmp}
+
+Dati uno schema di relazione $R$ e un insieme di dipendenze funzionali $F$, sia $\rho$ la decomposizione di $R$ ottenuta mediante l'algoritmo \ref{algoritmo_definitivo}, e sia $\sigma = \rho \cup \{ K \}$ la decomposizione ottenuta aggiungendo a $\rho$ una chiave $K$ di $R$.
+
+Dobbiamo dimostrare che la decomposizione $\sigma$ ha le seguenti propriet\`a:
+\begin{enumerate}
+    \item\label{itm:sigma_1} ogni schema di $\sigma$ \`e in 3NF
+    \item\label{itm:sigma_2} $\sigma$ preserva $F$
+    \item\label{itm:sigma_3} $\sigma$ ha un Join senza perdita
+\end{enumerate}
+E POI SIAMO ARRIVATI.
+
+\begin{proof}
+Per la \ref{itm:sigma_2}, $\sigma$ preserva $F$ perch\'e $\rho$ preserva $F$, e aggiungendoci una chiave questo non cambia.
+
+Per la \ref{itm:sigma_1}, ogni schema di $\sigma$ \`e in 3NF se anche $K$ \`e in 3NF, visto che gli schemi di $\rho$ gi\`a lo erano. Prendiamo una dipendenza funzionale $X \to A \in F^+$ tale che $A \notin X$ e $XA \subseteq K$, ossia \`e definita sullo schema $K$. Essendo $K$ chiave di $R$, a maggior ragione $K$ \`e chiave di s\'e stesso. $A \in K$, quindi $A$ \`e una chiave in ciascuna dipendenza, quindi $K$ \`e in 3NF.
+
+Per la \ref{itm:sigma_3}, poich\'e $K$ \`e chiave per $R$, la chiusura di $K$ rispetto a $F$ coincide con $R$, ossia $K^+_F = R$. Immaginiamo di calcolare la chiusura di $K$ con l'algoritmo che consente di calcolare la chiusura di un insieme di attributi.
+\[
+Z^{(0)} = K
+\]
+Dopodich\'e, siccome $K^+ = R$, tutti gli attributi che non sono in $K$ verranno aggiunti a $Z$. Supponiamo vengano aggiunti nell'ordine $A_1$, $A_2$, $\dots A_n$. Quindi $Z^{(i)} = K A_1 \dots A_i$.
+
+Al passo 1 avremo una dipendenza $Y_1 \to A_1 \in F$ con $Y_1 \in Z^{(0)}$. Al passo 2 avremo una dipendenza $Y_2 \to A_2 \in F$ con $Y_2 \in Z^{(1)} = K A_1$. Quando inseriamo il generico $A_i in Z$, abbiamo una dipendenza $Y_i \to A_i \in F$ con $Y_i \in Z^{(i-1)} = K A_1 \dots A_{i-1}$.
+
+Supponiamo di applicare l'algoritmo che decide se una decomposizione ha un Join senza perdita considerando le dipendenze funzionali in $F$ nell'ordine $Y_1 \to A_1, \dots Y_n \to A_n$. Mostriamo per induzione che dopo che l'algoritmo ha considerato la dipendenza $Y_i \to A_i$ nella riga della tabella che corrisponde a $K$ ci sono tutte `$a$' in corrispondenza a $K A_1 \dots A_i$. Se \`e vero, dopo aver considerato $Y_n \to A_n$, la riga di $K$ ha tutte `$a$'.
+
+Immaginiamo di avere all'inizio della tabella gli attributi di $K$, poi tutti gli attributi $A_1, \dots A_n$. Avremo una riga per $K$, poi una riga per $Y_1 \to A_1$, ossia la riga $Y_1 A_1$, e cos\`i via per ogni $Y_i \to A_i$ avremo una riga $Y_i A_i$.
+
+La base dell'induzione \`e per $i = 1$. Per ciascun elemento nella colonna di $K$, quell'elemento \`e banalmente in $K$. Quindi nelle colonne di $K$, sulla riga di $K$, abbiamo tutte `$a$'. La riga $Y_1 A_1$ ha tutte `$a$' nella parte di $Y_1$ intersecata con $K$, e una `$a$' in corrispondenza di $A_1$. Quindi per l'algoritmo della tabella, anche la riga $K$ deve avere una `$a$' nella colonna $A_1$.
+
+Il passo induttivo \`e per $i > 1$. Supponiamo quindi che fino a $i-1$ la riga $K$ ha tutte `$a$' per le colonne $K$ e $A_1 \dots A_{i - 1}$. Questa volta $Y_i$ \`e contenuto in $K A_1 \dots A_{i-1}$. L'algoritmo della tabella vede che le due tuple $K$ e $Y_i A_i$ sono uguali su $Y_i$, vede poi che $A_i$ ha una `$a$' sulla riga $Y_i A_i$, quindi anche la colonna $A_i$ della riga $K$ diventa `$a$'.
+\end{proof}
+
+\begin{exmp}
+$R = ABCDEH$ \\
+$F = \{ AB \to C, AD \to B, AD \to C, AC \to B, B \to D, C \to E \}$
+
+\begin{enumerate}
+    \item Mostrare che $ABH$, $ADH$, $ACH$ sono chiavi di $R$
+    \item Sapendo che sono le uniche chiavi di $R$, mostrare che $R$ non \`e in 3NF.
+    \item Trovare una decomposizione $\rho$ di $R$ tale che:
+    \begin{itemize}
+        \item ogni schema in $\rho$ \`e in 3NF
+        \item $\rho$ preserva $F$
+        \item $\rho$ ha un Join senza perdita
+    \end{itemize}
+\end{enumerate}
+
+Per vedere che $ABH$ \`e chiave bisogna vedere che la chiusura di $ABH$ coincida con $R$, ossia $(ABH)^+ = R$, e poi che non esiste un sottoinsieme proprio di $ABH$ la cui chiusura coincide con $R$. Ossia nessuno fra $AB$, $AH$, $BH$ ha la chiusura coincidente con $R$.
+
+$(ABH)^+ = ABHCED$ \\
+$(AB)^+ = ABCED$ \\
+$(AH)^+ = AH$ \\
+$(BH)^+ = BHD$
+
+Punto 2. $C \to E \in F \subseteq F^+$, inoltre $E \notin C$. $C$ non contiene nessuna chiave, $E$ non appartiene a nessuna delle chiavi.
+
+Punto 3. Dobbiamo trovare una copertura minimale di $F$.
+
+Non serve il primo passo: le dipendenze funzionali hanno gi\`a a destra un solo attributo. Vediamo se ci sono attributi ridondanti.
+\[
+F = \{ AB \to C, AD \to B, AD \to C, AC \to B, B \to D, C \to E \}
+\]
+Modifichiamo $AB \to C$ in $B \to C$. Dobbiamo vedere se $C \in B^+_F$. La chiusura di $B$ rispetto a $F$ \`e $BD$, quindi non va bene. Vediamo se possiamo togliere $B$, ossia modificare $AB \to C$ in $A \to C$. $A^+_F = A$. Non va bene.
+
+Quindi nelle dipendenze funzionali in cui $A$ \`e a sinistra, non possiamo eliminare l'altra lettera. $D \to B$ va bene? $B \notin D^+_F = D$. Quindi neanche $D \to C$ va bene. $C \to B$ neanche, essendo $B \notin C^+_F = CE$. 
+
+$F$ \`e rimasta uguale. Vediamo ora se ci sono dipendenze ridondanti.
+
+Togliamo $AB \to C$. $C \in (AB)^+_G = ABDCE$, quindi possiamo eliminarla.
+
+Adesso $G = \{ AD \to B, AD \to C, AC \to B, B \to D, C \to E \}$
+
+Proviamo con $AD \to B$. $B \in (AD)^+_G = ADCBE$. Quindi va bene.
+
+Adesso $G = \{ AD \to C, AC \to B, B \to D, C \to E \}$
+
+$AD \to C$ non si pu\`o togliere, infatti $C \notin (AD)^+_G = AD$.
+
+$AC \to B$, $B \to D$, $C \to E$ non si possono eliminare.
+
+Usiamo l'algoritmo per trovare la scomposizione.
+
+$S = H$, $R \setminus S = ABCDE$.
+\[
+\rho = \{ H, ADC, ABC, BD, CE \}
+\]
+Aggiungendo $ABH$ a $\rho$ abbiamo una decomposizione con le tre propriet\`a desiderate.
+
+Le coperture minimali non sono uniche.
+
+$G' = \{ AB \to C, AD \to B, AC \to B, B \to D, C \to E \}$ \`e una copertura minimale di $F$. Le coperture minimali non devono avere per forza lo stesso numero di elementi.
+\end{exmp}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

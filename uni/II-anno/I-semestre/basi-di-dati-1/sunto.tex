@@ -1,0 +1,1028 @@
+\input{../../Common/common.tex}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=SQL,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=4
+}
+
+\floatname{algorithm}{Algoritmo}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\begin{document}
+
+\date{\today}
+
+\chapter{Modello relazionale}
+
+Il modello di database relazionale viene definito da Edward Codd nel 1970 come struttura matematica. Alla base del modello relazionale \`e il concetto matematico di ``relazione''. Abbiamo $n$ Domini (insiemi di valori) non necessariamente distinti. Una relazione $r$ sui domini $D_1, D_2, \dots , D_n$ \`e un sottoinsieme del prodotto cartesiano $ D_1 \times D_2 \times \dots \times D_n $.
+\[
+r \subseteq D_1 \times D_2 \times \dots \times D_n = 
+\left\{ \left( d_1, d_2, \dots , d_n \right) : d_i \in D_i \right\}
+\]
+Non so interpretare i dati finch\'e non do un nome alla tabella (\emph{nome della relazione}), e dei nomi alle colonne (\emph{attributi della relazione}).
+
+L'insieme di \emph{nome della relazione} e \emph{attributi della relazione} prendono il nome di \emph{schema della relazione}. I dati contenuti nella tabella sono chiamati \emph{istanza della relazione}.
+
+Ciascuna riga della tabella \`e chiamata tupla o ennupla.
+
+Lo \emph{schema di una base di dati} \`e l'insieme degli schemi delle sue relazioni.
+
+\section{Interrogazione di un database relazionale}
+
+Codd introdusse due linguaggi di interrogazione per un database relazionale: l'algebra relazionale, che prevede l'interrogazione applicando operatori al database, ed il calcolo relazionale, basato sulla logica del primo ordine. 
+
+\code{SQL} \`e orientato al calcolo relazionale. Qualunque linguaggio reale, anche se non implementa direttamente l'algebra relazionale, deve implementare le sue ``capacit\`a''.
+
+\begin{enumerate}
+    \item \code{SQL} e calcolo relazionale = tipo dichiarativo.
+    \item Algebra relazionale = linguaggio procedurale.
+\end{enumerate}
+
+Gli operatori dell'algebra relazionale si applicano all'istanza della relazione. L'algebra relazionale ha operatori unari e binari.
+
+\subsection{Operatore di proiezione}
+
+\`E un operatore unario. Seleziona da una tabella solo certe ``colonne'' o attributi. Si denota con il simbolo $\pi$. A pedice del $\pi$ si elencano gli attributi che si vogliono estrarre dalla tabella. $R$ \`e l'istanza della relazione a cui voglio applicare l'operatore.
+\[
+\pi_{A_1, A_2, \dots, A_k} (R)
+\]
+
+Gli operatori dell'algebra relazionale si applicano ad istanze di relazioni e restituiscono un'istanza di relazione (un'istanza di relazione \`e un sottoinsieme del prodotto cartesiano di un certo numero di Domini).
+
+\subsection{Operatore di selezione}
+
+\`E un operatore unario. La selezione fa fare tagli orizzontali. Seleziona dall'istanza di relazione soltanto le tuple che soddisfano la condizione specificata. Si denota con il simbolo $\sigma$. A pedice del simbolo sono le condizioni che devono essere rispettate dalle tuple selezionate.
+\[
+\sigma_{C}(R)
+\]
+La condizione \`e un'espressione booleana. I suoi operatori sono $\land, \lor, \neg$. La precedenza \`e $\neg, \land, \lor$. Se voglio modificare l'ordine in cui vengono eseguiti gli operatori devo inserire delle parentesi. Gli elementi semplici sono del tipo:
+\[
+A \theta B
+\text{ oppure }
+A \theta a
+\]
+dove:
+\begin{itemize}
+    \item $\theta$ \`e un operatore di confronto ($\theta \in \left\{  \le, =, \neq, \ge, \leq, \geq \right\}$)
+    \item $A$ e $B$ sono due attributi dello stesso dominio (dom($A$) = dom($B$))
+    \item $a$ \`e un elemento del Dominio di $A$ ($a \in$ dom($A$))
+\end{itemize}
+
+\subsection{Operatori di unione, intersezione e differenza}
+
+Sulle relazioni posso eseguire, con alcuni accorgimenti, le tipiche operazioni che posso eseguire sugli insiemi. Sono operatori binari. Consentono di costruire una relazione contenente tutte le tuple che appartengono ad almeno uno dei due operandi. Si denotano con i simboli $\cup, \cap, -$.
+\begin{gather*}
+r_1 \cup r_2 \\
+r_1 \cap r_2 = \left( r_1 - \left( r_1 - r_2 \right)\right) \\
+r_1 - r_2 
+\end{gather*}
+Le relazioni devono:
+\begin{itemize}
+    \item avere lo stesso numero di attributi;
+    \item gli attributi corrispondenti devono essere definiti sullo stesso Dominio.
+\end{itemize} 
+
+\subsection{Prodotto cartesiano}
+
+\`E un operatore binario. Prendo tutte le tuple che si ottengono concatenando una tupla del primo operando con una tupla del secondo operando.
+
+Il prodotto cartesiano ha tanti attributi quanti sono gli attributi del primo pi\`u gli attributi del secondo.
+
+Il costrutto base di \code{SQL}, il \code{SELECT}, \`e un prodotto cartesiano, una selezione e una proiezione. Questo:
+\begin{lstlisting}
+SELECT A_1, A_2, ..., A_x
+FROM R_1, R_2, ..., R_n
+WHERE C
+\end{lstlisting}
+corrisponde, in algebra relazionale, a: 
+\[
+\pi_{A_1, A_2, \dots, A_x} \left( \sigma_{C} \left( R_1 \times R_2 \times \dots \times R_n \right) \right)
+\]
+
+\subsection{Prodotto cartesiano e selezione: operatore di Join naturale}
+
+L'esistenza di attributi comuni \`e quello che mi permette di mettere insieme concetti legati fra loro. L'operatore di Join naturale mi permette di ricostruire le associazioni fra concetti diversi.
+
+L'operatore di Join naturale prende il prodotto cartesiano delle relazioni operando, selezionando le tuple che hanno lo stesso valore sugli attributi comuni (in \code{AND} fra loro, se gli attributi in comune sono pi\`u di uno). La proiezione elimina gli attributi ripetuti.
+
+\[
+r_1 \Join r_2 = \pi_{XY} \left( \sigma_{C} \left( r_1 \times r_2 \right) \right)
+\]
+dove:
+\[
+C: R_1 . A_1 = R_2 . A_1 \land \dots \land R_1 . A_k = R_2 A_k
+\]
+Il Join naturale senza attributi in comune \`e esattamente come il prodotto cartesiano.
+
+Se gli attributi che voglio siano in comune hanno nomi diversi, faccio un ``$\theta$-Join'' (theta-Join). Si indica con:
+\[
+\text{Clienti} \underset{\text{CodC } = \text{ C\#}}{\Join} \text{Ordini}
+\]
+
+Il $\theta$-Join consente di selezionare le tuple del prodotto cartesiano dei due operandi che soddisfano una condizione del tipo 
+\[
+A \theta B
+\]
+dove:
+\begin{itemize}
+    \item $\theta$ \`e un operatore di confronto
+    \item $A$ \`e un attributo dello schema del primo oeprando
+    \item $B$ \`e un attributo dello schema del secondo operando
+    \item dom($A$) = dom($B$)
+\end{itemize}
+\[
+r_1 \underset{A \theta B}{\Join} r_2 = \sigma_{A \theta B} \left( r_1 \Join r_2 \right)
+\]
+
+\chapter{Progetto di una base di dati relazionale}
+
+Dato uno schema di relazione $R = A_1 A_2 \dots A_n$, una tupla $t$ su $R$ \`e una funzione che associa ad ogni attributo $A_i$ in $R$ un valore $t[A_i]$ nel corrispondente dominio dom($A_i$).
+\[
+t : R \to \text{dom($A$)}
+\]
+La funzione tupla la denotiamo con $t[x]$.
+
+Se $X$ \`e un sottoinsieme di $R$ e $t_1$ e $t_2$ sono due tuple su $R$, $t_1$ e $t_2$ coincidono su $X$ ($t_1[X] = t_2[X]$) se $\forall A \in X (t_1[A] = t_2[A])$.
+
+\section{La Terza Forma Normale}
+
+I vincoli che possiamo avere sono:
+\begin{itemize}
+    \item vincoli di chiave
+    \item vincoli di dominio
+    \item vincoli di contenimento di dominio
+\end{itemize}
+
+Quel che vogliamo evitare, nel progettare una base di dati, \`e di avere:
+\begin{enumerate}
+    \item anomalie di inserimento;
+    \item anomale di cancellazione;
+    \item anomalie di aggiornamento;
+    \item ridondanza nella rappresentazione dei dati.
+\end{enumerate}
+
+\begin{defn}[Dipendenza funzionale]
+Una dipendenza funzionale \`e un vincolo valido su uno schema di relazione. Dato uno schema $R$, una dipendenza funzionale su $R$ \`e una coppia ordinata di sottoinsiemi non vuoti $X$ ed $Y$ di $R$.
+
+La notazione usata per rappresentare una dipendenza funzionale \`e:
+\[
+X \to Y
+\]
+e si legge ``$X$ determina funzionalmente $Y$'', o che ``$Y$ dipende funzionalmente da $X$''.
+\end{defn}
+
+\begin{defn}[Istanza legale]
+Dati uno schema $R$ e una dipendenza funzionale $X \to Y$ su $R$, un'istanza di $R$ soddisfa la dipendenza funzionale $X \to Y$ se:
+\[
+\forall t_1, t_2 \in r : t_1[X] = t_2[X] \implies t_1[Y] = t_2[Y]
+\]
+\end{defn}
+
+Dato uno schema di relazione $R$ e un'insieme $F$ di dipendenze funzionali definite su $R$, un'istanza di $R$ \`e legale se soddisfa tutte le dipendenze in $F$.
+
+La chiusura dell'insieme $F$ \`e l'insieme delle dipendenze funzionali che sono soddisfatte da ogni istanza legale di $R$. Si indica con $F^+$. Ovviamente $F \subseteq F^+$.
+
+\begin{defn}[Chiave]
+Dato uno schema di relazione $R$ e un insieme $F$ di dipendenze funzionali, un sottoinsieme $K$ di uno schema di relazione $R$ \`e una chiave di $R$ se:
+\begin{enumerate}
+    \item $K \to R \in F^+$, ossia $K$ determina funzionalmente tutta la relazione (ossia due tuple non possono avere lo stesso valore su $K$). 
+    \item Non esiste un sottoinsiemie proprio $K'$ di $K$ che determina funzionalmente tutta la relazione, ossia tale che $K' \to R \in F^+$. 
+    % $R$ non pu\`o essere una chiave, $K$ deve essere un insieme minimale.
+\end{enumerate}
+\end{defn}
+
+Se $F$ \`e vuoto tutto $R$ \`e chiave. (Una chiave pu\`o essere costituita da un insieme di attributi.) Uno schema relazionale pu\`o avere pi\`u di una chiave.
+
+\begin{defn}[Attributo primo]
+Un attributo $A$ di $R$ \`e primo se appartiene ad una chiave di $R$.
+\end{defn}
+
+\begin{defn}[Superchiave]
+Un insieme di attributi $X \subseteq R$ \`e una superchiave se $X$ contiene una chiave di $R$.
+\end{defn}
+
+% \begin{defn}[Dipendenza transitiva]
+% Una dipendenza $X \to A \in F^{+}$ \`e una dipendenza transitiva su $R$ se $A$ non \`e primo e per ogni chiave $K$ di $R$ si ha che $X$ non \`e contenuto propriamente in $K$ e $K - X \neq \emptyset$. Ossia, $X$ non \`e contenuto in $K$ e $K$ non \`e contenuto in $X$.
+% \end{defn}
+
+% \begin{defn}[Dipendenza parziale]
+% Una dipendenza $X \to A \in F^{+}$ \`e una dipendenza parziale su $R$ se $A$ non \`e primo e $X$ \`e contenuto propriamente in una chiave di $R$.
+% \end{defn}
+
+% Un esempio di dipendenza transitiva \`e Citt\`a $\to$ Provincia. Un esempio di dipendenza parziale \`e, in (Matr, C\#, Nome, Data, Voto, Docente), Matr $\to$ Nome, o C\# $\to$ Docente.
+
+\begin{defn}[Terza forma normale]
+\label{3NF}
+Sia $R$ uno schema di relazione e $F$ un insieme di dipendenze funzionali su $R$. Uno schema $R$ \`e in \code{3NF} se per ogni dipendenza funzionale $X \to A \in F^{+}$ tale che $A \notin X$ si ha che:
+\begin{itemize}
+    \item $A$ \`e primo, oppure
+    \item $X$ \`e una superchiave.
+\end{itemize}
+\end{defn}
+% Si pu\`o dire che uno schema relazionale \`e in \code{3NF} se e solo se non esistono dipendenze transitive o dipendenze parziali.
+
+% \begin{proof}
+% La parte ``solo se'' \`e banale: per ipotesi lo schema \`e in \code{3NF}. Quindi per ogni dipendenza funzioanle vale esattamente la negazione della definizione di dipendenza parziale e di dipendenza transitiva.
+
+% Parte ``se''. Per ipotesi non ci sono dipendenze funzionali transitive o parziali. Supponiamo per assurdo lo schema non sia in \code{3NF}. Esiste quindi una dipendenza X \to A \in F^{+} tale che A non \`e primo e X non \`e una superchiave. Se X non \`e una superchiave, i casi sono due:
+% \begin{enumerate}
+%      \item non esiste una chiave pi\`u piccola di X, ossia X \`e contenuto (propriamente) almeno in una chiave K. Quindi X \to A \`e una dipendenza parziale. Contraddizione.
+%      \item X non \`e contenuto in nessuna chiave, e non contiene nessuna chiave. Quindi X \to A \`e una dipendenza transitiva. Contraddizione.
+%  \end{enumerate} 
+% \end{proof}
+
+% Riassunto della dimostrazione:
+% \begin{enumerate}
+%     \item ``solo se'': per ipotesi lo schema \`e in \code{3NF}, quindi ogni dipendenza $X \to A$ \`e tale che $A$ \`e primo o $X$ \`e una superchiave. Questo \`e esattamente la negazione delle definizioni di dipendenze parziali e transitive.
+%     \item ``se'': si dimostra per assurdo. Supponiamo lo schema non sia in \code{3NF} nonostante non ci siano dipendenze parziali o transitive. Esiste quindi una dipendenza $X \to A$ con $A \notin X$ tale che $A$ non \`e primo e $X$ non \`e una superchiave. Ci\`o significa che o esiste una dipendenza parziale o esiste una dipendenza transitiva. Assurdo.
+% \end{enumerate}
+
+Ogni schema non in \code{3NF} pu\`o essere decomposto in un insieme di schemi in \code{3NF}. Non tutte le decomposizioni sono ``buone'':
+\begin{enumerate}
+    \item gli schemi della decomposizione possono non preservare le dipendenze funzionali originali;
+    \item potrebbe non essre possibile ricostruire la relazione iniziale dagli schemi della decomposizione.
+\end{enumerate}
+
+Le dipendenze che vogliamo conservare dopo una scomposizione sono quelle contenute in $F^{+}$. Dobbiamo avere quindi un modo per calcolare $F^{+}$. Per dimostrare che possiamo farlo, dobbiamo dimostrare che $F^+ = F^A$ (coincide con $F^A$). $F^A$ \`e definito in maniera ricorsiva a partire da $F$ secondo gli assiomi di Armstrong.
+\begin{defn}[Assioni di Armstrong]
+\begin{description}
+    \item[Caso base] se $f \in F$ allora $f \in F^A$
+    \item[Riflessivit\`a\label{itm:armstrong_riflessivita}] se $Y \subseteq X \subseteq R$ allora $X \to Y \in F^A$ (ossia prendo tutte le dipendenze banali).
+    \item[Aumento\label{itm:armstrong_aumento}] se $X \to Y \in F^A$ e $Z \in R$, allora posso aggiungere $Z$ da una parte e dall'altra della dipendenza funzionale (isotonia) e ottengo ancora una dipendenza funzionale $XZ \to YZ \in F^A$.
+    \item[Transitivit\`a\label{itm:armstrong_transitivita}] se $X \to Y \in F^A$ e $Y \to Z \in F^A$ allora $X \to Z \in F^A$ (transitivit\`a).
+\end{description}
+\end{defn}
+
+Si possono derivare alcune regole dagli assiomi:
+
+\begin{description}
+    \item[Regola dell'unione\label{itm:regola_unione}] se $X \to Y \in F^A$ e $X \to Z \in F^A$ allora $X \to YZ \in F^A$.
+    \item[Regola della decomposizione\label{itm:regola_decomposizione}] se $X \to Y \in F^A$ e $Z \subseteq Y$ allora $X \to Z \in F^A$.
+    \item[Regola della pseudo-transitivit\`a\label{itm:regola_pseudo_transitivita}] $X \to Y \in F^A$ e $WY \to Z \in F^A$ allora $WX \to Z \in F^A$.
+\end{description}
+
+\begin{proof}[della \ref{itm:regola_unione}]
+$X \to Y \in F^A$, $X \to Z \in F^A$. Applico l'assioma dell'aumento e ottengo $X \to XY \in F^A$ e $XY \to YZ \in F^A$. Per transitivit\`a $X \to YZ \in F^A$.
+\end{proof}
+
+\begin{proof}[della \ref{itm:regola_decomposizione}]
+$X \to Y \in F^A$ e $Z \subseteq Y$. Applicando la riflessivit\`a, $Y \to Z \in F^A$. Per transitivit\`a, $X \to Z \in F^A$.
+\end{proof}
+
+\begin{proof}[della \ref{itm:regola_pseudo_transitivita}]
+$X \to Y \in F^A$ e $WY \to Z \in F^A$. Applico l'aumento e ottengo $WX \to WY \in F^A$, per transitivit\`a $WX \to Z \in F^A$.
+\end{proof}
+
+\begin{defn}[Chiusura di un insieme di attributi]
+Dati $R$ schema di relazione ed $F$ insieme di dipendenze funzionali su $R$, ed $X \subseteq R$ insieme di attributi di $R$. La chiusura di $X$ rispetto ad $F$, denotata con $X_F^+$, \`e l'insieme $ \{ A : X \to A \in F^A\}$, ossia \`e l'insieme di attributi $A$ tale che la dipendenza $X \to A \in F^A$. Se \`e evidente dal contesto quale \`e l'insieme di dipendenze rispetto al quale sto realizzando la chiusura, posso omettere la $F$ e scrivere semplicemente $X^+$.
+\begin{lem}\label{chiusura_attributi}
+$Y \subseteq X^+ \iff X \to Y \in F^A$. Ossia, se $Y \subseteq X^+$, per la definizione di $X^+$, $\forall A \in Y$ si ha che $X \to A \in F^A$. Quindi per la regola dell'unione $X \to Y \in F^A$.
+\end{lem}
+\end{defn}
+La dimostrazione del lemma \ref{chiusura_attributi} \`e banale: sfrutta le regole di unione e decomposizione.
+
+\begin{proof}[di $F^+ = F^A$]
+Dimostriamo per doppia inclusione che $F^+ = F^A$.
+\begin{enumerate}
+    \item Dimostriamo inizialmente che $F^A \subseteq F^+$, ossia che se $X \to Y \in F^A \implies X \to Y \in F^+$.
+
+    Prendiamo una qualsiasi dipendenza $X \to Y \in F^A$. Questa dipendenza pu\`o essere ottenuta da una qualsiasi dipendenza contenuta in $F$ applicando gli assiomi di Armstrong. 
+
+    Dimostriamo per induzione sul numero di applicazione degli assiomi di Armstrong che ogni $X \to Y \in F^A$ \`e anche in $F^+$, poich\'e $X \to Y$ \`e derivabile da $F$ con un certo numero $i$ di applicazioni degli assiomi di Armstrong.
+      
+    La base dell'induzione \`e per $i = 0$, che vuol dire che $X \to Y \in F \subseteq F^+$.
+
+    Per l'induzione con $i > 0$ devo distinguere tre casi (uno per ogni assioma). Vado a studiare l'ultima applicazione di un assioma di Armstrong.
+    \begin{enumerate}
+        \item L'ultimo assioma \`e \ref{itm:armstrong_riflessivita}: $Y \subseteq X$. Se $r$ \`e una qualsiasi istanza di $R$ ed esistono in $r$ due tuple $t_1, t_2$ tali che $t_1[X] = t_2[X]$. Segue che anche $t_1[Y] = t_2[Y]$. Quindi $X \to Y$ \`e soddisfatta da qualsiasi istanza di $R$, ed in particolare da qualsiasi istanza legale di $R$. Perci\`o $X \to Y \in F^+$.
+        \item L'ultimo assioma \`e \ref{itm:armstrong_aumento}: in questo caso deve esistere una dipendenza $V \to W \in F^A$ tale che $X = VZ$ e $Y = WZ$, dove $Z \subseteq R$. La dipendenza $V \to W \in F^A$ pu\`o essere derivata da $F$ mediante un numero minore di $i$ di applicazioni degli assiomi di Armstrong. Quindi per l'ipotesi induttiva $V \to W \in F^+$. 
+
+        Sia $r$ una qualsiasi istanza legale di $R$, e siano $t_1, t_2$ due tuple di $r$ tali che $t_1[X] = t_2[X]$. Allora $t_1[V] = t_2[V]$ e $t_1[Z] = t_2[Z]$, essendo $X = VZ$. Poich\'e $V \to W \in F^+$ ed $r$ \`e legale, $r$ soddisfa anche $V \to W$ per definizione di istanza legale. Allora le due tuple $t_1, t_2$ devono essere uguali anche su $W$, o non sarebbe soddisfatta la dipendenza. Quindi $t_1[Y] = t_2[Y]$, poich\'e $Y = WZ$. Segue che $X \to Y \in F^+$.
+        \item L'ultimo assioma \`e \ref{itm:armstrong_transitivita}: devono esistere due dipendenze $X \to Z$ e $Z \to Y \in F^{A}$, ottenute mediante un numero minore di $i$ di applicazioni degli assiomi di Armstrong.
+
+        Sia $r$ una qualsiasi istanza legale di $R$, e siano $t_1, t_2$ due tuple di $r$ tali che $t_1[X] = t_2[X]$. Quindi per l'ipotesi induttiva, $t_1[Z] = t_2[Z]$, e quindi ancora per ipotesi induttiva $t_1[Y] = t_2[Y]$.
+    \end{enumerate}
+    \item Dimostriamo ora che $F^+ \subseteq F^A$, ossia che $X \to Y \in F^+ \implies X \to Y \in F^A$.
+
+    Supponiamo per assurdo che $X \to Y \in F^+$ e $X \to Y \notin F^A$. Mostriamo che esiste un'istanza legale che non soddisfa $X \to Y$, e che quindi $X \to Y \notin F^+$ (in contraddizione con l'ipotesi).
+
+    Prendiamo un'istanza $r$ con solo due tuple $t_1, t_2$ che per tutti gli attributi in $X^+$ hanno gli stessi valori, e hanno valori diversi su tutti gli altri attributi $R \setminus X^+$.
+    \begin{center}
+    \begin{tabular}{|l|*{9}{c|}}
+    \hline
+    & \multicolumn{4}{c|}{$X^+$} 
+    & \multicolumn{4}{c|}{$R \setminus X^+$} \\
+    \hline
+    $t_1$ & 1 & 1 & $\dots$ & 1 & 1 & 1 & $\dots$ & 1 \\
+    \hline
+    $t_2$ & 1 & 1 & $\dots$ & 1 & 0 & 0 & $\dots$ & 0 \\
+    \hline 
+    \end{tabular}
+    \end{center}
+    Supponiamo sia un'istanza legale, e mostriamo che $r$ non soddisfa $X \to Y$.
+
+    Supponiamo soddisfi $X \to Y$, ossia se $t_1[X] = t_2[X]$ allora $t_1[Y] = t_2[Y]$. Poich\'e $X \subseteq X^+$ e $t_1[X^+] = t_2[X^+]$ si ha che $t_1[X] = t_2[X]$. Ma poich\'e $X \to Y$, si deve avere che $t_1[Y] = t_2[Y]$. Il che significherebbe che $Y \subseteq X^+$, ma per il lemma \ref{chiusura_attributi} significherebbe che $X \to Y \in F^A$.
+
+    Supponiamo $r$ non sia legale, e che quindi esiste $V \to W \in F$ che non \`e soddisfatta da $r$. Allora esistono due tuple $t_1, t_2$ tali che $t_1[V] = t_2[V]$ ma $t_1[W] \neq t_2[W]$. Quindi $V \subseteq X^+$ e $W \cap (R \setminus X^+) \neq \emptyset$. Per il lemma \ref{chiusura_attributi} $X \to V \in F^A$. Se applichiamo l'assioma della transitivit\`a otteniamo che $X \to W \in F^A$, ma di nuovo per il lemma \ref{chiusura_attributi} avremmo quindi $W \subseteq X^+$.
+\end{enumerate}
+\end{proof}
+
+Calcolare $F^+$ \`e esponenziale in $\abs{F}$. Ma a noi basta sapere se una dipendenza funzionale $X \to Y$ \`e in $F^+$, quindi per il lemma \ref{chiusura_attributi} ci basta sapere se $Y \subseteq X^+$. $X^+$ si pu\`o calcolare in tempo polinomiale.
+
+\subsection{Determinare la chiusura di un insieme di attributi}
+
+\begin{algorithm}
+\caption{Algoritmo per il calcolo della chiusura di un insieme di attribbuti rispetto a un insieme di dipendenze funzionali}
+\label{algoritmo_chiusura}
+\begin{algorithmic}
+\Require uno schema di relazione $R$, un insieme di dipendenze funzionali $F$ e un insieme di attributi $X \subseteq R$
+\Ensure la chiusura di $X$ rispetto ad $F$ ($X^+_F$) nella variabile $Z$
+\State $Z \gets X$
+\State $S \gets \{ A : Y \to V \in F \land Y \subseteq Z \land A \in V \}$
+\While{$S \not\subseteq Z$}
+    \State $Z \gets Z \cup S$
+    \State $S \gets \{ A : Y \to V \in F \land Y \subseteq Z \land A \in V \}$
+\EndWhile
+\State \Return $Z$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{proof}[di correttezza dell'algoritmo \ref{algoritmo_chiusura}]
+Dato il valore di $Z$ all'istante $i$ ed il valore di $Z$ all'istante $i + 1$, $Z^{(i)} \subseteq Z^{(i+1)} \forall i$. Al termine del ciclo, $S^{(f)} \subseteq Z^{(f)}$. Dobbiamo dimostrare che $X^+ = Z^{(f)}$ per doppia inclusione.
+
+\begin{enumerate}
+    \item Dimostriamo per induzione che $Z^{(f)} \subseteq X^+$, ossia che $\forall i $ $Z^{(i)} \subseteq X^+$.
+
+    La base dell'induzione si ha per $i = 0$. $Z^{(0)} = X \subseteq X^+$.
+
+    Per ipotesi induttiva $Z^{(i-1)} \subseteq X^+$. $Z^{(i-1)} \subseteq Z^{(i)}$, per cui devo dimostrare che ogni elemento in $Z^{(i)} \setminus Z^{(i - 1)}$ \`e in $X^+$.
+
+    Sia $A \in Z^{(i)} \setminus Z^{(i - 1)}$. So che $Z^{(i)} = Z^{(i - 1)} \cup S^{(i - 1)}$, quindi $A \in S^{(i-1)} = \{ A : Y \to V \in F \land Y \subseteq Z^{(i-1)} \land A \in V\}$. Quindi esiste una dipendenza $Y \to V \in F$ tale che $Y \in Z^{(i-1)}$ e $A \in V$. Per ipotesi induttiva $Y \in X^+$. Per il solito lemma $Y \subseteq X^+ \iff X \to Y \in F^A$, quindi $X \to Y \in F^A$.
+
+    Per la transitivit\`a, $X \to V \in F^A$, quindi $V \subseteq X^+$ e $A \in X^+$.
+    \item  Dimostriamo ora che $X^+ \subseteq Z^{(f)}$. Preso un qualsiasi $A \in X^+$, dobbiamo dimostrare che $A \in Z^{(f)}$.
+
+    Sia $A \in X^+$, segue che $X \to A \in F^A = F^+$, quindi $X \to A$ deve essere soddisfatta da ogni istanza legale. Prendiamo un'istanza $r$:
+
+    \begin{center}
+    \begin{tabular}{|l|*{8}{c|}}
+    \hline
+    & \multicolumn{4}{c|}{$Z^{(f)}$} 
+    & \multicolumn{4}{c|}{$R \setminus Z^{(f)}$} \\
+    \hline
+    $t_1$ & 1 & 1 & $\dots$ & 1 & 1 & 1 & $\dots$ & 1 \\
+    \hline
+    $t_2$ & 1 & 1 & $\dots$ & 1 & 0 & 0 & $\dots$ & 0 \\
+    \hline 
+    \end{tabular}
+    \end{center}
+
+    Le due tuple di questa istanza coincidono su $Z^{(f)}$, e non coincidono su $R \setminus Z^{(f)}$. $r$ \`e un'istanza legale, ma lo dimostreremo dopo. Quindi $X \to A$ deve essere soddisfatta da $r$.
+
+    Poich\'e $Z^{(0)} = X$ e $\forall i$, $Z^{(i)} \subseteq Z^{(i+1)}$, si ha che $X \subseteq Z^{(f)}$. Quindi $t_1[X] = t_2[X]$. Siccome la dipendenza funzionale $X \to A$ deve essere soddisfatta da $r$, devo avere che $t_1[A] = t_2[A]$, quindi $A \in Z^{(f)}$.
+
+    Supponiamo per assurdo che $r$ non sia legale, ne segue che esiste $V \to W \in F$ tale che $r$ non soddisfa $V \to W$. Pertanto esistono due tuple che coincidono su $V$ e che non coincidono su $W$. Quindi $V \subseteq Z^{(f)}$ e $W \cap (R \setminus Z^{(f)}) \neq \emptyset$. Quindi $S^{(f)} \supseteq W$ ($S^{(f)}$ contiene $W$). Ne segue che $S^{(f)} \not\subseteq Z^{(f)}$, in contraddizione con la condizione di uscita dall'algoritmo.
+\end{enumerate}
+\end{proof}
+
+Sappiamo che $Y \subseteq X^+ \iff X \to Y \in F^A = F^+$. Quindi possiamo dire che, se $K$ \`e una chiave:
+\begin{enumerate}
+    \item $R \subseteq K^+$ ossia $K^+ = R$
+    \item $\neg \exists K' \subset K $ t.c. $R \subseteq (K')^+$
+\end{enumerate}
+
+\section{Decomposizioni adeguate}
+
+Una qualsiasi decomposizione di uno schema, in cui ogni schema di relazione \`e in \code{3NF} rappresenta adeguatamente la realt\`a di interesse?
+
+Voglio alcune cose nella realizzazione di una decomposizione:
+\begin{description}
+    \item[1\label{itm:dec_1}] La decomposizione deve preservare le dipendenze funzionali, per essere una rappresentazione adeguata della realt\`a.
+    \item[2\label{itm:dec_2}] La decomposizione non deve avere perdita di informazione.
+\end{description}
+
+Definiamo adesso una decomposizione, e vediamo quando una decomposizione preserva le dipendenze funzionali e quando una decomposizione ha un join senza perdita, ossia quando formalizza le due condizioni \ref{itm:dec_1} e \ref{itm:dec_2}.
+
+\begin{defn}[Decomposizione]
+Dato uno schema di relazione $R$ e un insieme $F$ di dipendenze funzionali su $R$, una decomposizione $\rho$ di $R$ \`e una famiglia $\{R_1, R_2, \dots R_k\}$ di sottoinsiemi di $R$ che ricopre $R$, ossia tale che:
+\[
+R = \bigcup_{i = 1}^{k} \, R_i
+\]
+Non \`e una partizione: le relazioni della decomposizione possono avere intersezione non nulla.
+\end{defn}
+
+\begin{defn}[Equivalenza fra insiemi di dipendenze funzionali]
+Siano $F$ e $G$ due insiemi di dipendenze funzionali, dico che $F$ e $G$ sono equivalenti ($F \equiv G$) se le loro chiusure coincidono, ossia $F^+ = G^+$.
+\end{defn}
+
+\begin{defn}[Preservare le dipendenze funzionali]
+\label{definizione_insieme_G}
+Dati $R$ ed $F$, una decomposizione $C = \{ R_1, R_2 \dots R_k\}$ di $R$ preserva $F$ se $F \equiv G$ dove:
+\[
+G = \bigcup_{i = 1}^{k} \, \{ X \to Y \in F^+ : XY \subseteq R_i \}
+\]
+\end{defn}
+
+\begin{defn}[Join senza perdita]
+Dati $R$ ed $F$, una decomposizione $\rho = \{ R_1, R_2 \dots R_k \}$ di $R$ ha un join senza perdita se $\forall $ istanza legale $r$ di $R$:
+\[
+r = \pi_{R_1}(r) \Join \dots \Join \pi_{R_k}(r)
+\]
+Ossia, ogni istanza legale $r$ \`e uguale al join delle sue proiezioni sulle relazioni della decomposizione.
+\end{defn}
+
+\subsection{Decomposizioni che preservano le dipendenze funzionali}
+
+Dobbiamo capire, data una decomposizione, se questa preserva le dipendenze funzionali.
+
+Per dimostrare se $F \equiv G$ usiamo la doppia inclusione: $F^+ \subseteq G^+$ e $G^+ \subseteq F^+$. Possiamo semplificare ulteriormente il compito:
+\begin{lem}
+Dati due insiemi di dipendenze funzionali $F$ e $G$:
+\[
+F^+ \subseteq G^+ \iff F \subseteq G^+
+\]
+Verso destra \`e evidente: $F \subseteq F^+ \subseteq G^+$.
+
+Verso sinistra, se ogni dipendenza in $F$ si pu\`o ottenere da una dipendenza in $G$ applicando gli assiomi di Armstrong, allora ogni dipendenza in $F^+$ si pu\`o ottenere da $F$ (e quindi da $G$) applicando gli assiomi di Armstrong.
+\end{lem}
+Quindi devo verificare solo che $F \subseteq G^+$ e $G \subseteq F^+$. $G \subseteq F^+$ \`e banale per definizione di $G$.
+
+Per $F \subseteq G^+$ usiamo il solito lemma \ref{chiusura_attributi}. Bisogna vedere che $\forall X \to Y \in F$, $X \to Y \in G^+ \iff Y \subseteq X_{G}^{+}$.
+
+\begin{algorithm}
+\caption{Algoritmo per decidere se una decomposizione $\rho$ di $R$ preserva l'insieme di dipendenze funzionali $F$ \label{algoritmo_decomposizione_preserva}}
+\begin{algorithmic}
+\Require $R$, $F$, $\rho$
+\Ensure decide se $F \equiv G$ dove $G = \bigcup_{i = 1}^{k} \{ X \to Y \in F^+ : X, Y \subseteq R_i \}$
+\State successo $\gets$ true
+\ForAll{$X \to Y \in F$}
+    \State Calcola $X_{G}^{+}$
+    \If{$Y \not\subseteq X^{+}_{G}$}
+        \State successo $\gets$ false
+    \EndIf
+\EndFor
+\State \Return successo
+\end{algorithmic}
+\end{algorithm}
+
+Il problema dell'algoritmo \ref{algoritmo_decomposizione_preserva} \`e nel ``Calcola $X_{G}^{+}$''. Non sappiamo chi \`e $G$, e per calcolarlo dovremmo calcolare prima $F^+$.
+
+Per fortuna abbiamo un algoritmo polinomiale per calcolare $X_{G}^{+}$ senza sapere $G$.
+ 
+\begin{algorithm}
+\caption{Calcola la chiusura dell'insieme di attributi $X$ rispetto all'insieme $G$ definito secondo la definizione \ref{definizione_insieme_G} \label{algoritmo_calcola_chiusura}}
+\begin{algorithmic}
+\Require $R$, $F$, $X \subseteq R$, una decomposizione $C = \{R_1, \dots R_k\}$
+\Ensure $X^{+}_{G}$ con $G$ definito rispetto a $F$ secondo la definizione \ref{definizione_insieme_G}, nella variabile $Z$
+\State $Z\gets X$
+\State $S\gets \emptyset$
+\For{$j \gets 1 \dots K$}
+    \State $S \gets S \cup (Z \cap R_j)_{F}^{+} \cap R_j$
+\EndFor
+\While{$S \not\subseteq Z$}
+    \State $Z\gets Z \cup S$
+    \For{$j \gets 1 \dots K$}
+        \State $S \gets S \cup (Z \cap R_j)_{F}^{+} \cap R_j$
+    \EndFor
+\EndWhile
+\State \Return $Z$
+\end{algorithmic}
+\end{algorithm}
+
+\`E fondamentale ricordare che l'intersezione ha precedenza rispetto all'unione.
+
+\begin{proof}[di correttezza dell'algoritmo \ref{algoritmo_calcola_chiusura}]
+Indichiamo con $Z^{(0)}$ e $S^{(0)}$ i valori di $Z$ ed $S$ prima di entrare nel ciclo \code{while}, e con $Z^{(i)}$ e $S^{(i)}$ il valore di $Z$ ed $S$ dopo l'$i$-esima esecuzione del ciclo \code{while}. Ovviamente $\forall i$, $Z^{(i)} \subseteq Z^{(i+1)}$. $Z^{(f)}$ \`e il valore di $Z$ alla fine dell'esecuzione dell'algoritmo.
+
+Dobbiamo dimostrare che $X^{+}_{G} = Z^{(f)}$ per doppia inclusione. Ci limitiamo a dimostrare che $X^{+}_{G} \supseteq Z^{(f)}$, l'altro lato della dimostrazione \`e pi\`u complesso.
+
+Dimostriamo per induzione che $\forall i$, $Z^{(i)} \subseteq X^{+}_{G}$.
+
+La base dell'induzione \`e per $i = 0$. $Z^{(0)} = X \subseteq X^{+}_{G}$.
+
+Ipotesi induttiva: $Z^{(i-1)} \subseteq X^{+}_{G}$. Quindi $X \to Z^{(i-1)} \in G^A$ per il solito lemma \ref{chiusura_attributi}.
+
+Per dimostrare che $Z^{(i)} \subseteq X^{+}_{G}$ devo dimostrare che $Z^{(i)} \setminus Z^{(i-1)} \subseteq X^{+}_{G}$. Sia $A \in Z^{(i)} \setminus Z^{(i-1)}$. 
+
+So che $Z^{(i)} = Z^{(i-1)} \cup S^{(i-1)}$. $A \notin Z^{(i-1)} \implies A \in S^{(i-1)} \setminus Z^{(i-1)}$. Quindi $\exists j $ tale che $A \in (Z^{(i-1)} \cap R_j)_{F}^{+} \cap R_j$, cio\`e $A \in (Z^{(i-1)} \cap R_j)_{F}^{+}$ e $A \in R_j$. 
+
+Da $A \in (Z^{(i-1)} \cap R_j)_{F}^{+}$ si ha che $Z^{(i-1)} \cap R_j \to A \in F^A$. 
+
+Inoltre poich\'e $A \in R_j$, $(Z^{(i - 1)} \cap R_j) \cup A \subseteq R_j$.
+
+Ricordiamo che $G$ \`e definito come $\bigcup_{i = 1}^{k} \{X \to Y \in F^{+} : X Y \subseteq R_i \}$. Quindi, poich\'e $Z^{(i-1)} \cap R_j \to A \in F^A$ e $(Z^{(i - 1)} \cap R_j) \cup A \subseteq R_j$, vale che $(Z^{(i - 1)} \cap R_j) \to A \in G \subseteq G^A$. Per la regola della decomposizione da $X \to Z^{(i-1)} \in G^A$ segue che $X \to (Z^{(i-1)} \cap R_j) \in G^A$.
+
+Perci\`o $X \to A \in G^A$. Per definizione di $G^A$, $A \in X^{+}_G$.
+\end{proof}
+
+\subsection{Decomposizioni con Join senza perdita}
+
+\begin{defn}[Decomposizione con Join senza perdita]
+Dati uno schema di relazione $R$ e un insieme di dipendenze funzionali $F$ definite su $R$, una decomposizione $\rho = \{ R_1, R_2 \dots R_k \}$ ha un Join senza perdita se $\forall r$ istanza legale di $R$, si ha che:
+\[
+r = \pi_{R_1} (r) \Join \pi_{R_2} (r) \Join \dots \Join \pi_{R_k} (r)
+\]
+$R_1 \dots R_k$ sono insiemi di attributi sottoinsiemi di $R$, quindi proietto $r$ su degli insiemi di attributi (che sono tutti $R_i \subseteq R$).
+\end{defn}
+
+Introduciamo un algoritmo per calcolare se una decomposizione ha un Join senza perdita.
+
+\begin{algorithm}
+\caption{Algoritmo per calcolare se una decomposizione $\rho$ di $R$ ha un Join senza perdita \label{algoritmo_decomposizione_join_senza_perdita}}
+\begin{algorithmic}
+\Require uno schema di relazione $R$, un insieme di dipendenze funzionali $F$ su $R$, e una decomposizione $\rho = \{R_1, \dots R_k\}$
+\Ensure decide se $\rho$ ha un Join senza perdita
+\State $r \gets$ una tabella con $\abs{R}$ colonne e $\abs{\rho}$ righe, che all'$i$-esima riga e alla $j$-esima colonna ha $a_j$ se $A_j \in R_i$, $b_{i,j}$ altrimenti
+\Repeat
+    \ForAll{$X \to Y \in F$}
+        \ForAll{$t_1, t_2 \in r$ tali che $t_1[X] = t_2[X] \land t_1[Y] \neq t_2[Y]$}
+            \ForAll{$A_j \in Y$}
+                \If{$t_1[A_j] = a_j$}
+                    \State $t_2[A_j] \gets t_1[A_j]$
+                \Else
+                    \State $t_1[A_j] \gets t_2[A_j]$
+                \EndIf
+            \EndFor
+        \EndFor
+    \EndFor
+\Until{la tabella $r$ non \`e variata}
+\If{$r$ ha una riga con tutte $a$}
+    \State \Return $r$ ha un Join senza perdita
+\Else
+    \State \Return $r$ non ha un Join senza perdita
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+Come \`e fatta la tabella: sia $R = A_1 A_2 \dots A_n$,
+
+\begin{center}
+\begin{tabular}{l | *{6}{c}}
+& $A_1$ & $A_2$ & $\dots$ & $A_j$ & $\dots$ & $A_n$ \\
+\hline
+$R_1$ & $a_{1} / b_{1,1}$ & $a_{2} / b_{1,2}$ & \dots & $a_{j} / b_{1,j}$ & \dots & $a_{n} / b_{1,n}$ \\
+$R_2$ & $a_{1} / b_{2,1}$ & $a_{2} / b_{2,2}$ & \dots & $a_{j} / b_{2,j}$ & \dots & $a_{n} / b_{2,n}$ \\
+$\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ & $\vdots$ & $\ddots$ & $\vdots$ \\
+$R_i$ & $a_{1} / b_{i,1}$ & $a_{2} / b_{i,2}$ & \dots & $a_{j} / b_{i,j}$ & \dots & $a_{n} / b_{i,n}$ \\
+$\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ & $\vdots$ & $\ddots$ & $\vdots$ \\
+$R_k$ & $a_{1} / b_{k,1}$ & $a_{2} / b_{k,2}$ & \dots & $a_{j} / b_{k,j}$ & \dots & $a_{n} / b_{k,n}$
+\end{tabular}
+\end{center}
+
+Le colonne corrispondono agli attributi di $R$, le righe agli schemi della decomposizione. Alla casella $(i, j)$ mettiamo $a_j$ se l'attributo $A_j$ appartiene alla decomposizione $R_i$, altrimenti mettiamo $b_{i,j}$ (con due indici). $a$ e $b$ sono simboli.
+
+La tabella ha $\abs{R}$ colonne e $\abs{\rho}$ righe.
+
+\begin{proof}[di correttezza dell'algoritmo \ref{algoritmo_decomposizione_join_senza_perdita}]
+Chiamiamo $r_0$ la tabella costruita all'inizio dell'algoritmo, ed $r_f$ il valore finale della tabella.
+
+Abbiamo detto $\rho$ ha un Join senza perdita $\iff r_f$ ha una riga con tutte `$a$'.
+
+Vediamo l'implicazione solo verso destra.
+
+L'algoritmo si ferma quando la tabella non varia. La tabella varia quando ci sono violazioni delle dipendenze funzionali, quindi quando si ferma nessuna dipendenza funzionale \`e violata. Possiamo interpretare $r_f$ come una istanza legale $R$.
+
+Pensiamo a come abbiamo costruito la tabella all'inizio. $\forall R_1$, $\pi_{R_i} (r_0)$ ha una riga con tutte `$a$'.
+
+Se due relazioni $R_i$ e $R_j$ della decomposizione hanno attributi comuni, su quegli attributi avranno lo stesso indice, quindi quando vado a fare il Join si combinano.
+
+L'algoritmo modifica la tabella, ma le `$a$' restano dove sono. Le `$b$' o diventano `$a$' o diventano altre `$b$'.
+
+Quindi poich\'e l'algoritmo non modifica le `$a$', le righe con tutte `$a$' saranno anche nelle proiezioni della tabella $r_f$.
+
+\begin{itemize}
+    \item Possiamo interpretare $r_f$ come una istanza legale $R$
+    \item $\forall R_i$, $\pi_{R_i} (r_0)$ ha una riga con tutte `$a$' e $\forall R_i$, $\pi_{R_i} (r_f)$ ha una riga con tutte `$a$'. Ne segue che $\pi_{R_1} (r_f) \Join \pi_{R_2} (r_f) \Join \ldots \Join \pi_{R_k} (r_f)$ ha una riga con tutte `$a$'
+\end{itemize}
+
+Supponiamo per assurdo che non sia vero quel che vogliamo dimostrare, e che quindi $\rho$ ha un $\Join$ senza perdita ma $r_f$ non ha una riga con tutte `$a$'.
+
+Pertanto $r_f \neq \pi_{R_1} (r_f) \Join \pi_{R_2} (r_f) \Join \ldots \Join \pi_{R_k} (r_f)$.
+
+Siamo arrivati all'assurdo: esiste un'istanza legale di $r$ che non \`e ricostruibile mediante il Join naturale dalle sue proiezioni. Stiamo negando quanto assunto per assurdo, ossia stiamo dicendo che $\rho$ non ha un $\Join$ senza perdita.
+\end{proof}
+
+\subsection{Copertura minimale}
+
+Dato un insieme $F$ di dipendenze funzionali, diciamo che l'insieme $G$ di dipendenze funzionali \`e una ``copertura minimale di $F$'' se:
+\begin{enumerate}
+    \item \label{cop_minim_equivalenza} $F \equiv G$ (ossia $F^+ = G^+$)
+    \item \label{cop_min_ridondanza_dx} ogni dipendenza di $G$ a destra ha un solo attributo, ossia sono tutte nella forma $X \to A$
+    \item \label{cop_min_ridondanza_sx} non esiste una dipendenza $A_1 \ldots A_i \ldots A_n \to B \in G$ tale che $G \equiv (G \setminus \{ A_1 \ldots A_i \ldots A_n \to B \}) \cup \{A_1 \ldots A_{i-1} A_{i+1} \ldots A_n \to B \}$, ossia non c'\`e una dipendenza che pu\`o essere sostituita da un'altra dipendenza senza un attributo nella parte sinistra. Posso scrivere anche: non esiste una dipendenza $X \to B \in G$ e un attributo $A \in X$ tale che $G \equiv (G \setminus{ X \to B}) \cup \{ X \setminus \{A\} \to B \}$
+    \item \label{cop_min_ridondanza} non esiste una dipendenza $X \to A \in G$ tale che $G \equiv (G \setminus \{X \to A\})$
+\end{enumerate}
+
+Perch\'e si dice copertura? Perch\'e $F$ e $G$ sono equivalenti, ossia $G$ ``copre'' $F$.
+
+Perch\'e \`e minimale? La propriet\`a \ref{cop_min_ridondanza_dx} mi dice che nella parte destra non ho niente di ridondante, la propriet\`a \ref{cop_min_ridondanza_sx} mi dice che non ho ridondanza a sinistra, perch\'e non posso eliminare un attributo e ottenere un insieme equivalente all'insieme dato, la propriet\`a \ref{cop_min_ridondanza} mi dice che nessuna dipendenza \`e di troppo, ossia non ne posso eliminare nessuna ed ottenere un insieme equivalente all'insieme dato.
+
+Ricordando che $F$ indica l'insieme di dipendenze funzionali iniziale, e $G$ l'insieme di dipendenze funzionali modificato, i tre passi dell'algoritmo sono:
+\begin{enumerate}
+    \item Spezzare dipendenze funzionali nella forma $X \to AB$ in dipendenze del tipo $X \to A$ e $X \to B$. Ossia, a destra devono avere un solo attributo.
+    \item Provare a togliere attributi a sinistra. Si pu\`o sostituire $X \to A$ con $X \setminus B \to A$ se e solo se $A \in (X \setminus B)^+_F$, ossia se e solo se $A$ appartiene alla chiusura di $X$ meno $B$ rispetto a $F$.
+    \item Infine, provare a togliere dipendenze funzionali. Una dipendenza funzionale $X \to A$ si pu\`o togliere da $G$ se $G \equiv G' = G \setminus \{ X \to A \}$, che \`e vero se e solo se $A \in X^+_{G'}$. $A$ deve appartenere alla chiusura di $X$ rispetto a $G$ \emph{togliendo} da $G$ la dipendenza $X \to A$.
+\end{enumerate}
+
+\section{Decomposizioni in \code{3NF} che preservano le dipendenze funzionali e hanno un join senza perdita}
+
+\begin{algorithm}
+\caption{Algoritmo per la creazione di una decomposizione $\rho$ di $R$ che preserva $F$ e \`e in \code{3NF}}
+\label{algoritmo_definitivo}
+\begin{algorithmic}
+\Require $R$ schema di relazione e $F$ insieme di dipendenze funzionali su $R$, e una copertura minimale
+\Ensure una decomposizione $\rho = \{ R_1, \dots R_k\}$ di $R$ tale che $\rho$ preserva $F$ e ogni $R_i$ \`e in \code{3NF}
+\State $S \gets \emptyset$
+\State $\rho \gets \emptyset$
+\ForAll{$A \in R$ tale che $A$ non compare in nessuna dipendenza funzionale in $F$}
+    \State $S \gets S \cup \{ A \}$
+\EndFor
+\If{$S \neq \emptyset$}
+    \State $R \gets R \setminus S$
+    \State $\rho \gets \rho \cup \{ S \}$ ($S$ diventa uno degli schemi della decomposizione)
+\EndIf
+\If{esiste una dipendenza funzionale che coinvolge tutto $R$}
+    \State $\rho \gets \rho \cup \{ R \}$
+\Else
+    \ForAll{$X \to A \in F$}
+        \State $\rho \gets \rho \cup \{ XA \}$ (aggiungi unione di parte destra e parte sinisra)
+    \EndFor
+\EndIf
+\State \Return $\rho$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{proof}[di correttezza dell'algoritmo \ref{algoritmo_definitivo}]
+Dobbiamo dimostrare che l'algoritmo \`e corretto.
+
+\begin{enumerate}
+    \item Prima cosa da dimostrare: $\rho$ preserva $R$.
+
+    Ricordiamo: dati $R$ e $F$, una decomposizione $\rho = \{ R_1, R_2, \ldots, R_k \}$ preserva $F$ se $F \equiv G$ dove $G = \bigcup_{i = 1}^k \{ X \to Y \in F^+ : XY \subseteq R_i \}$
+
+    Essendo $G$ definito in questo modo, \`e sempre vero che $G \subseteq F^+$. Resta da verificare che $F \subseteq G^+$.
+
+    Osserviamo che l'algoritmo, per ogni dipendenza in $X \to A \in F$ (ricordando che $F$ \`e una copertura minimale), pone in $\rho$ lo schema $XA$. Quindi per ogni dipendenza in $F$ esiste uno schema che contiene l'unione di parte destra e parte sinistra. Quindi, per come \`e definito $G$, ogni dipendenza di $F$ \`e in $G$. Quindi $F \subseteq G^+$.
+    \item Dobbiamo dimostrare ora che ogni schema in $\rho$ \`e in \code{3NF}.
+
+    Mostriamo che $XA$ \`e in \code{3NF}.
+
+    Cominciamo facendo vedere che $X$ \`e chiave per lo schema $XA$. $X \to A \in F \subseteq F^+$. La prima condizione che garantisce che un insieme sia una chiave \`e verificata.
+
+    Non pu\`o esistere $X' \subset X$ tale che $X' \to A \in F$, essendo $F$ una copertura minimale. Seconda condizione verificata.
+
+    Sia $Y \to B \in F^+$ tale che $YB \subseteq XA$, e $B \notin Y$. O $B$ \`e in una chiave, o $B$ non \`e in una chiave. Consideriamo i due casi:
+    \begin{itemize}
+        \item Se $B = A$, allora la dipendenza \`e $Y \to A$. Ma non pu\`o essere che $Y \subset X$, sempre per il solito motivo che $F$ \`e una copertura minimale. $X$ non \`e ridondante. Quindi $Y = X$, ossia $Y$ \`e una superchiave.
+        \item Altrimenti, se $B \neq A$, significa che $B \in X$, quindi $B$ \`e contenuto in una chiave (quindi \`e primo).
+    \end{itemize}
+    Quindi lo schema \`e in \code{3NF}.
+\end{enumerate}
+\end{proof}
+
+Dati uno schema di relazione $R$ e un insieme di dipendenze funzionali $F$, sia $\rho$ la decomposizione di $R$ ottenuta mediante l'algoritmo \ref{algoritmo_definitivo}, e sia $\sigma = \rho \, \cup \, \{ K \}$ la decomposizione ottenuta aggiungendo a $\rho$ una chiave $K$ di $R$.
+
+Dobbiamo dimostrare che la decomposizione $\sigma$ ha le seguenti propriet\`a:
+\begin{enumerate}
+    \item \label{itm:sigma_1} ogni schema di $\sigma$ \`e in \code{3NF}
+    \item \label{itm:sigma_2} $\sigma$ preserva $F$
+    \item \label{itm:sigma_3} $\sigma$ ha un Join senza perdita
+\end{enumerate}
+
+\begin{proof}[delle propriet\`a di $\sigma$]
+Dimostriamo ciascun punto.
+\begin{itemize}
+    \item Per il punto \ref{itm:sigma_2}, $\sigma$ preserva $F$ perch\'e $\rho$ preserva $F$, e aggiungendoci una chiave questo non cambia.
+    \item Per il punto \ref{itm:sigma_1}, ogni schema di $\sigma$ \`e in \code{3NF} se anche $K$ \`e in \code{3NF}, visto che gli schemi di $\rho$ gi\`a lo erano. Prendiamo una dipendenza funzionale $X \to A \in F^+$ tale che $A \notin X$ e $XA \subseteq K$, ossia \`e definita sullo schema $K$. Essendo $K$ chiave di $R$, a maggior ragione $K$ \`e chiave di s\'e stesso. $A \in K$, quindi per ogni dipendenza $X \to A$ vale che $A$ \`e in una chiave (\`e primo), quindi $K$ \`e in \code{3NF}.
+    \item Per il punto \ref{itm:sigma_3}, poich\'e $K$ \`e chiave per $R$, la chiusura di $K$ rispetto a $F$ coincide con $R$, ossia $K^+_F = R$. Immaginiamo di calcolare la chiusura di $K$ con l'algoritmo che consente di calcolare la chiusura di un insieme di attributi.
+    \[
+    Z^{(0)} = K
+    \]
+    Dopodich\'e, siccome $K^+ = R$, tutti gli attributi che non sono in $K$ verranno aggiunti a $Z$. Supponiamo vengano aggiunti nell'ordine $A_1$, $A_2$, $\dots A_n$. Quindi $Z^{(i)} = K A_1 \dots A_i$.
+
+    Al passo 1 avremo una dipendenza $Y_1 \to A_1 \in F$ con $Y_1 \in Z^{(0)} = K$. Al passo 2 avremo una dipendenza $Y_2 \to A_2 \in F$ con $Y_2 \in Z^{(1)} = K A_1$. Quando inseriamo il generico $A_i$ in $Z^{(i-1)}$, abbiamo una dipendenza $Y_i \to A_i \in F$ con $Y_i \in Z^{(i-1)} = K A_1 \dots A_{i-1}$.
+
+    Supponiamo di applicare l'algoritmo che decide se una decomposizione ha un Join senza perdita considerando le dipendenze funzionali in $F$ nell'ordine $Y_1 \to A_1, \dots, Y_n \to A_n$. Mostriamo per induzione che dopo che l'algoritmo ha considerato la dipendenza $Y_i \to A_i$ nella riga della tabella che corrisponde a $K$ ci sono tutte `$a$' in corrispondenza a $K A_1 \dots A_i$. Se \`e vero, dopo aver considerato $Y_n \to A_n$, la riga di $K$ ha tutte `$a$'.
+
+    Immaginiamo di avere all'inizio della tabella gli attributi di $K$, poi tutti gli attributi $A_1, \dots A_n$. Avremo una riga per $K$, poi una riga per $Y_1 \to A_1$, ossia la riga $Y_1 A_1$, e cos\`i via per ogni $Y_i \to A_i$ avremo una riga $Y_i A_i$.
+
+    La base dell'induzione \`e per $i = 1$. Per ciascun elemento nella colonna di $K$, quell'elemento \`e banalmente in $K$. Quindi nelle colonne di $K$, sulla riga di $K$, abbiamo tutte `$a$'. La riga $Y_1 A_1$ ha tutte `$a$' nella parte di $Y_1$ intersecata con $K$, e una `$a$' in corrispondenza di $A_1$. Quindi per l'algoritmo della tabella, anche la riga $K$ deve avere una `$a$' nella colonna $A_1$.
+
+    Il passo induttivo \`e per $i > 1$. Supponiamo quindi che fino a $i-1$ la riga $K$ ha tutte `$a$' per le colonne $K$ e $A_1 \dots A_{i - 1}$. Questa volta $Y_i$ \`e contenuto in $K A_1 \dots A_{i-1}$. L'algoritmo della tabella vede che le due tuple $K$ e $Y_i A_i$ sono uguali su $Y_i$, vede poi che $A_i$ ha una `$a$' sulla riga $Y_i A_i$, quindi anche la colonna $A_i$ della riga $K$ diventa `$a$'.
+\end{itemize}
+\end{proof}
+
+\chapter{Organizzazione fisica}
+
+I dischi rigidi sono divisi, al momento del partizionamento, in blocchi. Trasferire un blocco in o da memoria centrale \`e detto ``accesso''. Il costo di un'operazione \`e definito in base al numero di accessi.
+
+Ad ogni relazione corrisponde un file di record. Ogni record rappresenta una ennupla. Un record \`e diviso in campi, uno per attributo.
+
+I campi a lunghezza fissa precedono i campi a lunghezza variabile. All'inizio di un record viene mantenuto l'offset di inizio dei campi. All'inizio dei campi viene mantenuta la lunghezza di questi.
+
+I puntatori a blocchi sono puntatori al primo byte nel disco. I puntatori a record sono coppie $(b,k)$ dove $b$ \`e il puntatore al blocco, $k$ \`e il valore della chiave.
+
+Le operazioni che si possono fare sono:
+\begin{enumerate}
+    \item ricerca
+    \item inserimento
+    \item modifica
+    \item cancellazione
+\end{enumerate}
+
+\section{Heap}
+
+In un heap ogni nuovo record viene inserito alla fine del file.
+
+Il costo per l'inserimento \`e 1 accesso in lettura per portare l'ultimo blocco in memoria e 1 accesso in scrittura dopo l'inserimento.
+
+Per ricercare un generico record, bisogna scorrere tutto l'heap.
+
+Sia $N$ il numero di record, $R$ il numero di record per blocco. Il numero di blocchi \`e $n = \frac{N}{R}$. Il tempo medio di ricerca si calcola facendo la media del costo di ricerca per ciascun record. Per trovare ognuno degli $R$ record nell'$i$-esimo blocco sono necessari $i$ accessi.
+\[
+\frac{R + 2 \, R + \ldots + n \, R}{N} = \frac{R \, \sum_{i = 1}^{n} i}{N} = 
+\frac{R}{N} \cdot \frac{n \, (n - 1)}{2} = \frac{1}{n} \cdot \frac{n \, (n - 1)}{2} \simeq 
+\frac{n}{2}
+\]
+Il costo della modifica \`e dato dal costo della ricerca + 1 accesso per l'inserimento.
+
+Il costo della cancellazione \`e dato dal costo della ricerca + 1 accesso per prendere l'ultimo valore dell'heap e 1 accesso sostituirlo al valore cancellato.
+
+\section{Hash}
+
+Il file \`e diviso in $B$ \emph{bucket}. Ciascun bucket \`e formato da una serie di blocchi organizzati come un heap, collegati da puntatori.
+
+La \emph{bucket directory} contiene i puntatori ai blocchi iniziali di ciascun bucket.
+
+Data la chiave $v$ di un record, il blocco in cui si trova il record viene calcolato attraverso la funzione di hash, che associa a ogni valore $v$ un intero fra 0 e $B - 1$.
+
+Se la funzione hash distribuisce uniformemente i record nei bucket, ciascun bucket contiene $\frac{N}{B}$ record (quindi $\frac{n}{B}$ blocchi), e la ricerca costa $\frac{n}{2 \, B}$.
+
+\section{ISAM}
+
+\emph{Indexed Sequential Access Method}, file indicizzato ad accesso sequenziale.
+
+I record nei blocchi vengono ordinati in base al loro valore di chiave.
+
+Un file indice contiene delle coppie $(k,p)$ dove $p$ \`e un puntatore a un blocco e $k$ \`e il valore pi\`u piccolo di una chiave memorizzata nel blocco. Il primo blocco ha $- \infty$ come valore di $k$.
+
+Per la ricerca di un record con chiave $k$ \`e necessario trovare la coppia $(k',p')$ nel file principale tale che $k' \le k$, e $\forall k'' : k'' > k' \implies k'' > k$.
+
+Anche l'indice pu\`o essere ordinato in base al valore della chiave. Sia $m$ il numero di blocchi nell'indice, trovare il blocco contenente una chiave richiede $\intsup{\log_2 (m)}$ accessi.
+
+Se si conosce la distribuzione dei valori delle chiavi, \`e possibile utilizzare la ricerca per interpolazione. Dati i valori di due chiavi $k'$ e $k''$, esiste una funzione $f(k,k',k'')$ che restituisce l'indice $i$ del blocco con cui confrontare la chiave $k$ cercata. La ricerca per interpolazione richiede $1 + \log_2 \log_2 (m)$ accessi.
+
+Per l'inserimento, se c'\`e spazio nel blocco la cui chiave ricopre $k$, \`e necessario solo un accesso ulteriore. Si possono verificare casi in cui non c'\`e spazio per un ulteriore inserimento, e quindi il nuovo record viene inserito o nel blocco successivo, o in quello precedente, o viene richiesto un nuovo blocco al sistema operativo. Questi altri casi comportano la modifica del file indice. Bisogna modificare i bit usato/non usato nell'intestazione dei blocchi coinvolti.
+
+Per cancellare un record, bisogna effettuare una ricerca. Se il record \`e il primo del blocco, bisogna modificare la chiave nel file indice. Se il record \`e l'ultimo record rimasto nel blocco, si deve cancellare il blocco e modificare il file indice. Bisogna modificare i bit usato/non usato nell'intestazione dei blocchi coinvolti.
+
+Per la modifica, se non bisogna modificare la chiave \`e sufficiente effettuare una ricerca e poi una modifica. Se la modifica coinvolge la chiave, il costo \`e quello di una cancellazione seguita da un inserimento.
+
+\section{B-Tree}
+
+Il B-Tree \`e una generalizzazione del file con indice. Si accede al file attraverso una gerarchia di indici.
+
+Ogni blocco del file indice contiene delle coppie $(k,p)$ in cui $k$ \`e il valore di una chiave e $p$ \`e un puntatore. All'inizio di ogni blocco c'\`e il puntatore a un blocco contenente record con valore della chiave minore del valore presente nel secondo record del blocco del file indice.
+
+Ogni blocco del B-Tree \`e pieno almeno a met\`a.
+
+Il costo della ricerca sar\`a 1 accesso per ogni livello dell'albero. La radice dell'albero viene mantenuta in memoria.
+
+Sia $2 \, e - 1$ il numero di record nel file indice (ossia il numero di blocchi puntati al livello inferiore), e sia $2 \, d - 1$ il numero di record nel file principale.
+
+Il file principale ha almeno $\frac{N}{e}$ blocchi. Il livello del file indice subito sopra il file principale avr\`a $\frac{N}{e \, d}$ blocchi. Il livello $i$ avr\`a $\frac{N}{e \, d^{i-1}}$ record memorizzati in $\frac{N}{e \, d^i}$ blocchi. Il livello pi\`u alto ha un solo blocco. Quindi:
+\[
+1 = \frac{N}{e \, d^k} \implies k \simeq \log_d \left( \frac{N}{e} \right)
+\]
+
+Il costo della ricerca \`e quindi $h + 1$, dove $h$ \`e l'altezza del B-Tree.
+
+Se al momento dell'inserimento c'\`e spazio sufficiente nel blocco del file principale, il costo dell'inserimento \`e il costo di una ricerca. Se non c'\`e spazio sufficiente, \`e necessario inserire un nuovo blocco. Quindi il costo \`e $h + 1 + s$ dove $s \le 2 \, h + 1$. Nel caso peggiore \`e infatti necessario inserire un nuovo blocco a ogni livello, e l'altezza dell'albero aumenta.
+
+Se dopo la cancellazione di un record il blocco coinvolto \`e ancora pieno almeno a met\`a, il costo della cancellazione \`e simile al costo di una ricerca. Altrimenti sono necessari ulteriori accessi come nel caso dell'inserimento.
+
+Il costo della modifica \`e dato dal costo della ricerca se la modifica non coinvolge la chiave di un record, altrimenti \`e dato dal costo dell'inserimento pi\`u il costo della cancellazione.
+
+\chapter{Concorrenza e scheduling}
+
+Una transazione rappresenta un'unit\`a logica di accesso o modifica del contenuto della base di dati.
+
+Uno schedule di un insieme $T$ di transazioni \`e un ordinamento delle operazioni in $T$ che conserva l'ordine che le operazioni hanno all'interno di ogni singola transazione.
+
+Uno schedule seriale \`e una permutazione delle transazioni $T$. \`E un'esecuzione sequenziale delle transazioni.
+
+I problemi che possono verificarsi sono:
+\begin{itemize}
+    \item aggiornamento perso
+    \item dato sporco
+    \item aggregato non corretto
+\end{itemize}
+
+Uno schedule che produce valori differenti da quelli prodotti da uno schedule seriale non \`e uno schedule corretto.
+
+Ogni schedule seriale \`e corretto.
+
+Uno schedule non seriale \`e serializzabile se \`e equivalente a uno schedule seriale.
+
+Non possiamo considerare le seguenti definizioni di serializzabilit\`a:
+\begin{itemize}
+    \item lo schedule produce lo stesso valore di uno schedule seriale per ogni input: \`e troppo costoso
+    \item le operazioni fatte dallo schedule sono algebricamente equivalenti a quelle fatte da uno schedule seriale: \`e troppo complesso da calcolare
+    \item non si pu\`o testare la serializzabilit\`a eseguendo lo schedule e confrontandolo con uno schedule seriale: \`e troppo costoso
+\end{itemize}
+
+Diciamo che due schedule sono equivalenti se producono due valori uguali, dove due valori sono uguali se sono prodotti dalla stessa sequenza di operazioni. Una somma e poi una differenza non \`e equivalente a una differenza e poi una somma.
+
+Utilizziamo metodi di ordinamento delle transazioni che garantiscono la serializzabilit\`a.
+
+Un \emph{item} \`e un'unit\`a a cui l'accesso \`e controllato.
+
+Il lock \`e il privilegio di accesso a un singolo item. Un'item locked pu\`o essere acceduto solo dalla transazione che ha effettuato il lock.
+
+Uno schedule \`e legale se ogni transazione effettua un locking prima di scrivere o leggere ogni item, e rilascia ogni lock che ha ottenuto.
+
+\section{Lock binario}
+
+Un lock binario pu\`o assumere solo i valori \emph{locked} e \emph{unlocked}.
+
+Il lock binario risolve il problema dell'aggiornamento perso.
+
+Ogni lock implica la lettura di una variabile, ogni unlock implica la scrittura di una variabile.
+
+Ad ogni unlock viene associata una funzione che ha come argomenti i valori degli item lockati prima dell'unlock.
+
+Due schedule sono equivalenti se le formule che danno i valori finali per ciascun item sono le stesse.
+
+Per testare la serializzabilit\`a di uno schedule abbiamo un algoritmo che prende in input uno schedule $S$.
+
+\begin{enumerate}
+    \item crea un grafo diretto $G$ di serializzazione con come nodi le transazioni e un arco $(T_i, T_j)$ se la transazione $T_i$ esegue un unlock su un item e la transazione $T_j$ esegue il successivo lock su quell'item
+    \item se nel grafo non ci sono cicli, lo schedule \`e serializzabile
+    \item l'ordinamento topologico del grafo \`e uno schedule seriale $S'$ equivalente allo schedule $S$
+\end{enumerate}
+
+\begin{theorem}
+Uno schedule \`e serializzabile $\iff$ il suo grafo di serializzazione \`e aciclico.
+\end{theorem}
+
+Una transazione obbedisce al protocollo di locking a due fasi, o \`e a due fasi, se effettua prima tutte le operazioni di locking e poi tutte le operazioni di unlocking.
+
+\begin{theorem}
+\label{serializzabile_due_fasi}
+Ogni schedule legale di un insieme di transazioni a due fasi \`e serializzabile.
+\end{theorem}
+
+\begin{proof}[del teorema \ref{serializzabile_due_fasi}]
+Sia $T$ un insieme di transazioni a due fasi, e sia $S$ un suo schedule. Supponiamo per assurdo $S$ non sia serializzabile. Esiste quindi un ciclo $T_1 T_2 \ldots T_k$ nel grafo di serializzazione. $T_1$ effettua un unlock su un item per cui $T_2$ chiede il successivo lock. Per ogni $i$, la transazione $T_{i+1}$ effettua un lock su un item su cui $T_i$ ha effettuato l'ultimo unlock. Essendoci un ciclo, $T_1$ effettua un'operazione di lock su un item su cui $T_k$ ha effettuato l'ultimo unlock. Quindi $T_1$ effettua un'operazione di lock dopo aver effettuato un unlock, e quindi non \`e a due fasi.
+\end{proof}
+
+Se un insieme di transazioni contiene una transazione non a due fasi, esiste uno schedule non serializzabile. 
+
+\section{Lock a tre fasi}
+
+Nel lock a tre fasi, un item pu\`o essere unlocked, write locked, o read locked.
+
+Se un item \`e read locked, ogni transazione pu\`o ottenere un read lock su di esso, ma nessuna transazione pu\`o ottenere un write lock.
+
+Se un item \`e write locked, nessuna transazione pu\`o ottenere un read lock o un write lock su di esso.
+
+Ogni read lock e ogni write lock implicano la lettura dell'item.
+
+Ogni unlock di un item su cui si \`e fatta una write lock implica la scrittura dell'item.
+
+Ad ogni coppia di write lock - unlock viene associata una funzione che ha come argomenti tutti gli item letti prima dell'unlock. Due schedule sono equivalenti se producono lo stesso valore per ogni item su cui viene effettuata una write lock (ossia le formule sono uguali), e se ogni operazione di read lock legge lo stesso valore nei due schedule.
+
+Uno schedule \`e serializzabile se \`e equivalente a uno schedule seriale secondo questa definizione.
+
+Per testare la serializzabilit\`a di uno schedule abbiamo un algoritmo che prende in input uno schedule $S$.
+
+\begin{enumerate}
+    \item crea un grafo diretto $G$ di serializzazione con come nodi le transazioni e un arco $(T_i, T_j)$ se:
+    \begin{itemize}
+        \item $T_i$ esegue una read lock o una write lock e $T_j$ esegue la successiva write lock
+        \item $T_i$ esegue una write lock e $T_j$ esegue una read lock prima che un'altra transazione abbia eseguito una write lock
+    \end{itemize}
+    \item se nel grafo non ci sono cicli, lo schedule \`e serializzabile
+    \item l'ordinamento topologico del grafo \`e uno schedule seriale $S'$ equivalente allo schedule $S$
+\end{enumerate}
+
+\section{Deadlock e livelock}
+
+Un deadlock si verifica quando ogni transazione in un insieme $T$ \`e in attesa di ottenere un lock su un item su cui un'altra transazione in $T$ mantiene un lock, e quindi:
+\begin{itemize}
+    \item la transazione rimane bloccata, quindi
+    \item la transazione non rilascia i lock che mantiene, quindi
+    \item la transazione pu\`o bloccare altre transazioni non in $T$
+\end{itemize}
+
+Per verificare la presenza di un deadlock \`e necessario mantenere un grafo di attesa che ha per nodi le transazioni e un arco $(T_i, T_j)$ fra due transazioni se $T_i$ \`e in attesa di ottenere un lock su un item su cui $T_j$ mantiene un lock. Se nel grafo \`e presente un ciclo, si \`e verificato un deadlock.
+
+Per rimuovere un deadlock \`e necessario abortire la transazione, annullare le modifiche che ha apportato alla base di dati, e rilasciare tutti i lock che questa ha ottenuto.
+
+Per evitare i deadlock una possibile soluzione \`e ordinare gli item e imporre alle transazioni di effettuare i lock nell'ordine stabilito.
+
+Un livelock si verifica quando una transazione aspetta indefinitamente che le venga concesso il lock su un certo item.
+
+Il problema si pu\`o risolvere eseguendo le transazioni con un ordine First Came, First Served, o associando una priorit\`a a ogni transazione e aumentandola nel tempo.
+
+\section{Punto di commit e lock a due fasi stretto}
+
+Una transazione pu\`o essere abortita per una serie di motivi:
+\begin{itemize}
+    \item operazione non consentita
+    \item deadlock
+    \item timestamp
+    \item malfunzionamento hardware o software
+\end{itemize}
+
+Il punto di commit di una transazione \`e il punto in cui ha ottenuto tutti i lock e ha effettuato tutti i calcoli che doveva effettuare. Una transazione che ha raggiunto il punto di commit non pu\`o essere abortita per uno dei primi tre motivi.
+
+I dati sporchi sono i dati scritti da una transazione sulla base di dati prima di raggiungere il punto di commit.
+
+Una transazione obbedisce al protocollo di locking a due fasi stretto se:
+\begin{enumerate}
+    \item non scrive sulla base di dati fino a che non ha raggiunto il punto di commit
+    \item non rilascia nessun lock fino a che non ha finito di scrivere sulla base di dati
+\end{enumerate}
+Questo significa che una transazione abortita non ha scritto sulla base di dati, e se una transazione legge un item modificato da una transazione precedente, questa non pu\`o essere abortita.
+
+I protocolli possono essere distinti in conservativi e aggressivi.
+\begin{itemize}
+    \item i protocolli conservativi evitano situazioni di stallo
+    \item i protocolli aggressivi favoriscono la velocit\`a di esecuzione ma permettono il verificarsi di situazioni di stallo
+\end{itemize}
+
+Protocolli conservativi:
+\begin{itemize}
+    \item una transazione ottiene tutti i lock di cui ha bisogno all'inizio. Se non pu\`o ottenerli tutti, viene messa in attesa. Si evita il deadlock ma non il livelock.
+    \item una transazione richiede tutti i lock di cui ha bisogno all'inizio e li ottiene se e solo se tutti i lock sono disponibili e nessuna transazione che la precede nella coda \`e in attesa di uno dei lock richiesti. Si evitano deadlock e livelock.
+\end{itemize}
+
+I vantaggi sono evidenti, ma si pu\`o ritardare l'esecuzione di una transazione. Inoltre una transazione potrebbe dover richiedere lock su item di cui non ha bisogno.
+
+Protocolli aggressivi:
+\begin{itemize}
+    \item una transazione pu\`o richiedere un lock immediatamente prima di una read o una write. Possono verificarsi deadlock.
+\end{itemize}
+
+I protocolli conservativi sono utilizzati quando la probabilit\`a che due transazioni richiedano un lock sullo stesso item \`e alta.
+
+\section{Timestamp}
+
+Un timestamp identifica una transazione. Viene assegnato a una transazione dallo scheduler quando questa ha inizio. Pu\`o essere un contatore o il valore di un clock di sistema. Se la transazione $T_i$ ha un timestamp minore della transazione $T_j$, la transazione $T_i$ \`e iniziata prima della transazione $T_j$.
+
+Uno schedule \`e serializzabile se \`e equivalente allo schedule seriale in cui le transazioni vengono ordinate in base al loro timestamp.
+
+Uno schedule \`e serializzabile se per ogni item acceduto da pi\`u di una transazione, l'ordine delle transazioni rispetta il timestamp.
+
+A ogni item viene associato un read timestamp e un write timestamp. Sono il pi\`u grande timestamp di tutte le transazioni che hanno letto (scritto) con successo l'item.
+
+Se il read timestamp di un item \`e maggiore del timestamp della transazione che vuole scrivere l'item, si sta modificando un dato letto da una transazione successiva. Si fa quindi rollback della transazione per evitare problemi di aggiornamento perso.
+
+Se il write timestamp di un item \`e maggiore del timestamp della transazione che vuole scrivere l'item, si sta scrivendo un dato gi\`a modificato. La scrittura dell'item non viene eseguita.
+
+Per controllare la serializzabilit\`a durante l'esecuzione:
+\begin{itemize}
+    \item se si sta effettuando una scrittura su un item:
+    \begin{itemize}
+        \item se il read timestamp dell'item \`e maggiore del timestamp della transazione, la transazione viene rolled back
+        \item se il write timestamp dell'item \`e maggiore del timestamp della transazione, la scrittura non viene fatta
+        \item altrimenti, viene fatta la scrittura e il write timestamp dell'item diventa il timestamp della transazione
+    \end{itemize}
+    \item se si sta effettuando una lettura su un item:
+    \begin{itemize}
+        \item se il write timestamp dell'item \`e maggiore del timestamp della transazione, la transazione viene rolled back
+        \item altrimenti se il write timestamp dell'item \`e minore o uguale al timestamp della transazione, viene effettuata la lettura e se il timestamp della transazione \`e maggiore del read timestamp dell'item, il read timestamp viene aggiornato
+    \end{itemize}
+\end{itemize}
+
+\include{riassunto_dimostrazioni}
+
+% END OF DOCUMENT
+
+\clearpage
+
+\tableofcontents
+
+
+\end{document}

@@ -1,0 +1,128 @@
+Il modello relazionale favorisce l'indipendenza dei dati dalla struttura di memorizzazione fisica. Si basa sulle relazioni matematiche, sottoinsiemi del prodotto cartesiano. Il modello relazionale \`e basato sui valori, non ci sono puntatori. Anche i riferimenti avvengono attraverso valori.
+
+Nel modello relazionale dei dati il concetto di relazione viene esteso, associando a ciascun dominio un nome (unico nella relazione) che descrive il ruolo del dominio nella relazione. L'ordinamento degli attributi \`e irrilevante. La struttura non \`e posizionale.
+
+R (A_1 : D_1 , \ldots , A_n : D_n)
+
+A_i sono i nomi dei domini. Se t \in R, t[A] o t.A identifica il valore della n-upla t per il dominio di nome A. Si pu\`o estendere a t[A,B], per insiemi di attributi. Si possono anche vedere le n-uple come n-uple etichettate:
+
+t = \langle A_1 : t[A_1] , \ldots , A_n : t[A_n] \rangle
+
+Le relazioni sono rappresentabili come tabelle (ma non tutte le tabelle rappresentano relazioni). Perch\'e una tabella sia una relazione, i nomi delle colonne devono essere distinti, i valori delle colonne devono essere tutti dello stesso dominio, e le righe devono essere tutte diverse.
+
+I riferimenti avvengono per valore!
+
+Uno schema di relazione \`e la lista di nomi di attributi e domini di una singola relazione. Uno schema di basi di dati \`e un insieme di schemi di relazione. Un'istanza di relazione su uno schema di relazione \`e un insieme di n-uple sul prodotto cartesiano dei domini della relazione. Un'istanza di base di dati \`e un insieme di istanze di relazione sulle sue relazioni.
+
+L'assenza di valori in una riga va codificata. Una tecnica rudimentale ma efficace per gestire l'assenza di informazione \`e il valore NULL. Quindi una n-upla pu\`o avere, al posto i-esimo, un valore nel dominio D_i oppure NULL. \`E un po' pericoloso, per\`o: il valore potrebbe essere inesistente, o sconosciuto, o non ancora noto (senza informazione se esiste o meno). Tutti e tre questi casi vengono trattati allo stesso modo, e ricadono nel terzo.
+
+Ad un sistema di basi di dati sono associati dei vincoli di integrit\`a, che devono essere verificate da tutte le istanze (legali). I vincoli possono essere inter-relazionali o intra-relazionali (se coinvolgono o meno pi\`u relazioni).
+
+I vincoli sono usati dal DBMS per scegliere la \emph{strategia} di esecuzione delle interrogazioni.
+
+Vincoli di n-upla esprimono condizioni sui valori di una singola n-upla. Ciascuna n-upla deve soddisfare i vincoli. Vincoli su un solo attributo sono detti vincoli di dominio.
+
+Poi ci sono i vincoli di chiave, famosi. Una super-chiave \`e un insieme K di attributi di una relazione per cui non possono esistere n-uple che coincidono su K e non fuori da K. Una chiave di relazione \`e una super-chiave minimale rispetto all'inclusione insiemistica fra attributi.
+
+Tutte e sole le istanze legali della base di dati devono soddisfare i vincoli.
+
+Ogni singolo valore \`e univocamente accessibile tramite il nome della relazione, il valore della chiave e il nome dell'attributo.
+
+Il modello relazionale ha bisogno di chiavi primarie. Le chiavi primarie non possono avere valore NULL.
+
+Vincoli di integrit\`a referenziale (o \emph{foreign key}) fra l'insieme X di attributi sulla relazione R, e la relazione S: ogni n-upla t di R deve avere valori per gli attributi X che compaiono come valori degli attributi della chiave primaria di S. In presenza di valori NULL, i vincoli di integrit\`a devono essere meno restrittivi.
+
+In presenza di vincoli di integrit\`a referenziale, come deve comportarsi il DBMS in caso di cancellazione di una n-upla di S? Assumendo che il valore della chiave primaria di S per quell'n-upla corrisponda al valore su X di una n-upla in R.
+
+Il DBMS deve rifiutare l'operazione, di default, perch\'e violerebbe il vincolo di integrit\`a. Per\`o possono esserci azioni compensative, ad esempio l'introduzione di valori NULL. In caso di violazioni dei vincoli di integrit\`a, si inserisce NULL come valore. Un'altra soluzione \`e l'eliminazione a cascata di tutte le n-uple violate dopo un'operazione.
+
+\section{SQL}
+
+SQL ha tre livelli:
+\begin{enumerate}
+    \item livello interno, o fisico
+    \item livello logico, riguarda il livello di organizzazione logica dei dati, ed \`e proprio il modello relazionale
+    \item livello esterno, come la base viene vista esternamente
+\end{enumerate}
+
+A livello logico si lavora con due costrutti: DDL (data definition language), per creare schemi di relazione, e DML (data manipulation language), per i dati.
+
+create database nome_database [opzioni]
+
+create schema nome_schema [opzioni]
+Uno schema \`e un namespace
+
+create table nome_tabella ( 
+    nome_attributo dominio [vincoli di dominio],
+    nome_attributo dominio [vincoli di dominio],
+    \ldots
+    nome_attributo dominio [vincoli di dominio],
+    [altri vincoli intra-relazionali],
+    [vincoli inter-relazionali]
+)
+
+primary key (nome_attributo)
+foreign key (nome_attributo) references nome_tabella(nome_attributo)
+
+create domain nome_dominio as tipo_base
+    [valore di default]
+    [vincolo]
+
+insert into tabella(attributo1, \ldots, attributoN)
+values (valore1, \ldots, valoreN)
+
+delete form tabella
+where condizione
+
+select  tabella.attributo1,     //target list
+        tabella.attributo2,
+        \ldots,
+        tabella.attributoN
+from tabella                    // clausola from
+where condizione                // clausola where
+
+select Officina.indirizzo
+from Officina
+where Officina.nome = `fixit'
+
+\pi_{indirizzo} ( \sigma_{nome = `fixit'} (Officina) )
+
+Esistono operatori aggregati che semplificano il lavoro. Prendono tutte le ennuple e le aggregano in un valore solo. Un esempio di operatore aggregato \`e \code{select count(*)}. Per contare i valori distinti, si pu\`o fare count(distinct attributo). count(attributo) esclude automaticamente i valori NULL. Altri operatori aggregati sono sum(), avg(), min(), max(). In tutti questi aggregati i valori NULL sono ignorati, e il dominio degli attributi deve essere, a seconda dei casi, sommabile o ordinabile.
+
+La target list di una select deve essere \emph{omogenea}. Un principio generale \`e: se la target-list contiene operatori aggregati, non pu\`o contenere attributi, e viceversa. Eccezione alla regola: gli attributi nella target list devono appartenere a un group-by.
+
+Gli operatori aggregati si possono applicare a partizioni delle ennuple. I valori degli operatori aggregati sono calcolati gruppo per gruppo.
+
+select attrA, attrB, ... aggr1(...), ... aggrN(...)
+from Tabella1, ... TabellaM
+where condizione
+group by attrA, attrB, attrC, ... attrG
+having condizione_sui_gruppi
+
+Se voglio mettere degli attributi nella target list assieme agli operatori aggregati, gli attributi \emph{devono} essere raggruppati.
+
+
+Trigger: tempo, evento, tabelle, propriet\`a.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,9 @@
+Ad ogni relazione corrisponde un file di record che hanno tutti lo stesso tipo. Ad ogni attributo corrisponde un campo. Alcuni campi possono contenere informazioni sul record o puntatori ad altri record.
+
+Informazioni sul record. Posso specificare il tipo di record. Ossia avere un blocco contenente record di tipo studente e record di tipo esame. Posso specificare la lunghezza del record, se il record ha campi di lunghezza variabile. Posso inserire bit di cancellazione o bit di ``usato/non usato''.
+
+Puntatori ad altri record/blocchi.
+
+Nei database possono esserci record ``puntati'', ossia c'\`e un puntatore a record. Un puntatore pu\`o essere un indirizzo fisico del record o del blocco. Oppure pu\`o essere l'indirizzo del blocco pi\`u la chiave del record, ossia una coppia (b, k).
+
+Offset: numero di byte del record che precedono il campo.

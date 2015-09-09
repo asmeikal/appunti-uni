@@ -1,0 +1,184 @@
+\section{Principio fondamentale del calcolo combinatorio}
+
+\begin{theorem}
+Consideriamo $n$ esperimenti (un meta-esperimento di $n$ esperimenti, come il lancio di due dadi = 2 esperimenti). Supponiamo che il primo esperimento abbia $m_1$ esiti possibili. Qualunque sia l'esito del primo esperimento il secondo esperimento ha sempre $m_2$ esiti possibili. Qualunque sia il risultato (coppia di esiti) dei primi due esperimenti, il terzo esperimento ha $m_3$ esiti possibili, e cos\`i via. Gli esiti possibili di ogni esperimento sono sempre gli stessi, qualunque sia il risultato degli esperimenti precedenti.
+
+Allora il meta-esperimento ha $ m_1 \times m_2 \times m_3 \times \dots \times m_n $ stringhe possibili nella forma $( a_1, a_2, a_3, \dots a_n)$, dove $a_1$ \`e l'esito dell'esperimento $i$-esimo $\forall \ i \in [1, n]$.
+\end{theorem}
+
+Dati due insiemi finiti $A$ e $B$, voglio determinare la cardinalit\`a delle funzioni da $A$ a $B$.
+\begin{gather*}
+\sharp \left\{ f: A \to B \right\} \\
+\abs{\left\{ f: A \to B \right\}}
+\end{gather*}
+$\abs{A} = n$, $\abs{B} = m$. Considero un elemento di $A$, $a_1$, ho $m$ modi di decidere la sua immagine in $B$. Per ogni altro elemento di $A$, ho sempre $m$ modi di decidere la sua immagine in $B$. Ho quindi $n$ fattori tutti pari ad $m$, per cui il risultato \`e $m^n$.
+
+Altro esempio: il numero delle sigle di cinque caratteri ottenute usando le 26 lettere dell'alfabeto inglese. $26^5$
+
+Se la sigla fosse composta da cinque caratteri senza ripetizioni? $26 \times 25 \times 24 \times 23 \times 22$.
+
+\section{Permutazioni ed anagrammi}
+
+Le permutazioni sono i possibili ordinamenti di un insieme di $n$ oggetti distinti. I due insiemi $ \left\{ A, C, Z, X \right\}$ e $ \left\{ A, Z, X, C \right\} $ sono lo stesso insieme. ACZX e AZXC \textit{non} sono la stessa permutazione.
+
+Con l'insieme $\{A,C,Z,X\}$ posso scegliere il primo elemento di una permutazione in 4 modi possibili, il secondo in 3, il terzo in 2, il quarto in 1. Quindi ho $4!$ permutazioni.
+
+Le permutazioni di un insieme di $n$ oggetti distinti sono $n!$
+
+\textit{Gli aggettivi in matematica sono colpi d'accetta.}
+
+Ma ora voglio gli anagrammi di MATTEO. Non sono lettere distinte. Considero quindi un alfabeto esteso in cui ho $T_1$ e $T_2$. In questo alfabeto esteso, il numero di anagrammi possibili sono 6! Da questa lista devo cancellare i numeri sotto le T. Quante ripetizioni ho per ogni anagramma? Tante quanto il numero di modi in cui posso combinare le lettere ripetute, in questo caso $2!$
+
+Ciascun anagramma \`e ripetuto $2!$ volte. Il numero di anagrammi \`e:
+\[
+\frac{6!}{2!}
+\]
+VITTORIO, tre lettere si ripetono due volte. La parola ha 8! anagrammi, se numero le lettere ripetute. Considero un anagramma, ORIOVITT. Posso numerare ciascuna lettera ripetuta in 2! modi, quindi ho $2! \times 2! \times 2!$ modi per mettere gli indici alle lettere.
+\[
+\frac{8!}{2! \times 2! \times 2!}
+\]
+ZOZZO, $5!$ anagrammi numerando le lettere. Z ripetuta 3 volte, O ripetuta 2 volte.
+\[
+\frac{5!}{3! \times 2!}
+\]
+Consideriamo una famiglia di $n$ oggetti con ripetizioni: vi sono $r$ tipi di oggetti, il primo tipo si presenta $n_1$ volte, il secondo tipo $n_2$ volte e cos\`i via. Notiamo: $ n_1 + n_2 + \dots + n_r = n$. I possibili ordinamenti di questa famiglia sono:
+\[
+\frac{ n! }{ n_1! \times n_2! \times \cdots \times n_r!}
+\]
+
+\section{Sottoinsiemi di una certa dimensione}
+
+Ho un insieme di $n$ oggetti distinti. In quanti modi posso scegliere $r$ oggetti da questo insieme, indipendentemente dall'ordine in cui li scelgo? Coincide con la domanda: quanti sono i possibili sottoinsiemi di cardinalit\`a $r$ di un insieme di cardinalit\`a $n$? Necessariamente $r \leq n$, altrimenti la risposta sarebbe 0.
+
+Se l'ordine contasse, avrei $n \times (n-1) \times (n-2) \times \cdots \times (n-r+1)$ modi per scegliere gli $r$ oggetti.
+
+Ogni gruppo di $r$ oggetti pu\`o essere disposto in $r!$ modi differenti. Quindi se dimentico l'ordine avr\`o $r!$ ``copie'' ci ciascun gruppo di $r$ oggetti. Un insieme di $r$ elementi ha $r!$ permutazioni (ordinate) $\implies$ per ogni $r$-upla non ordinata ho $r!$ $r$-uple ordinate.
+
+Rispondendo alla domanda:
+\[
+\frac{(n) \ (n-1) \ \ldots \ (n - r + 1)}{r!} =
+\frac{ n! }{ r! \ (n-r)! } = 
+\binom{n}{r}
+\]
+Ricordiamo i coefficienti binomiali. Con $0 \le r \le n$:
+\[
+\binom{n}{k} = \frac{n!}{k! \ (n-k)!} = 
+\frac{n \ (n - 1) \ (n - 2) \ldots (n - k + 1)}{k!}
+\]
+Se $r \geq n \implies \binom{n}{r} = 0$. Propriet\`a dei coefficienti binomiali:
+\[
+\binom{n}{r} = \binom{n}{n-r}
+\]
+Da cui $\binom{n}{n} = \binom{n}{0} = 1$. \`E una ``bigezione''. Se ho un insieme $X$ di cardinalit\`a $\abs{X} = n$, ed un suo sottoinsieme $A$ con il suo complementare $B = X \setminus A$, il numero di modi in cui posso scegliere $A$ sono uguali al numero di modi in cui posso scegliere $B$.
+\begin{align*}
+\left\{A \subset X : \abs{A} = r\right\} \\
+\left\{B \subset X : \abs{B} = n - r\right\}
+\end{align*}
+Con $1 \leq r \leq n$:
+\[
+\binom{n}{r} = \binom{n-1}{r-1} + \binom{n-1}{r}
+\]
+Ciao Salvo. Con $X = V \cup W$ e $X \setminus V = W$, $\abs{X} = \abs{V} + \abs{W}$.
+
+I coefficienti binomiali si leggono anche ``$n$ scelgo $k$''. I coefficienti binomiali servono con i binomi:
+\begin{multline*}
+(a+b)^n = 
+a^n 
++ \binom{n}{1} \, b \, a^{n-1} 
++ \binom{n}{2} \, b^2 \, a^{n-2} 
++ \ldots 
++ \binom{n}{n-2} \, b^{n-2} \, a^2
++ \binom{n}{n-1} \, b^{n-1} \, a
++ b^n
+\end{multline*}
+\[
+(x+y)^n = \sum_{k=0}^{n} \binom{n}{k} \, x^k \, y^{n-k}
+\]
+Un esempio lievemente pi\`u complicato: devo scegliere un rappresentante e due segretari da un gruppo di ottanta persone. Ho ottanta modi per scegliere il rappresentante. Mi restano 79 persone da cui devo scegliere una coppia non ordinata. Per il principio fondamentale del calcolo combinatorio:
+\[
+80 \times \binom{79}{2} = \frac{80 \times 79 \times 78}{2!}
+\]
+Ho $r$ tipi di oggetti, ciascun tipo ha $n_i$ oggetti distinti, con $i \in [1,r]$. In quanti modi posso \textit{raggruppare} gli oggetti per tipo? Ho $r!$ modi per disporre i tipi di oggetti, gli oggetti del tipo $i$ possono essere disposti in $n_i!$ modi. Per il principio fondamentale del calcolo combinatorio:
+\[
+r! \times n_1! \times n_2! \times \cdots \times n_r! = 
+r! \prod_{k = 1}^{r} n_r!
+\]
+Remember: $0! = 1$.
+\[
+\sum_{k=0}^{n} \binom{n}{k} = \sum_{k=0}^{n} \binom{n}{k} \, 1^k \, 1^{n-k} = (1 + 1)^n = 2^n
+\]
+O anche mi basta sapere che $\binom{n}{k}$ \`e il numero di sottoinsiemi di $k$ elementi di un insieme di $n$ elementi. Tutti i sottoinsiemi sono l'insieme delle parti, che ha cardinalit\`a $2^n$.
+
+$X$ insieme con cardinalit\`a $\abs{X} = n$. $\parts(X) = \left \{ Y : Y \subset X \right\}$. Un sottoinsieme $Y \subset X$ pu\`o o non pu\`o contenere ciascun elemento di $X$. Quanti sottoinsiemi $Y$ posso costruire?
+\[
+\overbrace{2 \times 2 \times 2 \times \dots \times 2}^{n} = 2^n
+\]
+Un modo pi\`u complesso per dimostrarlo:
+\begin{align*}
+\parts(X) = \left \{Y :  Y \subset X \right\} = \bigcup_{k=0}^{n} \left \{ Y \subset X : \abs{Y} = k \right\} \\
+\abs{\parts(X)} = \sum_{k=0}^{n} \abs{\left\{ Y \subset X : \abs{Y} = k\right\}}  = \sum_{k = 0}^{n} \binom{n}{k}
+\end{align*}
+
+\section{Coefficienti multinomiali}
+
+Ho 10 persone. Devo assegnare 5 persone al compito 1, 2 al compito 2, 3 al compito 3. In quanti modi posso farlo?
+\[
+\binom{10}{5} \binom{5}{2} \binom{3}{3} = 
+\frac{10!}{5! \ 5!} \ \frac{5!}{2! \ 3!} \ \frac{3!}{3! \ 0!} =
+\frac{10!}{5! \ 3! \ 2!}
+\]
+Ho un insieme di $n$ oggetti distinti e $k$ categorie in cui inserirli. Devo inserire $n_1$ elementi nella categoria 1, $n_2$ elementi nella categoria 2, \dots $n_k$ elementi da inserire nella categoria $k$, senza che nessuno resti fuori, ossia $\sum_{i = 1}^{k} n_i = n$, con $n_i \in \naturals \forall i \in [1, k]$. In quanti modi lo posso fare?
+
+\begin{align*}
+\binom{n}{n_1} \binom{n - n_1}{n_2} \binom{n - (n_1 + n_2)}{n_3}\dots \binom{n - \left( \sum_{i = 1}^{k-1} n_i \right)}{n_k} = \\
+\binom{n}{n_1} \binom{n - n_1}{n_2} \binom{n - (n_1 + n_2)}{n_3}\dots \binom{n_k}{n_k} = \\
+\frac{n!}{n_1! \left( n - n_1\right)!} \ 
+\frac{(n - n_1)!}{n_1! \left( n - n_1 - n_2\right)!} \ 
+\frac{(n - n_1 - n_2)!}{n_1! \left( n - n_1 - n_2 - n_3\right)!} \ 
+\dots \\
+\frac{(n - n_1 - n_2 \dots - n_{k-2})!}{n_1! \left( n - n_1 - n_2 \dots - n_{k-2} - n_{k-1} \right)!} \ 
+\frac{(n - n_1 - n_2 \dots - n_{k-1})!}{n_1! \ 0!} = \\
+\frac{n!}{\prod_{i=1}^{k}n_k!} =
+\binom{n}{n_1, n_2, \dots, n_k}
+\end{align*}
+Detto anche coefficiente multinomiale. Ricordiamo che $\sum_{i = 1}^{k} n_i = n$. I coefficienti binomiali sono un caso particolare dei coefficienti multinomiali. Sapendo che $n = n_1 + n_2$:
+\[
+\binom{n}{n_1, n_2} = \binom{n}{n_1, n - n_1} = \frac{n!}{n_1! (n - n_1)!} = \binom{n}{n_1}
+\]
+Devo dividere $n$ persone ($n$ pari) in 2 gruppi. Dopo generalizziamo a $m$ gruppi (spero) con $n$ multiplo di $m$. Se i gruppi fossero distinguibili avrei:
+\[
+\binom{n}{\frac{n}{2}, \frac{n}{2}}
+\] 
+modi per formare i gruppi. Ma non essendo distinguibili i gruppi avr\`o:
+\[
+\frac{\binom{n}{\frac{n}{2}, \frac{n}{2}}}{2} = \frac{n!}{2 \ \frac{n}{2}! \ \frac{n}{2}!} = \frac{n \ (n - 1) \dots (\frac{n}{2}+1)}{2 \frac{n}{2}!} = \frac{(n-1)(n-2) \dots (\frac{n}{2} + 1)}{(\frac{n}{2}-1)!} = \binom{n-1}{\frac{n}{2}-1}
+\] 
+\section{Teorema multinomiale}
+Con $n_i \ge 0$ interi:
+\[
+\left( x_1 + \dots + x_r \right)^n = 
+\sum_{n_1 + \dots + n_r = n} \binom{n}{n_1, \dots, n_r} \cdot x_1^{n_1} \cdots x_r^{n_r}
+\]
+Wikipedia lo scrive come:
+\[
+\left( \sum_{i=1}^r x_i \right)^n=\sum_{k_1+\ldots+k_r=n}{n!\cdot \prod_{i=1}^r \frac{x_i^{k_i}}{k_i!}}
+\]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

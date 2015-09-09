@@ -1,0 +1,842 @@
+\section{Ricerca delle primitive}
+
+Nota: con ``primitiva'' e ``antiderivata'' si indica la stessa cosa, ma antiderivata \`e un termine usato pi\`u dagli inglesi.
+
+\begin{defn}[Primitiva di una funzione]
+Data una funzione $f(x)$ continua in un intervallo $I$, una funzione $F(x)$ \`e primitiva di $f(x)$ in $I$ se $F'(x) = f(x) \forall x \in I$.
+\end{defn}
+Cercare una primitiva di una funzione vuol dire cercare una funzione la cui derivata \`e la funzione data.
+
+\`E importante la presenza dell'intervallo nella definizione. Se $F'(x) = f(x) \forall x \in I$, anche $F(x) + c$ \`e un'antiderivata di $f(x)$, e questo \`e banale, ma in un intervallo vale anche il viceversa: date due funzioni $F(x)$ e $G(x)$ primitive di $f(x)$ in un intervallo $I$, allora $F(x) = G(x) + c$, ossia le due primitive differiscono di una costante, e quindi l'espressione $F(x) + c$ \`e la totalit\`a delle primitive, ci d\`a tutte e sole le primitive di una funzione.
+
+Se non si sta in un intervallo, non \`e pi\`u vero che due primitive di una funzione differiscono di una costante. Si sfrutta un semplice fatto:
+\[
+F(x) - G(x) = c \iff \left[ F(x) - G(x) \right]' = 0 \forall x \in I
+\]
+Se la derivata della differenza di due funzioni \`e nulla \emph{in un intervallo}, allora le due funzioni differiscono di una costante. Viene tutto dal teorema del valor medio:
+\[
+g(x_1) - g(x_2) = g'(\xi) \cdot (x_1 - x_2) \text{ per un } \xi \in [x_1, x_2]
+\]
+Dobbiamo sempre essere in un intervallo! Se la funzione $g(x) = F(x) - G(x)$ ha derivata sempre nulla, allora presi comunque due punti $x_1$ e $x_2$ vale sempre che $g(x_1) - g(x_2) = 0$, ossia $g(x_1) = g(x_2)$, quindi $g(x)$ \`e costante. Fuori da un intervallo questo non vale pi\`u: prendiamo la funzione $f(x) = \sgn(x)$, che \`e definita per ogni $x \neq 0$ e vale:
+\[
+\sgn(x) = 
+\begin{cases}
+1 \text{ se } x > 0 \\
+-1 \text{ se } x < 0
+\end{cases}
+\]
+La funzione \`e definita su tutta la retta meno un punto. \`E costante a destra dello 0, \`e costante a sinistra dello 0, ma non \`e \emph{costante}.
+
+\section{Integrali indefiniti immediati}
+\label{integrali_indefiniti_immediati}
+
+\begin{defn}[Integrale indefinito]
+L'integrale indefinito di una funzione \`e l'insieme di tutte le sue primitive, e si indica cos\`i:
+\[
+\int f(x) \dx = F(x) + c
+\]
+\end{defn}
+Il problema dell'integrazione indefinita affronta il problema inverso della derivazione: solitamente i problemi inversi sono i pi\`u difficili. Non c'\`e approccio algoritmico, servono intuizioni su quale potrebbe essere la funzione $F(x)$ che verifica l'identit\`a di cui sopra, ossia quali funzioni $F(x)$ possiamo trovare che sappiamo essere primitive della funzione $f(x)$ data.
+
+Alcuni integrali indefiniti sono immediati, conoscendo qualche derivata:
+\begin{align*}
+\int \cos (x) \dx &= \sin (x) + c \\
+\int \sin (x) \dx &= - \cos (x) + c
+\end{align*}
+In questi due casi stiamo a cavallo, le funzioni integrande sono definite su tutta la retta $\reals$.
+
+Queste due funzioni, invece, sono definite una per $x > 0$ e una per $x \neq 0$:
+\[
+\int \frac{\diff x}{\sqrt{x}} \qquad
+\int \frac{\diff x}{x}
+\]
+Entrambe le funzioni sono nella forma:
+\[
+\int x^{\alpha} \dx
+\]
+Se $\alpha$ \`e un numero intero positivo, siamo felici. Se non lo \`e, bisogna escludere lo 0 dall'intervallo di integrazione. Se $\alpha$ \`e un numero razionale, per esempio $\frac{7}{4}$, pu\`o esserci di mezzo una radice pari, quindi necessariamente deve essere $x > 0$.
+
+L'intervallo di integrazione \`e l'intervallo in cui \emph{la funzione integranda} ha senso.
+
+Stabilito l'intervallo in cui la funzione $x^{\alpha}$ \`e integrabile, ed escludendo per ora il caso in cui $\alpha = -1$, cosa possiamo dire? 
+
+Vedendo la derivata di $x^{\beta}$ capiamo una cosa:
+\[
+\left[ x^{\beta} \right]' = \beta \cdot x^{\beta - 1} \text{ per } \beta \neq 0 \implies
+\int \beta \cdot x^{\beta - 1} \dx = x^{\beta} + c
+\]
+Quindi la risposta alla nostra domanda, per $\alpha \neq -1$, \`e:
+\[
+\int x^{\alpha} \dx = \frac{x^{\alpha + 1}}{\alpha + 1} + c
+\]
+Nel caso, per\`o, in cui $\alpha = -1$, abbiamo una funzione integranda definita per ogni $x \neq 0$. Una funzione che ha per derivata $\frac{1}{x}$ \`e il logaritmo. Sapendo come \`e fatto il logaritmo, vediamo che:
+\[
+\int \frac{\diff x}{x} =
+\begin{cases}
+\log (x) + c \text{ per } x > 0 \\
+\log (-x) + c \text{ per } x < 0
+\end{cases}
+= \abslog{x} + c
+\]
+Con le nostre conoscenze, adesso, sappiamo trovare questo integrale:
+\[
+\int x^{\frac{3}{2}} \dx = \frac{2}{5} \, x^{\frac{5}{2}}
+\]
+Qualcuno ora potrebbe pensare che anche questo \`e un integrale corretto:
+\[
+\int (- x)^{\frac{3}{2}} \dx = \frac{2}{5} (- x)^{\frac{5}{2}} + c
+\]
+Ma non \`e vero! Infatti, derivando il risultato, otteniamo qualcosa di leggermente diverso:
+\[
+\deriv{x} \frac{2}{5} (- x)^{\frac{5}{2}} = - (-x)^{\frac{3}{2}}
+\]
+Ora \`e facile capire quale correzione bisogna fare per trovare l'integrale che cercavamo: \`e sufficiente cambiare il segno a quanto avevamo trovato.
+
+\subsubsection{Linearit\`a dell'integrale}
+
+E con questo integrale, come ci si deve comportare?
+\[
+\int \left( 12 \, x^3 - \frac{1}{\sqrt{3x}} \right) \dx
+\]
+Siccome la derivata della somma \`e la somma delle derivate, e l'integrale \`e l'inverso della derivata, anche l'integrale di una somma \`e la somma degli integrali. Quindi:
+\[
+\int 12 x^3 \dx - \int \frac{\diff x}{\sqrt{3x}} = 
+\frac{12 \, x^4}{4} - \frac{2}{3} \sqrt{3x} + c =
+3 \, x^4 - \frac{2 \sqrt{x}}{\sqrt{3}} + c
+\]
+Questa propriet\`a si chiama linearit\`a dell'integrale: \`e lo stesso motivo per cui ai fini dell'integrazione le costanti si ``portano fuori''.
+
+Per fortuna, con gli integrali indefiniti \`e sempre possibile controllare l'esattezza del risultato, derivandolo. E spesso \`e bene farlo.
+
+In generale, se l'argomento della funzione integranda \`e moltiplicato per un coefficiente $\alpha$, quello che abbiamo \`e questo:
+\[
+\int f(\alpha \, x) \dx = \frac{F(\alpha \, x)}{\alpha} + c
+\]
+Un ragionamento del genere diventa automatico col tempo.
+
+\subsection{Integrali trigonometrici immediati}
+
+Abbiamo visto due integrali trigonometrici all'inizio della sezione \ref{integrali_indefiniti_immediati}. Passiamo a cose pi\`u brutte ma ancora immediate, come questi due:
+\begin{align*}
+\int \tan (x) \dx &= \int \frac{\sin(x)}{\cos(x)} \dx \\
+\int \frac{\diff x}{\cos^2 (x)} &= \int \sec^2 (x) \dx
+\end{align*}
+Piccolo promemoria: la secante \`e l'inverso del coseno, la cosecante \`e l'inverso del seno.
+
+Il coseno non si annulla in $(-\frac{\pi}{2}, \frac{\pi}{2}) \cup (\frac{\pi}{2}, \frac{3}{2} \pi)$. La seconda funzione quindi \`e definita in questo intervallo, che si pu\`o scrivere anche come $(- \frac{\pi}{2} + k \cdot \pi, \frac{\pi}{2} + k \cdot \pi)$. Una funzione che ha come derivata $\sec^2 (x)$ \`e $\tan(x)$. Infatti, facendo la derivata di un rapporto:
+\[
+[\tan(x)]' = \deriv{x} \frac{\sin(x)}{\cos(x)} = \frac{\cos^2 (x) + \sin^2 (x)}{\cos^2(x)} = \frac{1}{\cos^2(x)} = \sec^2 (x)
+\]
+Derivando la cotangente invece abbiamo:
+\begin{align*}
+[\cot(x)]' = \deriv{x} \frac{\cos (x)}{\sin (x)} = \frac{- \sin^2(x) - \cos^2 (x)}{\sin^2(x)} = - \frac{1}{\sin^2 (x)} = - \csc^2 (x)
+\end{align*}
+Quindi l'integrale della secante al quadrato \`e la tangente e l'integrale della cosecante al quadrato \`e ``meno cotangente''.
+
+Come comportarsi con funzioni trigonometriche che hanno per argomento una $x$ con coefficienti? Un caso pu\`o essere:
+\[
+\left[ \cos (14 \, x) \right]' = - 14 \, \sin (14 \, x) \implies
+\int \sin (14 \, x) \dx = - \frac{\cos (14 \, x)}{14}  + c
+\]
+Nel caso seguente, l'integrale non \`e semplicemente $\tan(-3 \, x) + c$. Il coefficiente $-3$ va messo al posto giusto, e un buon modo per rendersi conto di cosa manca \`e derivare il risultato.
+\[
+\int \frac{\diff x}{\cos^2 (-3 \, x)} = -\frac{\tan (-3 \, x)}{3} + c
+\]
+
+Ritorniamo all'integrale della tangente. Abbiamo visto come pu\`o riscriversi:
+\[
+\int \tan (x) \dx = \int \frac{\sin (x)}{\cos (x)} \dx
+\]
+Considerando $y = \cos(x)$, possiamo avere un incontro ravvicinato con l'integrazione per sostituzione. Infatti l'integrale della tangente \`e simile a questo integrale:
+\[
+\int \frac{\diff y}{y} = \abslog{y} + c 
+\]
+Sostituendo $\cos (x)$ alla $y$ e derivando vediamo di essere vicini alla soluzione:
+\[
+\left[ \abslog{\cos(x)} \right]' = - \frac{1}{\cos(x)} \sin (x)
+\]
+E quindi, la soluzione \`e:
+\[
+\int \tan (x) \dx = - \abslog{ \cos(x) } + c
+\]
+Passiamo a questa:
+\[
+\int \sec (x) \, \tan (x) \dx = \int \frac{\sin(x)}{\cos^2(x)} \dx
+\]
+Questo integrale indefinito \`e simile all'integrale indefinito:
+\[
+\int \frac{\diff y}{y^2} = \int y^{-2} \dx[y] = - \frac{1}{y} + c
+\]
+Quindi:
+\[
+\int \sec (x) \, \tan (x) \dx = - \frac{1}{\cos(x)} + c
+\]
+Si verifica rapidamente:
+\[
+\left[ - \frac{1}{\cos (x)} \right]' = - \left[ \frac{1}{\cos (x)} \right]' = - \frac{1}{\cos^2 (x)} \cdot \left( - \sin (x) \right) = \frac{\sin(x)}{\cos^2(x)}
+\]
+Non abbiamo ancora metodi per risolvere gli integrali. Quindi facciamo congetture, e poi verifichiamo che siano vere.
+
+Ci sono due integrali che non sembrerebbero avere a che fare con funzioni trigonometriche, e che invece, guarda un po':
+\begin{align*}
+\int \frac{\diff x}{\sqrt{1 - x^2}} = \arcsin(x) + c \\
+\int \frac{\diff x}{1 + x^2} = \arctan(x) + c
+\end{align*}
+Per trovarli basta svolgere le derivate delle funzioni trigonometriche inverse, tenendo a mente questo:
+\[
+\left[ f^{-1} (x) \right]' = \frac{1}{f' \left( f^{-1} (x) \right)}
+\]
+Con qualche semplificazione si trovano (miracolosamente) funzioni razionali.
+
+\subsection{Infinite antiderivate}
+
+Come mai ci sono infinite antiderivate? Conoscendo lo spostamento di un oggetto, si pu\`o conoscere la sua velocit\`a, come derivata prima dello spostamento. Ma non si pu\`o ricostruire lo spostamento semplicemente dalla velocit\`a: serve sapere da dove si \`e partiti. Quindi, abbiamo infinite antiderivate che differiscono di una costante. Stesso discorso vale per l'accelerazione, derivata seconda dello spostamento. Un problema del genere pu\`o essere:
+\begin{align*}
+y'' &= \sin (x) \\
+y(x_0) &= 3 \\
+y'(x_0) &= -2
+\end{align*}
+$y$ \`e lo spostamento. Introduciamo una variabile intermedia $z = y'$, per chiarire il lavoro. Abbiamo infinite funzioni $z$ che hanno per derivata $\sin (x)$, tutte nella forma $z(x) = - \cos(x) + c$. Siccome deve valere che $- \cos (x_0) + c = -2$, troviamo che $c = \cos (x_0) - 2$. Ora dobbiamo trovare $y(x)$.
+\[
+y' = - \cos(x) + \cos (x_0) - 2
+\]
+Di nuovo infinite soluzioni:
+\[
+y = - \sin (x) + (\cos (x_0) - 2) \cdot x + k
+\]
+Imponendo che $y(x_0) = 3$, abbiamo che:
+\[
+k = 3 + \sin (x_0) - \cos(x_0) \, x_0 + 2 \, x_0
+\]
+
+\section{Integrazione per sostituzione}
+
+Per calcolare le derivate bisognerebbe stare continuamente a calcolare limiti di rapporti incrementali, se non ci fossero le regole di derivazione per le funzioni composte. L'integrazione per sostituzione utilizza proprio la regola per la derivazione delle funzioni composte.
+
+Un esempio di integrazione per sostituzione \`e l'esercizio, gi\`a fatto:
+\[
+\int \frac{2x}{\sqrt{1 + x^2}} \dx = \substitute{\int \frac{\diff y}{\sqrt{y}}}{y = 1 + x^2} = \substitute{2 \, \sqrt{y} + c}{y = 1 + x^2} = 2 \, \sqrt{1 + x^2} + c
+\]
+O anche questo:
+\[
+\int \sin(x) \, \cos(x) \dx = \substitute{\int y \dx[y]}{y = \sin (x)} = \substitute{\frac{y^2}{2} + c}{y = \sin (x)} = \frac{\sin^2(x)}{2} + c
+\]
+Quello che abbiamo fatto in questi due casi \`e una sostituzione di questo tipo:
+\[
+\int f(x) \, f'(x) \dx = \substitute{\int y \dx[y]}{y = f(x)}
+\]
+per poi svolgere l'integrale pi\`u semplice che abbiamo trovato. La funzione integranda \`e una funzione per la derivata della stessa.
+
+\begin{defn}[Integrazione per sostituzione]
+Questa \`e la regola generale dell'integrazione per sostituzione:
+\[
+\int g(f(x)) \, f'(x) \dx = \substitute{\int g(y) \dx[y]}{y = f(x)}
+\]
+Il risultato sar\`a la famiglia di funzioni $G(f(x)) + c$, con $G'(x) = g(x)$, ossia una primitiva qualsiasi di $g(x)$. Infatti, per la regola di derivazione delle funzioni composte:
+\[
+\left[ G(f(x)) \right]' = G'(f(x)) \, f'(x) = g(f(x)) \, f'(x)
+\]
+\end{defn}
+La formula dell'integrazione per sostituzione si usa anche ``nel senso inverso''. A volte, infatti, partiamo da un integrale in cui non \`e evidente quale sostituzione fare. In questi casi si sceglie la sostituzione, come $y = \sqrt{x}$, e con qualche manipolazione si riscrive l'espressione, sostituendo ad esempio $\diff x = 2 \, y \dx[y]$.
+
+\begin{oss}
+L'integrazione per sostituzione vale perch\'e vale la regola di derivazione delle funzioni composte.
+\end{oss}
+
+Procediamo con un esempio.
+\[
+\int \frac{x^3}{1 - 5 \, x^4} \dx
+\]
+Per risolvere integrali per sostituzione, conviene anzitutto isolare gli elementi dell'integrale che si ritengono utili. Si procede a tentoni: si pu\`o vedere che $x^3 \dx \sim \left[ 1 - 5 \, x^4 \right]'$, ossia le due funzioni sono simili. Quindi, continuando a fare tentativi, derivando a caso e pregando Ges\`u troviamo questo:
+\[
+\left[ 1 - 5 \, x^4 \right]' = - 20 x^3 \implies
+x^3 \dx = - \frac{1}{20} \, \left[ 1 - 5 \, x^4 \right]'
+\]
+Da qui si pu\`o procedere per sostituzione.
+\[
+\int \frac{x^3}{1 - 5 \, x^4} = \substitute{- \frac{1}{20} \, \int \frac{\diff y}{y}}{y = 1 - 5 \, x^4} = \substitute{- \frac{\abslog{y}}{20} + c}{y = 1 - 5 \, x^4} = - \frac{\abslog{1 - 5 \, x^4}}{20} + c
+\]
+
+\subsection{Scegliere la sostituzione a priori}
+\label{sostituzione_a_priori}
+
+Vediamo un integrale difficile:
+\[
+\int \frac{\cos(x)}{\sqrt{\sin(x)} + 1} \dx = 
+\substitute{\int \frac{\diff y}{\sqrt{y} + 1}}{y = \sin (x)}
+\]
+E ora? Facciamo integrazione per sostituzione, ma non cercando l'espressione di una funzione da sostituire e la sua derivata. Decidiamo a priori di sostituire $y = s^2$, e vediamo che con questa sostituzione vale che $\diff y = 2 \, s \dx[s]$.
+\[
+\substitute{\int \frac{\diff y}{\sqrt{y} + 1}}{y = \sin (x)} =
+\substitute{\int \frac{2 \, s \dx[s]}{s + 1}}{s = \sqrt{y}}
+\]
+Da qui, si procede con i soliti mezzi, ossia a casaccio. Vedremo meglio pi\`u avanti come spezzare funzioni razionali in funzioni pi\`u semplici:
+\[
+\int \frac{2 \, s \dx[s]}{s + 1} = 
+2 \, \int \frac{s + 1 - 1}{s + 1} \dx[s] = 
+2 \, \left( \int \diff s - \int \frac {\diff s}{s + 1} \right) = 2 \, s - 2 \, \abslog{s + 1} + c
+\]
+Sostituiamo di nuovo, procedendo a ritroso:
+\[
+2 \, \sqrt{y} - 2 \, \abslog{\sqrt{y} + 1} + c =
+2 \, \sqrt{\sin(x)} - 2 \, \abslog{\sqrt{\sin (x)} + 1 } + c
+\]
+
+Quest'altro modo di sostituire cerca di individuare la funzione inversa di una delle funzioni presenti nell'integrando, poich\'e una sostituzione simile pu\`o potenzialmente portare a semplificazioni utili. Nel caso di prima, avendo un $\sqrt{y}$, si \`e scelta la sostituzione $y = s^2$, per ottenere poi che $\sqrt{y} = s$.
+
+\subsection{Potenze di seno e coseno}
+
+Consideriamo questo integrale:
+\[
+\int \frac{\sin^3(x)}{\cos^4(x)} \dx
+\]
+In generale, quando c'\`e una potenza dispari del seno e una potenza del coseno (o viceversa), la potenza dispari del seno \`e il prodotto di una potenza del coseno per la derivata del coseno... Ossia, se c'\`e un $\sin^{2 n + 1} (x)$, questo si pu\`o sostituire con $(1 - \cos^2(x))^{n} \, \sin(x)$.
+\[
+\int \frac{\sin^3(x)}{\cos^4(x)} \dx =
+\int \frac{\sin(x) \, (1 - \cos^2(x))}{\cos^4(x)} \dx =
+\substitute{\int \frac{1 - y^2}{y^4} \dx[y]}{y = \cos(x)}
+\]
+Una volta fatte le giuste sostituzioni, risolvere l'integrale diventa un lavoro meccanico, riconducibile a integrali gi\`a visti.
+
+Cerchiamo di calcolare questo integrale. C'\`e una formula che si potrebbe imparare a memoria, ma non vogliamo impararla. Per risolverlo bisogna moltiplicare e dividere, e ottenere un integrale ``migliore''.
+\[
+\int \sec (x) \dx = \int \frac{\diff x}{\cos (x)} = 
+\int \sec (x) \, \frac{\sec(x) + \tan (x)}{\sec (x) + \tan (x)} \dx
+\]
+Adesso sostituiamo con $u = \sec (x) + \tan (x)$. Fidiamoci. Calcoliamo $\diff u$.
+\[
+\diff u = \left[ \sec(x) + \tan (x) \right]' =
+\frac{\sin (x)}{\cos^2 (x)} + \frac{1}{\cos^2 (x)} =
+\sec (x) \, (\sec (x) + \tan (x))
+\]
+Questo ci torna utile, ora! Quindi possiamo sostituire in questo modo:
+\[
+\int \sec (x) \, \frac{\sec(x) + \tan (x)}{\sec (x) + \tan (x)} \dx =
+\substitute{\int \frac{\diff u}{u}}{u = \sec(x) + \tan(x)} =
+\abslog{\sec(x) + \tan(x)} + c
+\]
+Non c'\`e nulla di immediato in questo integrale, come in quello di $\csc(x)$.
+
+\subsection{Sostituzione con seno e coseno}
+
+A volte, come visto nella sezione \ref{sostituzione_a_priori}, non c'\`e l'espressione di una funzione $f(x)$ con la sua derivata che ci renda facile la sostituzione. Si pu\`o provare quindi una sostituzione $x = f(y)$. Una sostituzione tipica di questo tipo \`e quella $x = \cos(\theta)$ o $x = \sin(\theta)$. Consideriamo ad esempio questo integrale:
+\[
+\int \sqrt{1 - x^2} \dx
+\]
+Sappiamo che qualcosa come $1 - f(\theta)^2$, se $f(\theta) = \cos (\theta)$, si pu\`o scrivere come $\sin^2 (\theta)$. Allora si pu\`o provare a sostituire, vedendo che $\diff \theta = - \sin (x) \dx$:
+\[
+\substitute{ - \int \sqrt{1 - \cos^2 (\theta)} \, \sin(\theta) \dx[\theta]}{x = \cos(\theta)} =
+- \int \abs{\sin(\theta)} \, \sin(\theta) \dx[\theta]
+\]
+Questo integrale va ora spezzato in due, a seconda degli intervalli in cui $\sin(\theta)$ \`e positivo o negativo. Da qui \`e un integrale ``semplice'' come:
+\[
+\int \sin^2 (\theta) \dx[\theta]
+\]
+Una volta risolto l'integrale, bisogner\`a sostituire di nuovo $\theta$ con $\arccos(x)$.
+
+\subsection{Funzione inverse delle funzioni trigonometriche}
+\label{integrale_arcoseno}
+
+Sappiamo che la derivata dell'arcoseno \`e $\frac{1}{\sqrt{1 - x^2}}$. Vediamo come trovare l'integrale di un caso pi\`u generale, come $\frac{1}{\sqrt{a - b \, x^2}}$.
+\begin{align*}
+\int \frac{\diff x}{\sqrt{3 - 2 \, x^2}} &= 
+\frac{1}{\sqrt{3}} \int \frac{\diff x}{\sqrt{1 - \frac{2}{3} \, x^2}} = \tag{mettendo in evidenza} \\
+&= \substitute{\frac{1}{\cancel{\sqrt{3}}} \, \frac{\cancel{\sqrt{3}}}{\sqrt{2}} \int \frac{\diff y}{1 - y^2}}{y = \sqrt{\frac{2}{3}} \, x} = \tag{sostituendo} \\
+&= \frac{1}{\sqrt{2}} \, \arcsin (y) + c =
+\frac{1}{\sqrt{2}} \, \arcsin \left(\sqrt{\frac{2}{3}} \, x \right) + c
+\end{align*}
+Volendo tirar fuori una regola generale:
+\[
+\int \frac{\diff x}{\sqrt{a^2 - b^2 \, x^2}} =
+\frac{1}{a} \, \arcsin \left( \frac{a}{b} \, x \right) + c
+\]
+
+\section{Integrazione per parti}
+
+Sappiamo che c'\`e una regola per la derivata di un prodotto di funzioni.
+\[
+\left[ u(x) \, v(x) \right]' = u'(x) \, v(x) + u(x) \, v'(x)
+\]
+Se integriamo entrambi i membri abbiamo questo:
+\[
+u(x) \, v(x) + c = 
+\int u'(x) \, v(x) \dx + \int u(x) \, v'(x) \dx
+\]
+Passiamo a un esempio particolare:
+\[
+\int x \, e^x \dx
+\]
+Si pu\`o vedere che, considerando $u(x) = x$, abbiamo che $x = \left( \frac{x^2}{x} \right)' = u'(x)$, e che $v(x) = e^x$. Sar\`a una buona sostituzione? La scelta, purtroppo, \`e infelice. Infatti:
+\[
+\int x \, e^x \dx = \frac{x^2}{x} e^x - \int \frac{x^2}{x} e^x \dx
+\]
+Peggio di prima! La scelta pi\`u felice \`e al contrario:
+\[
+\int x \, e^x \dx = x \, e^x - \int e^x \dx = x \, e^x - e^x + c
+\]
+Le derivate delle potenze della $x$ tendono a ``scomparire'' nella funzione costante. Quindi con l'integrazione per parti, l'integrale $\int x \, e^x \dx$ si riduce a calcolare il banale integrale $\int e^x \dx$.
+
+\begin{defn}[Integrazione per parti]
+La formula per l'integrazione per parti \`e questa:
+\[
+\int u' (x) \, v(x) \dx = u(x) \, v(x) - \int u (x) \, v' (x) \dx
+\]
+Si devono riuscire a riconoscere due funzioni nell'integrando, una da integrare e una da derivare. Applicando l'integrazione per parti, si risolve parte dell'integrale e ci si ritrova con un nuovo integrale da risolvere, speriamo pi\`u semplice.
+\end{defn}
+
+Individuare la funzione da integrare e quella da derivare \`e il primo passo.
+
+Altro caso veloce veloce:
+\[
+\int x \, \sin(x) \dx = - x \, \cos (x) + \int \cos (x) \dx =
+- x \, \cos(x) + \sin (x) + c
+\]
+
+Si pu\`o vedere come un integrale da risolvere per parti anche questo integrale:
+\[
+\int \log(x) \dx
+\]
+Possiamo prendere infatti $u(x) = x$, e avere quindi $u'(x) = 1$ e $v(x) = \log (x)$. Quindi:
+\[
+\int 1 \, \log(x) \dx = x \, \log (x) - \int \frac{\cancel{x}}{\cancel{x}} \dx = 
+x \, \log (x) - x + c
+\]
+Abbiamo scelto la $x$ (o meglio, la sua derivata, la funzione costante) come funzione da integrare. Tipicamente la $x$ scompare se scelta come funzione da \emph{derivare}, ma in questo caso si semplifica con la derivata del logaritmo.
+
+Il comportamento da tenere con le funzioni composte \`e simile a quello che si tiene con l'integrazione per sostituzione. Questo integrale potrebbe non essere facilmente risolvibile, nel caso generale:
+\[
+\int f(g(x)) \, h(x) \dx
+\]
+Ma a quest'altro integrale si pu\`o sempre applicare l'integrazione per parti:
+\[
+\int f(g(x)) \, g'(x) \, h(x) \dx =
+F(g(x)) \, h(x) - \int F(g(x)) \, h'(x) \dx
+\]
+Per risolvere integrali simili bisogna riconoscere pattern. In questo caso, come con l'integrazione per sostituzione, bisogna trovare una funzione $g$ composta con una funzione $f$ vicino alla sua derivata $g'$.
+
+\begin{exmp}
+Un integrale con un polinomio e un'esponenziale, come quello che segue, si pu\`o risolvere per parti, scegliendo il polinomio come funzione da derivare (in modo da abbassarne il grado) e l'esponenziale come funzione da integrare (ch\'e tanto resta sempre uguale).
+\[
+\int (x - 3) \, e^{2x} \dx =
+(x - 3) \, \frac{e^{2x}}{2} - \frac{1}{2} \int e^{2x} \dx = \dots
+\]
+E via cos\`i...
+\end{exmp}
+
+\begin{exmp}
+Un integrale con un logaritmo e una $x$, come quello che segue, si pu\`o risolvere per parti, scegliendo la $x$ come funzione da integrare (a differenza dell'esempio di prima) e il logaritmo come funzione da derivare.
+\[
+\int x \, \log^3 (x) \dx =
+\frac{x^2}{2} \, \log^3 (x) - \frac{3}{2} \int \frac{x^{\cancel{2}}}{\cancel{x}} \, \log^2 (x) \dx = \dots
+\]
+Poi si procede ripetitivamente, abbassando l'ordine della potenza del logaritmo... Si potrebbe prendere il logaritmo come funzione da integrare, e si potrebbe pensare di farlo per parti, e si potrebbe pensare di integrare il logaritmo (invece di derivarlo).
+\[
+\int \log^3 (x) \dx =
+\int x \, \frac{\log^3 (x)}{x} \dx =
+\frac{1}{4} \, x \, \log^4 (x) - \frac{1}{4} \int \log^4 (x) \dx
+\]
+Ma ci ritroviamo a navigare nella merda. Quindi: \`e bene derivare il logaritmo.
+\end{exmp}
+
+\section{Integrali di funzioni razionali}
+
+Siano $p(x)$ e $q(x)$ due polinomi, la funzione $\frac{p(x)}{q(x)}$ \`e una funzione razionale.
+\[
+\int \frac{p(x)}{q(x)} \dx
+\]
+Gli integrali di una funzione razionale (come quello sopra) sono \emph{sempre} combinazioni lineari di polinomi, logaritmi e arcotangenti.
+
+Se il grado di $p(x)$ \`e maggiore del grado di $q(x)$, possiamo fare una divisione fra polinomi (cfr. corso di algebra) e ottenere un integrale equivalente della forma $\int h(x) \dx + \int \frac{r(x)}{q(x)} \dx$, tale per cui $h(x)$, $r(x)$ e $q(x)$ sono tutti polinomi e il grado del polinomio $r(x)$ \`e minore del grado di $q(x)$.
+
+\begin{exmp}
+Partiamo con una cosa facile facile, giusto per scaldarci:
+\[
+\int \frac{x^2}{x - 4} \dx =
+\int \left[ x + 4 + \frac{16}{x-4} \right] \dx 
+\]
+\begin{figure}[h]
+\centering
+\begin{tabular}{rrr|r}
+$x^2$ & & & $x - 4$ \\ \cline{4-4}
+$-x^2$ & $+4 \, x$ & & $x + 4$ \\ \cline{1-2}
+$0$ & $4 \, x$ & & \\
+& $- 4 \, x$ & $+ 16$ & \\ \cline{2-3}
+& $0$ & $16$ & 
+\end{tabular}
+\caption{\label{fig:divisione}Divisione fra polinomi...}
+\end{figure}
+Per la divisione si segue il procedimento in figura \ref{fig:divisione}.
+
+Ora risolvere l'integrale \`e facile...
+\end{exmp}
+
+\begin{exmp}
+Facciamo un altro esempio di applicazione del teorema di divisione per i polinomi:
+\[
+\int \frac{x^2}{5 \, x^2 + 3} \dx = 
+\frac{1}{5} \, \int \frac{x^2}{x^2 + \frac{3}{5}} \dx = 
+\frac{1}{5} \left[ \int \dx - \frac{3}{5} \int \frac{\diff x}{x^2 + \frac{3}{5}} \right] 
+\]
+Il primo integrale \`e banale, il secondo, come al solito, va ricondotto all'integrale di $\frac{\diff y}{y^2 + 1}$ (che sappiamo essere l'arcotangente).
+\[
+\int \frac{\diff x}{x^2 + \frac{3}{5}} =
+\frac{1}{\frac{3}{5}} \int \frac{\diff x}{\frac{5}{3} \, x^2 + 1} =
+\frac{5}{3} \substitute{\int \sqrt{\frac{5}{3}} \frac{\diff y}{y^2 + 1} }{y^2 = \frac{5}{3} \, x^2 \implies y = \sqrt{\frac{5}{3}} \, x}
+\]
+Le sostituzioni da fare sono sempre le stesse: per trasformare $x^2 + \frac{3}{5}$ in qualcosa come $y^2 + 1$, si mette anzitutto in evidenza $\frac{3}{5}$, e si ottiene quindi $\frac{3}{5} \, (\frac{5}{3} \, x^2 + 1)$, e poi si sostituisce $\frac{5}{3} \, x^2$ con $y^2$, e quindi $y = \sqrt{\frac{5}{3}} \, x$ (e $\diff y = \sqrt{\frac{5}{3}} \dx$).
+\end{exmp}
+
+\begin{exmp}[(spezzare integrali razionali)]
+Se abbiamo qualcosa come questo?
+\[
+\int \frac{\diff x}{x^2 - \frac{3}{5}}
+\]
+Bisogna spezzare in due l'integrale.
+\[
+x^2 - \frac{3}{5} = 
+\left( x - \sqrt{\frac{3}{5}} \right) \cdot \left( x + \sqrt{\frac{3}{5}} \right)
+\]
+Quindi:
+\begin{align*}
+\int \frac{\diff x}{x^2 - \frac{3}{5}} &= 
+\int \frac{\diff x}{\left( x - \sqrt{\frac{3}{5}} \right) \cdot \left( x + \sqrt{\frac{3}{5}} \right)} = \\
+&= \int \frac{A \dx}{x - \sqrt{\frac{3}{5}}} + \int \frac{B \dx}{x + \sqrt{\frac{3}{5}}} = \\
+&= \int \frac{A \, \left( x - \sqrt{\frac{3}{5}} \right) + B \, \left( x + \sqrt{\frac{3}{5}} \right)}{x^2 - \frac{3}{5}} \dx 
+\end{align*}
+Spezziamo l'integrale in una somma con coefficienti $A$ e $B$ sconosciuti, e poi sommiamo i due addendi per avere un modo per scoprire quanto devono valere i coefficienti $A$ e $B$.
+
+Adesso bisogna trovare per quali valori di $A$ e di $B$ vale questo:
+\[
+A \, \left( x - \sqrt{\frac{3}{5}} \right) + B \, \left( x + \sqrt{\frac{3}{5}} \right) = 1
+\]
+I due valori sono $A = - \frac{1}{2} \, \sqrt{\frac{5}{3}}$, e $B = -A$.
+\end{exmp}
+
+\subsection{Polinomi di secondo grado (e oltre) al denominatore}
+
+Ribadiamo una verit\`a fondamentale: gli integrali di funzioni razionali sono \emph{sempre} una somma di polinomi, logaritmi e arcotangenti. Chiariamo un po' il ruolo dell'arcotangente in questi integrali, e in generale cosa fare con gli integrali di funzioni razionali con polinomi di secondo grado al denominatore.
+
+\subsubsection{Polinomi di secondo grado senza coefficiente del primo grado}
+
+Come visto nella sezione \ref{integrale_arcoseno} per l'integrale di $\frac{\diff x}{\sqrt{1 - x^2}}$, troviamo una formula generale per l'integrale:
+\[
+\int \frac{\diff x}{x^2 + a^2}
+\]
+Come al solito, trasformiamo trasformiamo l'integrale in $\frac{\diff y}{y^2 + 1}$, mettendo prima in evidenza $a^2$ e poi facendo una sostituzione opportuna:
+\[
+\frac{1}{a^2} \int \frac{\diff x}{\frac{1}{a^2} \, x^2 + 1} =
+\frac{1}{a^{\cancel{2}}} \substitute{\int \frac{\cancel{a} \dx[y]}{y^2 + 1}}{y = \frac{1}{a} \, x} =
+\frac{1}{a} \arctan \left( \frac{x}{a} \right) + c
+\]
+Nella sostituzione, essendo $y = \frac{1}{a} \, x$, vale che $\diff x = a \dx[y]$.
+
+Se il segno di $a^2$ \`e negativo ci si comporta in modo diverso.
+\[
+\int \frac{\diff x}{x^2 - a^2}
+\]
+Bisogna dividere l'integrale in questo modo:
+\[
+\int \left( \frac{A}{x + a} + \frac{B}{x - a} \right) \dx
+\]
+e poi si deve imporre questo:
+\begin{align*}
+& A \, (x - a) + B \, (x + a) = 1 \implies \\
+\implies & (A + B) \, x + (B - A) \, a = 1 \implies \\
+\implies & \begin{cases}
+A = - B \\
+2 \, B = \frac{1}{a}
+\end{cases}
+\end{align*}
+L'integrale quindi si spezza in:
+\[
+- \frac{1}{2 \,a} \int \frac{\diff x}{x + a}
++ \frac{1}{2 \,a} \int \frac{\diff x}{x - a}
+\]
+
+\subsubsection{Polinomi di secondo grado generici}
+
+Abbiamo fatto fuori i casi in cui il coefficiente della $x$ di primo grado \`e 0 (ossia, i casi in cui abbiamo al denominatore un polinomio $x^2 + c$). Vediamo un caso diverso:
+\[
+\int \frac{\diff x}{x^2 + 2 \, x - 3} =
+\int \frac{\diff x}{(x - 1) \cdot (x + 3)}
+\]
+E qui sappiamo di nuovo come procedere (perch\'e il polinomio ha radici reali distinte): come visto poco sopra, si divide l'integrale:
+\[
+\int \frac{\diff x}{(x - 1) \cdot (x + 3)} =
+\int \left[ \frac{A}{x - 1} + \frac{B}{x + 3} \right] \dx
+\]
+Poi si trovano i valori di $A$ e $B$ che verificano l'uguaglianza. Ma qui ci ha detto bene...
+
+\subsubsection{Polinomi di secondo grado senza radici reali}
+
+In questo caso non possiamo spezzare l'integrale, il determinante \`e negativo (e il polinomio ha due radici complesse coniugate):
+\[
+\int \frac{\diff x}{x^2 + 2 \, x + 3}
+\]
+Ma forse possiamo ricondurre $x^2 + 2 \, x + 3$ a un polinomio del tipo $y^2 + a^2$. Lo possiamo scrivere come segue:
+\[
+x^2 + 2 \, x + 3 = x^2 + 2 \, x + 1 + 2 =
+{(x + 1)}^2 + 2
+\]
+E quindi l'integrale \`e un arcotangente.
+
+\subsubsection{Polinomi di secondo grado con radici reali coincidenti}
+
+Abbiamo visto il caso in cui abbiamo radici reali \emph{distinte}, e ora vediamo il caso in cui abbiamo radici reali \emph{coincidenti}.
+\[
+\int \frac{\diff x}{x^2 + 2 + 1} =
+\int \frac{\diff x}{{(x + 1)}^2}
+\]
+La strada corretta \`e per sostituzione, ma a prima (s)vista si potrebbe pensare di ricondurlo a un integrale tipo:
+\[
+\int \frac{\diff x}{(x + \alpha) \cdot (x + \beta)} =
+\int \left[ \frac{A}{x + \alpha} + \frac{B}{x + \beta} \right] \dx
+\]
+Questo integrale si pu\`o riscrivere cos\`i solo quando $\alpha$ \`e diverso da $\beta$! Infatti si avrebbe questo:
+\[
+\frac{A}{x + \alpha} + \frac{B}{x + \alpha} = \frac{A + B}{x + \alpha} \neq \frac{\diff x}{{(x + \alpha)}^2}
+\]
+Totalmente sbagliato!
+
+La decomposizione che funziona, se si vuole procedere per decomposizione, \`e questa:
+\[
+\frac{1}{{(x + \alpha)}^2} =
+\frac{A}{x + \alpha} + \frac{B \, x}{{(x + \alpha)}^2} =
+\frac{A \, (x + \alpha) + B \, x}{{(x + \alpha)}^2}
+\]
+Adesso dobbiamo trovare i valori di $A$ e di $B$ tali per cui:
+\[
+A \, (x + \alpha) + B \, x = 1
+\]
+E il gioco \`e fatto.
+
+\subsubsection{Polinomi di primo grado su polinomi del secondo grado}
+
+Integrali sempre pi\`u brutti: ora vediamo funzioni razionali con polinomi del primo grado al numeratore, e polinomi di secondo grado al denominatore.
+\[
+\int \frac{C \, x + D}{x^2 + bx + c} \dx
+\]
+
+\begin{exmp}
+Guardiamo questo caso:
+\[
+\int \frac{x \dx}{x^2 + 2 \,x + 1} =
+\frac{1}{2} \int \frac{2 \,x \dx}{x^2 + 2 \, x + 1} =
+\frac{1}{2} \int \frac{2 \, x + 2 \dx}{x^2 + 2 \, x + 1} - \int \frac{\dx}{x^2 + 2 \, x + 1}
+\]
+Il primo \`e un logaritmo, il secondo l'abbiamo gi\`a visto.
+\end{exmp}
+
+\subsubsection{Polinomi (speciali) di terzo grado}
+
+Ora abbiamo un polinomio di primo grado per un polinomio del secondo grado (ossia, un polinomio di terzo grado molto particolare).
+
+\begin{exmp}[di polinomio a radici reali distinte]
+Qui il secondo polinomio ha due radici reali distinte (per nostra somma fortuna):
+\[
+\int \frac{\diff x}{x \, (x^2 + 2 \, x - 3)} =
+\int \frac{\diff x}{x \cdot (x - 1) \cdot (x + 3)} =
+\int \left( \frac{A}{x} + \frac{B}{x - 1} + \frac{C}{x + 3} \right) \dx
+\]
+\end{exmp}
+
+\begin{exmp}[di polinomio a radici complesse coniugate]
+Qui il secondo polinomio ha due radici complesse coniugate:
+\[
+\int \frac{\diff x}{x \, (x^2 + 2 \, x + 3)}
+\]
+La tentazione di scrivere questo \`e sbagliatissima (si finisce in uno dei peggio gironi dell'inferno):
+\[
+\int \left( \frac{A}{x} + \frac{B}{x^2 + 2 \, x + 3} \right) \dx
+\]
+Non abbiamo speranze. Non troveremo mai due costanti $A$ e $B$ che soddisfano questa uguaglianza: avremmo infatti che $A \, x^2 = 0$, e non ci va bene. Non dobbiamo andare a cercare \emph{due} costanti, ma tre:
+\[
+\int \left( \frac{A}{x} + \frac{B \, x + C}{x^2 + 2 \, x + 3} \right) \dx
+\]
+Adesso le condizioni da imporre sono soddisfacibili:
+\[
+\begin{cases}
+A + B = 0 \\
+2 \, A + C = 0 \\
+3 \, A = 1
+\end{cases}
+\]
+\end{exmp}
+
+\begin{exmp}[di polinomio a radici reali coincidenti]
+Qui il secondo polinomio ha due radici reali coincidenti:
+\[
+\int \frac{\diff x}{x \, (x^2 + 2 \, x + 1)} =
+\int \frac{\diff x}{x \, {(x + 1)}^2}
+\]
+Quel che dobbiamo scrivere adesso \`e questo:
+\[
+\int \left( \frac{A}{x} + \frac{B}{x + 1} + \frac{C}{{(x+1)}^2} \right) \dx
+\]
+Andando a svolgere troviamo questo:
+\[
+\int \frac{A \, {(x + 1)}^2 + B \, x \, (x + 1) + C \, x}{x \, {(x + 1)}^2} \dx
+\]
+Che vuol dire che le condizioni da imporre sono queste:
+\[
+\begin{cases}
+A + B = 0 \\
+2 \, A + B + C = 0 \\
+A = 1
+\end{cases}
+\]
+Il che equivale a dire che $A = 1$, $B = -1$ e $C = - 1$.
+\end{exmp}
+
+\subsubsection{Polinomi a radici complesse coniugate}
+
+Questi sono forse gli integrali razionali pi\`u brutti. Al denominatore c'\`e un polinomio a radici complesse coniugate \emph{elevato al quadrato}. Sono integrali nella forma:
+\[
+\int \frac{\diff x}{(x^2 - x + 1)^2}
+\]
+Se il polinomio non fosse elevato al quadrato, sapremmo risolverlo con una sostituzione opportuna:
+\[
+\int \frac{\diff x}{x^2 - x + 1} = 
+\int \frac{\diff x}{x^2 - x + \frac{1}{4} + \frac{3}{4}} = 
+\int \frac{\diff x}{{\left(x - \frac{1}{2}\right)}^2 + \frac{3}{4}} = 
+\substitute{\int \frac{\diff y}{y^2 + \frac{3}{4}}}{y = x - \frac{1}{2}}
+\]
+Anche questi si risolveranno con una sostituzione...
+
+\begin{exmp}[di polinomio a radici complesse, elevato al quadrato]
+Vediamo questo integrale.
+\[
+\int \frac{C \, x + D}{\left( x^2 - x + 1 \right)^2} \dx
+\]
+Si spezza in questo modo:
+\[
+\int \frac{C}{2} \frac{2 \, x - 1}{\left( x^2 - x + 1 \right)^2} \dx +
+\int \frac{C}{2} \frac{\diff x}{\left( x^2 - x + 1 \right)^2} +
+\int \frac{D \dx}{\left( x^2 - x + 1 \right)^2}
+\]
+Il primo integrale \`e facile, e infatti \`e:
+\[
+\int \frac{C}{2} \frac{2 \, x - 1}{\left( x^2 - x + 1 \right)^2} \dx =
+- \frac{C}{2} \frac{1}{x^2 - x + 1} + c
+\]
+Gli ultimi due sono quelli cattivi.
+\end{exmp}
+
+Si possono distinguere tre casi (prendendo come esempio il polinomio a radici complesse $x^2 - x + 1$), tutti riconducibili all'ultimo:
+\begin{enumerate}
+    \item Il primo caso ha al numeratore $x^2$, e si pu\`o spezzare cos\`i:
+    \begin{align*}
+    \int \frac{x^2 \dx}{(x^2 - x + 1)^2} &= 
+    \int \frac{\diff x}{x^2 - x + 1} + \int \frac{x - 1}{(x^2 - x + 1)^2} \dx = \\
+    &= \int \frac{\diff x}{x^2 - x + 1} + \frac{1}{2} \, \int \frac{2 \, x - 1}{(x^2 - x + 1)^2} \dx - \frac{1}{2} \, \int \frac{\diff x}{(x^2 - x + 1)^2}
+    \end{align*}
+    Dei tre integrali all'ultimo passaggio, sappiamo risolvere il primo (con la sostituzione vista prima), e il secondo (al numeratore compare la derivata del polinomio). Il terzo integrale ricade nel caso \ref{itm:terzo_caso_polinomi_complessi}.
+    \item Il secondo caso ha al numeratore $x$, e si spezza cos\`i:
+    \begin{align*}
+    \int \frac{x \dx}{(x^2 - x + 1)^2} &= \frac{1}{2} \, \int \frac{2 \, x + 1 - 1 \dx}{(x^2 - x + 1)^2} = \\
+    &= \frac{1}{2} \, \int \frac{2 \, x - 1}{(x^2 - x + 1)^2} \dx + \frac{1}{2} \, \int \frac{\diff x}{(x^2 - x + 1)^2} \\
+    \end{align*}
+    Il primo integrale dell'ultimo passaggio sappiamo risolverlo, il secondo integrale ricade nel caso \ref{itm:terzo_caso_polinomi_complessi}.
+    \item\label{itm:terzo_caso_polinomi_complessi} Resta quindi solo il caso:
+    \[
+    \int \frac{\diff x}{(x^2 - x + 1)^2} 
+    \]
+    E su questo possiamo fare una sostituzione.
+\end{enumerate}
+
+La sostituzione da fare \`e quella gi\`a vista prima:
+\[
+\int \frac{\diff x}{(x^2 - x + 1)^2} =
+\substitute{\int \frac{\diff y}{{\left(y^2 + \frac{3}{4}\right)}^2}}{y = x - \frac{1}{2}}
+\]
+Sembra allontanarci dalla soluzione, ma adesso prendiamo in esame l'integrale che segue. Possiamo spezzare anche questo, e arrivare ad un nuovo integrale...
+\[
+\int \frac{\diff y}{(1 + y^2)^2} =
+\int \frac{1 + y^2 - y^2}{(1 + y^2)^2} \dx[y] =
+\int \frac{\cancel{1 + y^2}}{(1 + y^2)^{\cancel{2}}} \dx[y] -
+\int \frac{y^2 \dx[y]}{(1 + y^2)^2}
+\]
+E questo \`e l'ultimo! Si risolve per parti, e a cascata, ora, sappiamo risolvere uno dopo l'altro tutti gli integrali visti in questa sezione.
+\[
+\int \frac{y^2 \dx[y]}{(1 + y^2)^2} = 
+\frac{1}{2} \, \int y \, \frac{2 \, y}{(1 + y^2)^2} \dx[y] =
+- \frac{1}{2} \frac{y}{1 + y^2} + \frac{1}{2} \int \frac{\diff y}{1 + y^2} = 
+\frac{1}{2} \, \left[ \arctan(y) - \frac{y}{1 + y^2} \right] + c
+\]
+Da cui sappiamo la soluzione del penultimo:
+\[
+\int \frac{\diff y}{(1 + y^2)^2} =
+\int \frac{\diff y}{1 + y^2} - \frac{1}{2} \, \left[ \arctan(y) - \frac{y}{1 + y^2} \right] =
+\frac{1}{2} \, \left[ \arctan(y) + \frac{y}{1 + y^2} \right] + c
+\]
+E da cui possiamo trovare la soluzione anche a questo integrale:
+\begin{align*}
+\int \frac{\diff x}{(x^2 - x + 1)^2} &=
+\substitute{\int \frac{\diff y}{{\left(y^2 + \frac{3}{4}\right)}^2}}{y = x - \frac{1}{2}} = \int \frac{\diff y}{y^2 + \frac{3}{4}} -
+\int \frac{y^2 \dx[y]}{{\left(y^2 + \frac{3}{4}\right)}^2} = \\
+&= \frac{\sqrt{3}}{3} \, \arctan \left[ \frac{2 \, \sqrt{3}}{3} \, \left( x - \frac{1}{2} \right) \right] +
+\frac{1}{2} \, \frac{x - \frac{1}{2}}{x^2 - x + 1} + c
+\end{align*}
+E poi, agli altri...
+
+\section{Complessi}
+
+\begin{defn}[Complessi coniugati]
+Due numeri si dicono complessi coniugati se sono nella forma:
+\[
+\alpha + i \, \beta \qquad \alpha - i \, \beta
+\]
+con $\alpha, \beta \in \reals$.
+\end{defn}
+
+Data una qualsiasi equazione di secondo grado:
+\[
+a \, x^2 + b \, x + c = 0
+\]
+le sue soluzioni in generale sono:
+\[
+x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4 a c}}{2 a}
+\]
+Se $b^2 < 4 ac$, allora le soluzioni sono:
+\[
+x_{1,2} = \frac{-b \pm i \, \sqrt{4 a c - b^2}}{2 a}
+\]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

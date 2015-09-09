@@ -1,0 +1,28 @@
+\documentclass[12pt,a4paper]{article}
+% caratteri grandi
+
+\usepackage[italian]{babel}
+% per date e ToC in italiano
+
+\usepackage{amsmath}        % matematica
+\usepackage{amsfonts}       % font matematici
+\usepackage{centernot}      % per semplificare
+\usepackage{pgfplots}       % grafici
+\pgfplotsset{compat=1.5}    % consigliata compatibilita'
+                            % con la versione 1.5
+
+\usepackage{fullpage}       % troppo margine normalmente
+\usepackage{parskip}        % preferisco spazio fra i paragrafi
+                            % all'indentazione sulla prima riga
+
+% per le liste non numeriche preferisco un dash
+\renewcommand{\labelitemi}{-}
+\usetikzlibrary{shapes,arrows,calc,fit,backgrounds}
+
+\begin{document}
+
+\chapter{Esercizi Calcolo delle probabilit\`a}
+
+\input{esercizi.tex}
+
+\end{document}

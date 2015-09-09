@@ -1,0 +1,66 @@
+\input{../../Common/common.tex}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\floatname{algorithm}{Algoritmo}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\begin{document}
+
+% \input{complessita.tex}
+
+\chapter{Esercizi}
+
+\section{L'immancabile di settembre}
+
+\begin{esercizio}
+$L$ \`e un linguaggio ricorsivamente enumerabile, e il suo complemento $\bar{L}$ \`e ricorsivamente enumerabile. Dimostrare che $L$ \`e ricorsivo.
+\end{esercizio}
+
+Abbiamo la macchina $m$ che accetta $L$, e la macchina $m'$ che accetta $\bar{L}$.
+
+$L$ \`e ricorsivo se esiste una macchina di Turing che si ferma su qualsiasi input. La macchina $M$ che si ferma sempre su $L$ simula a passi alterni $m$ e $m'$. Se $m$ si ferma e accetta, anche $M$ si ferma e accetta. Se $m'$ si ferma e accetta, $M$ si ferma e rifiuta.
+
+\section{Il favorito di ottobre}
+
+\begin{esercizio}
+Abbiamo il linguaggio $L$:
+\[
+L = \{ x : f(x) \text{ si ferma su } x \}
+\]
+Dimostrare che $L \in \code{RE} \setminus \code{RIC}$. La funzione $f$ \`e calcolabile e biunivoca, eh.
+\end{esercizio}
+
+Prima di tutto bisogna dimostrare che $L \in \code{RE}$. Prendiamo la macchina di Turing che calcola $f(x)$ e poi simula $f(x)$ con $x$ come input.
+
+Poi, costruiamo una tabella con come colonne gli input $x_i$, e come righe le immagini $f(x_i)$. Mettiamo 1 alla casella $(i,j)$ se $f(x_i)$ si ferma su $x_j$, 0 altrimenti. Dato che $L$ \`e ricorsivamente enumerabile, da qualche parte nella tabella ci sar\`a la macchina che accetta $L$, codificata da una $f(x_k)$. Per come abbiamo costruito la tabella il vettore caratteristico di $L$, oltre ad essere alla riga di $f(x_k)$, sar\`a anche sulla diagonale.
+
+Il complemento del vettore sulla diagonale non pu\`o essere nella tabella, quindi $\bar{L} \notin \code{RE}$, e quindi $L \notin \code{RIC}$.
+
+\section{Il regalone di Natale}
+
+\begin{esercizio}
+Dimostrare l'esistenza di un linguaggio $L$ tale che n\'e $L$, n\'e il suo complemento $\bar{L}$ sono ricorsivamente enumerabili. 
+\end{esercizio}
+
+L'insieme di tutti i linguaggi \`e $\parts \left( A^{\star} \right)$, che non \`e un insieme numerabile. $\code{RE}$ \`e un insieme numerabile, cos\`i come $\code{CO-RE}$, e come la loro unione. Infatti ciascun linguaggio in $\code{RE}$ \`e individuato da (almeno) una macchina di Turing, e sappiamo che l'insieme delle macchine di Turing \`e numerabile. Quindi, necessariamente, $\code{CO-RE} \cup \code{RE} \subset \parts \left( A^{\star} \right)$.
+
+\section{La superstar dei migliori bar di Caracas}
+
+\begin{esercizio}
+Consideriamo il linguaggio:
+\[
+L = \{ x : \exists y \text{ con } \abs{y} \le c \text{ su cui } x \text{ si ferma entro } c \text{ transizioni} \}
+\]
+Dimostrare che il linguaggio $L$ \`e ricorsivo.
+\end{esercizio}
+
+$L$ \`e ricorsivo se esiste una macchina di Turing che decide sempre l'input. Data una qualunque stringa $x$ in input, la macchina che decide $x$ deve creare tutte le possibili stringhe $y$ di lunghezza minore di $c$, e simulare la macchina codificata dall'input $x$ su ciascuna di queste stringhe per al pi\`u $c$ passi. Se dopo $c$ passi la macchina simulata non si trova in uno stato in $F$, questa passa alla stringa $y$ successiva. Se, invece, la macchina simulata accetta una qualunque delle $y$, la macchina che decide $L$ accetta l'input $x$.
+
+Se nessuna delle stringhe $y$ viene accettata dalla macchina simulata, la macchina che decide $L$ rifiuta l'input $x$.
+
+Sicuramente la macchina che decide $L$ si ferma, perch\'e per ogni input $x$ deve prendere in analisi un numero finito di stringhe, e simulare l'input $x$ su ciascuna di queste per un numero finito di passi.
+% \tableofcontents
+
+\end{document}

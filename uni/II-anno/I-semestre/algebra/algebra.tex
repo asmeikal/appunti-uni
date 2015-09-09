@@ -1,0 +1,161 @@
+\documentclass[11pt,a4paper,twoside,draft]{report}
+% draft mode prevents link generation
+
+\usepackage[italian]{babel}
+% per date e ToC in italiano
+\usepackage{hyperref}
+\usepackage{nameref}
+\usepackage[table]{xcolor}
+\usepackage{amsmath}        % matematica
+\usepackage{amsthm}         % teoremi
+\usepackage{amssymb}        % simboli
+\usepackage{amsfonts}       % font matematicosi
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage{thmtools}
+\usepackage{centernot}      % per semplificare
+\usepackage{pgfplots}       % per i grafici
+\pgfplotsset{compat=1.5}    % consigliata compatibilita'
+                            % con la versione 1.5
+
+\usepackage{fullpage}       % troppo margine normalmente
+\usepackage{parskip}        % preferisco spazio fra i paragrafi
+                            % all'indentazione sulla prima riga
+\usepackage{fancyhdr}
+
+\theoremstyle{plain}% default
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{lem}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposizione}
+\newtheorem{cor}[theorem]{Corollario}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definizione}[section]
+\newtheorem{conj}{Congettura}[section]
+% \newtheorem{exmp}{Esempio}[section]
+\newtheorem*{esercizio}{Esercizio}
+
+\newenvironment{exmp}
+{ \par\medskip\textbf{Esempio:}\newline\rule{\textwidth}{0.4pt}\newline }
+{ \newline\rule{\textwidth}{0.4pt}\medskip }
+
+
+\theoremstyle{remark}
+\newtheorem*{comm}{Commento}
+\newtheorem*{oss}{Osservazione}
+\newtheorem*{note}{Nota}
+\newtheorem{caso}{Caso}
+
+\pagestyle{fancyplain}
+\fancyhead{} % clear all header fields
+\fancyfoot{} % clear all footer fields
+\fancyfoot[C]{\today}
+\fancyfoot[LE,RO]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\usetikzlibrary{shapes,arrows,calc,fit,backgrounds}
+
+\newcommand{\covers}{<\!\cdot}
+\newcommand{\compl}{\mathsf{c}}
+\newcommand{\dotcup}{\mathaccent\cdot\cup}
+\newcommand{\lateralsx}[1]{{}_{#1}\!\sim}
+\newcommand{\lateraldx}[1]{\sim_{#1}}
+\newcommand{\mcm}{\text{mcm}}
+\newcommand{\mcd}{\text{MCD}}
+\newcommand{\pow}[1]{<\!{#1}\!>}
+\newcommand{\abs}[1]{\left\lvert{#1}\right\rvert}
+\newcommand{\divides}{\bigm|}
+\newcommand{\definition}{\overset{\underset{\mathrm{def}}{}}{=}}
+\newcommand{\supop}{\vee}
+\newcommand{\infop}{\wedge}
+\newcommand{\subgroupset}{\mathscr{S}}
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\complexes}{\mathbb{C}}
+\newcommand{\field}{\mathbb{K}}
+\newcommand{\matrices}{\mathfrak{M}}
+
+\renewcommand{\labelitemi}{$-$}
+\let\oldforall\forall
+\renewcommand{\forall}{\ \oldforall \ }
+\let\oldexists\exists
+\renewcommand{\exists}{\ \oldexists \ }
+\renewcommand{\implies}{\Rightarrow}
+\renewcommand{\iff}{\Leftrightarrow}
+
+\makeatletter
+\let\orgdescriptionlabel\descriptionlabel\renewcommand*{\descriptionlabel}[1]{%
+\let\orglabel\label
+\let\label\@gobble
+\phantomsection
+\edef\@currentlabel{#1}%
+%\edef\@currentlabelname{#1}%
+\let\label\orglabel
+\orgdescriptionlabel{#1}%
+}
+\makeatother
+
+\begin{document}
+
+\title{Appunti di Algebra}
+\author{Michele Laurenti \\ \href{mailto:asmeikal@me.com}{asmeikal@me.com}}
+\date{\today}
+
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\begin{abstract}
+I riferimenti a teoremi, proposizioni, propriet\`a e altro sono ipertestuali (ci puoi clickare). Anche altri elementi del pdf lo sono, come i siti internet indicati di seguito, l'indice, o la mia mail in prima pagina.
+
+Il sito della professoressa Venezia \`e: \url{http://twiki.di.uniroma1.it/twiki/view/Algebra/MZ/WebHome}.
+
+Il codice di questi appunti \`e disponibile su \href{https://github.com/asmeikal/Appunti-Algebra-2014}{GitHub} e distribuito con una licenza \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.it}{Creative Commons Attribuzione - Non commerciale - Condividi allo stesso modo 4.0 Internazionale}. Sei libero di modificare, elaborare e condividere il codice a scopo non commerciale, indicandomi come autore e distribuendolo con la stessa licenza.
+
+Se ti ho dato una copia di questi appunti intendila come una copia personale, e in quanto tale non diffonderla.
+\end{abstract}
+
+\part{Algebra}
+
+\chapter{Nozioni e concetti fondamentali}
+
+\input{concetti_base.tex}
+
+\chapter{Strutture algebriche}
+
+\input{strutture.tex}
+
+\part{Algebra lineare}
+
+\chapter{Spazi vettoriali}
+
+\input{spazi_vettoriali.tex}
+
+\chapter{Risoluzione di sistemi lineari}
+
+\input{risoluzione.tex}
+
+\chapter{Applicazioni lineari}
+
+\input{applicazioni.tex}
+
+\newpage
+
+\renewcommand{\listtheoremname}{Indice delle definizioni}
+\listoftheorems[ignoreall,show={defn},numwidth=3em]
+
+\renewcommand{\listtheoremname}{Indice dei teoremi}
+\listoftheorems[ignoreall,show={theorem},numwidth=3em]
+
+\renewcommand{\listtheoremname}{Indice delle proposizioni}
+\listoftheorems[ignoreall,show={prop},numwidth=3em]
+
+
+\end{document}

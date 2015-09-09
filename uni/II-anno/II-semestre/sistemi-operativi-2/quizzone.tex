@@ -1,0 +1,224 @@
+\documentclass[a4paper,twoside]{article}
+\usepackage[italian]{babel}
+\usepackage{hyperref}
+\usepackage{nameref}
+\usepackage{amsmath}        % matematica
+\usepackage{amsthm}         % teoremi
+\usepackage{amssymb}        % simboli
+\usepackage{amsfonts}       % font matematicosi
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{parskip}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\begin{document}
+
+\begin{enumerate}
+    \item Il comando \code{size /bin/ls} ha il seguente effetto:
+
+    Stampa la dimensione dei segmenti text, data e bss del binario \code{/bin/ls}
+    \item Nel sistema operativo UNIX, l'istruzione \code{echo prova > pippo} ha la seguente semantica: 
+
+    Scrive nel file \code{pippo} la stringa prova. Il precedente contenuto di \code{pippo} \`e sovrascritto. 
+    \item L'effetto dell'istruzione \code{man cmd} \`e:
+
+    Stampare su stdout una descrizione del comando \code{cmd}.
+    \item Si consideri il seguente script:
+    \begin{lstlisting}[language=sh]
+    verb=sing
+    echo I like ${verb}
+    \end{lstlisting}
+    Una possibile esecuzione dello script di cui sopra \`e: 
+
+    \code{I like sing} 
+    \item Nel sistema operativo UNIX, il comando crontab serve per:
+
+    Schedulare l'esecuzione di comandi che vengono eseguiti periodicamente
+
+    \item L'effetto dell'istruzione 
+    \begin{lstlisting}[language=sh]
+    eval 'echo pwd'
+    \end{lstlisting}
+    nella shell di login \`e: 
+
+    Stampare \code{pwd} su stdout. 
+    \item Nel sistema operativo UNIX, il comando 
+    \begin{lstlisting}[language=sh,literate={-}{{-}}1]
+    find . -name “*.exe” -ls -exec rm {} \;
+    \end{lstlisting}
+    ha la seguente semantica:
+
+    Cancella tutti i file che hanno estensione \code{.exe} dalla directory corrente e sue sottodirectory
+    \item Nel sistema operativo UNIX, l'istruzione \code{diff pippo pluto} ha la seguente semantica: 
+
+    Stampa su stdout le differenze tra i files \code{pippo} e \code{pluto}.
+    \item L'effetto dell'istruzione \code{cat pippo} \`e: 
+
+    Stampare il contenuto del file \code{pippo} su stdout
+    \item Nel sistema operativo UNIX, l'istruzione \code{sort pippo} ha la seguente semantica: 
+
+    Ordina le righe del file \code{pippo} in ordine lessicografico crescente e stampa su stdout il risultato. 
+    \item Nel sistema operativo UNIX, l'istruzione:
+    \begin{lstlisting}[language=sh]
+    gawk '($1 == "Stampa") {print $0}' pippo 
+    \end{lstlisting}
+    ha la seguente semantica: 
+
+    Stampa su stdout tutte le righe del file \code{pippo} che contengono la parola \code{Stampa} come prima parola
+    \item Nel sistema operativo UNIX, l'istruzione \code{uniq pippo} ha la seguente semantica: 
+
+    Stampa su stdout il file \code{pippo} collassando tutte le righe adiacenti ripetute in un unica riga. 
+    \item Un file detto Makefile rappresenta:
+
+    Rappresenta un file di configurazione per l'utility \code{make}
+    \item Nel sistema operativo UNIX, l'istruzione \code{rm -fr pippo} ha la seguente semantica: 
+
+    Rimuove ricorsivamente il contenuto della la directory \code{pippo} e la directory \code{pippo} stessa. 
+    \item L'effetto dell'istruzione \code{pwd} \`e: 
+
+    Stampare la directory corrente. 
+
+    \item Si considerino i seguenti file attributes nel tipico formato UNIX:
+    \begin{lstlisting}[language=sh,literate={-}{{-}}1]
+    -rw-r--r-- 1 enrico tronci 278 Jul 5 13:12 pippo.tex
+    \end{lstlisting}
+    Lo user del file \`e: 
+
+    \code{enrico}
+    \item Nel sistema operativo UNIX, l'istruzione per spostarsi dalla directory corrente alla directory TARGET ́\`e:
+
+    \code{cd TARGET}
+    \item Nel sistema operativo UNIX, l'istruzione per stampare su stdout i files di una directory \`e: 
+
+    \code{ls}
+    \item Si considerino i seguenti file attributes nel tipico formato UNIX: 
+    \begin{lstlisting}[language=sh,literate={-}{{-}}1]
+    -rw-r--r-- 1 enrico tronci 278 Jul 5 13:12 pippo.tex
+    \end{lstlisting}
+    Lo user del file ha i seguenti permessi:
+
+    Lettura e scrittura, ma non esecuzione. 
+    \item Nel sistema operativo UNIX, l'istruzione \code{rmdir pippo} ha la seguente semantica: 
+
+    Rimuove la directory \code{pippo} se \`e vuota, altrimenti ritorna errore. 
+    \item Il file \emph{file descriptor} ritornato dall \emph{system call} \code{open()} \`e di tipo:
+
+    \code{int}
+    \item Una \emph{pipe} \`e uno pseudo file usato per: 
+
+    Comunicazione tra processi sullo stesso computer. 
+    \item Un programma setuid a root \`e:
+
+    Un programma eseguibile di propriet\`a di root e con il setuid bit impostato. L'esecuzione di questo programma genera un processo che ha effective user id uguale a 0. 
+    \item L'istruzione: \code{alarm(Numero);} ha il seguente effetto
+
+    Crea un allarme che viene generato allo scadere di \code{Numero} secondi. Allo scadere del tempo il segnale \code{SIGALRM} viene generato.
+    \item Un processo \code{P} diventa \emph{zombie} quando: 
+
+    \code{P} termina, il \emph{parent process} di \code{P} non termina e non esegue mai una \code{wait}. 
+
+    \item È possibile allocare memoria nello stack? se si, come?
+
+    È possibile allocare memoria nello stack con l'istruzione \code{alloca}
+    \item L'effetto dell'istruzione \code{p = malloc(N);} \`e:
+
+    Alloca  uno spazio di memoria di \code{N} bytes. La variabile \code{p} rappresenta il puntatore che punta all'area di memoria allocata.
+    \item L'istruzione \code{realloc(A,B);} ha il seguente effetto:
+
+    Modifica l'area di memoria puntata da \code{A} dandogli come nuova size \code{B}. L'operazione potrebbe non andare a buon fine. In questo caso l'area di memoria originaria (puntata da \code{A}) non viene modificata.
+    \item Nel sistema operativo UNIX, l'istruzione \code{echo prova >> pippo} ha la seguente semantica: 
+
+    Appende al file \code{pippo} la stringa \code{prova}. Il precedente contenuto di \code{pippo} \`e conservato. 
+    \item Nel sistema operativo UNIX, l'istruzione \code{cp -r pippo pluto} ha la seguente semantica: 
+
+    Copia ricorsivamente nella directory \code{pluto} il contenuto della directory \code{pippo} 
+    \item Nel sistema operativo UNIX, l'istruzione \code{kill}: 
+
+    Pu\`o mandare un segnale ad un processo.
+    \item Nel sistema operativo UNIX, l'istruzione \code{find . -name "*.tex"} ha la seguente semantica:
+
+    Stampa su stdout, ricorsivamente a partire dalla directory corrente, tutti i files il cui nome termina con la stringa \code{.tex}.
+    \item Nel sistema operativo UNIX, l'istruzione \code{chmod +x pippo} ha la seguente semantica:
+
+    Rende il file \code{pippo} eseguibile.
+    \item La semantica dell'istruzione
+    \begin{lstlisting}[language=sh]
+    ls -1 *.qry | wc | gawk '{print $1}'
+    \end{lstlisting}
+    \`e la seguente:
+
+    Stampa su stdout il numero di files della directory corrente il cui nome termina con \code{.qry}.
+    \item L'effetto dell'istruzione \code{exec echo 3} nella shell di login \`e:
+
+    Stampare 3 su stdout e terminare la sessione.
+    \item Una socket di tipo \code{AF\_INET} pu`o essere usata per la comunicazione tra processi:
+
+    Su macchine ovunque su Internet, anche sulla stessa macchina.
+    \item L'istruzione: \code{signal(SIGINT, myhandler);} ha il seguente effetto:
+
+    Installa myhandler come handler per il segnale \code{SIGINT}.
+    \item Nel sistema operativo UNIX, l'istruzione \code{egrep sck pippo} ha la seguente semantica:
+
+    Mostra su stdout tutte le righe del file \code{pippo} che contengono il pattern \code{sck}.
+    \item Nel sistema operativo UNIX, l'istruzione per spostare un file \code{pippo} dalla directory corrente alla directory \code{TARGET} \`e:
+
+    \code{mv pippo TARGET}
+    \item In un sistema Unix l'istruzione \code{bind()} ha il seguente effetto:
+
+    Associa il socket name con il socket address.
+    \item Un \emph{unnamed socket} \`e:
+
+    Un file descriptor.
+    \item Per una socket internet, tra le informazioni contenute nel socket address, c'\`e:
+
+    L'internet address.
+    \item L'istruzione \code{listen(p, k)} ha il seguente effetto:
+
+    Definisce come \code{k} il massimo numero di connessioni per la socket \code{p}.
+    \item L'istruzione:
+    \begin{lstlisting}[language=C]
+    p = socket(PF_LOCAL, SOCK_STREAM, DEFAULT_PROTOCOL);
+    \end{lstlisting}
+    Ha il seguente effetto:
+
+    Alla variabile \code{p} viene assegnato il valore di un file descriptor (int) associato ad una \code{unnamed socket}.
+    \item Si consideri il seguente script:
+    \begin{lstlisting}[language=sh]
+    (sleep 30; echo done 1) &
+    (sleep 30; echo done 2) &
+    echo done 3; wait; echo done 4
+    \end{lstlisting}
+    Una possibile esecuzione dello script di cui sopra \`e:
+
+    \begin{lstlisting}[language=sh]
+    done 3
+    done 1
+    done 2
+    done 4
+    \end{lstlisting}
+    \item Nel sistema operativo UNIX l'istruzione 
+    \begin{lstlisting}[language=sh]
+    gawk '{print NF $0}' pippo
+    \end{lstlisting}
+    ha la seguente semantica:
+
+    Stampa su stdout tutte le righe del file \code{pippo} anteponendo ad ogni riga il numero di campi in essa contenuta.
+    \item Nel sistema operativo Unix il path name di un file viene considerato relativo alla directory di lavoro quando:
+
+    Il path name NON inizia con \code{/}.
+    \item Il comando \code{make} \`e utile per:
+
+    È di ausilio alla compilazione di programmi.
+    \item Il comando \code{nice}:
+
+    Consente di eseguire un comando specificandone la priorit\`a
+\end{enumerate}
+
+\end{document}
+
+
+
+

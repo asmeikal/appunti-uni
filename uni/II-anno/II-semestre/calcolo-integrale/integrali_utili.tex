@@ -1,0 +1,85 @@
+\section{Integrali immediati utili}
+
+\begin{gather*}
+\int x^{\alpha} \dx = 
+\begin{cases}
+\frac{x^{\alpha + 1}}{\alpha + 1} + c \text{ se } \alpha \neq -1 \\
+\abslog{x} + c \text{ se } \alpha = -1
+\end{cases} \\
+\int f(\alpha \, x) \dx = \frac{F(\alpha \, x)}{\alpha} + c \\
+\int \sin (x) \dx = - \cos (x) + c \\
+\int \cos (x) \dx = \sin (x) + c \\
+\int \frac{\diff x}{\cos^2 (x)} = \int \sec^2 (x) \dx = \tan (x) + c \\
+\int \frac{\diff x}{\sin^2 (x)} = \int \csc^2 (x) \dx = \cot (x) + c \\
+\int \tan (x) \dx = - \abslog{\cos (x)} + c \\
+\int \cot (x) \dx = \abslog{\sin (x)} + c \\
+\int \sec (x) \, \tan (x) \dx = \int \frac{\sin(x)}{\cos^2 (x)} \dx =
+- \frac{1}{\cos(x)} + c \\
+\int \frac{1}{\sqrt{a^2 - b^2 \, x^2}} \dx =
+\frac{1}{a} \, \arcsin \left( \frac{a}{b} \, x \right) + c
+\end{gather*}
+
+\section{Equivalenze trigonometriche}
+
+Equivalenze fra funzioni trigonometriche:
+\begin{align*}
+\tan (x) &= \frac{\sin(x)}{\cos(x)} & \sec (x) &= \frac{1}{\cos(x)}  \\
+\cot (x) &= \frac{\cos(x)}{\sin(x)} & \csc (x) &= \frac{1}{\sin(x)}
+\end{align*}
+
+L'equivalenza pi\`u semplice \`e:
+\[
+\cos^2 (x) + \sin^2 (x) = 1
+\]
+
+\subsection{Duplicazione}
+
+Le formule di ``duplicazione'' che si vedono generalmente:
+\begin{align*}
+\cos(\alpha + \beta) &= \cos(\alpha) \, \cos(\beta) - \sin(\alpha) \, \sin(\beta) \\
+\cos(\alpha - \beta) &= \cos(\alpha) \, \cos(\beta) + \sin(\alpha) \, \sin(\beta) \\
+\sin(\alpha + \beta) &= \sin(\alpha) \, \cos(\beta) + \cos(\alpha) \, \sin(\beta)\\
+\sin(\alpha - \beta) &= \sin(\alpha) \, \cos(\beta) - \cos(\alpha) \, \sin(\beta)
+\end{align*}
+% Sono facili da memorizzare: \emph{coscia coscia, seno seno} e \emph{seno coscia, coscia seno}.
+
+Da queste si ricavano due formule di vera duplicazione:
+\begin{align*}
+\sin( 2 \, x) &= 2 \, \sin (x) \, \cos (x) \\
+\cos (2 \, x) &= \cos^2 (x) - \sin^2 (x)
+\end{align*}
+E dall'ultima in particolare, si tira fuori un'equivalenza per il $\sin^2$ e il $\cos^2$:
+\begin{align*}
+\cos^2 (x) &= \frac{1 + \cos (2 \, x)}{2} \\
+\sin^2 (x) &= \frac{1 - \cos (2 \, x)}{2}
+\end{align*}
+
+Un'ultima formula di duplicazione, generale ma poco utile:
+\[
+\sin(\alpha) - \sin(\beta) = 
+2 \, \sin \left( \frac{\alpha - \beta}{2} \right) \, \cos \left( \frac{\alpha + \beta}{2} \right)
+\]
+
+\subsection{Limiti notevoli}
+
+Le funzioni trigonometriche hanno qualche limite notevole associato. Il primo che si vede \`e:
+\[
+\lim_{x \to 0} \frac{\sin (x)}{x} = 1
+\]
+Sostituendo $x$ con $\frac{1}{y}$ (e mandando il limite all'infinito) si pu\`o scrivere come:
+\[
+\lim_{y \to \infty} \frac{\sin \left( \frac{1}{y} \right) }{\frac{1}{y}} = 1
+\]
+Vale ovviamente un limite simile con la tangente:
+\[
+\lim_{x \to 0} \frac{\tan (x)}{x} = 1
+\]
+
+Poi c'\`e il limite notevole del coseno:
+\[
+\lim_{x \to 0} \frac{1 - \cos (x)}{x^2} = \frac{1}{2}
+\]
+Attenzione all'$x^2$! Con $x$ vale infatti questo:
+\[
+\lim_{x \to 0} \frac{1 - \cos (x)}{x} = 0
+\]
