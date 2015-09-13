@@ -3,6 +3,170 @@
 
 \begin{document}
 
+\chapter{Funzioni e limiti}
+
+\section{Funzioni trigonometriche}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+\begin{axis}[
+    xticklabels={,,},
+    yticklabels={,,},
+    ymin=-2,
+    ymax=2,
+    % enlargelimits=true,
+    axis lines=middle,
+    % clip=false,
+    domain=-7:7,
+    axis on top
+    ]
+
+\addplot[smooth, dashed, domain=-7:7, green]{1};
+\addplot[smooth, dashed, domain=-7:7, green]{-1};
+\addplot[smooth, thick,domain=-6.28:6.28,samples=40]{sin(deg(x))};
+\node[label={225:{$-1$}},circle,fill,inner sep=2pt] at (axis cs:0,-1) {};
+\node[label={45:{$1$}},circle,fill,inner sep=2pt] at (axis cs:0,1) {};
+\node[label={225:{$\pi$}},circle,fill,inner sep=2pt] at (axis cs:3.14,0) {};
+\node[label={90:{$2\, \pi$}},circle,fill,inner sep=2pt] at (axis cs:6.28,0) {};
+\end{axis}
+\end{tikzpicture}
+\qquad
+\begin{tikzpicture}[scale=1.0]
+\begin{axis}[
+    xticklabels={,,},
+    yticklabels={,,},
+    ymin=-2,
+    ymax=2,
+    % enlargelimits=true,
+    axis lines=middle,
+    % clip=false,
+    domain=-7:7,
+    axis on top
+    ]
+
+\addplot[smooth, dashed, domain=-7:7, green]{1};
+\addplot[smooth, dashed, domain=-7:7, green]{-1};
+\addplot[smooth, thick,domain=-6.28:6.28,samples=40]{cos(deg(x))};
+\node[label={225:{$-1$}},circle,fill,inner sep=2pt] at (axis cs:0,-1) {};
+\node[label={45:{$1$}},circle,fill,inner sep=2pt] at (axis cs:0,1) {};
+\node[label={270:{$\pi$}},circle,fill,inner sep=2pt] at (axis cs:3.14,0) {};
+\node[label={90:{$2\, \pi$}},circle,fill,inner sep=2pt] at (axis cs:6.28,0) {};
+\end{axis}
+\end{tikzpicture}
+\caption{Seno e coseno}
+\end{figure}
+
+Seno e coseno oscillano fra $-1$ e 1, quindo $-1 \le \sin(x) \le 1$ e 
+$-1 \le \cos(x) \le 1$, ossia $\abs{\sin(x)} \le 1$ e $\abs{\cos(x)} \le 1$.
+Di conseguenza vale anche che $\abs{\sin^2(x)} \le 1$ e 
+$\abs{\cos^2(x)} \le 1$.
+\[
+\nexists \lim_{x \to \infty} \sin(x) 
+\text{ poich\'e continua a oscillare fra 1 e $-1$}
+\]
+Questo vale anche per le altre funzioni trigonometriche.
+
+I valori delle altre funzioni trigonometriche si possono ricavare dal
+seno e dal coseno:
+\begin{align*}
+\tan = \frac{\sin}{\cos} &\qquad \cot = \frac{\cos}{\sin} \\
+\sec = \frac{1}{\cos} &\qquad \csc = \frac{1}{\sin}
+\end{align*}
+Un'equivalenza da tenere a mente \`e:
+\[
+\cos^2 (x) + \sin^2 (x) = 1
+\]
+
+Seno e coseno sono funzioni periodiche, di periodo $2 \, \pi$, ossia:
+\[
+\sin (x) = \sin (x \pm 2 \, k \, \pi) \qquad
+\cos (x) = \cos (x \pm 2 \, k \, \pi)
+\]
+
+Per i valori di seno, coseno, tangente e cotangente:
+\begin{center}
+\begin{tabular}{r*{9}{|c}}
+gradi & $0^{\circ}$ & $30^{\circ}$ & $45^{\circ}$ & $60^{\circ}$  & $90^{\circ}$ & $120^{\circ}$ & $135^{\circ}$ & $150^{\circ}$ & $180^{\circ}$ \\
+\hline
+$\sin$ & 0 & $\frac{1}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{\sqrt{3}}{2}$ & 1 & $\frac{\sqrt{3}}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{1}{2}$ & 0 \\
+$\cos$ & 1 & $\frac{\sqrt{3}}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{1}{2}$ & 0 & $-\frac{1}{2}$ & $- \frac{\sqrt{2}}{2}$ & $- \frac{\sqrt{3}}{2}$ & $-1$ \\
+\hline
+$\tan$ & 0 & $\frac{\sqrt{3}}{3}$ & 1 & $\sqrt{3}$ & $\nexists$ & $-\sqrt{3}$ & $-1$ & $-\frac{\sqrt{3}}{3}$ & 0 \\
+$\cot$ & $\nexists$ & $\sqrt{3}$ & $1$ & $\frac{\sqrt{3}}{3}$ & 0 & $-\frac{\sqrt{3}}{3}$ & $- 1$ & $- \sqrt{3}$ & $\nexists$ \\
+\hline
+rad. & 0 & $\frac{\pi}{6}$ & $\frac{\pi}{4}$ & $\frac{\pi}{3}$  & $\frac{\pi}{2}$ & $\frac{2}{3} \, \pi$ & $\frac{3}{4} \, \pi$ & $\frac{5}{6} \, \pi$ & $\pi$ 
+\end{tabular}
+\end{center}
+La tabella aiuta anche a trovare i valori delle funzioni inverse delle
+funzioni trigonometriche: per conoscere il valore di $\arccos\left(1\right)$,
+\`e sufficiente trovare la colonna della tabella per cui il coseno vale 1 
+(ossia, a $0^{\circ}$).
+
+Per trovare i valori di seno e coseno fra $180^{\circ}$ e $360^{\circ}$ 
+(ossia fra $\pi$ e $2 \, \pi$), si possono usare queste due uguaglianze:
+\begin{align*}
+\sin(-x) = - \sin(x) \qquad \cos(-x) = \cos(x)
+\end{align*}
+Ci dicono che seno e coseno sono rispettivamente una funzione dispari 
+e una funzione pari.
+
+Entrambe le funzioni hanno un periodi di $2 \, \pi$, ossia di $360^{\circ}$.
+Quindi per trovare il valore di $\sin(330^{\circ})$, basta poco:
+\[
+\sin(330^{\circ}) = \sin(360^{\circ} - 30^{\circ}) =
+\sin(-30^{\circ}) = - \sin(30^{\circ}) = - \frac{1}{2}
+\]
+La tangente e la cotangente hanno dei punti di discontinuit\`a, in cui 
+tendono all'infinito (positivo o negativo). Per sapere a cosa tendono, si
+pu\`o consultare il segno del coseno e del seno nella tabella.
+
+Ad esempio, a sinistra di $90^{\circ}$, seno e coseno hanno segni concordi,
+quindi la tangente tende all'infinito positivo. A destra di $90^{\circ}$, 
+invece, seno e coseno hanno segni discordi, quindi la tangente tende
+all'infinito negativo.
+
+\subsection{Duplicazione}
+
+Le formule di ``duplicazione'' che si vedono generalmente:
+\begin{align*}
+\cos(\alpha + \beta) &= \cos(\alpha) \, \cos(\beta) - \sin(\alpha) \, \sin(\beta) \\
+\cos(\alpha - \beta) &= \cos(\alpha) \, \cos(\beta) + \sin(\alpha) \, \sin(\beta) \\
+\sin(\alpha + \beta) &= \sin(\alpha) \, \cos(\beta) + \cos(\alpha) \, \sin(\beta)\\
+\sin(\alpha - \beta) &= \sin(\alpha) \, \cos(\beta) - \cos(\alpha) \, \sin(\beta)
+\end{align*}
+% Sono facili da memorizzare: \emph{coscia coscia, seno seno} e \emph{seno coscia, coscia seno}.
+
+Da queste si ricavano due formule di vera duplicazione:
+\begin{align*}
+\sin( 2 \, x) &= 2 \, \sin (x) \, \cos (x) \\
+\cos (2 \, x) &= \cos^2 (x) - \sin^2 (x)
+\end{align*}
+E dall'ultima in particolare, si tira fuori un'equivalenza per il $\sin^2$ e il $\cos^2$:
+\begin{align*}
+\cos^2 (x) &= \frac{1 + \cos (2 \, x)}{2} \\
+\sin^2 (x) &= \frac{1 - \cos (2 \, x)}{2}
+\end{align*}
+
+Un'ultima formula di duplicazione, generale ma poco utile:
+\[
+\sin(\alpha) - \sin(\beta) = 
+2 \, \sin \left( \frac{\alpha - \beta}{2} \right) \, \cos \left( \frac{\alpha + \beta}{2} \right)
+\]
+
+\subsection{Limiti notevoli}
+
+\begin{align*}
+\lim_{x \to 0} \frac{\sin (x)}{x} = 1
+&\qquad
+\lim_{x \to 0} \frac{\tan (x)}{x} = 1
+\\
+\lim_{x \to 0} \frac{1 - \cos(x)}{x^2} = \frac{1}{2}
+&\qquad
+\lim_{x \to 0} \frac{1 - \cos (x)}{x} = 0
+\\
+\end{align*}
+
 \chapter{Integrali}
 
 Con il simbolo di \emph{integrale} si indicano tutte le primitive di una funzione $f(x)$:
@@ -28,8 +192,8 @@ facilmente applicabili.
 
 La prima regola da ricordare \`e che la derivata \`e \emph{lineare}:
 \[
-\left[ a \cdot f(x) + b \cdot g(x) \right]' =
-a \cdot f'(x) + b \cdot g'(x)
+\left[ a \cdot F(x) + b \cdot G(x) \right]' =
+a \cdot f(x) + b \cdot g(x)
 \]
 
 La derivata di una costante $c$ \`e sempre 0.
@@ -163,11 +327,90 @@ Ora il grado di $r(x)$ \`e minore del grado di $q(x)$ (grazie all'algebra).
 Gli integrali di funzioni razionali sono \emph{sempre} combinazioni 
 lineari di polinomi, logaritmi e arcotangenti.
 
-\subsection{Integrali razionali di secondo grado con $\Delta < 0$}
+Da qui in poi assumiamo che il grado del polinomio al numeratore \`e 
+minore del grado del polinomio al denominatore. Se non \`e cos\`i, torna 
+indietro e fai una divisione fra polinomi.
+
+Se il polinomio al denominatore \`e di primo grado, il risultato \`e un 
+logaritmo:
+\[
+\int \frac{\diff x}{a \, x + b} =
+\frac{1}{a} \, \abslog{a \, x + b} + C
+\]
+
+Se il polinomio al denominatore \`e di secondo grado, avr\`a la forma:
+\[
+\int \frac{d \, x + e}{a \, x^2 + b \, x + c} \dx
+\]
+Se il polinomio al numeratore fosse la derivata del polinomio al 
+denominatore, l'integrale si risolverebbe per sostituzione. Altrimenti, 
+bisogna tirar fuori questa sostituzione, e lasciare da parte un integrale 
+con al numeratore un polinomio di grado 0 (che risolviamo poi).
+
+La derivata del denominatore \`e:
+\[
+2 \, a \, x + b
+\]
+Con qualche manipolazione algebrica, possiamo ricavare un multiplo di 
+questa derivata dal polinomio al numeratore:
+\begin{align*}
+d \, x + e &= \frac{2 \, a \, d \, x + 2 \, a \, e}{2 \, a} =
+\frac{d}{2 \, a} \cdot \left( 2 \, a \, x + \frac{2 \, a \, e}{d} \right) = \\
+&= \frac{d}{2 \, a} \cdot \left( 2 \, a \, x + b + \frac{2 \, a \, e - b \, d}{d} \right) = \\
+&= \frac{d}{2 \, a} \cdot \left( 2 \, a \, x + b \right) + \frac{2 \, a \, e - b \, d}{2 \, a}
+\end{align*}
+\`E brutto, ma sono solo numeri, per fortuna.
+
+L'integrale si riscrive come:
+\[
+\frac{d}{2 \, a} \, \int \frac{2 \, a \, x + b}{a \, x^2 + b \, x + c} \dx +
+\frac{2 \, a \, e - b \, d}{2 \, a} \, \int \frac{\diff x}{a \, x^2 + b \, x + c}
+\]
+Il primo si risolve per sostituzione (\`e un logaritmo), per il secondo,
+invece, distinguiamo tre casi in base al determinante del denominatore.
+\begin{itemize}
+    \item $b^2 > 4 \, a \, c$, quindi il determinante del polinomio \`e 
+    positivo. Si trovano le radici $x_1, x_2$. Dopodich\'e, possiamo 
+    riscrivere l'integrale come:
+    \[
+    \int \frac{A}{x - x_1} \dx + \int \frac{B}{x - x_2} \dx 
+    \]
+    Si impone poi il seguente sistema:
+    \[
+    A \, x - A \, x_2 + B \, x - B \, x_1 = 1 \implies
+    \begin{cases}
+    A + B = 0 \\
+    A \, x_2 + B \, x_1 + 1 = 0
+    \end{cases}
+    \]
+    Si trovano i valori di $A$ e di $B$, e si risolve quindi l'integrale 
+    ottenendo due logaritmi.
+    \item $b^2 = 4 \, a \, c$, quindi il determinante del polinomio \`e 
+    nullo. Il polinomio ha quindi una radice con doppia molteplicit\`a,
+    ossia \`e nella forma $(x - x_1)^2$. Lo riscriviamo come:
+    \[
+    \int \frac{A}{x - x_1} \dx + \int \frac{B \, x}{(x - x_1)^2} \dx
+    \]
+    Anche qui si impone un sistema:
+    \[
+    A \, x - A \, x_1 + B \, x = 1 \implies 
+    \begin{cases}
+    A + B = 0 \\
+    A \, x_1 = 1
+    \end{cases}
+    \]
+    Trovati i valori di $A$ e di $B$, otteniamo un logaritmo per il 
+    primo integrale e una funzione razionale per il secondo.
+    \item $b^2 < 4 \, a \, c$, quindi il determinante del polinomio \`e 
+    negativo. Il polinomio non ha radici reali. Lo vediamo nella prossima 
+    sezione.
+\end{itemize}
+
+\subsection{Integrali razionali di secondo grado con determinante negativo}
 
 Consideriamo integrali del tipo:
 \[
-\int \frac{\diff x}{x^2 \pm b \, x + c}
+\int \frac{\diff x}{x^2 + b \, x + c}
 \]
 In cui l'equazione di secondo grado al denominatore non ha soluzioni reali.
 Se il coefficiente di $x^2$ non \`e 1, possiamo sempre riscriverlo in questo
@@ -178,13 +421,19 @@ modo:
 \]
 Per risolvere l'integrale, riscriviamolo come:
 \[
-\int \frac{\diff x}{\left( x \pm \sqrt{\frac{b}{2}} \right)^2 + 
-\left( c - \frac{b}{2} \right)}
+\int \frac{\diff x}{\left( x + \frac{b}{2} \right)^2 + 
+\left( c - \frac{b^2}{4} \right)}
 \]
-\emph{Attenzione:} il segno di $\sqrt{\frac{b}{2}}$ concorda con il segno 
-di $b \, x$.
-Poniamo $d = c - \frac{b}{2}$, per semplicit\`a, e facciamo la 
-sostituzione $y = x \pm \sqrt{\frac{b}{2}}$ (e $\diff y = \diff x$).
+Sviluppando il quadrato al denominatore otteniamo lo stesso polinomio:
+\[
+\left( x + \frac{b}{2} \right)^2 + \left( c - \frac{b^2}{4} \right) =
+x^2 + \cancel{2} \, \frac{b}{\cancel{2}} + \cancel{\frac{b^2}{4}} + c - \cancel{\frac{b^2}{4}} = 
+x^2 + b + c
+\]
+Quindi stiamo facendo una sostituzione sensata.
+
+Poniamo $d = c - \frac{b^2}{4}$, per semplicit\`a, e facciamo la 
+sostituzione $y = x + \frac{b}{2}$ (e $\diff y = \diff x$).
 \[
 \int \frac{\diff y}{y^2 + d}
 \]
@@ -203,16 +452,194 @@ La soluzione \`e, quindi:
 \begin{align*}
 \frac{1}{\sqrt{d}} \, \arctan \left( z \right) + C &=
 \frac{1}{\sqrt{d}} \, \arctan \left( \frac{y}{\sqrt{d}} \right) + C = \\
-&= \frac{1}{\sqrt{d}} \, \arctan \left( \frac{x \pm \sqrt{\frac{b}{2}}}{\sqrt{d}} \right) + C = \\
-&= \frac{1}{\sqrt{c - \frac{b}{2}}} \, \arctan \left( \frac{x \pm \sqrt{\frac{b}{2}}}{\sqrt{c - \frac{b}{2}}} \right) + C
+&= \frac{1}{\sqrt{d}} \, \arctan \left( \frac{x + \frac{b}{2}}{\sqrt{d}} \right) + C = \\
+&= \frac{1}{\sqrt{c - \frac{b^2}{4}}} \, \arctan \left( \frac{x + \frac{b}{2}}{\sqrt{c - \frac{b^2}{4}}} \right) + C
 \end{align*}
-
 
 \chapter{Integrali definiti}
 
 \section{Integrali impropri}
 
+Un integrale improprio \`e un integrale definito del tipo:
+\[
+\int_{b}^{a} f(x) \dx
+\]
+In cui almeno uno dei due punti non fa parte dell'insieme di definizione
+della funzione: la funzione pu\`o tendere all'infinito, o il punto pu\`o 
+essere infinito. Due esempi sono:
+\[
+\int_{0}^{2} \frac{1}{\sqrt{x}} \dx \qquad 
+\int_{1}^{\infty} \frac{1}{x^3} \dx
+\]
+Si risolvono in due modi: o direttamente, o per confronto.
+
+Direttamente significa calcolare il limite dell'integrale definito, 
+facendo tendere l'estremo problematico al punto di discontinuit\`a (o 
+all'infinito):
+\[
+\int_{b}^{a} f(x) \dx = \lim_{z \to b} \increment{\int f(x) \dx}_{z}^{a}
+\]
+In questo modo \`e spesso possibile calcolare direttamente il valore.
+
+Risolvere un integrale improprio per confronto, significa stabilire se 
+questo converge o meno: se \`e maggiore di un integrale divergente, 
+diverge anche questo, mentre se \`e minore di un integrale convergente, 
+converge anche questo.
+
+\subsection{Con cosa confronto, quando vado a fare un confronto?}
+
+Nel cercare una funzione con cui confrontare, \`e importante anzitutto 
+riconoscere le funzioni ``elementari'' che compongono la funzione che 
+si sta studiando: tangenti, seni e coseni, esponenziali, logaritmi, 
+potenze. Si pu\`o poi provare a capire fra quali valori \`e compresa
+ognuna di queste funzioni, per maggiorarla o minorarla opportumanente, 
+o provare a capire se una di queste funzioni \emph{si comporta come} 
+qualche altra funzione. Queste due funzioni, ad esempio, sono simili 
+quando $x$ tende all'infinito:
+\[
+\sin \left( \frac{1}{x} \right) \sim \frac{1}{x}
+\]
+Molti limiti notevoli forniscono esempi di simili funzioni. Il principio
+generale \`e il seguente.
+
+Date due funzioni $f(x)$ e $g(x)$, se vale questo:
+\[
+\lim_{x \to \infty} \frac{f(x)}{g(x)} = l \in \ooint{0}{\infty}
+\]
+Allora le due funzioni si comportano allo stesso modo. Quindi, se stiamo 
+studiando l'integrale improprio da $a$ a $\infty$ di $f(x)$, la convergenza 
+di questo integrale dipende dalla convergenza dell'integrale da $a$ a 
+$\infty$ dell'integrale di $g(x)$. O convergono entrambe, o divergono 
+entrambe.
+
+Nell'intervallo $\ccint{-1}{1}$, vale questo:
+\[
+x^a \le x^b \iff a \ge b
+\]
+Se invece $\abs{x} \ge 1$, vale questo:
+\[
+x^a \le x^b \iff a \le b
+\]
+
+Il logaritmo tende all'infinito pi\`u lentamente di ogni potenza positiva:
+quindi si pu\`o sempre maggiorare un logaritmo con una potenza $x^a$ con 
+$a$ arbitrariamente grande o piccolo.
+
+Vale questo:
+\[
+f(x) \le g(x) \implies \frac{1}{g(x)} \le \frac{1}{f(x)}
+\]
+
+\section{Derivate di integrali definiti}
+
+Consideriamo un integrale di questo tipo:
+\[
+\int_{A(x)}^{B(x)} g(t) \dx[t]
+\]
+Indichiamo con $A(x)$ una funzione generica, e con $a(x)$ la sua derivata,
+e in generale con una lettera maiuscola una primitiva e con una lettera 
+minuscola una derivata.
+
+Sappiamo calcolarne la derivata (grazie al teorema fondamentale del Calcolo),
+che \`e:
+\[
+\left[ \int_{A(x)}^{B(x)} g(t) \dx[t] \right]' =
+g \left( B(x) \right) \cdot b(x) - g \left( A(x) \right) \cdot a(x)
+\]
+Ossia, la derivata dell'integrale dato \`e la funzione integranda calcolata
+nella funzione nell'estremo superiore, per la derivata della funzione 
+nell'estremo superiore, meno la funzione integranda calcolata nella funzione 
+nell'estremo inferiore, per la derivata della funzione nell'estremo 
+inferiore.
+
+Pi\`u facile a farsi che a dirsi.
+ 
+Casi pi\`u contorti hanno questa forma:
+\[
+\left[ F(x) \cdot \int_{A(x)}^{B(x)} g(t) \dx[t] \right]' =
+f(x) \cdot \int_{A(x)}^{B(x)} g(t) \dx[t] +
+F(x) \cdot \left[ g \left( B(x) \right) \cdot b(x) - g \left( A(x) \right) \cdot a(x) \right]
+\]
+Notare che il caso precedente \`e una versione particolare di 
+quest'ultimo caso, con $F(x) = 1$, e quindi $f(x) = 0$.
+
 \chapter{Equazioni differenziali}
+
+\section{Lineare}
+
+Un'equazione differenziale lineare \`e un'equazione di questo tipo:
+\[
+y' = a(t) \cdot y
+\]
+Abbiamo una funzione di $t$ per la $y$. \`E lineare perch\'e la funzione 
+della $y$ \`e la retta! Si risolve in questo modo:
+\[
+\frac{\diff y}{\diff t} = a(t) \cdot y \implies
+\frac{\diff y}{y} = a(t) \dx[t]
+\]
+Integrando entrambi i membri otteniamo:
+\[
+\int \frac{\diff y}{y} = \int a(t) \dx[t] \implies
+\abslog{y} = A(t) + C
+\]
+Con $A(t)$ indichiamo una primitiva di $a(t)$. Ora, \emph{esponenziamo} 
+entrambi i membri:
+\[
+e^{\abslog{y}} = e^{A(t) + C} \implies
+\abs{y} = e^{A(t)} \cdot e^C
+\]
+$e^C$ \`e una costante positiva, poniamo $K = \pm e^C$, e scriviamo:
+\[
+y = e^{A(t)} \cdot K
+\]
+
+\section{A variabili separabili}
+
+Un'equazione differenziale a variabili separabili \`e un'equazione di 
+questo tipo:
+\[
+y' = a(t) \cdot b(y)
+\]
+Abbiamo una funzione della $y$ per una funzione della $t$ (o della $x$, 
+o comunque non della $y$). \`E a ``variabili separabili'', perch\'e 
+possiamo, appunto, separare le variabili, in questo modo:
+\[
+\frac{\diff y}{\diff t} = a(t) \cdot b(y) \implies
+\frac{\diff y}{b(y)} = a(t) \dx[t]
+\]
+Per risolvere l'equazione si integrano entrambi i membri:
+\[
+\int \frac{\diff y}{b(y)} = \int a(t) \dx[t]
+\]
+Da qui... Si \`e da soli. Bisogna risolvere entrambi gli integrali, 
+e poi esplicitare la $y$ rispetto alla $t$. Ossia:
+\[
+B(y) = A(t) + C \implies
+y = B^{-1}(A(t) + C)
+\]
+$B^{-1}$ \`e la funzione inversa di $B$ (ossia, se $B$ \`e il seno, 
+$B^{-1}$ \`e l'arcoseno, oppure, se $B$ \`e il logaritmo, $B^{-1}$ \`e 
+l'esponenziale).
+
+\section{A variabili non separabili}
+
+Un'equazione non a variabili separabili \`e un'equazione differenziale
+di questo tipo:
+\[
+y' = a(t) \cdot y + b(t)
+\]
+Abbiamo una funzione $b(t)$, per una funzione (\emph{lineare!}) di $y$, 
+pi\`u una funzione di $b(t)$. Non possiamo dividere le funzioni della $y$
+e le funzioni della $t$ fra i due membri. La soluzione \`e data da:
+\[
+y = e^{A(t)} \cdot \left[ \int b(t) \, e^{-A(t)} \dx[t] + C \right]
+\]
+Dove con $A(t)$ indichiamo una primitiva di $a(t)$. Per risolvere 
+l'equazione bisogna quindi trovare questa primitiva, e risolvere 
+l'integrale:
+\[
+\int b(t) \, e^{-A(t)} \dx[t]
+\]
 
 \chapter{Serie}
 
@@ -251,6 +678,20 @@ Se $b_n$ diverge, non sappiamo nulla su $a_n$, e se $a_n$ converge, non
 sappiamo nulla su $b_n$.
 
 \subsection{Criterio integrale}
+
+Se per la serie che si sta studiando vale questo:
+\[
+f(n) = a_n \forall n > N_0
+\]
+Allora \`e possibile applicare il criterio integrale. Il criterio integrale
+ci dice pressappoco questo:
+\[
+\sum_{n = N_0 + 1}^{\infty} a_n \le \int_{N_0}^{\infty} f(x) \dx 
+\le \sum_{n = N_0}^{\infty} a_n
+\]
+Ossia vincola la convergenza o divergenza della serie alla convergenza o 
+divergenza dell'integrale: se questo converge, la serie converge, e se
+questo diverge, anche la serie diverge.
 
 \subsection{Criterio asintotico}
 
@@ -343,13 +784,17 @@ convergenza \`e l'intervallo $\ooint{x_0 - R}{x_0 + R}$. Per trovare il
 raggio di convergenza di una serie di potenze, si risolve il seguente
 limite:
 \[
-\lim_{n \to \infty} \abs{\frac{\left[f(x)\right^{a \, (n+1) + b}}{\left[f(x)\right]^{{a \, n + b}}} \cdot \frac{a_n}{a_{n+1}}} = R(x)
+\lim_{n \to \infty} \abs{\frac{\left[f(x)\right]^{a \, (n+1) + b}}{\left[f(x)\right]^{{a \, n + b}}} \cdot \frac{a_n}{a_{n+1}}} = R(x)
 \]
 Il risultato sar\`a una funzione $R(x)$. Si impone $R(x) < 1$, per trovare
-per quali valori di $x$ la serie converge assolutamente.
+per quali valori di $x$ la serie converge assolutamente. 
+
+Stiamo praticamente applicando il criterio del rapporto, non conosciamo la
+$x$. Il criterio del rapporto ci dice che se il limite del rapporto fra un 
+termine e il precedente \`e minore di 1, la serie converge. Per questo si 
+impone $R(x) < 1$.
 
 Si studiano infine i casi in cui $R(x) = 1$, e per ciascun caso si determina
 se la serie converge semplicemente, converge assolutamente, o diverge.
-
 
 \end{document}
