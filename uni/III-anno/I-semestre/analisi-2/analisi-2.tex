@@ -1,0 +1,93 @@
+\input{../../../../common/common.tex}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\chapter{Equazioni differenziali ordinarie}
+
+Hello world!
+
+\chapter{Funzioni di pi\`u variabili}
+
+Trattiamo inizialmente funzioni $f(x) : \reals^n \to \reals$, ossia che hanno
+argomento vettoriale. Scriviamo comunque $x$ per indicare il vettore $(x_1, \ldots, x_n)$.
+
+\section{Linee di livello}
+
+Normalmente per disegnare una funzione ci \`e sufficiente sapere quanto vale in
+un insieme di punti. Con le funzioni vettoriali a valori in $\reals$ non 
+si pu\`o fare lo stesso: una volta tracciato un punto, dove andiamo? Abbiamo 
+infinite altre direzioni in cui andare.
+
+Pensiamo per semplicit\`a a funzioni $f(x) : \reals^2 \to \reals$, ma il 
+ragionamento \`e generale. Indichiamo con $z = f(x)$  l'altezza nel punto 
+(o vettore) $x$. Ma invece di chiederci quanto vale $z$ in un punto, chiediamoci 
+dove $z$ assume un certo valore, ossia dove la funzione \`e alta quel certo valore.
+Enter le \emph{linee di livello}.
+
+\begin{defn}[Linea di livello]
+        Chiamiamo \emph{insieme di livello $c$} di $f$ l'insieme di vettori definito
+        cos\`i:
+        \[
+                I_{c}(f) = \{ x \in \reals^n f(x) = c \}
+        \]
+\end{defn}
+
+Sono \emph{linee}, o curve, su cui la funzione \`e costante. Quindi il valore della funzione 
+lo diamo su delle curve, non su dei punti.
+
+Consideriamo la funzione $z = 2 \, x + 3 \, y - 2$. Le sue linee di livello saranno: 
+\[
+        I_{c} (f) : 2 \, x + 3 \, y - 2 = c \implies 2 \, x + 3 \, y - (2 + c) = 0
+\]
+Sono tutte rette!
+Ora, ripassiamo cosa sono le curve.
+
+\section{Curve}
+
+Una curva possiamo pensarla come un insieme di infiniti vettori, parametrizzati in una 
+variabile $t$:
+\[
+        \underline{\gamma} = \{ (x,y) \in \reals^2 : x = x(t), \, y = y(t), \, t \in \ooint{a}{b} \in I \}
+\]
+
+% disegnare esempio di curva \gamma = (t, t^2) con t \in \ooint{-1}{3}
+
+Consideriamo la funzione $f(x) = x^2 + y^2$, e la sua curva di livello per $f(x) = 9$.
+Possiamo scriverla come $I_9(f) : x^2 + y^2 = 9$. Questa si chiama \emph{forma cartesiana implicita}.
+Ma possiamo anche scriverla come:
+\[
+\gamma (t) = \begin{pmatrix} 3 \, \sin(t) \\ 3 \, \cos(t) \end{pmatrix}
+\]
+Data una curva, ci interessano un paio di cose.
+
+La prima \`e il vettore tangente. Data una curva, il vettore tangente nel punto $t$ \`e \cap{t} e vale:
+\[
+\gamma'(t) = \begin{pmatrix} x'(t) \\ y'(t) \end{pmatrix}
+\]
+Riprendendo la funzione $\gamma_1$, vediamo che il suo vettore tangente \`e:
+\[
+\gamma_1'(t) = \begin{pmatrix} \deriv[t] t \\ \deriv[t] t^2 \end{pmatrix} = 
+\begin{pmatrix} 1 \\ 2 \, t \end{pmatrix}
+\]
+Ricordiamo che sono sempre vettori.
+
+L'altra cosa che ci interessa \`e il vettore normale (o perpendicolare) alla curva.
+
+Consideriamo prima un vettore $n = (1,3)$. Il suo vettore perpendicolare $\cap{n}$ \`e tale che
+$n \scalar \cap{n} = 0$. Quindi $n_1 \cdot \cap{n_1} + n_2 \cdot \cap{n_2} = 0$, e quindi basta:
+\[
+        \cap{n_1} = - n_2 \text{ e } \cap{n_2} = n_1
+\]
+Indichiamo il vettore perpendicolare alla curva nel punto $t$ con $\gamma_{\underline{n}}(t)$, e vale:
+\[
+\gamma_{\underline{n}} (t) = \begin{pmatrix} - \deriv[t] y(t) \\ \deriv[t] x(t) \end{pmatrix}
+\]
+Abbiamo scambiato le derivate delle componenti.
+
+
+\end{document}
+
