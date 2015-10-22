@@ -7,9 +7,9 @@ OUT_DIR = $(CURR_DIR)
 
 SOURCES = $(CURR_DIR)/*.tex
 
-TARGETS = $(CURR_DIR)/analisi-2.pdf
+TARGETS = $(CURR_DIR)/calcolo-differenziale.pdf
 
-all: $(TARGETS) 
+all: $(TARGETS)
 
 # object files
 $(TARGETS): $(SOURCES)

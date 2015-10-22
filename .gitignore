@@ -2,3 +2,5 @@
 !*.tex
 !.gitignore
 !Makefile
+!*.md
+

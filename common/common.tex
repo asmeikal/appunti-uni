@@ -65,6 +65,7 @@
 \usetikzlibrary{shapes,arrows,calc,fit,backgrounds,positioning,automata}
 
 \newcommand{\covers}{<\!\cdot}      % simbolo di 'copre'
+\newcommand{\scalar}{\centerdot}
 \newcommand{\compl}{\mathsf{c}}     % C complementare
 \newcommand{\dotcup}{\mathaccent\cdot\cup}  % unione disgiunta
 \newcommand{\lateralsx}[1]{{}_{#1}\!\sim}   % equivalenza sinistra
@@ -162,8 +163,10 @@
                 \let\DiffSpace\relax
             \fi\fi\fi\DiffSpace}
 
-\providecommand*{\deriv}[2][]{%
-    \frac{\diff^{#1}}{\diff #2^{#1}}}
+\providecommand*{\deriv}[1][]{%
+    \frac{\diff}{\diff #1}}
+%\providecommand*{\deriv}[2][]{%
+%    \frac{\diff^{#1}}{\diff #2^{#1}}}
 \providecommand*{\fderiv}[3][]{%
     \frac{\diff^{#1}#2}{\diff #3^{#1}}}
 \providecommand*{\pderiv}[3][]{%

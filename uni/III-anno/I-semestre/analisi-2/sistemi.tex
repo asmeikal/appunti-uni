@@ -1,0 +1,222 @@
+A \`e una matrice n \times n Reale, continua in un intervallo J \subseteq \reals. Quindi A(t) \`e rapprsentata da coefficienti a_{i,j} e gli a_{i,j} sono continui nell'intervallo J.
+
+Questo \`e un sistema lineare. Il termine a destra \`e lineare in y. y supponiamo sia il vettore colonna x_1 ... x_n e che quindi il prodotto ??? sia il prodotto usuale righe per colonne, in modo da ottenere una ``funzione colonna''.
+
+In modo scalare, x_1' = a_11 x_1 a_12 x_2 ... a_1n x_n
+x_n' = a_n1 x_1 a_n2 x_2 ... a_nn x_n
+
+le A sono funzioni del tempo
+y = 0 \`e soluzione
+
+Scriviamo il problema di Cauchy per questo sistema, oggetto del nostro studio
+
+y' = A(t) \times y
+y(t_0) = y_0
+con t_0 \in J
+
+Per ogni t_0 \in J e y_0 \in R^n (vettore dei dati iniziali) il problema ha unica soluzione, per il teorema dell'esistenza locale, definita su tutto J.
+
+Infatti, stiamo semplicemente verificando che siano soddisfatte le ipotesi del ``teorema di esistenza in grande''. F(t,y) = A(t) \times y
+
+\`E continua in \Omega = J \times R^n. Possiamo supporre che J sia aperto, o non farlo. Piccolo strappo alla regola ma ok.
+Serve poi la locale liptziishianit\`a. 
+
+F(t, y_1) - F(t, y_2) = A(t) \times (y_1 - y_2) \le \norm{A(t)} \abs{y_1 - y_2} \le M \abs{y_1 - y_2}
+
+Tutto questo se t \`e in un chiuso e limitato. \norm{A} \`e qualcosa che dipende da t ma si pu\`o maggiorare con M, sotto l'ipotesi a inizio riga.
+
+Quindi liptzianita verificata.
+
+\abs{F(t,y)} = \norm{A(t)} ... ???
+
+In un chiuso e limitato funziona, quindi \abs{F(t,y)} \le M \cdot \abs{y}, ossia \`e maggiorata. Lemma di Grombal o come si chiama.
+
+Ma se J fosse tutto \reals? Usiamo la tecnica dell'estensione. Supponiamo J non sia chiuso e limitato, ma che sia ad esempio l'aperto \ooint{0}{\infty}.
+
+Se non \`e chiuso e limitato, non \`e compatto. Potrebbe non essere limitata: that's the problem.
+Applichiamo il teorema di esistenza globale in una successione di \emph{compatti invadenti}, \ooint{\frac{1}{n}}{n}, trovando un'unica soluzione y_n : \ooint{\frac{1}{n}}{n} \to \reals^N.
+
+In questo modo si trova una successione di soluzioni tale che y_n(t) = y_m(t) in \ooint{\fraC{1}{n}}{n} se m \ge n. Troviamo soluzioni che sono uguali sugli intervalli comuni, anche se una \`e definita su un intervallo pi\`u grande.
+
+Quindi, si definisce una funzione y(t) = y_n(t) se t \in \ooint{\frac{1}{n}}{n}.
+Questa \`e la soluzione su tutto J = \ooint{0}{\infty}
+
+Se il problema \`e lineare, la soluzione si trova in tutto J. J pu\`o essere aperto, chiuso, limitato, come vuole.
+
+Oggi considereremo spazi vettoriali di funzioni, ossia in cui i vettori sono funzioni.
+
+C^1(J) = \{ f funzioni vettoriali di classe C^1 in J \}
+Questo insieme ha una struttura di spazio vettoriale. In C^1(J) si definiscono la somma di funzioni (che sono vettori), dicendo che 
+f + g \`e definita come:
+
+(f + g)(t) = f(t) + g(t)
+
+Ocio che quello al centro \`e una somma fra numeri reali. Vedere come \`e definita pls.
+
+Poi possiamo (dobbiamo) definire il prodotto per uno scalare \lambda \in \reals, che sar\`a:
+
+(\lambda f)(t) = \lambda \cdot f(t) \forall \lambda \in \reals
+
+Aggiungendo che prodotto e somma hanno certe propriet\`a, vediamo che questo \`e proprio uno spazio vettoriale.
+
+A noi non interessano \emph{tutte} le funzioni in C^1(J), ma solo le soluzioni del problema di Cauchy. Chiamiamo S il sistema y' = A(t) \times y
+
+Il primo risultato che si dimostra \`e questo:
+\begin{theorem}
+Se y_1 ... y_t \in C^1(J) sono soluzioni di S, anche una qualunque loro combinazione lineare
+
+\sum_{i = 1}^{t} c_i y_i(t) 
+
+che \`e ancora in C^1(J), notare, \`e ancora soluzione di S.
+\end{theorem}
+
+Segue dalla linearit\`a di tutta sta roba.
+
+A(t) \times \sum_{i = 1}^{t} c_i y_i(t) 
+
+per la linearit\`a del prodotto righe per colonne:
+
+A(t) \times \sum_{i = 1}^{t} c_i y_i(t)
+
+% TODO rivedere questa parte
+
+Corollario:
+L'insieme S (corsivo) dato dalle soluzioni del sistema S (non corsivo) sicuramente \subseteq C^1(J) \`e in realt\`a un sottospazio vettoriale di C^1(J).
+
+Dim:
+basta ricordare che per definizione un sottospazio vettoriale di uno spazio vettoriale \`e un sottoinsieme dello spazio chiuso rispetto alle combiazioni lineari.
+
+Richiamiamo anche il concetto di indipendenza lineare
+Si dice che delle funzioni y_1 ... y_p \in S sono linearmente indipendenti \iff vale che \sum_{i = 1}^{p} c_i y_i = 0 \iff c_1 = ... = c_p = 0
+
+La funzione a sinistra \`e la funzione ``nulla'', che \`e sempre 0.
+
+Vogliamo trovare una base di S, y_1 ... y_q. Se la troviamo, tutti gli elementi di S saranno combinazioni lineari di questa base.
+
+L'integrale generale sar\`a quindi c_1 y_1 + c_2 y_2 + ... + c_q y_q
+
+La lineare indipendenza delle funzioni \`e la vecchia lineare indipendenza di vettori. vediamolo.
+
+Teorema:
+Un insieme \{ y_1 ... y_p \} \subseteq S \`e linearmente indipendente in S \iff questo insieme di vettori y_1(t_0), y_2(t_0), ... y_p(t_0) (che \`e un insieme di vettori in \reals^n) \`e linearmente indipendente in \reals^n. Ovviamente per t_0 \in J.
+
+Dimostrazione:
+Dimostreremo che le funzioni y_1 ... y_p sono linearmente dipendenti in S \iff y_1(t_0) ... y_p(t_0) sono linearmente dipendenti in \reals^n
+
+Siano y_1 ... y_p linearmente dipendenti in S. esistono allora c_1 ... c_p non tutti nulli t.c. 
+\sum_{i = 1}^{p} c_i y_i = 0 
+ossia vale
+\sum_{i = 1}^{p} c_i y_i(t) = 0 \forall t \in J
+in particolare quindi 
+\sum_{i = 1}^{p} c_i y_i(t_0) = 0 
+con c_i non tutti nulli, quindi i vari y_1(t_0) ... y_p(t_0) sono linearmente dipendenti in \reals^n.
+
+Nell'altro senso. Usiamo fortemente il fatto che le funzioni siano soluzioni del sistema.
+Supponiamo y_1(t_0) ... y_p(t_0) linearmente dipendenti in \reals^n. Ossia esistono c_1 ... c_p non tutti nulli tali che
+\sum_{i = 1}^{p} c_i y_i(t_0) = 0 
+vogliamo dimostrare che la funzione 
+z = \sum_{i = 1}^{p} c_i y_i = 0 \iff \sum_{i = 1}^{p} c_i y_i(t) = 0 \forall t \in J
+
+Si noti che z risolve z' = A(t) \times z
+
+z(t_0) = \sum_{i = 1}^{p} c_i y_i(t_0) = 0 per ipotesi
+z risolve il problema di Cauchy.
+
+Questo problema ha un'unica soluzione z che coincide con la soluzione nulla, per tanto vale quanto dicevamo prima.
+
+%TODO sistemare
+
+La dimensione di S sar\`a al pi\`u n. 
+
+ESERCIZI!
+
+\begin{cases}
+x_1' = t \, x_2 \\
+x_2' = -t \, x_1
+\end{cases}
+
+Nel nostro linguaggio J = \reals
+
+La matrice \`e:
+A(t) = 
+\begin{pmatrix}
+0 & t \\
+-t & 0
+\end{pmatrix}
+
+%TODO risolvere
+
+Torniamo al vecchio sistema
+
+\begin{cases}
+x_1' =  x_2 \\
+x_2' =  -x_1
+\end{cases}
+
+Pensiamo x_1(t) x_2(t) come qualcosa che parametrizza la curva della soluzione ???
+Stiamo cercando le \emph{orbite} o traiettorie.
+
+x_1'(t) = D x_1(t)
+x_2'(t) = D x_2(t)
+
+D x_1(t) / D x_2(t)
+
+Quindi....
+Se posso scrivere x_2 = f(x_1) su una traiettoria o orbita, allora D x_2 / D x_1 = f(x_1) = x_2' / x_1' = - x_1 / x_2
+Quindi alla fine...
+f f' = x_1
+% TODO WTF
+
+questa \`e un'equazione immediata da integrare.
+f^2 / 2 = x_1^2 / 2
+
+Ricaviamo f, e otteniamo 
+f(x_1) = \pm \sqrt{k \, x_1^2}
+
+\`e una circonferenza.
+
+L'intervallo ideale \`e quello che accompagna la circonferenza fino al limite dove la tangente \`e verticale.
+
+Questo \`e un trucco che si usa spesso: dividere e trovare la derivata subito.
+
+Cosa ci siamo persi passando dal sistema all'equazione?
+
+Quello che abbiamo perso \`e il modo in cui le orbite vengono percorse ???
+
+Non sappiamo la velocit\`a con cui viene percorsa in un dato punto. Sappiamo la traiettoria ma non la legge oraria.
+
+ESERCIZIO2
+1/350
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

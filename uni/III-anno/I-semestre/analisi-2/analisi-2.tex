@@ -2,6 +2,8 @@
 
 \begin{document}
 
+\title{Analisi Matematica 2}
+
 \maketitle
 
 \tableofcontents
@@ -64,7 +66,7 @@ Ma possiamo anche scriverla come:
 \]
 Data una curva, ci interessano un paio di cose.
 
-La prima \`e il vettore tangente. Data una curva, il vettore tangente nel punto $t$ \`e \cap{t} e vale:
+La prima \`e il vettore tangente. Data una curva, il vettore tangente nel punto $t$ \`e $\cap{t}$ e vale:
 \[
 \gamma'(t) = \begin{pmatrix} x'(t) \\ y'(t) \end{pmatrix}
 \]
@@ -87,6 +89,175 @@ Indichiamo il vettore perpendicolare alla curva nel punto $t$ con $\gamma_{\unde
 \gamma_{\underline{n}} (t) = \begin{pmatrix} - \deriv[t] y(t) \\ \deriv[t] x(t) \end{pmatrix}
 \]
 Abbiamo scambiato le derivate delle componenti.
+
+Con queste due informazioni, sappiamo come ``salire'' il pi\`u possibile di livello: seguendo la normale.
+
+Consideriamo $f(x) = 1 - \sqrt{x^2 + y^2}$. Vediamo che $I_4 (f) : \sqrt{x^2 + y^2} = -3$. Significa che 
+$I_4 (f) = \emptyset$: non esiste questa linea di livello.
+
+Vediamo che in generale $I_c (f) : \sqrt{x^2 + y^2} = 1 - c$, da cui segue che le linee di livello 
+esistono se $c \le 1$. Abbiamo una condizione di esistenza per le linee di livello, che ci dice anche
+qualcosa anche sul dominio della funzione.
+
+Vediamo che ogni linea di livello si pu\`o esprimere come $x^2 + y^2 = (1 - c)^2$, e quindi \`e 
+una circonferenza di centro $(0,0)$ e raggio $1 - c$.
+
+Oltre alle linee di livello, ci pu\`o interessare un'altra cosa: il valore che la funzione assume in 
+una regione, come ad esempio sulla curva:
+\[
+\gamma(t) = \begin{pmatrix} 0 \\ t \end{pmatrix}
+\]
+Ossia, sulla retta $y$ ($x = 0$).
+
+Per scoprirlo, sostituiamo nell'equazione $z = 2 \, x^2 + 2 \, y^2 - 3$, e otteniamo 
+$z = 2 \, y^2 - 3$. Vuol dire che sulla curva che abbiamo scelto $z$ vale $2 \, y^2 - 3$. \`E come se 
+avessimo sezionato la nostra superficie tridimensionale.
+
+\begin{esercizio}
+        Data la funzione f(x) = -2 \, x^2 - 5 \, y + y^2, quanto vale sulle seguenti curve:
+
+\gamma_1 (t) = (x_0 t)
+
+\`E una retta.
+
+Quanto vale f(\unhderline{\gamma_1})? \`E semplicemente f(0, y) = -5 \, y + y^2. \`E una parabola rivolta verso 
+l'alto.
+
+\gamma_2 (t) = (t y=-t)
+
+Anche qui abbiamo una retta. Per trovare quanto vale, di nuovo facciamo 
+f(\underline{\gamma_2}) = f(x, -x) = -2 \, x^2 + 5 \, x + x^2 = -x^2 + 5 \, x
+Ancora una volta una parabola, ma rivolta verso il basso.
+
+Per disegnarla bisogna fare due passi: quando sono in x = x_0, devo trovare dove sono sulla curva, e 
+da l\`i ``alzarmi'' di una certa quantit\`a.
+
+\end{esercizio}
+
+\section{Limiti}
+
+I limiti di funzioni continue sono facili: sono i valori della funzione nel punto. I limiti 
+nei punti di discontinuit\`a per funzioni definite a tratti sono pi\`u strani. E lo sappiamo questo.
+
+Con funzioni a pi\`u variabili, un limite \lim_{x \to \lambda} f(x) = L esiste se non dipende 
+da ``come mi avvicino'' a $x_0$. In \reals, ci sono 2 modi per avvicinarsi a un punto: da sinistra 
+o da destra. Ma se andiamo in \reals^2?
+
+\begin{defn}[Limite]
+
+        \lim_{x \to x_0} f(x) = L \iff \forall \varepsilon > 0 \exists \delta > 0 : \abs{f(x) - L} \le \epsilon
+        \forall \abs{x - x_0} \le \delta
+
+\end{defn}
+
+\abs{x - x_0} \le \delta \`e facile in \reals: \`e l'intervallo \ccint{x - x_0}{x + x_0}.
+
+Passiamo a \reals^2:
+
+Chiamiamo \underline{x} = (x,y) e \underline{x_0} = (x_0, y_0). La definizione di limite \`e:
+
+\lim_{\underline{x} \to \underline{x_0}} f(\underline{x}) = L
+
+La definizione \`e analoga, ma cambia l'idea di distanza: usiamo la distanza euclidea.
+
+\begin{defn}[Limite a pi\`u variabili]
+
+
+\forall \varepsilon > 0 \exists \delta > 0 : \abs{f(\underline{x}) - L} \le \varepsilon 
+\forall \underline{x} t.c. \abs{\underline{x} - \underline{x_0}} \le \delta
+
+\end{defn}
+
+In due dimensioni, \abs{\underline{x} - \underline{x_0}} \le \delta individua il cerchio di 
+centro \underline{x_0} e raggio \delta.
+
+Adesso abbiamo un'infinit\`a di modi per avvicinarsi al punto \underline{x_0}.
+
+
+f(x,y) = \frac{x \cdot y}{x^2 + y^2}
+
+In (1,0) la funzione \`e continua, il limite \`e esattamente f(1,0).
+
+Ma \lim_{(x,y) \to (0,0)} f(x,y) ci d\`a problemi: \`e \frac{0}{0}.
+
+Mettiamoci su delle curve che passano per questo punto e vediamo come possiamo avvicinarci in questo punto.
+
+Iniziamo con la curva \gamma_1 = (x 0). Vediamo che f(x,y) = 0.
+
+Quindi il limite su questa direzione vale 0. Stesso discorso per la direzione (0 y).
+
+Proviamo per \gamma_2 = (x x). f(x,x) = \frac{x^2}{2 \, x^2} = \frac{1}{2}.
+
+E abbiamo trovato un limite differente... Quindi il limite per \underline{x} \to (0,0) non esiste.
+
+Non basta provare per \gamma = (x \\ m \, x) e vedere che il limite \`e sempre uguale.
+
+Prendiamo f(x,y) = \frac{x \, y^2}{x^2 + y^4}, e \gamma = (y^2 y).
+
+Ma se vogliamo dimostrare che un limite esiste? Ci serve fare un cambio di variabili.
+
+Prendiamo un punto (x,y), e scriviamolo come (\rho \cos(\theta), \rho \sin(\theta)). 
+Possiamo individuarlo con i valori (\theta, \rho). 
+Teniamo a mente che x^2 + y^2 = \rho^2. Inoltre \frac{y}[x} = \tan(\theta).
+% TODO: controllare sta cosa
+
+Prendiamo una funzione brutta:
+f(x,y) = \frac{2 \, x^2 + 2 \, y^2 - 3 \, x \, y}{x^2 + y^2}
+
+Possiamo riscriverla come:
+
+f(\theta, \rho) = \frac{2 \, \rho ^2 - 3 \rho^2 \cos(\theta) \sin(\theta)}{\rho^2} = 
+\frac{\rho^2 \left( 2 - 3 \cos(\theta) \sin(\theta) \right)}{\rho^2} = 
+2 - 3 \cos(\theta) \sin(\theta)
+
+Guarda un po': la funzione dipende solamente da \theta, non da \rho: solo dall'angolo 
+in cui ci muoviamo, non dalla distanza.
+
+Altra cosa che possiamo vedere: il modulo della funzione. 
+Vale che \abs{f(\theta, \rho)} \le 2 + \abs{3 \, \cos(\theta) \sin(\theta)} = 5.
+Quindi la funzione vale al massimo 5!
+
+Torniamo ai limiti. Questo ci aiuta a dimostrare se un limite esiste o meno.
+In due variabili si usa solo il teorema del confronto: ci sono metodi pi\`u sofisticati
+ma noi non vogliamo vederli.
+
+Se 0 \le f(x) \le g(x) e \lim_{x \to x_0} g(x) = 0 \implies \lim_{x \to x_0} f(x) = 0.
+
+Vogliamo ora calcolare \lim_{\underline{x} \to (0,0)} f(\underline{x}). Se scopriamo che 
+\abs{f(x)} \le g(x), e abbiamo che \lim_{\underline{x} \to (0,0)} g(\underline{x}} = 0, 
+allora sappiamo che \lim_{x \to (0,0)} f(x) = 0.
+Niente di nuovo. \`E il teorema del confronto. Bisogna saper fare le solite maggiorazioni.
+
+Torniamo all'esempio di prima: \frac{x y²}{x² + y²} ... 
+% TODO: finire di scrivere
+
+Per i limiti, quindi, si prova su una \emph{restrizione} \gamma. Se l\`i vale $L$, proviamo 
+a dimostrare che vale proprio $L$. Un modo \`e con il teorema del confronto: proviamo a dimostrare
+che \abs{f(x) - L} \le g(x), con \lim_{x \to (x,y)} g(x) = 0.
+
+Di solito facciamo limiti per \underline{x} \to 0.
+
+Analisi 1 ci dice che se \lim_{\vector{x} \to \vector{0}} \abs{h(x)} = 0, allora 
+\lim_{\vector{x} \to \vector{0}} h(x) = 0.
+
+f - 3
+
+x^2 y^3 / 2 \, x^4 + y^2
+\le x^2 y^3 / y^2 = x^2 yx^2 y^3 / 2 \, x^4 + y^2
+\le x^2 y^3 / y^2 = x^2 y
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \end{document}

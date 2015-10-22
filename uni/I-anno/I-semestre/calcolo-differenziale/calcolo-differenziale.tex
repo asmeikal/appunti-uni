@@ -1,0 +1,2063 @@
+
+\documentclass[12pt,a4paper]{article}
+% caratteri grandi che non ci vedo!
+
+\usepackage[italian]{babel}
+% per date e ToC in italiano
+
+\usepackage{amsmath}        % matematica
+\usepackage{amsfonts}       % font matematicosi
+\usepackage{centernot}      % per semplificare
+\usepackage{pgfplots}       % per i grafici
+\pgfplotsset{compat=1.5}    % consigliata compatibilita'
+                            % con la versione 1.5
+
+\usepackage{fullpage}       % troppo margine normalmente
+\usepackage{parskip}        % preferisco spazio fra i paragrafi
+                            % all'indentazione sulla prima riga
+
+% per le liste non numeriche preferisco un bel dash
+\renewcommand{\labelitemi}{$-$}
+
+\begin{document}
+
+\title{Appunti di calcolo differenziale}
+\author{Michele Laurenti}
+\date{\today}
+
+\maketitle
+
+% la dedica <3
+\begin{center}
+dedicato alla Madonna, \\
+madre di Nostro Signore Ges\`u Cristo, \\
+e a suo figlio
+\end{center}
+
+\newpage
+
+% la ToC viene ricostruita ad ogni compilazione, ma per 
+% creare il pdf LaTex usa l'ultima versione disponibile,
+% quella precedente. se si aggiunge qualcosa alla ToC,
+% o la si modifica, e' necessario RICOMPILARE DUE VOLTE
+% prima di vedere i cambiamenti nel file pdf
+
+\tableofcontents
+\newpage
+
+\section{Roba generica}
+
+\subsection{Dominio di definizione}
+I punti di frontiera o punti di accumulazione (in cui il dominio ``si 
+accumula'', la funzione non esiste ma esiste in punti estremamente 
+vicini al punto) sono gli estremi del dominio di definizione $D_f 
+\subseteq \mathbb{R}$.
+
+\subsection{Parit\`a, disparit\`a, traslazioni, monotonia}
+Se prendo un insieme $\mathbb{A}$ (dominio) simmetrico rispetto all'origine:
+\begin{itemize}
+\item   se $ f(-x) = f(x) \; \forall x \in \mathbb{A} \Rightarrow f $ \`e pari.
+        Una funzione pari non \`e iniettiva, ed \`e simmetrica rispetto 
+        all'asse $y$.
+\item   se $ f(-x) = -f(x) \; \forall x \in \mathbb{A} \Rightarrow f $ \`e
+        dispari. Una funzione dispari \`e simmetrica rispetto all'origine.
+\end{itemize}
+
+$y = f(x - a)$ o $y = f(x) + c$ sono traslazioni.
+$f(-x)$ \`e $f$ riflessa rispetto all'asse $y$,
+$-f(x)$ \`e $f$ riflessa rispetto all'asse $x$,
+$-f(-x)$ \`e la funzione simmetrica rispetto all'origine.
+
+$f: \mathbb{A} \subseteq \mathbb{R} \to \mathbb{R} $ \`e invertibile se \`e
+iniettiva. $f^{-1} : \text{Im}f \to \mathbb{A} $ \`e la funzione inversa.
+Im$f$ \`e l'immagine di $f$, si pu\`o indicare anche con $f(\mathbb{A})$
+
+Una funzione per essere invertibile deve essere monotona.
+
+Se $f(x)$ \`e crescente, $-f(x)$ \`e decrescente, e viceversa.
+
+\newpage
+\section{Funzioni trigonometriche}
+
+$$ \cos(\tfrac{\pi}{2}-x) = \sin(x) \; ; \; \sin(\tfrac{\pi}{2}-x) 
+= \cos(x) $$
+$$ \sin(\pi - x) = \sin(x) \; ; \; \cos(\pi - x) = - \cos(x) $$
+$$ \cos(x) = \cos(-x) $$
+$$ \sin(x) = -\sin(-x) $$
+Seno e coseno sono funzioni continue.
+$$ \cos(-x) = \sin(x + \tfrac{\pi}{2}) \to \cos(x) 
+= \sin(x + \tfrac{\pi}{2}) $$
+$$ \cos(s+t) = \cos(s) \cos(t) - \sin(s) \sin(t) $$
+$$ \cos(s-t) = \cos(s) \cos(t) + \sin(s) \sin(t) $$
+$$ \sin(s+t) = \sin(s) \cos(t) + \sin(t) \cos(s) $$
+$$ \sin(s-t) = \sin(s) \cos(t) - \sin(t) \cos(s) $$
+Da cui:
+$$ 2 \sin(x) \cos(x) = \sin(2x) $$
+Servir\`a per le derivate!
+$$ \tan(x) = {\sin(x) \over \cos(x)} \; ; \; 
+\cot(x) = {1 \over \tan(x)} = {\cos(x) \over \sin(x)}$$
+
+\subsection{Formule di prostaferesi}
+$$ \sin(q) - \sin(p) = 2 \sin \left({q - p \over 2}\right) \cos 
+\left({p+q \over 2}\right) $$
+
+\subsection{Seni e coseni comodi}
+$$ \sin \left( {\pi \over 6} \right) = {1 \over 2} \ ; \
+ \cos \left( {\pi \over 6} \right) = {\sqrt{3} \over 2} $$
+$$ \sin \left( {\pi \over 4} \right) = {\sqrt{2} \over 2} \ ; \
+ \cos \left( {\pi \over 4} \right) = {\sqrt{2} \over 2} $$
+$$ \sin \left( {\pi \over 3} \right) = {\sqrt{3} \over 2} \ ; \
+ \cos \left( {\pi \over 3} \right) = {1 \over 2} $$
+
+\newpage
+\section{Limiti}
+
+$$ \exists \lim \limits_{x \to x_0} f(x) = \ell \Leftrightarrow
+\exists \lim \limits_{x \to {x_0}^+} f(x) = \ell \land \exists
+\lim \limits_{x \to {x_0}^-} f(x) = \ell $$
+
+\subsection{Limiti notevoli}
+$$ \lim_{x \to 0} {\sin(x) \over x} = 1 $$
+$$ \lim_{x \to 0} {1 - \cos(x) \over x} = 0 $$
+$$ \lim_{x \to 0} {1 - \cos(x) \over x^2} = {1 \over 2} $$
+$$ \lim_{x \to 0} {\tan(x) \over x} = 1 $$
+
+\subsection{Composizione e limiti}
+Se $f$ \`e continua in $x_0$ e $g$ \`e continua in $f(x_0)$, 
+$g \circ f$ \`e continua in $x_0$. Se $ \lim_{x \to x_0} f(x) =
+\ell $ con $ x_0 \in \overline{\mathbb{R}} $ e $ \ell \in \mathbb{R} $ e
+$ g $ \`e continua in $ \ell $, implica che:
+$$ \lim_{x \to x_0} g(f(x)) = \lim_{y \to \ell} g(y) = g(\ell) $$
+
+\subsection{Asintoti}
+\label{asintoti}
+Nello studio delle funzioni, si d\`a un nome ad alcuni limiti sulle
+frontiere.
+
+\subsubsection{Asintoto orizzontale}
+Se $\lim_{x \to \infty} f(x) = \ell \Rightarrow y = \ell$ \`e un asintoto
+orizzontale, la funzione tende a quel valore. Gli asintoti orizzontali
+sono a $+\infty$ e a $-\infty$, non necessariamente uguali. Se sono uguali,
+sono asintoti ``bilateri''.
+
+\textbf{Esempio:} $f(x) = e^x$, $\lim_{x \to -\infty} e^x = 0$, $y = 0$ 
+\`e un asintoto orizzontale a $-\infty$ per $e^x$.
+
+\subsubsection{Asintoto verticale}
+Lo cerco nei punti di frontiera al finito. $x = a_x$ \`e un asintoto
+verticale se:
+$$
+\exists \ \lim_{x \to a_x^\pm} f(x) = \pm \infty
+$$
+\textbf{Esempio:} $e^{1 \over x}$ in $0$ non \`e definita, ha $x=0$ come 
+asintoto verticale, ma da sinistra potrei avere una discontinuit\`a 
+eliminiabile.
+
+\subsubsection{Asintoto obliquo}
+Se verifico che:
+$$
+\lim_{x \to \infty} f(x) - (ax +b) = 0
+$$
+la retta $y = ax +b$ \`e l'asintoto obliquo. Che vuol dire? Che all'infinito
+il grafico della funzione si avvicina alla retta. Se la funzione \`e nella
+forma:
+$$
+f(x) = {P_{n+1}(x) \over Q_n(x)}
+$$
+c'\`e un asintoto obliquo, uguale per $+\infty$ e $-\infty$. Se prendo la
+funzione ${x^3 +1 \over x^2 -3}$:
+
+\begin{center}
+\begin{tabular}{r | l}
+$x^3 +1$ & $x^2 -3$ \\ \cline{2-2}
+$-x^3 + 3x$ & $x$ \\ \cline{1-1}
+$3x+1$ & \\
+\end{tabular}
+\end{center}
+
+Posso quindi scrivere:
+$${x^3 +1 \over x^2 -3} = x + {3x+1 \over x^2 -3}$$
+
+Ma nel caso generico?
+$$
+f(x) = {P_m(x) \over Q_n(x)}
+$$
+Devo procedere per passi. La condizione base \`e che $\lim_{x \to +\infty}
+= \pm \infty$. Dopodich\'e:
+\begin{multline*}
+\lim_{x \to +\infty} f(x) - (ax + b) = 0 \Rightarrow
+\lim_{x \to +\infty} {f(x) - (ax + b) \over x} = 0 \Rightarrow
+\lim_{x \to +\infty} {f(x) \over x} - a - {b \over x} = 0 \Rightarrow \\
+\lim_{x \to +\infty} {f(x) \over x} = a
+\end{multline*}
+Se il limite non \`e una costante, l'asintoto non c'\`e. Con $a \in 
+\mathbb{R} \setminus \{ 0 \}$. Se $a = 0$, l'asintoto \`e orizzontale. Adesso:
+$$
+\lim_{x \to +\infty} f(x) - ax = b \in \mathbb{R}
+$$
+Se $\centernot \exists$ il limite, non c'\`e asintoto. 
+Altrimenti, l'ho trovato.
+
+\newpage
+\section{Continuit\`a}
+
+Se $\exists \lim \limits_{x \to x_0} f(x) = f(x_0) \Rightarrow f$ \`e continua
+ in $x_0$, ossia $f$ \`e definita in un intorno $(x_0 -a, x_0 + a)$. 
+ Allo stesso modo, se $f$ \`e definita in $[x_0, x_0 +a)$ e $\exists \lim 
+\limits_{x \to {x_0}^+} f(x) = f(x_0) \Rightarrow f $ continua da destra 
+in $x_0$, e analogamente se $f$ \`e definita in $(x_0 -a, x_0]$ e $\exists 
+\lim \limits_{x \to {x_0}^-} f(x) = f(x_0) \Rightarrow f $ \`e continua da
+sinistra.
+
+Posso dire che $f$ \`e continua in $(a,b)$ se \`e continua $\forall x 
+\in (a,b)$, e che $f$ \`e continua in $[a,b]$ se \`e continua $\forall x 
+\in (a,b)$ e se \`e continua da destra in $a$ e da sinistra in $b$. 
+Nel secondo caso $f$ deve essere definita in $a$ e in $b$.
+
+Se $f$ non \`e continua in $x_0$, $f$ \`e discontinua in $x_0$ e $x_0$ 
+\`e una discontinuit\`a per $f$.
+
+Se $f$ e $g$ continue in $ \mathbb{I} \Rightarrow f+g $ continua 
+in $ \mathbb{I} $, $ f \cdot g $ continua in $ \mathbb{I} $.
+Se $ g(x) \neq 0 $ in $ \mathbb{I} \Rightarrow \frac{f}{g} $ 
+continua in $ \mathbb{I} $.
+
+\subsection{Discontinuit\`a eliminabili (o false discontinuit\`a)}
+Se $f$ \`e definita in $\mathbb{R} \backslash \{x_0\}$ e $\exists \lim 
+\limits_{x \to x_0} f(x) = \ell$ con $\ell \in \mathbb{R}$, allora:
+$$f(x) = \left\{ \text{
+\begin{tabular}{l r}
+$f(x)$ & $x \neq x_0$ \\
+$\ell$ & $x = x_0$ \\
+\end{tabular} }
+\right. $$
+
+\subsubsection{Discontinuit\`a di prima specie}
+$ \exists \lim_{x \to x_{0^-}} f(x) = \ell_1 $ e 
+$ \exists \lim_{x \to x_{0^+}} f(x) = \ell_2 $ con 
+$ \ell_1, \ell_2 \in \mathbb{R} $ e $ \ell_1 \neq \ell_2 $ 
+
+\subsubsection{Discontinuit\`a di seconda specie}
+Tutto il resto!
+
+\subsection{Teoremi applicabili a funzioni continue}
+
+\subsubsection{Teorema di esistenza degli zeri}
+Data la funzione $f$ continua in $[a,b]$ (intervallo chiuso), se vale
+$f(a) > 0$ e $f(b) < 0$ o $f(a) < 0$ e $f(b) > 0$ (estremi discordi),
+allora $\exists$ almeno un punto $x_0 \in (a,b)$ t.c. $f(x_0) = 0$;
+ossia $\exists$ almeno un punto in cui $f(x)$ si annulla.
+
+Se $f$ continua in D$_f$ e $\exists f(a) > 0 \land f(b) < 0 
+\centernot\Rightarrow \exists x_0 $ t.c. $ f(x_0) = 0 $. Ad esempio:
+
+$f(x) = {1 \over x}$ ha D$_f = \mathbb{R} \backslash \{0\}$, \`e continua
+nel suo dominio di definizione, ha $f(-1) = -1$ e $f(1) = 1$, ma non ha 
+un punto in cui si annulla nell'intervallo $[-1,1]$, poich\'e non \`e 
+continua nell'intervallo $[-1,1]$. La continuit\`a deve essere 
+verificata nell'intervallo.
+
+\subsubsection{Teorema di esistenza dei valori intermedi}
+Data la funzione $f$ continua in $[a,b]$, fissati $f(a)$ e $f(b)$, 
+se $f(a) < f(b)$, $\forall$ L $\in \left(f(a),f(b)\right) \; 
+\exists $ (almeno un) $ x_\text{L} \in (a,b)$ t. c. $f(x_\text{L}) 
+= $ L. Dimostrazione:
+
+$g(x) = f(x) - $L, $f(x)$ \`e continua quindi $g(x)$ lo \`e a sua volta
+(L \`e una costante). $g(x)$ si annuller\`a in un punto perch\'e 
+$g(a) = f(a) - $ L $ < 0 $ e $g(b) = f(b) - $ L $ > 0$, poich\'e
+$f(a) < $ L $ < f(b) $, quindi $\exists \; x_{\text{L}} $ t.c. 
+$g(x_{\text{L}}) = 0$, quindi $f(x_{\text{L}}) - $ L $= 0 \Rightarrow 
+f(x_{\text{L}}) = $ L.
+
+Una funzione \`e continua se \`e continua per ogni punto $\Rightarrow$ il
+codominio non ha n\'e buchi n\'e salti.
+
+$f$ continua su un intervallo $\mathbb{I} \Rightarrow f(\mathbb{I})$ \`e un
+intervallo.
+
+\textbf{Teorema:} sia $f$ continua in un intervallo
+$\mathbb{I} $ , $ f$ \`e invertibile (inettiva)
+$\Leftrightarrow f$ \`e strettamente monotona, ossia
+strettamente crescente o decrescente. 
+Se $ x_1 < x_2 < x_3 $ e $ f(x_1) < f(x_2) $ e 
+$ f(x_2) > f(x_3) $ oppure $ f(x_1) > f(x_2) $ e
+$ f(x_2) < f(x_3) \Rightarrow f$ non \`e monotona.
+
+\textbf{Teorema:} sia $f$ continua in un intervallo
+$\mathbb{I}$ , se $f$ \`e strettamente monotona 
+$ \Rightarrow \exists f^{-1} $ e $ f^{-1} $ \`e continua a
+sua volta, definita su $ f(\mathbb{I}) $ che a sua volta
+\`e un intervallo.
+
+\subsubsection{Massimo e minimo su un insieme} 
+Dato un insieme $ \mathbb{A} \in \mathbb{R} $, che vuol
+dire $ \min \mathbb{A} $ e $ \max \mathbb{A} $? Sar\`a
+un valore $ a = \min \mathbb{A} $ t.c. $ a \leq x \ \forall \ x 
+\in \mathbb{A} $ (con $ a \in \mathbb{A}$). Allo stesso
+modo $ \max \mathbb{A} = a \in \mathbb{A} $ t.c.
+$ a \geq x \ \forall \ x \in \mathbb{A} $.
+
+Intervalli non chiusi non hanno minimo o massimo.
+$ A = (0,1) \Rightarrow \centernot \exists \ \min \mathbb{A} ; \
+\centernot \exists \ \max \mathbb{A} $.
+
+Se $ \exists \ y \in \mathbb{R} $ t.c. $y \geq x \ \forall \ x 
+\in \mathbb{A} \Rightarrow \mathbb{A} $ \`e superiormente limitato. 
+Se $\centernot \exists$ nessun $y \Rightarrow \sup \mathbb{A} = +\infty$. 
+Se $ \exists \ y \Rightarrow \mathbb{B} = \{ y \in \mathbb{R} $ t.c.
+$ y \geq x \forall x \in \mathbb{A} \} $. $\mathbb{B}$ \`e 
+l'insieme dei maggioranti dell'insieme $\mathbb{A}$.
+$\sup \mathbb{A} \neq + \infty \Leftrightarrow \mathbb{B} \neq \emptyset $;
+ $ \sup \mathbb{A} = \min \mathbb{B} $.
+
+\subsubsection{Teorema di Weierstrass}
+Sia $ f $ continua su $ [a,b] $ (intervallo chiuso e limitato!) 
+$ \Rightarrow \exists \max_{[a,b]} f $ e $ \min_{[a,b]} f $.
+Cosa significa? Che $f$ \`e limitata, dall'alto e dal basso, e che
+$ \sup $ ed $ \inf $ sono massimo e minimo.
+
+Una scrittura alternativa del teorema \`e questa:
+$ \exists \ x_m $ e $ x_M $ t.c. $ f(x_m) = m $ e $ f(x_M) = M $
+con $ x_m, x_M \in [a,b] $ e $ f(x_M) = m \leq f(x) \leq M = f(x_M)
+\ \forall x \in [a,b] $. $m$ \`e il minimo, $M$ \`e il massimo.
+$x_m, x_M$ sono punti di massimo e di minimo.
+
+$f([a,b]) = [m,M]$. Se $f$ \`e crescente (descrescente) in $[a,b]$,
+allora $\min_{[a,b]} f = f(a)$ ($f(b)$) e $ \max_{[a,b]} f =
+f(b)$ ($f(a)$).
+
+Se studiassi una funzione su un'intervallo $(a,b)$ aperto,
+non potrei pi\`u dire se esistono $ \max_{[a,b]}f $ e 
+$\min_{[a,b]}f$. Ad esempio, $f = \cos(x)$ se considero
+$(0,\pi) \Rightarrow \centernot \exists \min_{(0,\pi)}f, \ 
+\centernot \exists \max_{(0,\pi)}f$, ma se considero $ (0,2 \pi)
+\Rightarrow \exists \min_{(0,2 \pi)}f = -1, \ \centernot
+\exists \max_{(0,2 \pi)}$.
+
+\newpage
+\section{Derivate}
+
+$ f: (a,b) \to \mathbb{R} ; \ x_0 \in (a,b) $, determinare
+la retta tangente ad $f$ nel punto $x_0$.
+
+Cos'\`e la retta tangente? Non geometricamente $y-f(x_0) = m(x-x_0)$
+\`e il fascio di rette in $x_0$, devo determinare il valore di $m$
+(l'inclinazione) della retta tangente.
+
+Cerco la retta secante: la retta passante fra i punti $ P_0 = 
+(x_0,f(x_0)) $ e $ P_h = (x_0 + h, f(x_0 + h)) $. Il coefficiente
+angolare della retta passante per $P_0$ e $P_h$ \`e:
+$$ m_h = { f(x_0+h) - f(x_0) \over x_0 + h - x_0 } =
+{ f(x_0+h) - f(x_0) \over h } $$
+Per determinare la retta tangente in $x_0$ calcolo il limite
+per $h$ che tende a $0$.
+$$ \lim_{h \to 0} m_h = \lim_{h \to 0} { f(x_0+h) - f(x_0) \over h } $$
+Se $\exists$, \`e il coefficiente angolare della retta tangente
+al grafico di $f(x)$ nel punto $ P_0 = (x_0,f(x_0))$, o anche,
+la derivata di $f$ in $x_0$, o anche, $f'(x_0)$. La derivata \`e
+il limite del rapporto incrementale in un punto. \`E un limite
+non banale: tipicamente ${0 \over 0}$. Se $f(x)$ \`e la velocit\`a,
+la derivata in $x_0$ \`e la velocit\`a istantanea.
+
+$ \forall x \in (a,b) \ \exists f'(x) \Rightarrow \exists$ la funzione
+derivata (prima) $f': (a,b) \to \mathbb{R}$. La funzione $f'(x)$ associa
+ad ogni punto il coefficiente angolare della retta tangente al grafico
+della funzione in quel punto. $(a,b)$ deve essere aperto, non limitato.
+$$ f'(x) = \lim_{h \to 0} { f(x+h) - f(x) \over h } $$
+
+\textbf{Esempio:} $f(x) = x^2$, per trovare la derivata prima
+devo calcolare il limite seguente:
+\begin{multline}
+\lim_{h \to 0} {f(x+h) - f(x) \over h} = \lim_{h \to 0} 
+{(x+h)^2 - x^2 \over h} = \lim_{h \to 0} {\centernot x^2 + 2xh +
+h^2 - \centernot x^2 \over h} = \\ \lim_{h \to 0} {2xh + h^2 \over h} =
+\lim_{h \to 0} {\centernot h \over \centernot h} \cdot (2x+h) =
+\lim_{h \to 0} 2x+h = 2x
+\end{multline}
+
+$f$ periodica con periodo $a \Rightarrow f(x+a)=f(x) \ \forall x \in
+\mathbb{R}$. Studio $f$ in $[0,a]$ per sapere quanto vale in tutto
+$\mathbb{R}$ (o anche, in $ [-{a \over 2}, {a \over 2}] $). Se $f$
+\`e derivabile in $(0,a)$, allora \`e derivabile in $(a,2a),(2a,3a),\dots$,
+in tutto $\mathbb{R} \setminus \{k \cdot a\}$ (con $k \in \mathbb{Z}$).
+$f'(x)$ \`e periodica se $f(x)$ \`e periodica ($f'(x+a) = f'(x)$).
+$$ f'(x+a) = \lim_{h \to 0} {f(x+a+h) - f(x+a) \over h} =
+\lim_{h \to 0} {f(x+h) - f(x) \over h} $$
+$f$ \`e derivabile in (tutto) $\mathbb{R}$ se \`e derivabile in $a$
+e in $0$.
+
+\textbf{Teorema:} sia $f$ derivabile in $x$, allora $f$ \`e continua in
+$x$. Se una funzione \`e continua, non \`e detto sia derivabile.
+$$ \lim \limits_{h \to 0} f(x + h) = f(x) 
+\equiv \lim \limits_{h \to 0} f(x+h) - f(x) = 0 $$
+Perch\'e?
+$$ \lim \limits_{h \to 0} { f(x+h) - f(x) \over h } \cdot h 
+= f'(x) \cdot h = f' (x) \cdot 0 = 0 $$
+$f(x) = |x|$ non \`e derivabile in $x = 0$ nonostante sia continua.
+$$ \lim \limits_{h \to 0} { |0 + h| - 0 \over h} =
+\lim \limits_{h \to 0} {|h| \over h} $$
+
+\subsection{Derivate utili}	
+
+Derivata di un generico $ f(x) = x^n $ con $n \in \mathbb{N}$ e $n \geq 1$.
+Per $n = 0 \to f(x) = 1 \to f'(x) = 0$ applicando la definizione,
+poich\'e la derivata di una costante \`e $0$. Per $n = 1 $ e $ f(x) = x$:
+
+\[
+\lim \limits_{h \to 0} {f(x+h) - f(x) \over h} =
+\lim \limits_{h \to 0} {x + h - x \over h} = 1
+\]
+
+\subsubsection*{Coefficienti binomiali}
+
+\[
+{n \choose k} = {n! \over k!(n-k)!} \Rightarrow
+(a+b)^n = a^n + {n \choose 1}  b a^{n-1} + \dots + {n \choose n-1} b^{n-1} a
++ b^n
+\]
+
+Con cui possiamo calcolare la derivata nel caso generico:
+\begin{multline}	
+\lim \limits_{h \to 0} {(x+h)^n - x^n \over h} = 
+\lim \limits_{h \to 0} {\centernot{x^n} + {n \choose 1} x^{n-1}h + 
+{n \choose 2} x^{n-2}h^2 + \dots + {n \choose n-1} x h^{n-1} + h^n -
+\centernot{x^n} \over h} = \\
+\lim \limits_{h \to 0} {\centernot h \left({n \choose 1} x^{n-1} +
+{n \choose 2} x^{n-2}h + \dots + h^{n-1} \right) \over \centernot h} =
+{n \choose 1} x^{n-1} = {n! \over (n-1)!} x^{n-1} = n x^{n-1}
+\end{multline}
+
+Per cui:
+
+$$ f(x) = x^n \Rightarrow f'(x) = n x^{n-1}$$
+
+\subsection{Teoremi}
+
+$f$ derivabile in $x$, $g$ derivabile in $x$. $c$ costante.
+
+Ovviamente $c \cdot f$ \`e derivabile in $x$.
+\[
+(c \cdot f)' (x) = c \cdot (f') (x) = c \cdot f' (x)
+\]
+
+\subsubsection{Derivata della somma di funzioni}
+La derivata della somma \`e la somma delle derivate: $ (f + g)' (x) = 
+f' (x) + g' (x) $. Dimostriamolo:
+\begin{multline}	
+\lim \limits_{h \to 0} {(f + g) (x + h) - (f + g) (x) \over h} = 
+\lim \limits_{h \to 0} {f(x+h) + g(x+h) - f(x) - g(x) \over h} = \\
+\lim \limits_{h \to 0} {f(x+h) - f(x) \over h} + 
+\lim \limits_{h \to 0} {g(x+h) - g(x) \over h} =
+f' (x) + g' (x)
+\end{multline}
+
+\subsubsection{Derivata del prodotto di funzioni}
+$f \cdot g$ \`e derivabile in $x$, ma non \`e esattamente il prodotto delle
+derivate.
+\begin{multline}
+\lim \limits_{h \to 0} {(f \cdot g) (x + h) - (f \cdot g) (x) \over h} = 
+\lim \limits_{h \to 0} {f(x+h) \cdot g(x+h) - f(x)g(x) \over h} = \\
+\lim \limits_{h \to 0} {f(x+h) g(x+h) - f(x) g(x) 
+- f(x+h)g(x) + f(x+h)g(x) \over h} = \\
+\lim \limits_{h \to 0} f(x+h) {g(x+h) - g(x) \over h} + 
+\lim \limits_{h \to 0} g(x) {f(x+h) - f(x) \over h} =
+f(x) g'(x) + f' g(x)
+\end{multline}
+
+\subsubsection{Derivata delle funzioni trigonometriche}
+Deriviamo $\sin(x)$:
+\begin{multline}
+\lim_{h \to 0} {\sin(x+h) - \sin(x) \over h} = \\
+\lim_{h \to 0} {\sin(x)\cos(h) + \sin(h)\cos(x) - sin(x) \over h} = \\
+\lim_{h \to 0} {\sin(x)\cos(h) - \sin(x) \over h} +
+\lim_{h \to 0} {\sin(h)\cos(x) \over h} = \\
+\sin(x) \cdot \lim_{h \to 0} {\cos(h) - 1 \over h} +
+\cos(x) \cdot \lim_{h \to 0} {\sin(h) \over h} = \sin(x) \cdot 0 + 
+\cos(x) \cdot 1 = \\ \cos(x)
+\end{multline}
+
+Sappiamo inoltre che $f(x) = \cos(x) \to f'(x) = - \sin(x) $.
+Possiamo derivare $f(x) = x^2 \sin(x) \to f' (x) = 
+x^2 \cos(x) + 2x \sin(x) = x \cdot (\cos(x) + 2 \sin(x)) $
+
+\subsubsection{Derivata del reciproco e del rapporto}
+$f(x)$ derivabile in $x$, supponendo $f(x) \neq 0$,
+quanto vale $ ( {1 \over f(x)} )' $?
+\begin{multline}
+\lim \limits_{h \to 0} { {1 \over f(x+h)} - {1 \over f(x)}  \over h} = 
+\lim \limits_{h \to 0} { f(x) - f(x+h)  \over h (f(x+h) \cdot f(x))} = 
+- \lim \limits_{h \to 0} { f(x+h) - f(x) \over h} \cdot 
+{1 \over f^2(x)} = \\ -{f'(x) \over f^2(x)}
+\end{multline}
+Con l'informazione che $({1 \over f(x)})' = - {f'(x) \over f^2(x)}$,
+posso derivare $f(x) = {1 \over x^n}$:
+\begin{multline}
+f(x) = {1 \over x^n} \to f'(x) = - {n \cdot x^{n-1} \over x^{2n}} =
+- {n \over x^{n+1}} = - n \cdot x^{-(n+1)} = - n \cdot x^{-n - 1}
+\end{multline}
+Posso calcolare anche la derivata del rapporto, adesso. 
+Siano $g$ e $f$ derivabili in $x$:
+\begin{multline}
+\left({g \over f} \right)'(x) = \left(g \cdot {1 \over f} \right)'(x) =
+g'(x) \cdot {1 \over f(x)} + g(x) \cdot \left({1 \over f(x)} \right)' =
+{g'(x) \over f(x)} - {g(x) \cdot f'(x) \over f^2(x)} = \\
+{g'(x) \cdot f(x) - g(x) \cdot f'(x) \over f^2(x)}	
+\end{multline}
+\textbf{Attenzione!} Derivata del numeratore $\times$ denominatore $-$
+numeratore $\times$ derivata del denominatore. Fondamentale l'ordine.
+
+\subsubsection{Composizione di derivate, derivata di funzione composta}
+Come posso trovare $ \left[ \sin(x^2) \right]'$?
+La prima cosa da vedere \`e: ha senso la composizione? Se s\`i, proseguo.
+Se $g$ \`e derivabile in $x$ e $f$ \`e derivabile in $u = g(x)$, allora
+posso derivare $f \circ g = f(g(x))$.
+\[
+\left[ f \left( g(x) \right) \right]' = f'(g(x)) \cdot g'(x)
+\]
+\`E un prodotto di derivate, ma la derivata della funzione esterna
+\`e calcolata in $g(x)$. Dimostrazione: definita la funzione
+$E(k)$ come:
+\[
+E(k) = \left\{ \begin{array}{lr}
+{f(u+k) - f(k) \over k} & \text{se } k \neq 0\\
+f'(u) & \text{se } k = 0
+\end{array} \right.
+\]
+$E(k)$ \`e continua in $0$ perch\'e $ \lim_{k \to 0} E(k) = E(0) = f'(u) $,
+per cui $E(k) = { f(u+k) - f(u) \over k }$ incluso $k = 0$.
+
+Ponendo $g(x) = u$ e $k = g(x+h) - g(x)$, per cui $g(x+h) = k+g(x) = u + k$,
+posso calcolare $ \left( f \circ g \right)' $.
+Per farlo, devo considerare che:
+\[ \lim_{h \to 0} k = \lim_{h \to 0} g(x +h) - g(x) = \lim_{k \to 0} k = 0 \]
+Quindi:
+\begin{multline}
+\lim_{h \to 0} {f(g(x+h)) - f(g(x)) \over h} = \lim_{h \to 0} {f(g(x) + k) 
+- f(g(x)) \over h} = \lim_{h \to 0} {f(u + k) - f(u) \over h} = \\
+\lim_{h \to 0} { E(k) \cdot k \over h} = 
+\lim_{k \to 0} E(k) \cdot \lim_{h \to 0} { g(x+h) - g(x) \over h } =
+ f'(u) \cdot g'(x) = \\ f'(g(x)) \cdot g'(x)
+\end{multline}
+
+\subsubsection{Derivata di funzione inversa}
+$f: (a,b) \to \mathbb{R}$, $f$ \`e invertibile in $(a,b)$. $f$ \`e
+derivabile in $(a,b)$ ($f$ \`e continua), allora $f^{-1}: J \to \mathbb{R}
+\ \forall y_0 \in J = f\left( (a,b) \right)$.
+
+Se $f'(x) = 0$, la derivata inversa non c'\`e. Altrimenti, in un punto
+specifico, con $ y_0 = f(x_0)$:
+$$ \left( f^{-1} \right)'(y_0) = {1 \over f'(x_0)} $$
+In un intervallo aperto, se $f'(x) \neq 0 \ \forall x \in (a,b)$:
+$$ \left( f^{-1} \right)'(y) = { 1 \over f'\left(f^{-1}(y)\right) } $$
+
+Dimostriamolo. $ y_0 = f(x_0) ; \ x_0 = f^{-1}(y_0) $.
+$$ \left( f^{-1} \right)'(y_0) = {1 \over f'(x_0)} \Rightarrow
+\lim_{h \to 0} { f^{-1}(y_0+h) - f^{-1} (y_0) \over h} $$
+Diamo un nome alle funzioni. Il numeratore:
+$$ K = f^{-1}(y_0 +h) - f^{-1}(y_0) \Rightarrow \lim_{h \to 0} K = 0 $$
+Ora ricaviamo $h$ da $K$.
+\begin{multline*}
+K = f^{-1}(y_0 + h) - x_0 ; \ x_0 + K = f^{-1}(y_0 +h) ; \ 
+y_0 + h = f(x_0 + K); \\ h = f(x_0 + K) - f(x_0)
+\end{multline*}
+Riscriviamo il limite con queste nuove informazioni, considerando che
+$ \lim_{h \to n} k = m \Rightarrow \lim_{k \to m} \dots$.
+\begin{equation}
+\left( f^{-1} \right)'(y_0) = {1 \over f'(x_0)} =
+\lim_{h \to 0} { f^{-1}(y_0+h) - f^{-1} (y_0) \over h} =
+\lim_{K \to 0} { K \over f(x_0 + K) - f(x_0)} = 
+{1 \over f'(x_0)}
+\end{equation}
+
+\subsubsection{Derivata di monomi con esponente razionale}
+Due esempi, utilizzando quanto appena dimostrato.
+
+$$\left( \sqrt{x} \right)' = { 1 \over 2\sqrt{x} }$$
+$f^{-1}(y) = \sqrt{y}$ \`e l'inversa di $f(x)=x^2$. $f:(0,\infty)
+\to \mathbb{R}$, $f^{-1}:(0,\infty) \to \mathbb{R}$. Ora, con
+$f(x) = x^2 \Rightarrow f'(x) = 2x \Rightarrow f'(x) \neq 0
+\ \forall x > 0$. I problemi li avrei in $0^+$.
+$$ \left( f^{-1}\right)' (y) = {1 \over 2 f^{-1}(y) } \Rightarrow
+ \left( f^{-1}\right)' (y) = {1 \over 2 \sqrt{y} }$$
+\textbf{Remember:} $y = f(x) \Rightarrow x = f^{-1}(y)$
+
+$f^{-1}(y) = \sqrt[3]{y} ; \ f(x) = x^3 ; \ f^{-1}: \mathbb{R} \to
+\mathbb{R}$. $f'(x) = 3(x^2)$. Problema: $f'(x) \neq 0 \Leftrightarrow
+x \neq 0$. Con la formula:
+$$ \left( \sqrt[3]{y} \right)' = {1 \over 3 \left( \sqrt[3]{y} \right)^2 }
+= {1 \over 3 y^{2 \over 3} } = {1 \over 3} y^{-{2 \over 3}} $$
+Cosa vediamo?
+$$ \left( y^{1 \over 3} \right)' = {1 \over 3} y^{{1 \over 3} -1} =
+{1 \over 3} y^{-{2 \over 3}} $$
+L'inversa non \`e derivabile in $0$ perch\'e $f'(0) = 0$.
+
+Unendo queste informazioni con la composizione di funzioni derivabili,
+dimostriamo che:
+\begin{equation}
+\left( x^{n \over m} \right)' = {n \over m} x^{{n \over m} -1} 
+\end{equation}
+Come si dimostra?
+$$ f^{-1}(x) = \sqrt[m]{x} ; \ f(x) = x^m ; \ \left( f^{-1} \right)'(x) =
+{1 \over m \left( \sqrt[m]{x} \right)^{m-1}} $$
+Ora, composizione di funzioni derivabili:
+$$ \left( \sqrt[m]{x^n} \right)' = {1 \over m \left( \sqrt[m]{x^n} 
+\right)^{m-1}} \cdot n x^{n-1} = {n \over m} {x^{n-1} \over 
+\left( x^{n \over m} \right)^{m-1}} $$
+Sommando gli esponenti:
+$$ n - 1 - {n \over m}(m - 1) = { \centernot{nm} - m - \centernot{nm} - n
+ \over m} = {n - m \over m} = {n \over m} -1 $$
+Per cui:
+$$ \left( x^{n \over m} \right)' = {n \over m} x^{{n \over m} -1} $$
+
+\subsubsection{Derivata dell'inversa di funzioni trigonometriche}
+$\tan: \left( -{\pi \over 2} , {\pi \over 2} \right) \to \mathbb{R}$
+\`e invertibile. $\arctan : \mathbb{R} \to \mathbb{R}$ (ma sappiamo
+che $\arctan : \mathbb{R} \to \left( -{\pi \over 2} , {\pi \over 2} 
+\right)$). Come trovo $\left[\arctan(x)\right]'$?
+
+So che:
+$$ f^{-1}(y) = \arctan(y) ; \ f(x) = \tan(x) ; \ f'(x) =
+{1 \over \cos^{2}(x)} $$
+$f'(x)$ non si annulla, poich\'e $-{\pi \over 2}$ e ${\pi \over 2}$ 
+sono fuori dal dominio. Composizione di una funzione trascendente 
+con l'inversa di una funzione trascendente: il reciproco della derivata 
+prima della funzione $f$ calcolata in $f^{-1}(y)$.
+$$ \left( f^{-1} \right)'(y) = {1 \over {1 \over \cos^2
+ \left( \arctan(y) \right)}} = \cos^2 \left( \arctan(y) \right) $$
+Il risultato \`e semplificabile:
+\begin{multline}
+{\cos^2 \left( \arctan(y) \right) \over 1} = 
+{\cos^2 \left( \arctan(y) \right) \over \cos^2 \left( \arctan(y) \right) +
+\sin^2 \left( \arctan(y) \right)} =
+{1 \over 1 + {\sin^2 \left( \arctan(y) \right) \over
+ \cos^2 \left( \arctan(y) \right)}} = \\ 
+{1 \over 1 + \tan^2 \left( \arctan(y) \right)} = 
+{1 \over 1 + y^2}
+\end{multline}
+Una funzione razionale, da una funzione trascendente!
+
+\subsection{Teorema di Lagrange}
+\label{lagrange}
+Il motivo per cui servono le derivate!
+
+Permanenza del segno: \`e importante nel calcolo dei limiti.
+\begin{enumerate}
+\item   $\lim_{x \to x_0} f(x) = \ell > 0$, che vuol dire? Che 
+        in un intorno di $x_0 \Rightarrow f(x) > 0$. Sto parlando
+        di \underline{strettamente} positivo, ovviamente escludo lo $0$.
+\item   Se $f(x) \geq 0$ in un intorno di $x_0$ ed $ \exists \ 
+        \lim_{x \to x_0} f(x) = \ell \Rightarrow \ell \geq 0$. Quindi, il
+        limite nel punto $x_0$ potrebbe essere $0$! (\underline{al limite})
+        Se $f(x) \geq 0$ in un intorno $\Rightarrow \ell \geq 0$, 
+        non \`e negativo.
+\end{enumerate}
+C'\`e un legame fra la crescenza e la descrescenza (in generale, fra la
+monotonia) delle funzioni e la loro derivata. Che legame?
+
+Se $f$ \`e crescente in $(a,b)$ e derivabile in $x_0 \in (a,b) \Rightarrow
+f'(x_0) \geq 0$. Ma non mi dice che se la derivata prima \`e positiva,
+allora \`e crescente. Con la derivata, lo strettamente crescente non
+influisce, vale sempre $f'(x_0) \geq 0$.
+
+Come lo vedo? Se $f(x)$ \`e crescente:
+$$ f'(x_0) = \lim_{h \to 0} {f(x_0+h) - f(x_0) \over h} \geq 0 $$
+perch\'e
+$$ \lim_{h \to 0^+} {f(x_0+h) - f(x_0) \left(> 0\right)
+ \over h \left(> 0\right)} \Rightarrow \geq 0 $$
+$$ \lim_{h \to 0^-} {f(x_0+h) - f(x_0) \left(< 0\right)
+ \over h \left(< 0\right)} \Rightarrow \geq 0 $$
+Lo stesso discorso vale con $f(x)$ decrescente in $(a,b)$ e
+derivabile per $x_0 \in (a,b)$, implica che $f'(x_0) \leq 0$. 
+Non \`e propriamente un teorema, ma un'osservazione. Io voglio poter
+dire il contrario! \textit{Enter} il \textbf{Teorema di Lagrange}.
+
+\textbf{Ipotesi:} $f$ continua in $[a,b]$; $f$ derivabile in $(a,b) 
+\Rightarrow \exists \ c \in (a,b)$ t.c.:
+$$ {f(b) - f(a) \over b - a} = f'(c) $$
+${f(b) - f(a) \over b - a}$ \`e il coefficiente angolare della retta 
+che unisce i due estremi dell'intervallo; esiste un punto che ha
+questo coefficiente angolare della tangente ($\exists$ almeno un
+$c$ che rispetta la condizione data). Se $f$ \`e una legge oraria,
+${f(b) - f(a) \over b - a}$ \`e la velocit\`a media; esiste almeno
+un momento in cui la velocit\`a media \`e la velocit\`a istantanea,
+dal punto di vista meccanico.
+
+\textbf{Corollario:} un'applicazione utile del teorema di Lagrange!
+
+\begin{itemize}
+\item   Sia $f$ derivabile in $(a,b)$, se $f'(x) \geq 0$ in $(a,b) 
+        \Rightarrow f$ \`e crescente.
+\item   Sia $f$ derivabile in $(a,b)$, se $f'(x) > 0$ in $(a,b) 
+        \Rightarrow f$ \`e strettamente crescente.
+\end{itemize}
+
+Siano $x_1$ e $x_2 \in (a,b)$ t.c. $x_1 < x_2$ (monotonia 
+$\Rightarrow$ le immagini verificano lo stesso ``segno'':
+ $>, \ \geq, \ <, \ \leq, \ \dots$). Applico il teorema ad $x_1$ ed
+ $x_2 \Rightarrow [x_1, x_2]$
+$$ \exists \ c \in (x_1, x_2) \text{ t.c. } { f(x_2) - f(x_1) \over
+x_2 - x_1} = f'(c) ; \ f(x_2) - f(x_1) = f'(c)\cdot(x_2 - x_1) $$
+Se so che la derivata \`e maggiore o uguale a $0$:
+$$ f'(c) \cdot (x_2 - x_1) \geq 0 \Rightarrow f(x_2) - f(x_1) \geq 0
+\Rightarrow f(x_2) \geq f(x_1) $$
+Quindi, la funzione \`e crescente! Se so che la derivata non
+si annulla:
+$$ f'(c) \cdot (x_2 - x_1) > 0 \Rightarrow f(x_2) > f(x_1) $$
+La funzione \`e strettamente crescente.
+
+Allo stesso modo:
+\begin{itemize}
+\item   Sia $f$ derivabile in $(a,b)$, se $f'(x) \leq 0$ in $(a,b) 
+        \Rightarrow f$ \`e decrescente.
+\item   Sia $f$ derivabile in $(a,b)$, se $f'(x) < 0$ in $(a,b) 
+        \Rightarrow f$ \`e strettamente decrescente.
+\end{itemize}
+
+Sia $f$ derivabile in $(a,b)$ t.c. $f'(x) = 0 \ \forall x \in (a,b)
+\Rightarrow f $ \`e costante. Non \`e una banalit\`a: l'inverso
+s\`i, ma questo no.
+
+Se $f$ e $g$ hanno la stessa derivata nello stesso intervallo
+$(a,b)$:
+$$ f'(x) = g'(x) \ \forall x \in (a,b) \Rightarrow
+f'(x) - g'(x) = 0 \Rightarrow \left[ f(x) - g(x) \right]' = 0
+\Rightarrow f(x) - g(x) = K $$
+Differiscono di una costante in $[a,b]$.
+
+\subsection{Derivabilit\`a}
+Quando \`e derivabile una funzione? Con una funzione simile:
+$$
+f(x) = \begin{cases}
+f_1(x) & x \leq x_0 \\
+f_2(x) & x > x_0 
+\end{cases}
+$$
+$f$ \`e derivabile in $x_0$? Posso controllarlo solo se \`e continua.
+$$
+\lim_{x \to x_{0^-}} f_1(x) = \lim_{x \to x_{0^+}} f_2(x) = f(x_0) 
+$$
+\underline{Se} \`e continua, devo controllare se \`e derivabile da destra:
+$$
+\lim_{h \to 0^+} {f_2(x_0+h) - f_2(x_0) \over h}
+$$
+e se \`e derivabile da sinistra:
+$$
+\lim_{h \to 0^-} {f_1(x+h) - f_1(x) \over h}
+$$
+Entrambi i limiti devono essere finiti. Se esistono le derivate da destra
+e da sinistra in $x_0$ e sono uguali, allora $f$ \`e derivabile in $x_0$.
+Tutto ci\`o \underline{solo se} la funzione \`e continua!
+
+\textbf{Esempio:} considero la funzione:
+$$
+f(x) = \begin{cases}
+e^x & x \geq 0 \\
+\sin(x) & x < 0
+\end{cases}
+$$
+Il limite del rapporto incrementale in $0$ vale $1$, ma la funzione 
+\textbf{non} \`e derivabile perch\'e non \`e continua in $0$.
+
+\newpage
+\section{Logaritmo ed esponenziale}
+Funzione esponenziale: $a^b$ con $a,b \in \mathbb{R}$.
+
+Possiamo costruire due funzioni: $x^b$ e $a^x$, con $a$ e $b$ fissati.
+$a^x$ \`e la funzione esponenziale. Non \`e banale: cosa \`e $2^{\pi}$?
+So fare:
+$$
+2^{n \over m} = \sqrt[m]{2^n} ; \
+ 2^{-{n \over m}} = {1 \over 2^{n \over m}}
+$$
+$ \pi^2$ so calcolarlo, ma ho problemi con l'esponente reale.
+Potrei approssimare $2^{\pi}$ a $2^{3.14}$. $3.14$ \`e un numero 
+razionale, so rappresentarlo, ma non potrei verificare le propriet\`a
+dell'esponenziale:
+\begin{enumerate}
+\item   $ a^{b_1} \cdot a^{b_2} = a^{b_1 + b_2}$
+\item   $ \left( a^{b_1} \right)^{b_2} = a^{b_1 \cdot b_2} $
+\item   $ a^{-b_1} = {1 \over a^{b_1}} $ 
+\end{enumerate}
+
+\subsection{Logaritmo}
+Definiamo geometricamente il logaritmo.
+Considero $f(x) = {1 \over x}; \ f'(x) = -{1 \over x^2}$.
+Definisco il $\ln(x)$.
+$$ \ln(x) = \left\{ \text{
+\begin{tabular}{r l}
+$A_x$ & se $x \geq 1$ \\
+$-A_x$ & se $0 < x < 1$ \\
+\end{tabular}
+} \right. $$
+$A_{x_0}$ \`e l'area della regione compresa fra il grafico ${1 \over x}$
+e le rette $x = 1, \ x = x_0$ e $y = 0$
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    domain=0:2,
+    samples=100,
+    xmin=0,
+    xmax=2,
+    ymin=0,
+    ymax=10,
+    area style
+]
+\addplot+[fill] [
+    red,
+    domain=1:1.4,
+    samples=20,
+]
+    {1/x} \closedcycle;
+\addplot[thick] {1/x};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Quindi, $\ln(x) : (0, \infty) \to \mathbb{R}$. Prima osservazione: 
+$\ln(x)$ \`e strettamente crescente. Seconda osservazione: 
+$\ln(1) = 0$. Poi, $\ln(x) < 0$ in $(0,1)$ e $\ln(x)>0$ in $(1,\infty)$.
+
+Il punto cruciale \`e fare la derivata della funzione $\ln(x)$.
+$\ln(x)$ \`e derivabile in $(0,\infty)$ e $\left( \ln(x) \right)' =
+{1 \over x}$. Dimostriamolo.
+$$ \lim_{h \to 0} {\ln(x+h) - \ln(x) \over h} $$
+Posso dire che $\ln(x+h) - \ln(x) = A_{x+h} - A_x$ \`e compreso
+fra due rettangoli, $R_h$ e $r_h$.
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    domain=1:1.6,
+    samples=100,
+    xmin=1,
+    xmax=1.6,
+    ymin=0,
+    ymax=1,
+    area style
+]
+\addplot[thick] {1/x};
+\addplot[red] {1} \closedcycle;
+\addplot[blue] {1/1.6} \closedcycle;
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+$$ R_h \geq \ln(x+h) - \ln(x) \geq r_h $$
+Che aree hanno? 
+$$r_h = h \cdot f(x+h) = {h \over x+h} ; \
+ R_h = h \cdot f(x) = {h \over x} $$
+Ora posso trovare il limite:
+\begin{multline}
+{h \over x+h} \leq \ln(x+h) - \ln(x) \leq {h \over x} \\
+{1 \over x+h} \leq {\ln{x+h} - \ln(x) \over h} \leq {1 \over x} \\
+\lim_{h \to 0} {1 \over x+h} \leq \lim_{h \to 0} {\ln{x+h} - \ln(x) \over h}
+\leq {1 \over x} \\
+{1 \over x} \leq \lim_{h \to 0} {\ln{x+h} - \ln(x) \over h}
+\leq {1 \over x}
+\end{multline}
+Quindi:
+$$ \left[ \ln(x) \right]' = {1 \over x} $$
+
+Che propriet\`a ha $\ln(x)$?
+\begin{enumerate}
+\item   $\ln(x \cdot y) = \ln(x) + \ln(y) $
+\item   $\ln(x^r) = r \cdot \ln(x)$ con $r \in \mathbb{Q}$
+\end{enumerate}
+Dimostriamo $\ln(x \cdot y) = \ln(x) + \ln(y)$ con $x>0$ e $y>0$,
+fissata $y$. Pongo $h_1 (x) = \ln(x \cdot y)$ e 
+$h_2 (x) = \ln(x) + \ln(y)$. Se le derivate sono uguali, $h_1(x)$
+e $h_2(x)$ differiscono di una costante.
+$$ \left( h_1 \right)'(x) = {1 \over xy} \cdot y = {1 \over x} $$
+$$ \left( h_2 \right)'(x) = {1 \over x} + 0 $$
+$\left[ \ln(y) \right]' = 0$ perch\'e $y$ \`e una costante!
+$ h_2 (x) - h_1(x) \equiv K$, se $K = 0$, allora sono la stessa funzione.
+Controllo per $x=1$, visto che conosco il valore di $\ln(1) = 0$.
+$$ \ln(1 \cdot y) - \left( \ln(1) + \ln(y) \right) = 
+\ln(y) - \left( 0 + \ln(y) \right) = \ln(y) - \ln(y) = 0 $$
+Il procedimento per dimostrare la seconda propriet\`a \`e identico.
+
+$$ \lim_{x \to +\infty} \ln(x) = +\infty $$
+Come faccio a saperlo? Dal grafico posso capire che
+$ \ln(x) \geq (x-1) \cdot f(x) = {x-1 \over x} $ e che
+$ \ln(x) \leq (x-1) \cdot f(1) = x-1 $. Facendo i limiti:
+$$ \lim_{x \to +\infty} {x-1 \over x} = 1 $$
+$$ \lim_{x \to +\infty} x-1 = +\infty $$
+Quindi $\lim_{x \to +\infty} \ln(x)$ \`e compreso fra $1$ e $+\infty$.
+Come dimostro che non \`e limitato? Devo usare la seconda propriet\`a.
+$$ \ln(2^n) = n \cdot \ln(2) $$
+Quindi una $x$ molto grande mi d\`a un logaritmo ``grande''. $\ln(x)$ va ad
+infinito molto lentamente.
+$$ \lim_{x \to 0^+} \ln(x) = \lim_{z \to +\infty} \ln \left({1 \over z}
+ \right) = \lim_{z \to +\infty} - \ln(z) = - \infty $$
+Con queste informazioni \`e possibile disegnare la funzione:
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    domain=0:6,
+    samples=100,
+    xmin=0,
+    xmax=6,
+    ymin=-3,
+    ymax=3,
+]
+\addplot[thick] {ln(x)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\subsection{Esponenziale}
+$\ln(x) : (0,+\infty) \to \mathbb{R}$ \`e invertibile. 
+$\exists \ \ln^{-1}$ che per ora chiamo
+$\exp(x): \mathbb{R} \to (0, +\infty)$. $\ln(1) = 0 \Rightarrow \exp(0) = 1 $
+Le sue propriet\`a:
+\begin{enumerate}
+\item   $\exp(x+y) = \exp(x) \cdot \exp(y)$
+\item   $\exp(x \cdot y) = \left[ \exp(x) \right]^{y}$ con $y \in \mathbb{Q}$
+\end{enumerate}
+Si verifica facilmente la prima:
+$$ \ln \left( \exp(x +y) \right) = \ln \left( \exp(x) \cdot \exp(y) \right)
+= \ln \left( \exp(x) \right) + \ln \left( \exp(y) \right) = x + y $$
+Diamo un nome a $\exp(1) = e$ (numero di Nepero). $e$ \`e quel numero 
+tale che $A_x = 1 \Rightarrow \ln(e) = 1$.
+
+La seconda propriet\`a ci dice che $e^y = \exp(y)$ con $y \in \mathbb{Q}$
+e $x = 1$. Ma posso estendere il concetto ai reali e dire che 
+$e^y = \exp(y) \ \forall y \in \mathbb{R}$.
+
+Voglio calcolare $\left( e^x \right)' = \left[ \exp(x) \right]' =$ ?
+$f^{-1}(x) = e^x$, $f(x) = \ln(x)$, $f'(x) = {1 \over x}$.
+$$ \left( e^x \right)' = {1 \over {1 \over e^x}} = e^x $$
+\`E l'unica funzione identica alla sua derivata.
+
+\subsection{Esponenziale e logaritmo ``in generale''}
+Definisco l'esponenziale generico $a^x$ con $a>0$.
+Pongo $y = a^x$, $\ln(a^x) = x \cdot \ln(a) = \ln(y)$.
+$$ y = \exp \left( \ln(y) \right) = \exp \left( x \cdot \ln(a) \right) =
+e^{\ln(a) \cdot x} $$
+Ecco la definizione di $a^x$!
+$$ a^x = e^{\ln(a) \cdot x} $$
+Come sar\`a il grafico di $a^x$? Se $a=e \Rightarrow e^x$ il grafico
+sar\`a simmetrico a quello di $\ln(x)$ rispetto alla bisettrice 
+I/III quadrante, essendo la funzione inversa di $\ln(x)$.
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    domain=-3:3,
+    samples=100,
+    xmin=-3,
+    xmax=3,
+    ymin=-3,
+    ymax=3,
+]
+\addplot[dashed,red] {ln(x)};
+\addplot[thick] {exp(x)};
+\addplot[dashed] {x};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Negli altri casi, devo distinguere fra $a<1$ e $a>1$.
+Se $a=1 \Rightarrow a^x = 1^x = 1$.
+Se $a<1$ si inverte il disegno, simmetricamente rispetto all'asse
+$y$.
+$$ a<1 \Rightarrow a^x = {1 \over e^{|\ln(a)| \cdot x}} $$
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    domain=-2:2,
+    samples=100,
+    xmin=-2,
+    xmax=2,
+    ymin=0,
+    ymax=3,
+]
+\addplot[thick] {exp(ln(0.5) * x)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Ultimo punto: $\log_a(x)$ \`e definito come l'inversa di $a^x$.
+$\log_e(x) = \ln(x)$ per definizione.
+$$ \log_a(x) = {\log_b(x) \over \log_b(a)} $$
+
+\subsection{Derivate varie}
+Qualcosa di utile: $f(x) = x^{\alpha} = e^{\alpha \cdot \ln(x)}$
+con $\alpha \in \mathbb{R}$. Perch\'e? Pongo $y=x^{\alpha}$:
+$$ y = \exp \left( \ln(y) \right) = \exp \left( \ln(x^{\alpha}) \right) =
+\exp \left( \alpha \cdot \ln(x) \right) = e^{\alpha \cdot \ln(x)} $$
+Facendo la derivata di $x^{\alpha}$:
+$$
+\left( x^{\alpha} \right)' = \left[ e^{\alpha \cdot \ln(x)} \right]' =
+e^{\alpha \cdot \ln(x)} \cdot \alpha \cdot {1 \over x} =
+{x^{\alpha} \cdot \alpha \over x} = \alpha \cdot x^{\alpha - 1}
+$$
+E questo serve.
+
+Possiamo trovare anche, con $f$ e $g$ derivabili, 
+$ \left[ {f(x)}^{g(x)} \right]' $, ad esempio 
+$ \left[ {\left( \sqrt{x^2 +1} \right)}^{\cos(x)} \right]'$.
+\begin{multline}
+\left[ {f(x)}^{g(x)} \right]' = \\
+\left[ e^{\ln \left(f(x) \right) \cdot g(x)} \right]' =
+{f(x)}^{g(x)} \cdot \left[ \ln \left( f(x) \right) g(x) \right]' =
+{f(x)}^{g(x)} \cdot \left( \ln \left( f(x) \right) \cdot g'(x)
++ {g(x) \cdot f'(x) \over f(x)} \right) = \\
+{f(x)}^{g(x)} \cdot \left[ g'(x) \cdot \ln \left( f(x) \right)
++ {g(x) \cdot f'(x) \over f(x)} \right]
+\end{multline}
+L'esempio di prima:
+$$
+\left[ {\left( x^2 +1 \right)}^{\cos(x) \over 2} \right]' = \\
+\left( {\left( x^2 +1 \right)}^{\cos(x) \over 2} \right) \cdot
+\left[ - {\sin(x) \over 2} \cdot \ln(x^2 +1) +
+{ \cos(x) \cdot 2x \over 2 (x^2 +1)} \right]
+$$
+
+Troviamo $ \left[ \log_a(x) \right]' $.
+$$
+\left[ \log_a(x) \right]' = {1 \over \ln(a) \cdot a^{\log_a(x)}} =
+{1 \over \ln(a) x}
+$$
+
+\subsubsection{Funzioni esponenziali ``nascoste''}
+Fenomeni in cui la variazione di una quantit\`a dipende dalla quantit\`a
+in modo proporzionale. Se considero $y(t)$ e ho che $y'(t) = k \cdot y(t)$,
+la funzione $y$ \`e l'esponenziale. In particolare $y(t) = c \cdot 
+e^{k \cdot t}$. Per dimostrarlo:
+$$
+\left[ {e^{k \cdot t} \over y(t)} \right]' = 
+{k \cdot e^{k \cdot t} \cdot y(t) - e^{k \cdot t} \cdot y'(t) \over y^2(t)} =
+{k \cdot e^{k \cdot t} \cdot y(t) - e^{k \cdot t} \cdot k \cdot y(t)
+\over y^2(t)} = 0
+$$
+La derivata \`e nulla, la funzione \`e costante. Quindi $ y(t) = c \cdot
+e^{k \cdot t}$, ma quanto vale $c$? $y(0) = c \cdot e^0 \Rightarrow
+c = y(0)$. Quindi $y_0 = y(0)$ \`e la costante di proporzionalit\`a.
+$$
+y(t) = y_0 \cdot e^{k \cdot t} \Rightarrow
+\begin{cases} y_0 = y(0) \\
+y'(t) = k \cdot y(t) \end{cases}
+$$
+
+\newpage
+\section{Diversi tipi di infinito}
+\label{infiniti} Come dimostro questi limiti?
+$$ \lim_{x \to +\infty} {\ln(x) \over x^a} = 0 \ \forall a > 0 $$
+$$ \lim_{x \to +\infty} {x^a \over e^x} = 0 \ \forall a > 0 $$
+L'infinito di $\ln(x)$ \`e minore di $x^a$, l'infinito di $e^x$ \`e
+maggiore di $x^a$. Altre cose interessanti:
+$$ \lim_{x \to 0} x^a \cdot \ln(x) = 0 \ \forall a > 0 $$
+$$ \lim_{x \to -\infty} e^x {|x|}^a = 0 \ \forall a > 0 $$
+Come dimostro il primo? $ \ln(x) \leq x-1 \ \forall x > 0$.
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    domain=-1:4,
+    samples=100,
+    xmin=-1,
+    xmax=4,
+    ymin=-2,
+    ymax=2,
+]
+\addplot[thick] {ln(x)};
+\addplot[red,dashed] {x-1};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+La retta tangente in $x_0$ alla funzione $f$ \`e $ y - f(x_0) = 
+f'(x_0) (x - x_0)$. La retta tangente al $\ln(x)$ in $x_0 = 1$ 
+quindi \`e:
+$$ y = {1 \over x_0} (x - x_0) - \ln(x_0) = x-1 $$
+Per dimostrare che $\ln(x) \leq x-1$ dimostro che $g(x) = \ln(x) - x + 1
+\leq 0$ in $(0, +\infty)$.
+$$ g'(x) = {1 \over x} - 1 $$
+Studiando $g'(x)$ trovo che $ g'(x) \geq 0 \Leftrightarrow {1 \over x} - 1
+\geq 0 \Leftrightarrow {1 \over x} \geq 1 $, quindi $g'(x) \geq 0 
+\Leftrightarrow x \leq 1$. $g$ \`e crescente in $(0,1)$, decrescente in
+$(1,+\infty)$, quindi $g$ ha un massimo in $1 \Rightarrow g(1)$ \`e il massimo
+valore di $g$ in $(0,+\infty)$. Poich\'e $g(1) = \ln(1) - 1 + 1 = 0$, il
+massimo valore di $g(x)$ \`e $0$, quindi $g(x)$ \`e una funzione negativa.
+
+Ora:
+$$
+\ln(x) \leq x-1 \ \forall x > 0 \Rightarrow \ln(x^s) \leq x^s - 1 \ (s > 0) 
+\Rightarrow s \ln(x) \leq x^s -1 < x^s \Rightarrow \ln(x) < {x^s \over s}
+$$
+Per dimostrare che $ \lim_{x \to +\infty} {\ln(x) \over x^a} = 0 
+\ \forall a > 0 $, prendo $s = {a \over 2}$, considerando che
+$\ln(x) > 0$ e $x^a >0$ in $(1,+\infty)$:
+\begin{multline*}
+\ln(x) < { x^{a \over 2} \over {a \over 2}} \Rightarrow
+{ \ln(x) \over x^a} < {2 x^{a \over 2} \over a x^a} = 
+{2 \over a x^{a \over 2}} \Rightarrow 
+0 < \lim_{x \to +\infty} {\ln(x) \over x^a} < 
+\lim_{x \to +\infty} {2 \over a x^{a \over 2}} = 0
+\Rightarrow  \\ 0 < \lim_{x \to +\infty} {\ln(x) \over x^a} < 0
+\Rightarrow \lim_{x \to +\infty} {\ln(x) \over x^a} = 0
+\end{multline*}
+
+\subsection{Altre dimostrazioni}
+$ \lim_{x \to 0^+} x^a \ln(x)$ ponendo $y = {1 \over x}$ e sapendo che
+$ \lim_{x \to 0^+} {1 \over x} = + \infty $:
+$$ \lim_{x \to 0^+} x^a \ln(x) = 
+\lim_{y \to +\infty} {1 \over y^a} \ln \left({1 \over y} \right) = 
+\lim_{y \to +\infty} - {\ln(y) \over y^a} = 0 $$
+
+$ \lim_{x \to +\infty} {x^a \over e^x} = 0$, pongo $x = \ln(y)$, 
+$e^x = e^{\ln(y)} = y$. So che ${1 \over a} > 0$.
+$$
+\lim_{x \to +\infty} {x^a \over e^x} = 
+\lim_{y \to +\infty} {{\ln(y)}^a \over y} = 
+\lim_{y \to +\infty} {\left[ {\ln(y) \over y^{1 \over a}} \right]}^a = 
+0^a = 0
+$$
+
+$ \lim_{x \to -\infty} e^x {|x|}^a = 0 $, pongo $y = -x$,
+$\lim_{x \to -\infty} -x = +\infty$.
+$$
+\lim_{x \to -\infty} e^x {|x|}^a =
+\lim_{y \to +\infty} e^{-y} {|y|}^a =
+\lim_{y \to +\infty} {{|y|}^a \over e^y} = 0
+$$
+
+Ma non ci basta! $\lim_{x \to +\infty} {x^a \over b^x}$ con $a, b>0$.
+So che:
+$b^x = e^{\ln(b) \cdot x}$, $\ln(b) \geq 0 \Leftrightarrow b \geq 1$.
+Quindi:
+$$
+\lim_{x \to +\infty} {x^a \over b^x} = 
+\begin{cases} +\infty & b \leq 1 \\
+0 & b > 1 \end{cases}
+$$
+Ponendo $y = \ln(b) x$ con $b > 1$:
+$$
+\lim_{x \to +\infty} {x^a \over b^x} = 
+\lim_{x \to +\infty} {x^a \over e^{ln(b) \cdot x}} = 
+\lim_{y \to +\infty} {{\left[ y \over \ln(b) \right]}^a \over e^y} = 
+{1 \over {\ln(b)}^a} \lim_{y \to +\infty} {y^a \over e^y} = 0
+$$
+
+\subsubsection{Infiniti e successioni}
+A pagina \pageref{fattoriale} per scoprire che $n^n$ (o $x^x$) e $n!$ 
+hanno il primo e secondo posto fra gli infiniti pi\`u potenti. 
+$n!$ non ha senso sui reali, per\`o!
+
+\newpage
+\section{Studio di una funzione}
+
+\subsection{Massimo e minimo relativi}
+$f: (a,b) \to \mathbb{R}$ dir\`o che $x_0$ \`e un punto di minimo relativo
+e che $m = f(x_0)$ \`e il minimo relativo per $f$ se $\exists$ un intorno
+di $x_0 \ (x_0 - \delta, \ x_0 + \delta)$ t.c. $f(x) \geq f(x_0) \ \forall
+x \in (x_0 - \delta, \ x_0 + \delta)$.
+
+Stesso discorso per il massimo relativo: $x_0$ \`e un punto di massimo relativo
+e $M = f(x_0)$ \`e il massimo relativo per $f$ se $\exists$ un intorno
+di $x_0 \ (x_0 - \delta, \ x_0 + \delta)$ t.c. $f(x) \leq f(x_0) \ \forall
+x \in (x_0 - \delta, \ x_0 + \delta)$.
+
+\textbf{Attenzi\`o:} $f(x) = |x|$ non ha derivata in $0$, ma $0$ \`e il punto
+di minimo (relativo e assoluto). 
+
+\subsubsection{Teorema di Fermat}
+\textbf{Th:} se $x_0$ \`e un punto di massimo o minimo relativo per $f$ ed 
+$\exists f'(x_0)$, allora $f'(x_0) = 0$. Quello che \`e sicuro \`e che,
+se la derivata non \`e nulla in un punto, non c'\`e $\max$ o $\min$ in quel
+punto.
+
+Supponendo che $x_0$ sia punto di minimo relativo, faccio il limite destro e sinistro del rapporto incrementale.
+$$
+\lim_{h \to 0^+} {f(x_0+h) - f(x_0) \over h} \Rightarrow
+f(x_0+h) \geq f(x_0) \Rightarrow f(x_0+h) - f(x_0) \geq 0
+$$
+Il limite destro \`e $\geq 0$.
+$$
+\lim_{h \to 0^-} {f(x_0+h) - f(x_0) \over h} \Rightarrow
+f(x_0+h) - f(x_0) \geq 0 \Rightarrow 
+\lim_{h \to 0^-} {f(x_0+h) - f(x_0) \over h} \leq 0
+$$
+essendo $h \leq 0$. Quindi, se $\lim_{h \to 0^+} \geq 0$ e $\lim_{h \to 0^-}
+\leq 0$ e so che $\exists \lim_{h \to 0}$, allora il limite sar\`a proprio 0.
+
+Attenzione alla direzione dell'implicazione del teorema di Fermat:
+$f(x) = x^3$, $f'(x) = 3x^2$, $f'(0) = 0$, ma non ho massimo o minimo
+in questo punto! Servirebbero derivate di ordine superiore per sapere che cosa
+succede nel punto $0$.
+
+\subsubsection{Dove sono massimi e minimi?}
+$f$ derivabile in $(a,b)$ e continua in $[a,b]$, voglio trovare $\max$ e $\min$
+assoluto in $(a,b)$, che so esistere per il teorema di Weierstrass. I casi
+possibili sono due:
+\begin{enumerate}
+\item   Sono \textbf{interni}, quindi sono anche $\max$ e $\min$ relativi
+        $\Rightarrow$ hanno derivata nulla. Potrei vedere dove si annulla $f'$,
+        e controllare i valori di $f$ in quei punti.
+\item   Sono \textbf{sulla frontiera}, vengono assunti in $a$ e/o $b$.
+\end{enumerate}
+Con questa informazione posso dimostrare il teorema di Lagrange. Prima,
+per\`o, \`e necessario il teorema di Rolle.
+
+\subsubsection{Teorema di Rolle}
+$f$ derivabile in $(a,b)$ e continua in $[a,b]$, se $f(a) = f(b)$ ($f$ non 
+\`e n\'e crescente n\'e decrescente, non \`e monotona) $\Rightarrow \exists
+\ c$ t.c. $f'(c) = 0$.
+
+Perch\'e? Perch\'e al massimo uno fra massimo e minimo sar\`a sulla frontiera,
+ed almeno uno fra massimo e minimo sar\`a interno. Altrimenti, avrei una 
+funzione costante, che non ha massimo e minimo, o piuttosto ha $\max = \min$.
+
+\subsubsection{Dimostrazione del teorema di Lagrange}
+Gi\`a visto a pagina \pageref{lagrange}, ripetiamo per chi era a cena.
+
+$f$ derivabile in $(a,b)$, $f$ continua in $[a,b] \Rightarrow \exists \ c \in
+(a,b)$ t.c.:
+$$ f'(c) = {f(b) - f(a) \over b - a} $$
+Come lo dimostriamo? Creiamo $g(x)$, la retta passante fra i punti $P_a = 
+(a, \ f(a))$ e $P_b = (b, \ f(b))$.
+$$
+g(x) = f(x) - \left[ f(a) + {f(b) - f(a) \over b - a} \cdot (x - a) \right]
+$$
+$g$ verifica l'ipotesi del teorema di Rolle (\`e continua, \`e derivabile),
+ed inoltre $g(a) = 0$ e $g(b) = f(b) - f(a) - f(b) + f(a) = 0$. Quindi
+$ \exists \ c \in (a,b)$ t.c. $g'(c) = 0$.
+
+Quanto vale la derivata di $g$?
+$$
+g'(x) = f'(x) - {f(b) - f(a) \over b - a}
+$$
+Se sostituisco $c$ ad $x$ ottengo che:
+$$
+f'(c) = {f(b) - f(a) \over b - a} \Leftrightarrow g'(c) = 0
+$$
+Quindi, Lagrange.
+
+\subsubsection{Ricerca di massimi e minimi}
+Ricapitolando i teoremi a nostra disposizione:
+
+\textbf{Fermat:} se $x_0$ \`e un punto di $\max$ o $\min$ relativo e $\exists 
+\ f'(x_0) \Rightarrow f'(x_0) = 0$.
+
+\textbf{Rolle:} se $f$ \`e continua in $[a,b]$ e derivabile in $(a,b)$ e
+$f(a) = f(b) \Rightarrow \exists \ c \in (a,b)$ t.c. $f'(c) = 0$.
+
+\textbf{Lagrange:} se $f$ \`e continua in $[a,b]$ e derivabile in $(a,b) 
+\Rightarrow \exists \ c \in (a,b)$ t.c.:
+$$ f'(c) = {f(b) - f(a) \over b - a} $$
+\begin{itemize}
+\item \textbf{Corollario 1:} se $f'(x) \geq 0 \ \forall \ x \in (a,b) 
+\Rightarrow f$ crescente in $(a,b)$, e identicamente se $f'(x) \leq 0 
+\ \forall \ x \in (a,b) \Rightarrow f$ decrescente in $(a,b)$.
+Lo strettamente maggiore (minore) implica lo strettamente crescente
+(decrescente).
+\item \textbf{Corollario 2:} se $f'(x) = 0$ in $(a,b) \Rightarrow f$ 
+\`e costante in $(a,b)$.
+\end{itemize}
+
+Mettendo assieme queste informazioni, dico che se $f'(x) \leq 0$ in
+$(x_0 - \delta, \ x_0)$ e $f'(x) \geq 0$ in $(x_0, \ x_0 + \delta)
+\Rightarrow x_0$ \`e un punto di minimo. Identicamente, se $f'(x) \geq 0$ 
+in $(x_0 - \delta, \ x_0)$ e $f'(x) \leq 0$ in $(x_0, \ x_0 + \delta)
+\Rightarrow x_0$ \`e un punto di massimo.
+
+\textbf{Esempio:} $f(x) = e^x - x$, voglio trovare massimo e minimo
+assoluti in $[-1,\ 1]$. Sono assunti agli estremi, o dove la derivata
+\`e nulla.
+$$
+f'(x) = e^x - 1 = 0 \Rightarrow e^x = 1 \Rightarrow x = \ln(1) = 0
+$$
+Ho tre possibilit\`a: $-1$, $0$, $1$.
+$$
+f(-1) = 1 + {1 \over e} ; \ f(0) = 1 ; \ f(1) = e - 1
+$$
+Chi sono massimo e minimo assoluti in $[-1, \ 1]$? $x=0$ \`e il punto 
+in cui \`e assunto il minimo assoluto, $x=1$ \`e il punto in cui \`e
+assunto il massimo assouto.
+
+\subsection{Derivate di ordine superiore}
+$f:(a,b) \to \mathbb{R}$, $\exists \ f':(a,b) \to \mathbb{R} \Rightarrow$
+posso derivare $f'$. $f'$ \`e la ``funzione derivata prima'', se $f'$ \`e
+derivabile in $(a,b)$ chiamiamo la derivata di $f'$ ``derivata seconda
+di $f$'' $\to f''(x)$.
+
+Se $f'':(a,b) \to \mathbb{R}$ \`e a sua volta derivabile, posso continuare
+a derivare e definire la derivata terza, $f'''(x)$.
+
+\subsubsection{Concavit\`a e convessit\`a}
+$f$ \`e convessa in $(a,b)$ se il grafico di $f$ \`e sopra ogni retta
+tangente al grafico. Una definizione alternativa \`e: $f$ \`e convessa 
+se due punti sono uniti da un segmento superiore al grafico.
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis x line=middle,
+    axis y line=middle,
+    domain=0.3:2,
+    samples=100,
+    xmin=0.3,
+    xmax=2,
+    ymin=0,
+    ymax=3,
+]
+\addplot[thick] {x^3 - x^2 + 1};
+\addplot[red,dashed] {x};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Qual \`e l'equazione di una retta tangente ad un grafico? Nel punto
+$(x_0, \ f(x_0))$ \`e:
+$$
+y = f(x_0) + f'(x_0) \cdot (x - x_0)
+$$
+Se la funzione \`e convessa in $(a,b)$, che posso dire? Che 
+$f(x) \geq f(x_0) + f'(x_0) \cdot (x - x_0) \ \forall \ x_0, x \in (a,b)$.
+Saranno uguali solo se $x = x_0$!
+
+Identicamente, $f$ \`e concava in $(a,b)$ se $f(x) \leq f(x_0) + f'(x_0) 
+\cdot (x - x_0) \ \forall \ x_0, x \in (a,b)$, e l'uguaglianza si ha 
+solo se $x = x_0$.
+
+\textbf{Th:} $f$ derivabile in $(a,b) \Rightarrow f$ \`e convessa 
+$ \Leftrightarrow f'$ \`e strettamente crescente.
+
+\textbf{Corollario:} se $\exists \ f''$ in $(a,b)$ e $f''(x) > 0$ in $(a,b)
+\Rightarrow f$ \`e convessa. Identicamente, se $\exists \ f''$ in $(a,b)$ 
+e $f''(x) < 0$ in $(a,b) \Rightarrow f$ \`e concava.
+
+Il punto in cui cambia la convessit\`a \`e detto ``punto di flesso''.
+$x_0$ \`e un punto di flesso se in un intorno destro di $x_0$ $f$ \`e
+concava (convessa) ed in un intorno sinistro di $x_0$ $f$ \`e convessa
+(concava), e in $x_0$ il grafico di $f$ ammette retta tangente.\footnotemark
+$$
+\text{Ammette retta tangente: }
+\begin{cases}
+f \text{ \`e derivabile in } x_0 \\
+\text{il limite del rapporto incrementale \`e } |\infty|
+\end{cases}
+$$
+
+\footnotetext{Dire che ``ammette retta tangente'' \`e una definizione 
+pi\`u generale di ``ha derivata'', include anche le tangenti ``all'infinito'',
+perpendicolari all'asse $x$.}
+
+Se $x_0$ \`e un punto di flesso e $\exists \ f''$ in un intorno di $x_0 
+\Rightarrow f''(x_0) = 0$.
+
+Se $f''$ \`e negativo a sinistra e positivo a destra di $x_0 \Leftrightarrow
+x_0$ \`e un punto di flesso.
+
+Altre osservazioni su concavit\`a e convessit\`a:
+\begin{itemize}
+\item   $f(x) = ax^2 + bx + c$ \`e convessa se $f''(x) = 2a > 0 
+        \Rightarrow a > 0$.
+\item   $f(x) = e^x \Rightarrow f'(x) = e^x \Rightarrow f''(x) = e^x$, la
+        derivata seconda \`e sempre positiva, quindi $e^x$ \`e convessa.
+\item   $f(x) = \ln(x) \Rightarrow f'(x) = {1 \over x} \Rightarrow f''(x) =
+        - {1 \over x^2}$, la derivata seconda \`e sempre negativa, quindi
+        $\ln(x)$ \`e concava.
+\item   $f(x) = \sin(x) \Rightarrow f''(x) = - \sin(x)$ in $[0,2\pi]$.
+        \`E convessa se $f(x)$ \`e negativa, se \`e positiva \`e concava.
+        Gli zeri di $\sin(x)$ sono i flessi $\Rightarrow x = k \cdot \pi $
+        sono flessi, con $k \in \mathbb{Z}$.
+\end{itemize}
+
+Somma di funzioni convesse \`e convessa, somma di funzioni concave \`e concava.
+
+$-f(x)$ cambia ``concavit\`a''.
+
+\subsubsection{Test della derivata seconda}
+Sia $f$ derivabile due volte in $x_0$:
+\begin{itemize}
+\item   $f'(x_0) = 0 \land f''(x_0) > 0 \Rightarrow x_0$ \`e un punto di minimo
+        relativo.
+\item   $f'(x_0) = 0 \land f''(x_0) < 0 \Rightarrow x_0$ \`e un punto di 
+        massimo relativo.
+\end{itemize}
+Se $f'(x_0) = 0 \land f''(x_0) = 0$, non sappiamo niente.
+
+\subsection{Studio di una funzione, \textit{step by step}}
+\begin{enumerate}
+\item   Determinare il dominio di definizione della funzione: 
+        $D_f \subseteq \mathbb{R}$.
+\item   Vedere cosa succede agli estremi del $D_f$: I Limiti Sono Tuoi Amici.
+\item   Crescenza e decrescenza: determinare le soluzioni della disequazione
+        $f'(x) \geq 0$.
+\item   Concavit\`a e convessit\`a: determinare le soluzioni della
+        disequazione $f''(x) \geq 0$.
+\end{enumerate}
+
+E del suo grafico, data $f(x)$:
+\begin{enumerate}
+\item   Studio di $f(x)$:
+    \begin{enumerate}
+    \item   Determinare il dominio di definizione della funzione: 
+            $D_f \subseteq \mathbb{R}$.
+    \item   Verificare la presenza di simmetrie, se la funzione \`e 
+            pari/dispari/periodicit\`a: propriet\`a qualitative di un grafico.
+    \item   Intersezioni con gli assi, se \`e possibile. Con l'asse $y$ \`e
+            semplice, se c'\`e: $y_0 = f(0)$, se $0 \in D_f$. Per le intersezioni
+            con l'asse $x$ devo trovare le soluzioni dell'equazione $f(x) = 0$.
+            Cercando le soluzioni, studio il segno della funzione.
+    \item   Vedere cosa succede agli estremi del $D_f \to$ limiti nei punti di 
+            frontiera (o punti di accumulazione). Ovviamente se gli estremi sono
+            inclusi nel dominio ($\Rightarrow$ l'intervallo \`e chiuso), non
+            serve usare i limiti, posso calcolare direttamente il valore
+            di $f(x)$ negli estremi.
+    \item   Ricerca degli asintoti (pagina \pageref{asintoti}): 
+            orizzontali, verticali, obliqui.
+    \end{enumerate}
+\item   Studio di $f'(x)$:
+    \begin{enumerate}
+    \item   Vedere dove $\exists \ f'(x)$. Dove \`e derivabile $f$? Dove 
+            $\exists$ il $\lim$ del rapporto incrementale. Deve esistere
+            da destra e da sinistra. \\
+            \textbf{Esempio:} $f(x) = \sqrt{x} \to D_f = [0,\infty)$, \`e
+            derivabile in $(0,\infty)$.
+    \item   Calcolare $f'(x)$, e vedere dove $f'(x) = 0$, dove $f'(x) > 0$,
+            dove $f'(x) < 0$. Trovare quindi dove cresce, dove decresce, e
+            trovare massimi e minimi.
+    \end{enumerate}
+\item   Studio di $f''(x)$ per la concavit\`a e convessit\`a. Posso derivare
+        $ x^n$ in $x=0$ finch\'e $n \geq 1$. Che vuol dire? Che non posso 
+        derivare in $x=0$ se $n <1$. Devo vedere dove $f''(x)<0 \Rightarrow
+        f$ \`e concava, $f''(x) > 0 \Rightarrow f$ \`e convessa, e trovare
+        i punti di flesso.
+\end{enumerate}
+
+\newpage
+\section{Weapons of mass destruction}
+
+\subsection{Teorema di Cauchy}
+Siano $f$ e $g$ continue in $[a,b]$ e derivabili in $(a,b)$, sia $g(a) \neq
+g(b)$, allora:
+$$
+\exists \ c \in (a,b) \text{ t.c. } {f(b) - f(a) \over g(b) - g(a)} = 
+{f'(c) \over g'(c)}
+$$
+Per dimostrarlo bisogna riprendere il teorema di Lagrange. Considero:
+$$
+h(x) = \left( f(b) - f(a) \right) \cdot \left( g(x) - g(a) \right) -
+\left( g(b) - g(a) \right) \cdot \left( f(x) - f(a) \right)
+$$
+Dal momento che $h(a) = h(b) = 0 \Rightarrow \exists \ c \in (a,b)$
+t.c. $h'(c) = 0$. Quindi:
+$$
+\left(f(b) - f(a) \right) \cdot g'(c) - \left( g(b) - g(a) \right) \cdot
+f'(c) = 0 \Rightarrow
+{f(b) - f(a) \over g(b) - g(a)} = {f'(c) \over g'(c)}
+$$
+
+$$
+\lim_{h \to 0} {f(x_0 +h) - f(x_0) \over h} = {f'(ch) \over 1}
+$$
+per Lagrange, con $h>0$ e $ch \in (x_0, x_0+h)$. Pongo $x_0 = a$, $x_0+h =
+b$, e quindi $h = b - a$, e $g(x) = x$ da cui:
+$$
+{f(b) - f(a) \over b - a} = {f'(ch) \over g'(ch)}
+$$
+Ma $g'(ch) = 1$! Quindi se $\exists \ \lim_{x \to x_0} f'(x) = \ell \in
+\mathbb{R} \Rightarrow \exists \ f'(x_0) = \ell$. Se $f$ \`e derivabile in 
+$x_0$, la retta tangente ad $f(x)$ sar\`a $y = f(x_0) + f'(x_0) \cdot
+(x - x_0)$. Posso dire che $f(x)$, vicino a $x_0$, si comporta come la
+retta tangente ad $f(x)$ in $x_0$.
+
+\subsection{Approssimazione lineare}
+$\Delta f = f(x) - f(x_0)$, $\Delta x = x - x_0$, $f(x) - f(x_0) = \Delta
+f \sim f'(x_0) \cdot \Delta x$ (con $\sim$ = ``si comporta come''). Che
+cosa vuol dire?
+$$
+\Delta f \sim f'(x_0) \cdot \Delta x \Rightarrow 
+{\Delta f \over \Delta x} \sim f'(x_0)
+$$
+Infatti una delle notazioni della derivata \`e ${df \over dx}(x_0)$.
+
+Supponiamo che $\exists \ f''(x)$ in un intorno di $x_0$:
+$$
+f(x) - \left[ f(x_0) + f'(x_0) \cdot (x-x_0) \right] = 
+{f''(x_c) \over 2} \cdot (x - x_0)^2 \Rightarrow
+$$
+$$
+{f(x) - f(x_0) - f'(x_0) \cdot (x - x_0) \over (x - x_0)^2} = 
+{f''(x_c) \over 2}
+$$
+$x_c$ si trova tra $x_0$ e $x$, oppure tra $x$ e $x_0$, non sapendo
+quale tra i due sia il maggiore. Un attimo sul significato di questa
+uguaglianza: la differenza fra $f$ e la retta tangente al grafico di
+$f$ nel punto $x_0$ \`e uguale a \dots
+
+Ora dimostriamolo.
+$$
+g(x) = (x - x_0)^2 ; \ 
+h(x) = f(x) - f(x_0) - f'(x_0) \cdot (x - x_0)
+$$
+Con $b=x$ e $a=x_0$ ($g(x_0) = g(a) = 0$ e $h(x_0) = h(a) = 0$), 
+usando il teorema di Cauchy:
+$$
+{h(x) - h(x_0) \over g(x) - g(x_0)} = 
+{h(b) - h(a) \over g(b) - g(a)} = 
+{h'(c) \over g'(c)}
+$$
+dove $c \in (a,b) \Rightarrow c \in (x,x_0)$. $g'(x) = 2 \cdot 
+(x - x_0)$, quindi (con Lagrange) avr\`o che:
+$$
+{f'(c) - f'(x_0) \over 2(c - x_0)} = {f''(x_c) \over 2}
+$$
+con $x_c \in (c, x_0) \Rightarrow x_c \in (x, x_0)$.
+
+\subsection{Sviluppo di Taylor}
+La retta tangente ad $f(x)$ in $x_0$ \`e $y = f(x_0) + f'(x_0) \cdot
+(x - x_0)$. Se $f$ \`e derivabile $\Rightarrow \exists$ la retta.
+
+$P_1(x_0,x) \simeq P_1(x)$ \`e un polinomio di grado uno, centrato
+in $x_0$. L'errore, la ``differenza'' fra il polinomio e la funzione
+\`e:
+$$
+E(x) = f(x) - P_1(x)
+$$
+Per il teorema di Cauchy, abbiamo visto che se $\exists \ f''(x_0)$ in
+un intorno di $x_0$:
+$$
+E(x) = f(x) - P_1(x) = f(x) - f(x_0) - f'(x_0) \cdot (x - x_0) =
+{f''(c) \over 2} \cdot (x - x_0)^2
+$$
+Con $c \in (x, x_0)$. Aumentando il grado di $P$, l'errore in un intorno
+di $x_0$ diminuisce.
+$$
+P_2(x) = f(x_0) + f'(x_0) \cdot (x - x_0) + {f''(x_0) \over 2} \cdot 
+(x - x_0)^2
+$$
+$$
+P_3(x) = f(x_0) + f'(x_0) \cdot (x - x_0) + {f''(x_0) \over 2} \cdot 
+(x - x_0)^2 + {f'''(x_0) \over 6} \cdot (x - x_0)^3
+$$
+Perch\'e i coefficienti sono questi? Mistero della fede.
+
+Derivata del polinomio: 
+$\left( P_2(x_0,x) \right)' = f'(x_0) + f''(x_0)(x - x_0)$, se calcolo il
+valore di $\left( P_2(x_0) \right)' = f'(x_0)$, e identicamente 
+$\left( P_2(x_0) \right)'' = f''(x_0)$. Nel punto, la derivata del polinomio
+\`e uguale alla derivata della funzione. Attenzione: \underline{nel punto}!
+L'$i$-esima derivata del polinomio di grado $n$ sar\`a:
+$$
+P_n^{(i)}(x_0,x) = \begin{cases}
+0 & i > n \\
+f^{(i)} (x_0) & i \leq n
+\end{cases}
+$$
+
+Supponendo che $f$ abbia $n$ derivate (sia derivabile $n$ volte in $x_0$),
+definiamo il polinomio di Taylor di grado $n$ centrato in $x = x_0$:
+$$
+P_n(x_0,x) = f(x_0) + f'(x_0) \cdot (x - x_0) +
+{f''(x_0) \over 2!} \cdot (x - x_0)^2 + \dots + 
+{f^{(n)}(x_0) \over n!} \cdot (x - x_0)^n
+$$
+O, semplificando, $P_1(x_0,x)$ \`e definito come:
+$$
+P_1(x_0,x) = f(x_0) + f'(x_0) \cdot (x - x_0)
+$$
+e $P_n(x_0,x)$ con $n > 1$ \`e definito come:
+$$
+P_n(x_0,x) = P_{n-1} + {f^{(n)} (x_0) \over n!} \cdot (x - x_0)^n
+$$
+Ribadiamo che questi sono i polinomi migliori che si possano scegliere.
+Affrettatevi, scorte limitate. Abbiamo detto che l'errore con un polinomio
+di grado uno \`e:
+$$
+E_1(x_0,x) = f(x) - P_1(x_0,x) = {f''(c) \over 2} \cdot (x - x_0)^2
+$$
+Non conosco $c$, \`e un numero compreso fra $x$ ed $x_0$. Quale sar\`a 
+l'errore con un polinomio di Taylor di grado $n$? Se $f$ \`e derivabile
+$n+1$ volte, l'errore \`e:
+$$
+E_n(x_0,x) = f(x) - P_n(x_0,x) = {f^{(n+1)}(c) \over (n+1)!} 
+\cdot (x - x_0)^{n+1}
+$$
+L'errore \`e quindi stimabile. Lo sviluppo di Taylor di $f$ con resto in
+forma di Lagrange \`e:
+$$
+f(x) = P_n(x) + E_n(x)
+$$
+L'errore \`e il resto. Quindi:
+$$
+f(x) = f(x_0) + f'(x_0) \cdot (x - x_0) +
+{f''(x_0) \over 2!} \cdot (x - x_0)^2 + \dots + 
+{f^{(n)}(x_0) \over n!} \cdot (x - x_0)^n +
+{f^{(n+1)}(c) \over (n+1)!} \cdot (x - x_0)^{n+1}
+$$
+Con $n=0$ \`e, guarda un po', il teorema di Lagrange: 
+$f(x) - f(x_0) = f'(c) \cdot (x - x_0)$. Come faccio a sapere quando 
+l'errore \`e minore di una certa quantit\`a data? Lo sviluppo di Taylor
+\`e utile perch\'e posso fare limiti che altrimenti non saprei fare.
+
+\subsubsection{Esempi}
+Consideriamo $f(x) = e^x$. Voglio trovare il polinomio in 0.
+$f'(x) = e^x \Rightarrow f'(0) = 1$, 
+$f''(x) = e^x \Rightarrow f''(0) = 1$, \dots Quindi? Quindi:
+$$
+P_2(x_0,x) = 1 + x + {1 \over 2} x^2 ; \ 
+P_3 = P_2 + {1 \over 6} x^3 ; \
+P_4 = P_3 + {1 \over 24} x^4 \dots
+$$
+E poi? Posso scrivere $e^x$ come:
+$$
+e^x = 1 + x + {x^2 \over 2} + {f'''(c) \over 6} x^3 =
+1 + x + {x^2 \over 2} + {e^c \cdot x^3 \over 6}
+$$
+Anche se non so chi sia $c$.
+
+Ma se casualmente io adesso volessi trovare il valore di $e^{1 \over 10}$:
+$$
+e^{1 \over 10} = 1 + {1 \over 10} + {1 \over 200} + {e^c \over 6000} 
+\Rightarrow e^{1 \over 10} - 1 - {1 \over 10} - {1 \over 200} =
+{e^c \over 6} \cdot {1 \over 1000}
+$$
+$c \in (0, {1 \over 10})$, quindi? Quindi l'errore \`e stimabile come:
+$$
+{1 \over 6000} \cdot e^0 < {1 \over 6000} \cdot e^c < 
+{1 \over 6000} \cdot e^{1 \over 10}
+$$
+Sapendo che $e^{1 \over 10} > 1$ e $e^{1 \over 10} < 3$, posso stimare
+$e^{1 \over 10} \sim 2$, per tenermi largo, e dire che:
+$$
+{1 \over 6000} < E < {1 \over 3000}
+$$
+e che quindi:
+$$
+e^{1 \over 10} = {221 \over 200} + E
+$$
+\`E un buon risultato! Complimenti, professore. Cerchiamo il valore di $e$,
+adesso.
+$$
+e = e^1 = 1 + 1 + {1 \over 2} + E
+$$
+L'errore $E = {e^c \over 6} \cdot 1 < {1 \over 2}$ considerando che $e$ 
+vale al pi\`u $3$, quindi posso dire che $e = 2.5 \pm 0.5$. 
+Se proseguissi con lo sviluppo:
+$$
+e^x = 1 + x + {x^2 \over 2} + {x^3 \over 6} + {e^c \over 4!} \cdot x^4
+\Rightarrow e = 1 + 1 + {1 \over 2} + {1 \over 6} + {e^c \over 24}
+$$
+Posso stimare l'errore come $E < {1 \over 8}$ e dire quindi che
+$e = {8 \over 3} + E \Rightarrow e = 2.\overline{6} \pm 0.125$.
+
+Passiamo oltre. $f(x) = \sin(x)$, $x_0 = 0$, $f(x_0) = 0$.
+Le derivate in $x_0$ sono:
+\begin{itemize}
+\item $f'(x) = \cos(x) \Rightarrow f'(x_0) = 1$, 
+\item $f''(x) = -\sin(x) \Rightarrow f''(x_0) = 0$, 
+\item $f'''(x) = -\cos(x) \Rightarrow f'''(x_0) = -1$, 
+\item $f^{(4)}(x) = \sin(x) \Rightarrow f^{(4)}(x_0) = 0$.
+\end{itemize}
+A quanto pare, i polinomi del seno saranno sempre dispari.
+$$
+f(x) = \sin(x) = P_3(x) + E_3(x) = x - {x^3 \over 6} + E_3(x)
+$$
+Dove $E_3(x)$ \`e uguale a:
+$$
+E_3(x) = {\sin(c) \over 4!} \cdot x^4
+$$
+Tenendomi largo con l'errore, posso calcolare il valore di $\sin(x)$ in $x=1$:
+$$
+\sin(1) = 1 - {1 \over 6} + E
+$$
+Stimando l'errore come $E < {1 \over 4!} = {1 \over 24}$. Ma posso notare 
+che $P_4(x) = P_3(x)$, perch\'e il coefficiente successivo sar\`a di nuovo
+$0$. Quindi, essendo $P_3(x) = P_4(x)$, l'errore in realt\`a \`e $E < 
+{1 \over 5!} = {1 \over 120}$, essendo $E_4$ uguale a:
+$$
+E_4(x) = {\cos(c) \over 5!} \cdot x^5
+$$
+La stima di $\sin(1) = 1 - {1 \over 6}$ \`e migliore di quanto pensassi.
+
+\subsubsection{Infinitesimi}
+Definisco un infinitesimo di $f(x)$, scritto $o\left( f(x) \right)$,
+da leggere come ``o piccolo di $f$''. $g(x)$ \`e $o\left( f(x) \right)$ 
+per $x \to x_0$ se $g(x)$ tende a $0$ pi\`u rapidamente di $f(x)$:
+$$
+\lim_{x \to x_0} {g(x) \over f(x)} = 0
+$$
+Ad esempio, considerando $x_0 = 0$, $f(x) = x^4$ e $g(x) = x^7$, $g(x)$ \`e
+$o(f(x))$ per $x \to x_0$:
+$$
+\lim_{x \to x_0} {g(x) \over f(x)} = \lim_{x \to 0} {x^7 \over x^4} =
+\lim_{x \to 0} x^3 = 0
+$$
+Fin qui \`e facile. Considero lo sviluppo di Taylor $f(x) =
+P_n(x) + R_n(x)$, con $R_n$ scritto in forma di Lagrange:
+$$
+R_n(x) = {f^{(n+1)} (c) \over (n+1)!} \cdot (x - x_0)^{n+1}
+$$
+Verifico rapidamente che $R_n$ \`e $o \left( (x - x_0)^n \right)$ per
+$x \to x_0$:
+$$
+\lim_{x \to x_0} {R_n(x) \over (x - x_0)^n} = 
+\lim_{x \to x_0} {f^{(n+1)} (c) \over (n+1)!} \cdot (x - x_0) = 0
+$$
+Quindi posso scrivere lo sviluppo di Taylor come:
+$$
+f(x) = P_n(x) + o \left( (x - x_0)^n \right)
+$$
+L'errore in $x_0$ va a $0$ pi\`u velocemente del polinomio di grado $n$.
+$$
+E_n = o \left( (x - x_0)^n \right)
+$$
+
+\subsection{Teorema di de l'H\^{o}pital}
+Siano $f$ e $g$ definite in un intorno destro di $a$, con derivata, e
+supponiamo che $\lim_{x \to a^+} f(x) = \lim_{x \to a^+} g(x) = 0$,
+e $g'(x) \neq 0$ in un intorno destro di $a$. Voglio fare questo limite:
+$$
+\lim_{x \to a^+} {f(x) \over g(x)}
+$$
+Il signor de l'H\^{o}pital mi dice che:
+$$
+\exists \ \lim_{x \to a^+} {f'(x) \over g'(x)} = L \in \overline{\mathbb{R}}
+\Rightarrow \exists \ \lim_{x \to a^+} {f(x) \over g(x)} = L
+$$
+Il tutto solo \underline{se} esiste il limite delle derivate. Nel caso 
+contrario, non possiamo dire niente. Perch\'e? Sapendo che $f(a) = g(a)
+= 0$, considero:
+$$
+\lim_{x \to a^+} {f(x) - f(a) \over g(x) - g(a)}
+$$
+che per Cauchy \`e uguale a:
+$$
+{f'(c) \over g'(c)}
+$$
+Poich\'e $c$ \`e compreso fra $a$ e $x$ ($c \in (a,x)$), facendo il limite
+per $x$ che tende ad $a$ avr\`o:
+$$
+\lim_{x \to a^+} {f'(x) \over g'(x)} = L
+$$
+da cui:
+$$
+\lim_{x \to a^+} {f(x) - f(a) \over g(x) - g(a)} = 
+\lim_{x \to a^+} {f'(x) \over g'(x)} = L
+$$
+Il teorema di de l'H\^{o}pital \`e valido anche se verifico che $\lim_{x
+\to a^+} f(x) = \lim_{x \to a^+} g(x) = \pm \infty$, e che quindi:
+$$
+\lim_{x \to a^+} {f(x) \over g(x)} = {\infty \over \infty}
+$$
+sempre con la condizione che $g'(x) \neq 0$ in un intorno di $x_0$.
+
+Una buona applicazione di de l'H\^{o}pital \`e per dimostrare in un passaggio
+che $e^x$ tende ad $\infty$ pi\`u rapidamente di ogni altra cosa:
+$$
+\lim_{x \to +\infty} {e^x \over x} = \lim_{x \to +\infty} {e^x \over 1} =
++\infty
+$$
+Ma in generale de l'H\^{o}pital \`e comodo al finito, non all'infinito.
+Qualcosa come:
+$$
+\lim_{x \to +\infty} {e^x + x^4 + \sqrt{x^3+1} \over x^5 +
+\sqrt{x^3+4}}
+$$
+\`e facile da risolvere, mentre un limite come:
+$$
+\lim_{x \to 0} {\sqrt{x + 1} - 1 \over \ln(1 +x)}
+$$
+\`e pi\`u facile, invece, con de l'H\^{o}pital:
+$$
+\lim_{x \to 0} {\sqrt{x + 1} - 1 \over \ln(1 +x)} =
+\lim_{x \to 0} { {1 \over 2 \sqrt{x + 1}} \over {1 \over 1 + x}} =
+{1 \over 2}
+$$
+Per l'ultima volta, per\`o: se la forma non \`e ${0 \over 0}$, sbaglio
+ad usare de l'H\^{o}pital!
+
+\subsubsection{Esempi}
+$$
+\lim_{x \to 0^+} {1 \over x} - {1 \over \sin(x)} = \infty - \infty
+$$
+Non \`e in forma di de l'H\^{o}pital, ma posso portarcelo:
+$$
+\lim_{x \to 0^+} {1 \over x} - {1 \over \sin(x)} = 
+\lim_{x \to 0^+} {\sin(x) - x \over \sin(x) \cdot x} = {0 \over 0}
+$$
+Vado avanti con le derivate, ``a posteriori'', alla ricerca del limite.
+$$
+\lim_{x \to 0^+} {\sin(x) - x \over \sin(x) \cdot x} =
+\lim_{x \to 0^+} {\cos(x) - 1 \over \sin(x) + x \cdot \cos(x)} =
+\lim_{x \to 0^+} {-\sin(x) \over 2\cos(x) - x \cdot \sin(x)} =
+{0^- \over 2} = 0
+$$
+Il lavoro era pi\`u semplice con gli sviluppi di Taylor:
+$$
+\sin(x) = x + o(x^2) \Rightarrow 
+\lim_{x \to 0^+} {\centernot{x} + o(x^2) - \centernot{x} \over 
+x \cdot (x + o(x^2))} = 
+\lim_{x \to 0^+} {o(x^2) \over x^2 + o(x^2)} = 0
+$$
+
+Posso combinare $a^x$ e $x^b$, sapendo fare $a^b$, e creare la funzione
+$x^x$ ($D = (0, \infty)$). Voglio trovare $\lim_{x \to 0^+} x^x$. Sapendo
+che $a^x = e^{x \cdot \ln(a)}$ e che $x^b = e^{b \cdot \ln(x)}$, scrivo
+$x^x$ come:
+$$
+x^x = e^{x \cdot \ln(x)}
+$$
+Da cui: 
+$$
+\lim_{x \to 0^+} x \cdot \ln(x) = 0 \Rightarrow
+\lim_{x \to 0^+} x^x = \lim_{x \to 0^+} e^{x \cdot \ln(x)} =
+e^0 = 1
+$$
+
+$$
+\lim_{x \to +\infty} \left( 1 + {1 \over x} \right)^x = 1^{\infty}
+$$
+$1^{\infty}$ \`e una forma indeterminata! Se $1$ fosse poco pi\`u grande
+di $1$ (ossia $1^+$) il limite tenderebbe a $+\infty$, se fosse $1^-$
+tenderebbe a $0$. Sapendo che $f(x)^{g(x)} = e^{g(x) \cdot 
+\ln \left( f(x) \right)}$ scrivo:
+$$
+\lim_{x \to +\infty} e^{x \ln \left( 1 + {1 \over x} \right)} \Rightarrow
+\lim_{x \to +\infty} x \cdot \ln \left( 1 + {1 \over x} \right) =
+\lim_{x \to +\infty} {\ln \left( 1 + {1 \over x} \right) \over {1 \over x}} =
+\lim_{x \to +\infty} {-\centernot{{1 \over x^2}} \cdot {1 \over 1 + 
+{1 \over x}} \over -\centernot{{1 \over x^2}}} = 1
+$$
+Toh! Quindi...
+$$
+\lim_{x \to +\infty} \left( 1 + {1 \over x} \right)^x = 
+\lim_{x \to +\infty} e^{x \cdot \ln \left( 1 + {1 \over x} \right)} = 
+e^1 = e
+$$
+
+\subsection{Metodo di Newton: ricerca numerica degli zeri}
+Ho una funzione $f$ derivabile, cerco lo $0$ in $\overline{x}$. Cerco la retta
+tangente ad $f$ nel punto $P_1 = \left(x_1, f(x_1) \right) \Rightarrow
+y = f(x_1) + f'(x_1) \cdot (x - x_1)$. Intersecando la tangente con l'asse $x$
+
+
+\newpage
+\section{Successioni}
+$$
+\lim_{n \to \infty} \left( 1 + {\alpha \over n} \right)^n 
+\text{ con } n \in \mathbb{N}
+$$
+Potrei voler fare un limite non sui reali, ma sui naturali, discretizzando
+la variabile. La formula sopra ha senso, ad esempio, in economia. Se $\alpha$
+rappresenta il tasso di interesse, $n$ rappresenta ogni quanto la banca
+paga questo interesse: $1$ anno, $6$ mesi, $1$ giorno... Se lo calcolassi
+in maniera continua otterrei $e^{\alpha}$. Dimenticando le funzioni 
+di variabile reale, calcolo una funzione $f: \mathbb{N} \to \mathbb{R}$ su 
+passi \underline{discreti}. Il continuo \`e ideale, il discreto \`e comodo,
+specialmente in informatica.
+
+Una successione \`e tipicamente indicata dall'indice: $a_1, a_2, a_3, \dots$,
+cos\`i come indicavo i valori assunti da una funzione di variabile reale
+con $f(1), f(2), f(3), \dots$. Possibili successioni sono:
+$$
+a_n = n ; \ a_n = {1 \over n} ; \ a_n = {n+2 \over n+4}
+$$
+Posso quindi indicare una successione con una legge, al posto della $x$ (la
+variabile reale) metto una $n$, variabile naturale (un intero positivo).
+
+Posso creare successioni ricorsive:
+$$
+a_1 = 1 ; \ a_{n+1} = \sqrt{a_n + 1}
+$$
+Non posso calcolare direttamente il valore di un elemento di una funzione
+ricorsiva. Nel caso appena visto, avrei che:
+$$
+a_1 = 1; \ a_2 = \sqrt{2} ; \ a_3 = \sqrt{ \sqrt{2} + 1}; \
+a_4 = \sqrt{\sqrt{ \sqrt{2} + 1} + 1} ; \ \dots
+$$
+La sequenza di Fibonacci \`e una successione ricorsiva.
+$$
+a_1 = 1; \ a_2 = 1; \ a_{n+2} = a_n + a_{n+1}
+$$
+Una successione si indica solitamente con $ {\left\{ a_n \right\}} $ con
+$ {n \in \mathbb{N}} $.
+
+Se volessi rappresentare una successione, dovrei segnare i naturali 
+sull'asse $x$, o piuttosto usare il piano $\mathbb{N} \times \mathbb{R}$
+su cui rappresentare unicamente i punti che indicano gli elementi 
+della successione.
+
+Per definizione, l'insieme di definizione di una successione \`e
+tutto $\mathbb{N}$. Non esiste limite al finito: in un intervallo
+vicino di $4$ non c'\`e niente, oltre $4$. La somma degli elementi
+di una successione \`e una serie, ma si vedr\`a al prossimo corso
+di analisi.
+
+Mi interessa per\`o sapere ``dove vado'' quando l'indice della 
+successione diventa ``molto grande''. Il valore della successione si
+avvicina a qualcosa? Ripeto, l'unico limite che ha senso fare, con le
+successioni, \`e $\lim_{n \to +\infty}$. 
+
+Sapendo quanto fa
+$$
+\lim_{x \to +\infty} {1 \over x} = 0
+$$
+sappiamo anche fare
+$$
+\lim_{n \to +\infty} {1 \over n} = 0
+$$
+poich\'e $\mathbb{N} \subset \mathbb{R}$.
+
+$$
+\lim_{n \to +\infty} a_n = \ell \in \mathbb{R} \Rightarrow
+\forall \ \varepsilon > 0 \ \exists \ \overline{n}_{\varepsilon} 
+\text{ t.c. } \forall \ n > \overline{n}_{\varepsilon} \ | a_n - \ell | 
+< \varepsilon
+$$
+Quando il limite \`e finito, la successione \textit{converge} ad $\ell
+\Rightarrow$ \`e una successione convergente. Altrimenti:
+$$
+\lim_{n \to +\infty} a_n = \pm \infty \Rightarrow \forall \ M > 0
+\ \exists \ \overline{n}_M \text{ t.c. } n > \overline{n}_M 
+\Rightarrow |a_n| > M
+$$
+In questo caso la successione diverge a $+\infty$ (o $-\infty$).
+$D_{a_n} = \mathbb{N}$, $Im_{a_n} = \mathbb{R}$, quindi ovviamente
+$ \ell, \varepsilon, M \in \mathbb{R}$, mentre $n, 
+\overline{n}_{\varepsilon}, \overline{n}_M \in \mathbb{N}$.
+
+Ci sono successioni che non convergono n\'e divergono.
+$$
+a_n = (-1)^n
+$$
+In questo caso semplicemente $\centernot \exists \lim_{n \to +\infty}
+a_n = (-1)^n$, si pu\`o dire che ``diverge'' senza dire se a $+\infty$
+o a $-\infty$, poich\'e non esiste il limite. (diverge = non converge)
+
+Per vedere se una successione \`e monotona crescente o decrescente,
+devo vedere se $a_{n+1} > a_n$. Se $a_n = {n \over n+1}$ prendo $f(x) =
+{x \over x+1}$ e faccio la derivata, per sapere cosa succede: se cresce
+o decresce. Altrimenti, dovrei dimostrare che:
+$$
+{n+1 \over (n+1) +1} > {n \over n+1}
+$$
+
+Una successione pu\`o essere ``definitivamente'' qualcosa: positiva o negativa,
+crescente o decrescente, maggiore o minore di $n$, \dots Che significa? Che da
+un certo punto in poi, la successione verifica la propriet\`a data. Se ad
+esempio so che $ \lim_{n \to +\infty} a_n = 1
+\Rightarrow {\left\{ a_n \right\}} $ \`e definitivamente $> 0$, o di qualsiasi
+numero minore di $1$, o che \`e definitivamente inferiore di un qualsiasi
+numero maggiore di $1$. \`E un'informazione deducibile dal limite.
+
+\subsection{Teoremi}
+Se $ {\left\{ a_n \right\}} $ \`e convergente $ \Rightarrow 
+{\left\{ a_n \right\}} $ \`e limitata. Il contrario \`e falso! 
+Esiste per\`o il teorema di Bolzano - Weierstrass, per cui se
+una successione \`e limitata posso estrarne una sottosuccessione convergente.
+
+Se $ {\left\{ a_n \right\}} $ \`e definitivamente monotona (crescente o 
+decrescente) $ \Rightarrow \exists \lim_{n \to +\infty} {\left\{ a_n \right\}}
+= \ell$ con $\ell \in \overline{\mathbb{R}}$. Il fatto che una successione
+monotona abbia limite (non che converge!) \`e alla base della completezza dei
+numeri reali.
+
+Se $ {\left\{ a_n \right\}} $ \`e crescente $ \Rightarrow \lim_{n \to +\infty}
+a_n = \sup {\left\{ a_n \right\}}$, allo stesso modo se la succesione \`e
+decrescente il limite \`e l'$\inf {\left\{ a_n \right\}}$.
+
+Data la successione definita da $a^n$, il limite dipende dal valore di $a$.
+$$
+\lim_{n \to +\infty} a^n = \begin{cases}
+a > 1 \Rightarrow +\infty \\
+a = 1 \Rightarrow 1 \\
+-1 < a < 1 \Rightarrow 0 \\
+a \leq -1 \Rightarrow \centernot{\exists}
+\end{cases}
+$$
+
+\subsection{Fattoriale}
+\label{fattoriale} Abbiamo visto a pagina \pageref{infiniti} come $a^x$ 
+con $a > 1$ all'infinito \`e il pi\`u forte di tutti. Ma c'\`e qualcuno 
+pi\`u forte dell'esponenziale? S\`i: il fattoriale.
+$$
+\lim_{n \to +\infty} {a^n \over n!} = 0 \Rightarrow
+\lim_{n \to +\infty} {n! \over a^n} = +\infty \ \forall \ a \in \mathbb{R}
+$$
+Dimostriamolo. Sia $N$ un intero maggiore di $a$. Scrivo $n!$ come 
+$ n \cdot (n - 1) \cdot (n - 2) \cdot \dots$, e $\forall \ n > N$ posso
+scrivere $ n! = n \cdot (n - 1) \cdot (n - 2) \cdot \dots \cdot (N + 1)
+\cdot (N) \cdot (N - 1) \cdot \dots $
+\begin{multline*}
+{a^n \over n!} = 
+{\overbrace{a \cdot a \cdot a \cdot a \cdot \dots \cdot a}^{n \text{ volte}}
+ \over 
+n \cdot (n - 1) \cdot \dots (N + 1) \cdot (N) \cdot \dots} = \\
+{a \over n} \cdot {a \over n -1} \cdot \dots \cdot {a \over N} \cdot {a \over
+N - 1} \cdot \dots \cdot {a \over 1} < 
+\underbrace{{a \over N} \cdot {a \over N} \cdot \dots \cdot {a \over N}}_{n - N + 1 \text{ volte}} \cdot {(a)^{N - 1} \over (N - 1)!} = \\
+\left( a \over N \right)^{n - N + 1} \cdot {(a)^{N - 1} \over (N - 1)!} = 
+\left(a \over N \right)^n \cdot \left[ \left( a \over N \right)^{1 - N} \cdot {(a)^{N - 1} \over (N - 1)!} \right]
+\end{multline*}
+Quindi sapendo che $ \lim_{n \to +\infty} \left( {a \over N} \right)^n = 0 $, 
+se $N >a$, e che 
+$$ {a^n \over n!} < \left(a \over N \right)^n \cdot \left[ \left( a 
+\over N \right)^{1 - N} \cdot {(a)^{N - 1} \over (N - 1)!} \right] $$
+se $n > a$, $ \Rightarrow \lim_{n \to +\infty} {a^n \over n!} = 0 $
+per compressione.
+
+Ma in realt\`a a vincere su tutti \textit{tutti} \`e lui:
+$$
+\lim_{n \to +\infty} {n^n \over n!} = +\infty
+$$
+
+\subsection{Successioni definite per ricorrenza}
+Una successione definita per ricorrenza \`e data da un certo $a_0 = c$ fissato,
+e da una funzione di $a_n$ che determina $a_{n+1} = f(a_n)$.
+L'esempio pi\`u semplice di successione definita per ricorrenza \`e questo:
+$$
+a_1 = 1 ; \ a_{n+1} = \sqrt{a_n + 6} \Rightarrow a_2 = \sqrt{7} ; \
+a_3 = \sqrt{\sqrt{7} + 6} ; \ a_4 = \sqrt{\sqrt{\sqrt{7} + 6} + 6}
+$$
+Il valore a cui tende la successione \`e calcolabile. Supponendo che $\exists 
+\lim_{n \to +\infty} a_n = \ell$, so che $\ell \geq 0$ (o anche meglio, che 
+$\ell \geq \sqrt{6}$). Ma quanto vale? Un valore finito o $\ell = +\infty$?
+Non lo so. Ma supponendo, come detto, che $\exists \ell = \lim_{n \to +\infty}
+a_n$, posso cercare il limite di $a_{n+1}$:
+\begin{multline*}
+\lim_{n \to +\infty} a_{n+1} = \lim_{n \to +\infty} \sqrt{a_n + 6} \Rightarrow 
+\\ \ell = \sqrt{\ell + 6} \Rightarrow \ell^2 = \ell + 6 \Rightarrow
+\ell^2 - \ell - 6 = 0 
+\Rightarrow \\ \ell_{1,2} = {1 \pm \sqrt{1 + 24} \over 2} =
+\begin{cases} -2 \\ 3 \end{cases}
+\end{multline*}
+Ma non so ancora molto, solo che se $\exists \lim_{n \to +\infty} a_n$ questo
+sar\`a o $\ell = +\infty$ o $\ell = 3$. Escludo $-2$, sapendo che $\ell > 0$.
+
+Non c'\`e una regola nella ricerca del limite di una successione definita
+per ricorrenza. A grandi linee, devo cercare di capire se il limite c'\`e,
+supporne l'esistenza, e controllare che la successione sia monotona 
+($\Rightarrow$ c'\`e il limite). Devo dimostrare quindi che la successione \`e
+crescente, quindi che $a_{n+1} > a_n \Rightarrow \sqrt{6 + a_n} > a_n 
+\Rightarrow a_n^2 - a_n - 6 < 0 \Rightarrow -2 < a_n < 3$. La funzione \`e 
+crescente $\Leftrightarrow a_n < 3$ (ripeto, so che \`e sempre positiva).
+Come faccio a sapere che $a_n < 3$ \textit{sempre}? Lo dimostro per induzione.
+$a_0 = 1 < 3$, passo base. Passo induttivo: se $a_n < 3 \Rightarrow 
+a_{n+1} < 3$.
+$$
+a_n < 3 \Rightarrow \sqrt{a_n + 6} < \sqrt{3 + 6} = 3
+$$
+Se avessi voglia di continuare, scoprirei che il limite \`e proprio $3$.
+
+\end{document}

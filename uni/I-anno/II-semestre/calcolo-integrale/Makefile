@@ -10,7 +10,7 @@ SOURCES = $(CURR_DIR)/*.tex
 TARGETS = $(CURR_DIR)/calcolo_integrale.pdf \
 	$(CURR_DIR)/cheat_sheet.pdf
 
-all: $(TARGETS) neat
+all: $(TARGETS)
 
 # object files
 $(TARGETS): $(SOURCES)
