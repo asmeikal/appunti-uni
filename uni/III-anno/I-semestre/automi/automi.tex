@@ -1,0 +1,123 @@
+
+\chapter{Introduzione}
+
+Gli argomenti del corso sono:
+\begin{description}
+	\item[Automi] modelli di calcolo, ossia astrazioni di calcolatore.
+	\item[Calcolabilit\`a] Cosa possiamo e non possiamo calcolare.
+	\item[Complessit\`a] Cosa non possiamo calcolare perch\'e intrattabile (ossia, esponenziale).
+\end{description}
+
+I modelli di calcolo si (potrebber) possono classificare come ``modelli matematici di computazione della nuova gerarchia di Chomsky''.
+\begin{center}
+\begin{tabular}{cc}
+	Modelli di macchine & Classi di linguaggi \\
+	Macchina di Turing & ? \\
+	\emph{Linear bound automata} & ? \\
+	Automa a pila & Linguaggi liberi dal contesto \\
+	Automa a stati finiti & Linguaggi regolari
+\end{tabular}
+\end{center}
+
+Pi\`u si sale nella tabella pi\`u aumenta la complessit\`a del modello.
+
+Nella colonna di destra abbiamo dei nomi di \emph{grammatiche}
+Una grammatica \`e qualcosa del tipo:
+\begin{verbatim}
+<roba> ::= <altra roba> <ancora roba> [<roba opzionale>]
+<roba> ::= s | i | n | g | o | l | i | c | a | r | a | t | t | e | r | i
+\end{verbatim}
+Una grammatica \`e sia un insieme di regole che definiscono la sintassi di un linguaggio, che un insieme di regole per generare frasi nel linguaggio.
+La grammatica specifica la \emph{sintassi}, non la semantica.
+Ogni linguaggio ha una macchina associata che lo riconosce.
+
+Calcolabilit\`a: esistono problemi che non hanno soluzione algoritmica.
+Per formalizzare un algoritmo di solito si d\`a la specifica della macchina che lo realizza.
+
+Intuitivamente, il numero di algoritmi \`e numerabile, ma il numero di problemi non \`e numerabile, quindi esistono (molti) pi\`u problemi che algoritmi.
+
+Complessit\`a: consideriamo solo i problemi che possiamo risolvere, e mettiamo in una certa classe tutti i problemi che possono essere risolti nel caso peggiore in un certo tempo.
+La classe $\probp$ corrisponde a problemi risolvibili in $\bigo{n^k}$ per $k \ge 1$, mentre la classe $\probexp$ corrisponde a problemi risolvibili in $\bigo{2^{n^k}}$ sempre per $k \ge 1$.
+Ovviamente per individuare la classe di un problema guardiamo i tempi dell'algoritmo migliore.
+
+La classe $\probnp$ corrisponde alla classe dei problemi la cui soluzione \`e verificabile in tempo polinomiale.
+La classe $\probnpc$ \`e la classe dei problemi ($\probnp$-completi) che, se risolvibili in tempo polinomiale, implicherebbe la risolvibilit\`a in tempo polinomiale di tutti i problemi in $\probnp$.
+
+\chapter{Automi (modelli di calcolo)}
+
+Cosa \`e una computazione? Cosa \emph{calcola} un modello di calcolo?
+
+Partiamo da classificare cosa \`e un problema.
+Ci interesseremo solo di problemi decisionali (la cui risposta \`e un s\`i o un no).
+\`E possibile passare da un algoritmo che risolve un problema decisionale a un algoritmo che trova la soluzione del problema.
+
+Un'istanza di un problema \`e l'input del problema.
+
+Abbiamo accennato che un problema decisionale identifica un linguaggio.
+Une linguaggio \`e un insieme di parole, dove con parola indichiamo una combinazione di elementi di un alfabeto (finito) di simboli.
+Il linguaggio associato al problema \`e quello delle stringhe che codificano istanze ``s\`i'' del problema (decisionale).
+
+\begin{description}
+	\item[Computazione] riconoscimento di una parola.
+	\item[Algoritmo] macchina che riconosce un linguaggio.
+	\item[Alfabeto] insieme finito di simboli.
+	\item[Parola] sequenza di lettere di un alfabeto.
+	\item[$\lambda$ o $\varepsilon$] stringa vuota.
+\end{description}
+
+Se $\Sigma$ \`e un alfabeto, $\Sigma^{\star}$ \`e l'insieme di tutte le parole costruibili in quell'alfabeto
+Un linguaggio $L$ su $\Sigma$ \`e un sottoinsieme di $\Sigma^{\star}$.
+
+Per come abbiamo definito un'istanza di un problema, ogni parola \`e un'istanza.
+Quindi un linguaggio \`e un insieme di parole che corrispondono a istanze s\`i di un dato problema.
+
+Tutti i nostri modelli di calcolo sono riconoscitori di linguaggi.
+
+\section{Automi a stati finiti}
+
+Consideriamo automi senza output, che si limitano a riconoscere l'input.
+
+In un FSA la testina si sposta sempre a destra di un passo.
+L'automa \`e rappresentabile con un grafo diretto in cui ogni nodo \`e uno stato, e un arco etichettato da una lettera dell'alfabeto di input  indica che si pu\`o passare da uno stato all'altro con l'input indicato.
+Lo stato iniziale \`e individuato da un arco entrante che viene dal nulla.
+Gli stati finali sono evidenziati.
+
+La lunghezza di un cammino \`e data dal numero di vertici (nodi) visitati.
+Ogni nodo deve avere un arco uscente per ogni lettera dell'alfabeto.
+Uno stato da cui non si esce, ossia da cui non si pu\`o raggiungere uno stato finale, \`e uno ``stato pozzo'', e pu\`o non essere disegnato.
+Un automa accetta almeno una parola se c'\`e almeno un cammino dallo stato iniziale a uno degli stati finali
+
+La formalizzazione degli automi a stati finiti \`e la solita.
+Un FSA \`e una quintupla $(Q, \Sigma, \delta, q_0. F)$ dove $Q$ \`e l'insieme degli stati, $\Sigma$ \`e l'alfabeto di input, $\delta : Q \times \Sigma \to Q$ \`e la funzione di transizione, $q_0 \in Q$ \`e lo stato iniziale e $F \subseteq Q$ \`e l'insieme di stati finali.
+
+Parleremo spesso di configurazione: non tiene conto solo dello stato effettivo dell'automa, ma anche dello stato della sua memoria.
+In un FSA non c'\`e memoria, ma ci interessa tenere conto della stringa ancora da leggere.
+La configurazione di partenza \`e $(q_0, x)$, con $x \in \Sigma^{\star}$ a indicare la stringa di input.
+
+Definiamo la relazione ``porta a'' come segue:
+\[
+	(p, ax) \underset{M}{\to} (q,x) \iff \delta(p,a) = q
+\]
+dove $p,q \in Q$ sono due stati, $a \in \Sigma$ \`e una lettera dell'alfabeto e $x \in \Sigma^{\star}$ \`e una stringa.
+Notare: questa relazione \`e definita sull'insieme delle configurazioni.
+La chiusura transitiva e riflessiva di questa relazoine ci dice se da una certa configurazione arriviamo a un'altra.
+
+Per chiusura transitiva, ricordiamo, si intende che le due coppie $((p, abx), (q,bx))$ e $((q,bx),(t,x))$ nella relazione portano alla coppia $((p,abx),(t,x))$.
+La riflessivit\`a, invece, serve a dirci che senza input la macchina non cambia stato.
+Una parola $x$ \`e accettata da $M$ se $(q_0, x) \underset{M}{\to} (q,\varepsilon)$ con $q \in F$.
+L'insieme delle parole accettate formano il linguaggio associato a $M$.
+
+Possiamo estendere la funzione di transizione $\delta : Q \times \Sigma \to Q$ a una funzione $\delta^{\star}: Q \times \Sigma^{\star} \to Q$ definita come:
+\begin{itemize}
+	\item se $\abs{x} = 0$, allora $\delta^{\star}(q,x) = q$.
+
+\section{Automa a pila (\emph{Push-Down Automata})}
+
+I PDA sono automi a stati finiti con una pila.
+\`E possibile accedere a una memoria, che funziona come uno stack, e a cui possiamo accedere solo al \emph{top}
+Come in tutte queste astrazioni, la pila \`e infinita.
+
+\section{\emph{Linear bound automata}}
+
+Sono una versione limitata delle macchine di Turing.
+
