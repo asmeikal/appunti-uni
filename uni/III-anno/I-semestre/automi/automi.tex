@@ -8,10 +8,11 @@ Gli argomenti del corso sono:
 	\item[Complessit\`a] Cosa non possiamo calcolare perch\'e intrattabile (ossia, esponenziale).
 \end{description}
 
-I modelli di calcolo si (potrebber) possono classificare come ``modelli matematici di computazione della nuova gerarchia di Chomsky''.
+I modelli di calcolo si (potrebbero) possono classificare come ``modelli matematici di computazione della nuova gerarchia di Chomsky''.
 \begin{center}
-\begin{tabular}{cc}
+\begin{tabular}{c|c}
 	Modelli di macchine & Classi di linguaggi \\
+	\hline
 	Macchina di Turing & ? \\
 	\emph{Linear bound automata} & ? \\
 	Automa a pila & Linguaggi liberi dal contesto \\
@@ -54,7 +55,7 @@ Ci interesseremo solo di problemi decisionali (la cui risposta \`e un s\`i o un 
 Un'istanza di un problema \`e l'input del problema.
 
 Abbiamo accennato che un problema decisionale identifica un linguaggio.
-Une linguaggio \`e un insieme di parole, dove con parola indichiamo una combinazione di elementi di un alfabeto (finito) di simboli.
+Un linguaggio \`e un insieme di parole, dove con parola indichiamo una combinazione di elementi di un alfabeto (finito) di simboli.
 Il linguaggio associato al problema \`e quello delle stringhe che codificano istanze ``s\`i'' del problema (decisionale).
 
 \begin{description}
@@ -62,7 +63,7 @@ Il linguaggio associato al problema \`e quello delle stringhe che codificano ist
 	\item[Algoritmo] macchina che riconosce un linguaggio.
 	\item[Alfabeto] insieme finito di simboli.
 	\item[Parola] sequenza di lettere di un alfabeto.
-	\item[$\lambda$ o $\varepsilon$] stringa vuota.
+	\item[$\lambda$ (lambda) o $\emptystring$ (epsilon)] stringa vuota.
 \end{description}
 
 Se $\Sigma$ \`e un alfabeto, $\Sigma^{\star}$ \`e l'insieme di tutte le parole costruibili in quell'alfabeto
@@ -88,10 +89,16 @@ Uno stato da cui non si esce, ossia da cui non si pu\`o raggiungere uno stato fi
 Un automa accetta almeno una parola se c'\`e almeno un cammino dallo stato iniziale a uno degli stati finali
 
 La formalizzazione degli automi a stati finiti \`e la solita.
-Un FSA \`e una quintupla $(Q, \Sigma, \delta, q_0. F)$ dove $Q$ \`e l'insieme degli stati, $\Sigma$ \`e l'alfabeto di input, $\delta : Q \times \Sigma \to Q$ \`e la funzione di transizione, $q_0 \in Q$ \`e lo stato iniziale e $F \subseteq Q$ \`e l'insieme di stati finali.
+Ci concentriamo in particolare, per adesso, sui DFA, o \emph{Deterministic Finite state Automata}.
+Un DFA \`e una quintupla: 
+\[
+	(Q, \Sigma, \delta, q_0. F)
+\]
+dove $Q$ \`e l'insieme degli stati, $\Sigma$ \`e l'alfabeto di input, $\delta : Q \times \Sigma \to Q$ \`e la funzione di transizione, $q_0 \in Q$ \`e lo stato iniziale e $F \subseteq Q$ \`e l'insieme di stati finali.
 
 Parleremo spesso di configurazione: non tiene conto solo dello stato effettivo dell'automa, ma anche dello stato della sua memoria.
 In un FSA non c'\`e memoria, ma ci interessa tenere conto della stringa ancora da leggere.
+
 La configurazione di partenza \`e $(q_0, x)$, con $x \in \Sigma^{\star}$ a indicare la stringa di input.
 
 Definiamo la relazione ``porta a'' come segue:
@@ -99,23 +106,311 @@ Definiamo la relazione ``porta a'' come segue:
 	(p, ax) \underset{M}{\to} (q,x) \iff \delta(p,a) = q
 \]
 dove $p,q \in Q$ sono due stati, $a \in \Sigma$ \`e una lettera dell'alfabeto e $x \in \Sigma^{\star}$ \`e una stringa.
-Notare: questa relazione \`e definita sull'insieme delle configurazioni.
-La chiusura transitiva e riflessiva di questa relazoine ci dice se da una certa configurazione arriviamo a un'altra.
 
-Per chiusura transitiva, ricordiamo, si intende che le due coppie $((p, abx), (q,bx))$ e $((q,bx),(t,x))$ nella relazione portano alla coppia $((p,abx),(t,x))$.
+Notare: questa relazione \`e definita sull'insieme delle configurazioni.
+
+La chiusura transitiva e riflessiva di questa relazione ci dice se da una certa configurazione arriviamo a un'altra.
+Per chiusura transitiva, ricordiamo, si intende che le due coppie $((p, abx), (q,bx))$ e $((q,bx),(t,x))$ nella relazione portano alla coppia $((p,abx),(t,x))$ nella chiusura transitiva della relazione stessa.
 La riflessivit\`a, invece, serve a dirci che senza input la macchina non cambia stato.
-Una parola $x$ \`e accettata da $M$ se $(q_0, x) \underset{M}{\to} (q,\varepsilon)$ con $q \in F$.
+
+Una parola $x$ \`e accettata da $M$ se $(q_0, x) \underset{M}{\to} (q,\emptystring)$ con $q \in F$.
 L'insieme delle parole accettate formano il linguaggio associato a $M$.
 
 Possiamo estendere la funzione di transizione $\delta : Q \times \Sigma \to Q$ a una funzione $\delta^{\star}: Q \times \Sigma^{\star} \to Q$ definita come:
 \begin{itemize}
 	\item se $\abs{x} = 0$, allora $\delta^{\star}(q,x) = q$.
+	\item se $\abs{x} > 0$, allora $x = ya$ dove $y \in \Sigma^{\star}$ e $a \in \Sigma$, e quindi $\delta^{\star}(q,x) = \delta \left( \delta^{\star} (q, y), a \right)$.
+\end{itemize}
+
+Segue immediatamente che:
+\[
+	\delta^{\star}(q,a) = \delta \left( \delta^{\star} (q, \emptystring) , a \right) = \delta (q,a)
+\]
+Inoltre, una definizione alternativa di ``accettare una parola'' \`e dire che:
+\[
+	\delta^{\star} (q_0, x) = r \in F
+\]
+La funzione $\delta^{\star}$, dato un input, ci porta nello stato a cui il DFA arriva consumando tutto l'input.
+
+Possiamo formalizzare il linguaggio accettato da un DFA come segue:
+\[
+	\lang{M} = \{ x \in \Sigma^{\star} \text{ t.c. } \delta^{\star} (q_0, x) \in F \}
+\]
+E ora, pensiamo alla \emph{classe} dei linguaggi accettati dai DFA.
+
+Un DFA accetta almeno una parola se esiste un cammino da $q_0$ a uno stato in $F$.
+Se vogliamo trovare una parola accettata a forza bruta, prendiamo tutte le parole di lunghezza strettamente minore di $n$, dove $n$ \`e il numero degli stati dell'automa, e le proviamo tutte.
+
+Supponiamo nessuna di queste parole sia accettata, e che esista una parola $w$ con $\abs{w} \ge n$ che viene accettata.
+Per almeno uno stato passiamo due volte.
+La parte di cammino che passa fra i due vertici ripetuti pu\`o essere tolta, e da $w$ possiamo togliere i caratteri che hanno portato a compiere questo ciclo.
+Otteniamo quindi una parola $w'$ accettata dall'automa con $\abs{w'} < \abs{w}$.
+Iterando il procedimento finch\'e la parola non \`e pi\`u corta di $n$, arriviamo all'assurdo.
+Quindi se l'automa accetta almeno una parola, esiste una parola pi\`u corta di $n$ che viene accettata.
+
+Con un altro giro di parole, se abbiamo un cammino di accettazione che ha un ciclo, togliendo le ``etichette'' relative al ciclo otteniamo una parola che \`e ancora accettata ma il cui cammino di accettazione non ha cicli e che quindi \`e lungo meno di $n$.
+
+\subsection{Propriet\`a dei linguaggi dei DFA}
+
+Ogni modello di calcolo ha delle propriet\`a.
+I linguaggi dei DFA godono della propriet\`a di chiusura rispetto ad alcune operazioni.
+I linguaggi sono insiemi, quindi abbiamo le tipiche operazioni di unione, intersezione e complemento.
+In generale, i linguaggi sono chiusi rispetto a queste operazioni.
+
+Un'altra operazione possibile \`e la concatenazione fra parole, che ci porta a pensare all'operazione di concatenazione \emph{fra linguaggi}: concateniamo tutte le parole del primo con tutte le parole del secondo.
+Si indica tipicamente con $L L'$.
+Due propriet\`a banali:
+\[
+	\{ \emptystring \} L = L = L \{ \emptystring \} \qquad \emptyset L = \emptyset = L \emptyset
+\]
+La concatenazione ci porta poi a definire il concetto di potenza di un linguaggio (ripetizione della concatenazione).
+Il ``caso base'' \`e $L^0 = \{ \emptystring \}$.
+
+Il simbolo ``stella di Kleene'' indica l'unione di tutte le potenze di un linguaggio:
+\[
+	L^{\kleenestar} = \{ \emptystring \} \cup L \cup L^2 \cup L^3 \cup \dots = \bigcup_{n \ge 0} L^n
+\]
+
+Un insieme $C$ \`e chiuso rispetto all'operazione (binaria) $\cdot$ se $\forall x, y \in C$, vale che $x \cdot y \in C$.
+
+Vogliamo dimostrare (o comunque vedere) che $\langs{\text{DFA}}$, o classe dei linguaggi regolari, ossia l'insieme di tutti i linguaggi accettati da una qualche DFA, \`e chiuso rispetto alle operazioni di unione, intersezione, complemento, concatenazione e stella di Kleene.
+
+\begin{itemize}
+	\item $L, L' \in \langs{\text{DFA}} \implies L \cup L' \in \langs{\text{DFA}}$.
+		La nuova macchina che accetta l'unione dei due linguaggi possiamo costruirla a partire dalle due macchine $M_1, M_2$.
+		Date le due DFA:
+		\[
+			M_1 = (Q_1, \Sigma, \delta_1, q_{01}, F_1) \qquad M_2 = (Q_2, \Sigma, \delta_2, q_{02}, F_2)
+		\]
+		Costruiamo la macchina che accetta l'unione in questo modo:
+		\[
+			M = \left( (Q_1 \times Q_2), \Sigma, \delta, (q_{01}, q_{02}), F \right)
+		\]
+		L'insieme degli stati \`e il prodotto cartesiano degli stati delle due macchine.
+		Dove la nuova funzione \`e definita come $\delta \left( (q_1, q_2), a \right) = \left( \delta_1(q_1, a), \delta_2(q_2, a) \right)$, e l'insieme degli stati finali $F$ \`e dato dall'unione $F_1 \times Q_2 \cup Q_1 \times F_2$.
+	\item $L, L' \in \langs{\text{DFA}} \implies L \cap L' \in \langs{\text{DFA}}$.
+		La costruzione \`e identica a quella per l'unione, con la differenza che l'insieme degli stati finali \`e ora dato da $F_1 \times F_2$.
+	\item $L \in \langs{\text{DFA}} \implies \complement L \in \langs{\text{DFA}}$.
+		Il complemento di $M = (Q, \Sigma, \delta, q_0, F)$ \`e dato da $\complement M = (Q, \Sigma, \delta, q_0, Q \setminus F)$.
+\end{itemize}
+
+Si dimostra quindi per induzione, per l'unione e l'intersezione, che:
+\[
+	\delta^{\star} \left( ( q_{01}, q_{02}), x \right) = \left( \delta_1^{\star} (q_{01}, x), \delta_2^{\star} (q_{02}, x) \right)
+\]
+Non ci interessa degli stati non raggiungibili dallo stato iniziale.
+
+Per il complemento, invece, la prova \`e immediata:
+\[
+	\left( x \in \lang{M} \iff \delta^{\star} (q_0, x) \in F \right) \equiv \left( x \in \lang{\complement M} \iff \delta^{\star} (q_0, x) \in Q \setminus F \right)
+\]
+
+\subsection{Automi non deterministici (NFA)}
+
+Con i NFA da uno stato, con un input, possiamo raggiungere pi\`u stati.
+Se fra tutti i cammini individuati da una parola ce ne \`e uno che termina con uno stato finale, l'automa accetta la parola.
+Con i NFA introduciamo anche le $\emptystring$-transizioni o $\emptystring$-mosse, che non hanno bisogno di una parola in input.
+
+Non determinismo significa che possiamo avere cammini diversi con lo stesso input, ossia l'input non determina il cmamino.
+
+Si possono introdurre le $\emptystring$-transizioni anche nelle DFA, ma gli stati con $\emptystring$-transizioni non devono avere altre transizioni possibili.
+
+La formalizzazione degli NFA \`e praticamente identica:
+\[
+	M = (Q, \Sigma, \delta, q_0, F)
+\]
+Ma adesso la funzione di transizione \`e una funzione $\delta : Q \times \left( \Sigma \cup \{ \emptystring \} \right) \to \parts{Q}$.
+Non porta a un singolo stato, ma a un insieme di stati.
+
+Il concetto di configurazione \`e identico, ma un automa pu\`o avere pi\`u configurazioni.
+Vale ancora la relazione definita per i DFA.
+\[
+	(p, ax) \underset{M}{\to} (q,x) \iff q \in \delta(p,a)
+\]
+Una configurazione \`e di accettazione se \`e $(q, \emptystring)$ con $q \in F$.
+
+Una parola \`e rifiutata da un NFA quando non esistono cammini di accettazione, ossia tutti i cammini si bloccano prima della fine dell'input o terminano in uno stato non in $F$.
+
+\subsection{Equivalenza fra NFA e DFA}
+
+Abbiamo un algoritmo per creare un DFA a partire da un NFA, che ne dimostra quindi l'equivalenza.
+Con $\emptystring$-chiusura di uno stato $q$ indichiamo l'insieme degli stati raggiungibili da $q$ usando solo $\emptystring$-mosse.
+
+\begin{algorithm}
+	\label{alg:algoritmo_dfa_eq_nfa}
+	\caption{Algoritmo per creare un DFA a partire da un NFA.}
+	\begin{algorithmic}
+		\Require un NFA con $\emptystring$-mosse $M = (Q, \Sigma, \delta, q_0, F)$
+		\Ensure un DFA $M' = (Q', \Sigma, \delta', q_0', F')$ equivalente
+		\State $Q' \gets \{ \emptystring$-chiusura($q_0$)$\}$
+		\While{$\exists T \in Q'$ non marcato}
+			\State marca $T$
+			\ForAll{$a \in \Sigma$}
+				\State $V \gets \bigcup_{q \in T} \delta(q, a)$
+				\State $V' \gets \bigcup_{q \in V}$ $\emptystring$-chiusura($q$)
+				\If{$V' \notin Q'$}
+				\State $Q' \gets Q' \cup \{ V' \}$
+				\EndIf
+				\State $\delta'(T, a) \gets V'$
+			\EndFor
+		\EndWhile
+	\end{algorithmic}
+\end{algorithm}
+
+Lo stato iniziale, dopo aver usato l'algoritmo \ref{alg:algoritmo_dfa_eq_nfa}, sar\`a l'$\emptystring$-chiusura di $q_0$.
+Gli stati finali in $F'$ saranno tutti gli stati in $Q'$ che contengono uno stato $q \in F$.
+
+La complessit\`a dell'algoritmo \`e un problema: potremmo essere costretti a creare $2^n$ nuovi stati.
+Prendiamo ad esempio l'automa in figura \ref{fig:nfa_con_problemi}.
+Questo automa accetta tutte le stringhe con un 1 nella posizione $n$-ultima (o una cosa simile).
+Il DFA di questo automa ha $2^n$ stati.
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[
+			->,
+			>=stealth',
+			shorten >=1pt,
+			auto,
+			node distance=2.8cm,
+			semithick
+		]
+
+		\node[initial, state] (q0) {$q_0$};
+		\node[state] (q1) [right of=q0] {$q_1$};
+		\node[state] (q2) [right of=q1] {$q_2$};
+		\node[] (dots) [right of=q2] {$\dots$};
+		\node[state, accepting] (qn) [right of=dots] {$q_n$};
+	
+		\path (q0)	edge [loop, above]	node {0,1}	(q0)
+			(q0)	edge	node {1}	(q1)
+			(q1)	edge	node {0,1}	(q2)
+			(q2)	edge	node {0,1}	(dots)
+			(dots)	edge	node {0,1}	(qn);
+	\end{tikzpicture}
+	\label{fig:nfa_con_problemi}
+	\caption{Automa con problemi}
+\end{figure}
+
+Bisognerebbe dimostrare l'equivalenza fra l'automa che costruiamo con l'algoritmo e l'automa iniziale, ossia che:
+\[
+	x \in \lang{M} \iff x \in \lang{M'}
+\]
+Ma chi siamo noi per dimostrarlo?
+
+\subsection{\emph{Pumping Lemma}}
+
+Abbiamo parlato di cicli nei cammini di parole accettate.
+Siamo sicuri che c'\`e un ciclo nel cammino di una parola accettata, quando la parola \`e pi\`u lunga di $n = \abs{Q}$.
+Ogni parola pi\`u lunga di $n$ si pu\`o scomporre in tre sottoparole: la parola dall'inizio a prima del ciclo, il ciclo, e la fine della parola.
+Sicuramente l'etichetta del ciclo \`e non vuota.
+
+Possiamo quindi scomporre una parola $w$ come la concatenazione delle tre parole $xyz$, con $\abs{y} > 0$.
+Da questa scomposizione possiamo ricavare infinite parole $x y^i z$, ``percorrendo'' pi\`u volte il ciclo.
+
+Con il \emph{pumping lemma} dimostriamo che esiste un linguaggio che non \`e regolare (ossia per cui non esiste un automa a stati finiti che lo riconosca).
+
+Partiamo dal fatto che ogni parola accettata pi\`u lunga del numero degli stati contiene un ciclo. 
+Possiamo ricavare infinite parole ripetendo le etichette relative al ciclo.
+Questo vale \emph{per ogni} parola accettata pi\`u lunga del numero degli stati, e per qualsiasi numero di volte ripetiamo le etichette del ciclo.
+
+Per dimostrare, grazie al pumping lemma, che un certo linguaggio non \`e regolare, dobbiamo far vedere che non esiste una macchina che lo accetti.
+Quindi per ogni possibile numero $k$ di stati troviamo una parola dentro il linguaggio che \`e pi\`u lunga di $k$ ma che non rispetta il pumping lemma.
+Quindi per ogni sottoparola non vuota che termina entro il $k$-esimo carattere troviamo un indice $i$ tale che, ripetendo la sottoparola $i$ volte, otteniamo una parola non nel linguaggio.
+
+\`E come se fissassimo di volta in volta il numero di nodi nell'ipotetico automa, e trovassimo una parola che, essendo pi\`u lunga del numero di nodi, dovrebbe contenere un ciclo.
+Ma il ciclo non c'\`e, perch\'e ogni sottoparola candidata a esserlo, se iterata un certo numero di volte, ci porta fuori dal linguaggio.
+Questo contraddice il pumping lemma: percorrendo il ciclo un numero arbitrario di volte otteniamo sempre parole nel linguaggio.
+
+\begin{theorem}
+	Un linguaggio $L$ non \`e regolare se $\forall k > 0$ $\exists z \in L : z \ge k$, e per ogni fattorizzazione di $z = u v w$ con $\abs{v} \ge 1$ e $\abs{uv} \le k$ $\exists i \ge 0$ tale che $u v^i w \notin L$.
+\end{theorem}
 
 \section{Automa a pila (\emph{Push-Down Automata})}
 
 I PDA sono automi a stati finiti con una pila.
 \`E possibile accedere a una memoria, che funziona come uno stack, e a cui possiamo accedere solo al \emph{top}
 Come in tutte queste astrazioni, la pila \`e infinita.
+
+
+% TODO catch up here
+
+Consideriamo il linguaggio $\lang{G} = \{ a^m b^n \text{ t.c. } m \ge n \ge 0 \}$.
+Qual \`e la grammatica per generare questo linguaggio?
+\begin{align*}
+	S &\to aSb \langor aA \langor \emptystring \\
+	A &\to aA \langor \emptystring
+\end{align*}
+
+Passiamo al linguaggio $\lang(G) = \{ a^i b^j c^k \text{ t.c. } i = j \lor j = k \text{ con } i,j,k \ge 0 \}$.
+La sua grammatica \`e:
+\begin{align*}
+	S &\to AT \langor RC \langor \emptystring \\
+	A &\to aA \langor \emptystring \\
+	C &\to Cc \langor \emptystring \\
+	T &\to bTc \langor \emptystring \\
+	R &\to aRb \langor \emptystring 
+\end{align*}
+Come sappiamo che questo \`e corretto?
+La grammatica $A$ descrive il linguaggio $\lang{A} = \{ a^n : n \ge 0 \}$, cos\`i come la grammatica $C$ descrive il linguaggio $\lang{C} = \{c^n : n \ge 0\}$.
+Questi due sono linguaggi regolari.
+Le altre due grammatiche descrivono rispettivamente i linguaggi $\lang{T} = \{ b^i c^i : i \ge 0 \}$ e $\lang{R} = \{ a^i b^i : i \ge 0 \}$.
+Quindi il nostro linguaggio \`e dato da $\lang{G} = \lang{A}\lang{T} \cup \lang{R}\lang{C}$.
+
+Questo \`e un linguaggio \emph{inerentemente ambiguo}.
+Non si pu\`o trovare una grammatica non ambigua equivalente.
+
+Passiamo al linguaggio $\lang{G} = \{ a^i b^j c^k \text{ t.c. } i + j = k \text{ con } i,j,k \ge 0 \}$.
+\begin{align*}
+	S &\to aSc \langor B \langor \emptystring \\\
+	B &\to bBc \langor \emptystring
+\end{align*}
+
+Passiamo al linguaggio in cui ogni prefisso di ogni parola ha un numero di $a$ maggiore o uguale al numero delle $b$.
+Come troviamo la grammatica di questo linguaggio?
+\begin{align*}
+	S &\to aSbS \langor aA \langor \emptystring \\
+	A &\to aA \langor \emptystring
+\end{align*}
+
+Basta esempi.
+Ora vediamo che i linguaggi liberi dal contesto corrispondono ai linguaggi riconosciuti dagli automi a pila.
+
+Partendo da una grammatica, costruiamo un PDA che lavora non deterministicamente in tempo lineare per riconoscere la parola di input.
+
+Sia $G = (T, V, S, P)$ una grammatica libera dal contesto.
+
+1. Impila il simbolo di pila vuota e poi la prima variabile della CFG
+2. Se nella pila c'\`e una variabile A, scegli non deterministicamente una regola con a sinistra A e in cima alla pila sostituisci la parte destra della regola.
+3. ?
+4. ?
+
+Si pu\`o rimpiazzare una grammatica ambigua con una grammatica non ambigua equivalente.
+Una grammatica \`e ambigua se ha pi\`u alberi di derivazione per uno stesso input.
+
+Il metodo che usiamo \`e quello di imporre una precedenza e l'associativit\`a a sinistra.
+\begin{verbatim}
+E -> E + T | T 
+T -> T * F | F
+F -> (E) | id
+\end{verbatim}
+Abbiamo tolto l'ambiguit\`a a questa grammatica:
+\begin{verbatim}
+E -> E + E
+E -> E * E
+E -> (E)
+E -> id
+\end{verbatim}
+Date le grammatiche $G_1$ e $G_2$, vediamo che i linguaggi generati sono chiusi rispetto alle solite operazioni.
+\begin{align*}
+	G_1 \cup G_2 & : S \to S_1 \langor S_2 \\
+	G_1 G_2 & : S \to S_1 S_2 \\
+	G_1^{\star} & : S \to S S_1 \langor \emptystring
+\end{align*}
+I linguaggi liberi dal contesto non sono chiusi rispetto all'intersezione.
+Consideriamo i linguaggi $a^n b^n c^m$ e $a^m b^n c^n$.
+La loro intersezione \`e il linguaggio $a^n b^n c^n$ e non \`e un linguaggio libero dal contesto.
+Ci\`o implica che i linguaggi context-free non sono chiusi neanche rispetto al complemento, poich\'e l'intersezione si pu\`o esprimere in termini di unione e complemento.
 
 \section{\emph{Linear bound automata}}
 
