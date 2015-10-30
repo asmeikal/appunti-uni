@@ -24,6 +24,14 @@
 \usepackage{fancyhdr}
 \usepackage[makeroom]{cancel}
 
+% algorithms
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\floatname{algorithm}{Algoritmo}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
 \theoremstyle{plain}
 \newtheorem{axiom}{Assioma}
 \newtheorem{theorem}{Teorema}[section]
@@ -64,6 +72,14 @@
 
 \usetikzlibrary{shapes,arrows,calc,fit,backgrounds,positioning,automata}
 
+\newcommand{\parity}[1]{\mathcal{Par}\left( { #1 } \right)}
+% Languages & Automata
+\newcommand{\langs}[1]{\mathcal{L}\left( {#1} \right)}
+\newcommand{\lang}[1]{L\left( {#1} \right)}
+\newcommand{\langor}{\, | \,}
+\newcommand{\kleenestar}{\star}
+\newcommand{\emptystring}{\varepsilon}
+
 \newcommand{\bigo}[1]{O\left( {#1} \right)}
 \newcommand{\probp}{\code{P}}
 \newcommand{\probnp}{\code{NP}}
@@ -88,7 +104,7 @@
 \newcommand{\infop}{\wedge}         % simbolo dell'operatore inf
 \newcommand{\subgroupset}{\mathscr{S}}      % insieme dei sottogruppi (S corsiva)
 \newcommand{\solutions}{\mathscr{S}}
-\newcommand{\parts}{\mathbb{P}}             % insieme dei naturali
+\newcommand{\parts}[1]{\mathbb{P} \left( {#1} \right)}             % insieme delle parti
 \newcommand{\naturals}{\mathbb{N}}          % insieme dei naturali
 \newcommand{\integers}{\mathbb{Z}}          % insieme degli interi
 \newcommand{\rationals}{\mathbb{Q}}         % insieme dei razionali
