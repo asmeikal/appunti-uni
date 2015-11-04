@@ -1,0 +1,72 @@
+
+\chapter{esercizi}
+
+\begin{esercizio}
+Ogni sottoinsieme di un linguaggio regolare \`e regolare?
+\end{esercizio}
+
+No, il linguaggio dato da tutto $\Sigma^{\star}$ \`e regolare, e ogni linguaggio \`e sottoinsieme di questo.
+Ma sappiamo che esistono linguaggi non regolari, quindi almeno uno fra questi linguaggi non lo \`e.
+Deve essere $\abs{\Sigma} > 1$.
+
+\begin{esercizio}
+Se $L_1$ e $L_2$ sono linguaggi non regolari, la loro intersezione pu\`o essere regolare.
+Dare un esempio in cui questo succede, e uno in cui non succede.
+\end{esercizio}
+
+Se l'intersezione fra due linguaggi non regolari (come $a^nb^n$ e $b^na^n$) \`e l'insieme vuoto o $\{\emptystring\}$, abbiamo trovato due linguaggi per cui l'intersezione \`e regolare.
+Prendendo invece $L_1 = L_2$, l'intersezione \`e uguale a entrambi, e non \`e regolare.
+
+\begin{esercizio}
+Se $L_1$ \`e regolare e $L_2$ non lo \`e, l'unione non necessariamente \`e un linguaggio regolare.
+Dare un esempio in cui questo succede, e uno in cui non succede.
+\end{esercizio}
+
+Se $L_2 \subset L_1$, l'unione \`e necessariamente un linguaggio regolare.
+Un esempio \`e quando $L_1 = \{0,1\}^{\star}$, e $L_2$ \`e un qualsiasi sottoinsieme proprio di $L_1$ che identifichi un linguaggio non regolare (come il solito $a^n b^n : n \ge 0$).
+Se invece $L_1 \subset L_2$, l'unione \`e un linguaggio non regolare.
+Un esempio \`e $L_1 = \{ a^n b^n : 0 \le n \le k \}$, e $L_2 = \{ a^n b^n : n \ge 0 \}$.
+
+\begin{esercizio}
+$F$ \`e un linguaggio finito, $L \setminus F$ \`e un linguaggio regolare. $L$ \`e regolare?
+\end{esercizio}
+
+S\`i: $L = (L \setminus F) \cup (F \cap L)$.
+Sappiamo che l'insieme dei linguaggi regolari \`e chiuso rispetto alle operazioni insiemistiche, e che ogni linguaggio finito \`e regolare.
+$F \cap L$ \`e un linguaggio regolare, perch\'e sicuramente $\abs{F \cap L} \le \abs{F}$,   quindi anche l'intersezione \`e un linguaggio finito (e quindi regolare).
+Quindi $L$ \`e l'unione di due linguaggi regolari, che \`e a sua volta regolare.
+
+\begin{esercizio}
+Dimostrare che il linguaggio $L = \{ w : w \in \{a,b\}^{\star} \land n_a(w) \le n_b(w) + 2 \}$ non \`e regolare.
+\end{esercizio}
+
+Consideriamo un $k$ generico, e la parola $a^k b^{k+2}$, che appartiene al linguaggio.
+Per ogni scomposizione $a^r a^s a^t b^{k+2}$, con $s \ge 1$ e $r + s + t = k$, esiste un indice $i \ge 0$ per cui $r + i \cdot s + t > k + 2$, che ci porta alla parola $a^r a^{i \cdot s} a^t b^{k+2}$ che \emph{non} appartiene al linguaggio.
+\`E sufficiente prendere $i$ tale che $i > \frac{s + 2}{s}$.
+
+\begin{esercizio}
+Dimostrare, usando il pumping lemma, che il linguaggio $L = \{ a^i b^j c^k : i,j,k \ge 0 e k = i * j \}$ non \`e regolare.
+\end{esercizio}
+
+Consideriamo un $n$ positivo generico, e la parola $a^n b^n c^{n^2}$ nel linguaggio.
+Per ogni scomposizione $a^r a^s a^t b^n c^{n^2}$, con $s \ge 1$ e $r + s + t = n$, esiste un indice $i \ge 0$ per cui $(r + i \cdot s + t) \cdot n > n^2$, portando alla parola $a^{r + i \cdot s + t} b^n c^{n^2}$ che non appartiene al linguaggio.
+\`E sufficiente prendere $i > 1$, che verifica la disuguaglianza:
+\[
+i > \frac{n^2 - t \cdot n - r \cdot n}{s \cdot n} = \frac{n - t - r}{s} = \frac{s}{s} = 1 
+\]
+
+\begin{esercizio}
+Scrivere la grammatica del linguaggio $L = \{ a x a : x \in \{0,1\}^{\star} e a \in \{0,1\}^{\star} \}$.
+\end{esercizio}
+
+La grammatica di $L$ \`e:
+\begin{align*}
+G :& S \to 0 R 0 \langor 1 R 1 \\
+& R \to 0R \langor 1R \langor \emptystring
+\end{align*}
+
+\begin{esercizio}
+Scrivere la grammatica del linguaggio $L = \{ w # x : w, x \in \{0,1\}^{\star} \text{ e } w^R \text{ \`e una sottostringa di } x \} = \{ w # u w^R v : w, u, v \in \{0,1\}^{\star} \}$.
+\end{esercizio}
+
+

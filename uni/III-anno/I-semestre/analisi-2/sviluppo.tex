@@ -1,0 +1,165 @@
+Vogliamo fare lo sviluppo di Taylor in pi\`u dimensioni?
+
+\exists \delta \in (0,1) :
+f(x_0 + h) = f(x_0) + \sum_{i = 1}^{2} df (x_0i) / dx_i \cdot h_i + \frac{1}{2} \sum_{i,j = 1}^{2} df (x_0 + \delta h) / dx_i dx_j \cdot h_i \cdot h_j
+
+x_0 e h sono vettori
+
+A noi interessa f(x_0 + h). Creiamo una funzione in una variabile: f(\vector{x_0} + t \cdot \vector{h}) \definition g(t).
+
+% TODO definire \definition come un = con un punto sopra
+
+f(\vector{x_0} + \vector{h}) = g(1)
+f(\vector{x_0}) = g(0)
+
+Vogliamo sviluppare (?) g(\delta).
+
+Sviluppo teorico di g(1) in x_0. Otteniamo che esiste \delta \in (0,1) tale che g(1) = g(0) + g'(0) + \frac{1}{2} g''(\delta)
+
+Abbiamo tre pezzi. g(0) sappiamo che \`e f(\vector{x_0}). Ci manca g'(0) e g''(x). Vogliamo fare quindi derivata prima e seconda di g, la prima in 0, la seconda in \delta.
+
+dg / dt (t) = d / dt f(\vector{x_0} + t \cdot \vector{h})
+
+Questa \`e una \emhp{derivata composta}, perch\'e t \`e dentro una funzione di pi\`u variabili. Le componenti sono:
+
+d / dt f(x^0_1 + t \cdot h_1 , x^0_2 + t \cdot h_2) = 
+d / d x_1 f(\vector{x_0} + t \cdot \vector{h}) \cdot d / dt (x^0_1 + t \cdot h_1) +
+d / d x_2 f(\vector{x_0} + t \cdot \vector{h}) \cdot d / dt (x^0_2 + t \cdot h_2)i =
+d / d x_1 f(\vector{x_0} + t \cdot \vector{h}) \cdot h_1 + 
+d / d x_2 f(\vector{x_0} + t \cdot \vector{h}) \cdot h_2 =
+g'(t) = 
+\sum_{i = 1}^{2} d /d x_i f(\vector{x_0} + t \cdot \vector{h}) \cdot h_i
+
+Abbiamo trovato g'(t). Ci interessa g'(t) calcolata in 0, per\`o. Mettiamo t = 0 e stiamo a posto.
+
+g'(0) = \sum_{x = 1}^{2} d / d x_i f(\vector{x_0}) \cdot h_i
+
+Ora dobbiamo derivare g'(t) per trovare g''(t).
+
+g''(t) = d / dt \left( \sum_{i = 1}^{2} d / d x_i f(\vector{x_0} + t \cdot \vector{h}) \cdot h_i \right)
+
+\`E semplicemente la somma delle derivate. Quindi \`e:
+\sum_{i = 1}^{2} d / dt d / d x_i f(x_0 + t \cdot h) \cdot h_i
+
+Per comodit\`a e per non impicciarci, chiamiamo d / d x_i f(\vector{x_0} + t \cdot \vector{h}) \definition f_i (\vector{x_0} + t \cdot \vector{h})
+
+Quindi scriviamo:
+
+\sum_{i = 1}^{2} d / d t f_i(\vector{x_0} + t \cdot \vector{h)} \cdot h_i = 
+\sum_{i = 1}^{2}  \left( d / d x_1 f_i(\vector{x_0} + t \cdot \vector{h}) \cdot h_1 + d / d x_2 f_i(\vector{x_0} + t \cdot \vector{h}) \cdot h_2 \right) \cdot h_i
+=
+\sum_{i = 1}^{2} \left( \sum_{j = 1}^{2} d / d x_i f_i(\vector{x_0} + t \cdot \vector{h}) \cdot h_j \right) \cdot h_i =
+\sum_{i = 1}^{2} \left( \sum_{j = 1}^{2} d / d x_i \left( d / d x_j f(\vector{x_0} + t \cdot \vector{h}) \cdot h_j \right) \cdot h_i \right) =
+\sum_{i, j = 1}^{2}  d^2 / d x_i d x_j f(\vector{x_0} + t \cdot \vector{h}) \cdot h_i \cdot h_j  =
+g''(t)
+
+
+Riscriviamo ora lo sviluppo completo che abbiamo ottenuto:
+
+f(\vector{x_0} + \vector{h_0}) = 
+f(\vector{x_0}) + 
+\sum_{i = 1}^{2} d / d x_i f(\vector{x_0}) \cdot h_i +
+\frac{1}{2} \cdot \sum_{i,j = 1}^{2} d^2 / d x_i x_j f(\vector{x_2} + \delta \vector{h}) \cdot h_i \cdot h_j
+
+Vogliamo scriverlo ora senza delta. Si chiama ``Sviluppo di Taylor al secondo ordine con resto di Lagrange''. That's shit.
+
+Vale quanto segue:
+
+\frac{1}{2} \sum_{i, j = 1}^{2} d^2 / d x_i d x_2 f(\vector{x_0} + \delta \cdot \vector{h}) =
+\frac{1}{2} \sum_{i, j = 1}^{2} d^2 / d x_i d x_2 f(\vector{x_0}) + o(\abs{\vector{h}}^2) 
+
+Sotto l'ipotesi che f \in C^2. Non lo dimostriamo.
+
+Lo sviluppo ``pi\`u pratico'' \`e questo:
+
+f(\vector{x_0} + \vector{h}) = f(\vector{x_0}) + 
+\sum_{i = 1}^{2} d / d x_i f(\vector{x_0}) \cdot h_i +
+\frac{1}{2} \cdot \sum_{i,j = 1}^{2} d^2 / d x_i x_j f(\vector{x_2}) \cdot h_i \cdot h_j + 
+o(\abs{\vector{h}}^2)
+
+Questo sviluppo ha il resto in \emph{form adi Peano}.
+Significa che stiamo approssimando la funzione con un ``paraboloide'', una specie di cupola, 
+e che la differenza fra la funzione e la sua approssimazione \`e un ordine di h^2, ossia 
+la differenza fra i due diviso il quadrato della norma di h tende a 0 per la norma di h che tende a 0.
+
+Scriviamo una notazione compatta anche di questo.
+
+f(\vector{x_0} + \vector{h}) = 
+f(\vector{x_0}) + 
+\vector{\Gradient f(\vector{x_0})} \scalar \vector{h} +
+\frac{1}{2} \cdot \sum_{i,j = 1}^{2} d^2 / d x_i x_j f(\vector{x_0}) \cdot h_i \cdot h_j + 
+o(\abs{\vector{h}}^2)
+
+Manca l'ultimo pezzo...
+
+Quell'orrore di derivata seconda rispetto a x_i e rispetto a x_j, non sono altro che numeri che variano con i e con j. Chiamiamoli quindi a_{i,j}.
+
+a_{i,j} \definition ...
+
+Notiamo che a_{i,j} = a_{j,i}: derivate parziali opposte sono uguali, per il teorema di Schwartz. Quindi abbiamo:
+
+\frac{1}{2} \cdot \sum_{i,j = 1}^{2} d^2 / d x_i x_j f(\vector{x_0}) \cdot h_i \cdot h_j = 
+\frac{1}{2} \sum_{i,j = 1}^{2} a_{i,j} \cdot h_i \cdot h_j = 
+\fraC{1}{2} a_{1,1} h_1^2 + 2 \, a_{1,2} h_1 h_2 + a_{2,2} h_2^2
+
+Usiamo una matrice per scrivere meglio questa roba.
+
+H_f (x_0) = 
+\begin{pmatrix}
+a_{1,1} & a_{1,2} \\
+a_{1,2} & a_{2,2}
+\end{pmatrix}
+
+a_{i,j} li abbiamo descritti sopra! Chiamiamo la matrice \hat{H} per semplicit\`a. Si chiama \emph{matrice Hessiana}.
+
+\hat{H} \vector{h} = 
+\begin{pmatrix}
+a_{1,1} & a_{1,2} \\
+a_{1,2} & a_{2,2}
+\end{pmatrix}
+\cdot
+\begin{pmatrix}
+h_1 \\ h_2
+\end{pmatrix}
+=
+\begin{pmatrix}
+a_{1,1} h_1 + a_{1,2} h_2 \\
+a_{1,2} h_1 + a_{2,2} h_2
+\end{pmatrix}
+
+Vediamo da questo che:
+
+\vector{h} \scalar \hat{H} \vector{h} = % la roba di prima 
+
+Finiamo di scrivere quindi:
+
+f(\vector{x_0} + \vector{h}) = 
+f(\vector{x_0}) + 
+\vector{\Gradient f(\vector{x_0})} \scalar \vector{h} +
+\vector{h} \scalar H_f (x_0)  \vector{h}
+o(\abs{\vector{h}}^2)
+
+Questi punti ci interessano vicino ai punti critici, con tangente verticale, ossia con gradiente pari a zero.
+
+Resta solo la parte della matrice, in questi punti, e riusciamo a capire se ci troviamo in un massimo o in un minimo.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

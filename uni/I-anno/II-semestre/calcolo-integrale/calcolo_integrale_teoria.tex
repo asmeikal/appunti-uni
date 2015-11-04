@@ -1,0 +1,486 @@
+\input{../../../../common/common.tex}
+
+\begin{document}
+
+\section{Teorema fondamentale del calcolo}
+
+Il teorema fondamentale del calcolo vale per ogni $f \in C^{0} ([a,b])$ (ossia per ogni funzione continua nell'intervallo chiuso e limitato $[a,b]$).
+In generale, $f \in C^{n} ([a,b])$ per $n \ge 0$ significa che $f$ \`e una funzione derivabile $n$ volte, e che sia $f$ che le sue prime $n$ derivate sono continue nell'intervallo chiuso e limitato $[a,b]$.
+
+\begin{theorem}[Teorema fondamentale del Calcolo]
+Sia $F(x) = \int_{a}^{x} f(t) \dx[t]$, per $a \le x \le b$, ossia $F$ \`e la funzione che calcola l'area sotto il grafico della funzione $f$ dal punto $a$ al punto (variabile) $x$, allora:
+\begin{enumerate}
+    \item $\exists F'(x) = f(x)$, ossia la derivata prima di $F$ \`e $f$;
+    \item $\forall G$ primitiva di $f$ in $[a,b]$, risulta che:
+    \[
+    \int_{a}^{b} f(x) \dx = G(b) - G(a) = \increment{\int f(x) \dx}_{a}^{b}
+    \]
+	Ossia l'integrale definito da $a$ a $b$ di $f$ \`e la differenza fra $G(b)$ e $G(a)$.
+    L'ultima parte si legge ``incremento dell'integrale indefinito di $f$ da $a$ a $b$''.
+\end{enumerate}
+\end{theorem}
+Nella premessa, $x$ indica l'estremo superiore di integrazione, mentre la $t$ \`e una variabile muta di integrazione (e quindi non \`e minimamente rilevante la lettera che gli si associa).
+
+La nozione di primitiva di una funzione e quella di area individuata dal grafico della funzione sono legate a doppio filo dal teorema fondamentale del Calcolo.
+
+\newpage
+\section{Integrali impropri}
+
+Sappiamo calcolare questo integrale indefinito:
+\[
+\int \log (x) \dx = x \, \log (x) - x + c
+\]
+Poi, $\forall a \ge 0$, sappiamo calcolare questo integrale definito:
+\[
+\int_{a}^{1} \log (x) \dx = - 1 - a \, \log (a) + a
+\]
+Facendo il limite per $a$ che tende a $0^+$, vediamo che quest'area vale:
+\[
+\lim_{a \to 0^+} \int_{a}^{1} \log (x) \dx = -1
+\]
+Sappiamo calcolare qualunque area di questo tipo, $\forall a, b \ge 0$:
+\[
+\int_{a}^{b} \log (x) \dx
+\]
+Abbiamo parlato solo di intervalli $[a,b]$ chiusi e limitati. La cosa pi\`u estrema che abbiamo fatto \`e stato togliere un punto dall'estremo dell'intervallo. Ma in questo caso, se studiamo $\log (x)$ nell'intervallo $(0,1]$, la funzione \`e continua \emph{ma non} limitata.
+
+Prendendo per\`o un qualunque $a \in (0,1]$, la funzione nel punto $a$ \`e sia continua che limitata. Facendo tendere $a$ a $0^+$ vediamo che l'area sotto la funzione \`e limitata, e tende a $-1$. La cosa rilevante \`e che abbiamo attribuito un'area limitata al grafico di una funzione su un insieme illimitato. Adesso possiamo ammettere questo:
+\[
+\int_{0}^{1} \log (x) \dx = -1
+\]
+Questo \`e un integrale improprio. Un integrale improprio \`e il limite di un integrale proprio.
+
+\begin{exmp}
+Quello che segue \`e un normale integrale definito, per $b \in \reals$.
+\[
+\int_{1}^{b} \frac{\diff x}{1 + x^2} = \arctan (b) - \frac{\pi}{4}
+\]
+Ma se facciamo il limite per $b \to \infty$, l'integrale diventa un integrale improprio.
+\[
+\lim_{b \to \infty} \int_{1}^{b} \frac{\diff x}{1 + x^2} = \frac{\pi}{2} - \frac{\pi}{4} = \frac{\pi}{4}
+\]
+\end{exmp}
+
+\begin{exmp}
+Questo \`e immediatamente riconoscibile come un integrale improprio:
+\[
+\int_{0}^{1} \frac{\diff x}{x}
+\]
+La funzione integranda, infatti, non \`e definita in uno degli estremi di integrazione (nello specifico, in 0). Quindi trovare un integrale simile vuol dire trovare questo integrale:
+\[
+\lim_{a \to 0^+} \int_{a}^{1} \frac{\diff x}{x} =
+\lim_{a \to 0^+} \log(1) - \log(a) = 
+- \lim_{a \to 0^+} \log(a) = \infty
+\]
+Qui abbiamo quindi una funzione illimitata su un intervallo limitato, e il suo integrale non esiste.
+\end{exmp}
+
+\begin{exmp}
+Variazioni sullo stesso integrale improprio.
+\[
+\int_{1}^{\infty} \frac{\diff x}{x}
+\]
+Anche questo \`e improprio. Abbiamo una funzione integranda che (in $[1, \infty)$) \`e limitata, nonostante l'intervallo preso non lo sia.
+\[
+\lim_{b \to \infty} \int_{1}^{b} \frac{\diff x}{x} = \lim_{b \to \infty} \log(b) = \infty
+\]
+\end{exmp}
+
+Quindi l'integrale definito di $\frac{1}{x}$ non esiste n\'e fra 0 e 1, n\'e fra 1 e $\infty$. $\frac{1}{x}$ \`e una funzione illimitata in 0 e all'infinito. Sar\`a sempre cos\`i, con tutte le funzioni non limitate?
+
+\begin{exmp}
+L'integrale che segue sembra simile ai casi precedenti, ma... 
+\[
+\int \frac{\diff x}{x^2} = - \frac{1}{x} + c
+\]
+Rifacciamo entrambi i ``test'' fatti prima.
+\begin{align*}
+\int_{0}^{1} \frac{\diff x}{x^2} \\
+\int_{1}^{\infty} \frac{\diff x}{x^2}
+\end{align*}
+Sempre due integrali impropri. Ma vogliamo capire quale integrale converge e quale diverge.
+\[
+\lim_{a \to 0^+} \int_{a}^{1} \frac{\diff x}{x^2} =
+\lim_{a \to 0^+} - 1 + \frac{1}{a} = \infty
+\]
+Diverge fra 0 e 1...
+\[
+\lim_{b \to \infty} \int_{1}^{b} \frac{\diff x}{x^2} =
+\lim_{b \to 0^+} - \frac{1}{b} + 1 = 1
+\]
+E converge a 1 fra 1 e $\infty$.
+\end{exmp}
+
+\begin{exmp}
+Vediamo un altro caso apparentemente simile ai precedenti. 
+\[
+\int \frac{\diff x}{\sqrt{x}} = 2 \, \sqrt{x} + c
+\]
+Quale integrale improprio converge, e quale diverge?
+\[
+\lim_{a \to 0^+} \int_{a}^{1} \frac{\diff x}{\sqrt{x}} =
+\lim_{a \to 0^+} 2 - 2 \, \sqrt{a} = 2
+\]
+Converge (a 2) fra 0 e 1...
+\[
+\lim_{b \to \infty} \int_{1}^{b} \frac{\diff x}{\sqrt{x}} =
+\lim_{b \to 0^+} 2 \, \sqrt{b} - 2 = \infty
+\]
+E diverge fra 1 e $\infty$.
+\end{exmp}
+
+\subsection{Funzioni razionali e integrali impropri}
+\label{integrali_impropri_razionali}
+
+Conosciamo l'integrale di questa funzione generica:
+\[
+\int \frac{\diff x}{x^p} = 
+\begin{cases}
+\dfrac{x^{-p + 1}}{- p + 1} + c & \text{ se } p \neq 1 \\
+\abslog{x} + c & \text{ se } p = 1
+\end{cases}
+\]
+Vogliamo studiare due integrali impropri a partire da questa funzione generica.
+\begin{align*}
+\int_{0}^{1} \frac{\diff x}{x^p} \qquad
+\int_{1}^{\infty} \frac{\diff x}{x^p}
+\end{align*}
+\`E chiaro che, per $p$ negativo o nullo ($p \le 0$), il primo \`e un integrale proprio (la funzione, infatti, \`e continua e limitata anche in 0). I casi interessanti sono quelli per $p > 0$. Vogliamo capire per quali valori di $p$ questo integrale converge e per quali diverge.
+
+Abbiamo visto che se $p = \frac{1}{2}$ il primo converge, il secondo diverge, mentre se $p = 2$ il primo diverge e il secondo converge.
+
+Vediamo il primo integrale improprio nel caso generico, per $p \neq 1$:
+\[
+\int_{0}^{1} \frac{\diff x}{x^p} = 
+\lim_{a \to 0^+} \int_{a}^{1} \frac{\diff x}{x^p} =
+\lim_{a \to 0^+} \frac{1}{- p + 1} - \frac{a^{-p + 1}}{-p + 1}
+\]
+Ora, tutto dipende da $-p + 1$. Per $a$ che tende a $0^+$, $a^n$ tende a $0$ se l'esponente \`e positivo, o a $\infty$ se l'esponente \`e negativo. Quindi:
+\[
+\lim_{a \to 0^+} \frac{1}{- p + 1} - \frac{a^{-p + 1}}{-p + 1} =
+\begin{cases}
+\dfrac{1}{- p + 1} & \text{ se } p < 1 \\
+\infty & \text{ se } p > 1
+\end{cases}
+\]
+Se $p < 1$, abbiamo che $-p > - 1 \implies - p + 1 > 0$.
+
+Vediamo l'altro integrale.
+\[
+\int_{1}^{\infty} \frac{\diff x}{x^p} =
+\lim_{b \to \infty} \int_{1}^{b} \frac{\diff x}{x^p} = 
+\begin{cases}
+\text{qualcosa} \in \reals & \text{ se } p > 1 \\
+\infty & \text{ se } p \le 1
+\end{cases}
+\]
+
+\subsection{Conclusione}
+
+Nell'intervallo $\ocint{0}{1}$ vale questo:
+\[
+\int_{0}^{1} \frac{\diff x}{x^p} = 
+\begin{cases}
+\dfrac{1}{- p + 1} & \text{ se } p < 1 \\
+\infty & \text{ se } p \ge 1
+\end{cases}
+\]
+Nell'intervallo $\coint{1}{\infty}$ vale questo:
+\[
+\int_{1}^{\infty} \frac{\diff x}{x^p} =
+\begin{cases}
+\text{qualcosa} \in \reals & \text{ se } p > 1 \\
+\infty & \text{ se } p \le 1
+\end{cases}
+\]
+E basta.
+
+\begin{exmp}
+Basta integrali impropri di funzioni razionali.
+\[
+\int_{0}^{\infty} x \, e^{-x} \dx =
+\lim_{b \to \infty} \int_{0}^{b} x \, e^{-x} \dx = 
+\increment{\lim_{b \to \infty} -x \, e^{-x} - e^{-x}}_{0}^{b} =
+\lim_{b \to \infty} -b \, e^{-b} - e^{-b} + 1 = + 1
+\]
+\end{exmp}
+
+\begin{exmp}
+Studiamo questo integrale improprio:
+\[
+\int_{- \infty}^{\infty} e^{-\abs{x}} \dx
+\]
+La funzione \`e pari, ed \`e limitata. La scriviamo come somma di due integrali impropri:
+\begin{align*}
+\int_{0}^{\infty} e^{-x} \dx + \int_{-\infty}^{0} e^{x} \dx =
+2 \, \int_{0}^{\infty} e^{-x} \dx &= \\
+2 \, \lim_{b \to \infty} \int_{0}^{b} e^{-x} \dx = 
+\increment{2 \, \lim_{b \to \infty} - e^{-x}}_{0}^{b} = 
+2 \, \lim_{b \to \infty} - e^{-b} + e^{0} &= 2
+\end{align*}
+\end{exmp}
+
+\newpage
+\section{Criterio di convergenza integrale}
+\label{sec:criterio_convergenza_integrale}
+
+Consideriamo una successione $a_n$ e una funzione $f(x)$ per cui vale:
+\begin{align*}
+f(N_0) &= a_{N_0}
+f(N_0 + 1) &= a_{N_0 + 1} \\
+f(N_0 + 2) &= a_{N_0 + 2} \\
+\ldots 
+\end{align*}
+Nella figura \ref{fig:integrale_maggiora_serie}, la somma dei rettangoli (larghi 1 e alti quanto $a_n$) \`e minore dell'integrale della funzione.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+\begin{axis}[
+    % xtick={0,...,1.5},ytick={0,...,1.5},
+    % xmax=2,ymax=1.2,ymin=0,xmin=0,
+    % enlargelimits=true,
+    xticklabels={$N_0$,$N_0$,$N_0$,$N_0 + 1$,$N_0 + 2$,$N_0 + 3$,$N_0 + 4$},
+    axis lines=middle,
+    clip=false,
+    ymax=0.6,
+    ymin=0,
+    xmin=1.5,
+    xmax=7.5,
+    domain=2:7,
+    axis on top
+    ]
+
+\addplot [draw=green, fill=green!10, const plot mark right, samples=6, domain=2:7]
+    {1 / x}\closedcycle;
+
+\addplot[smooth, thick,domain=2:7,samples=40]{1 / x};
+
+\end{axis}
+\end{tikzpicture}
+\caption{\label{fig:integrale_maggiora_serie}L'integrale della funzione maggiora la serie}
+\end{figure}
+
+La serie \`e la somma delle aree dei rettangoli, mentre l'integrale \`e l'area sotto la curva. Vale evidentemente che:
+\[
+\sum_{n = N_0 + 1}^{\infty} a_n \le \int_{N_0}^{\infty} f(x) \dx
+\]
+Quindi, se l'integrale improprio converge, converge anche la serie.
+
+Usiamo questa propriet\`a per studiare la convergenza delle serie armoniche generalizzate, come questa:
+\[
+\sum_{n = 1}^{\infty} \frac{1}{n^2} \le 1 + \int_{1}^{\infty} \frac{\diff x}{x^2} < \infty
+\]
+Il ragionamento alla base di questi confronti \`e propriamente geometrico. 
+
+Quindi, nel caso generale, vale questo:
+\[
+\sum_{n = 1}^{\infty} \frac{1}{n^p} \le 1 + \int_{1}^{\infty} \frac{\diff x}{x^p} < \infty \text{ per } p > 1
+\]
+
+Come facciamo vedere, ora, che la serie diverge per $p \le 1$? Vogliamo scrivere che la sommatoria sia maggiore o uguale all'integrale, quindi dobbiamo costruire il grafico (e di conseguenza la funzione) in modo che i rettangoli della serie contengano il grafico della funzione.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+\begin{axis}[
+    % xtick={0,...,1.5},ytick={0,...,1.5},
+    % xmax=2,ymax=1.2,ymin=0,xmin=0,
+    % enlargelimits=true,
+    xticklabels={$N_0$,$N_0$,$N_0$,$N_0 + 1$,$N_0 + 2$,$N_0 + 3$,$N_0 + 4$},
+    axis lines=middle,
+    clip=false,
+    ymax=0.6,
+    ymin=0,
+    xmin=1.5,
+    xmax=7.5,
+    domain=2:7,
+    axis on top
+    ]
+
+\addplot [draw=red, fill=red!10, ybar interval, samples=6, domain=2:7]
+    {1 / x}\closedcycle;
+
+\addplot[smooth, thick,domain=2:7,samples=40]{1 / x};
+\end{axis}
+\end{tikzpicture}
+\caption{\label{fig:serie_maggiora_integrale}La serie maggiora l'integrale della funzione}
+\end{figure}
+
+La disuguaglianza che ci interessa ora:
+\[
+	\int_{N_0}^{\infty} f(x) \dx \le a_{N_0} + \sum_{n = N_0 + 1}^{\infty} a_n 
+\]
+
+Quello che ci interessa \`e che la serie converge se e solo se converge anche l'integrale (improprio).
+
+\begin{exmp}[di applicazione del criterio integrale]
+Questa serie \`e impossibile da maggiorare o da minorare:
+\[
+\sum_{n = 2}^{\infty} \frac{1}{n \, \log (n) \, {\left[ \log \left( \log (n) \right) \right]}^{2}}
+\]
+Funziona per\`o il criterio integrale, che ci mostra che l'integrale converge:
+\[
+\int_{2}^{\infty} \frac{\diff x}{x \, \log(x) \, {\left[ \log \left( \log (x) \right) \right]}^{2}} = \increment{- \frac{1}{\log \left( \log(x) \right)}}^{\infty}_{2} = \frac{1}{\log \left( \log(2) \right)}
+\]
+Osservando la serie iniziale, e pensando all'integrale che le si pu\`o associare, si nota la presenza di una funzione e della sua derivata:
+\[
+\frac{1}{f'(x) \, {\left[ f(x) \right]}^2}
+\]
+Con $f(x) = \log \left( \log(x) \right)$, e quindi $f'(x) = \frac{1}{x \, log \left( x \right)}$.
+\end{exmp}
+
+\newpage
+\section{Serie di Taylor}
+
+Consideriamo una generica serie di potenze:
+\[
+\sum_{n = 0}^{\infty} a_n \, (x - x_0)^n
+\]
+con raggio di convergenza $R \in \ocint{0}{\infty}$ (ossia, strettamente maggiore di 0).  Vuol dire che la serie converge per $- R < x - x_0 < R$. $R$ pu\`o anche essere infinito: in questo caso la serie converge in tutto $\reals$.
+
+Possiamo vedere questa serie come una funzione $f(x)$, definita per $\abs{x - x_0} < R$, ossia per $x \in \ooint{x_0 - R}{x_0 + R}$ (che \`e chiamato \emph{intervallo di convergenza}). 
+\[
+f(x) = \sum_{n = 0}^{\infty} a_n \, (x - x_0)^n
+\]
+Questa funzione \`e derivabile, e la sua derivata \`e la somma delle derivate:
+\[
+f'(x) = \sum_{n = 1}^{\infty} n \, a_{n} \, (x - x_0)^{n - 1}
+\]
+E non solo: essendo derivabile, questa funzione \`e anche integrabile:
+\[
+\int_{x_0}^{x} f(x) \dx = 
+\sum_{n = 0}^{\infty} \int_{x_0}^{x} a_n \, (x - x_0)^n =
+\sum_{n = 0}^{\infty} a_n \, \frac{(x - x_0)^{n + 1}}{n + 1}
+\]
+Le serie di potenze sono integrabili e derivabili termine a termine \emph{all'interno dell'intervallo di convergenza}. E il discorso, poi, vale anche per la derivata della derivata, e per la derivata della derivata della derivata... La derivata $k$-esima \`e:
+\[
+	f^{(k)} (x) = \sum_{n = k}^{\infty} n \cdot (n - 1) \cdot \ldots \cdot (n - k + 1) \, a_n \, (x - x_0)^{n - k}
+\]
+Dicendo che $0^0 = 1$ (\`e un abuso di notazione, ma a noi va bene), vediamo quanto vale la funzione (e le sue derivate) in $x = x_0$:
+\begin{align*}
+f(x_0) &= a_0 \\
+f'(x_0) &= a_1 \\
+f''(x_0) &= 2 \, a_2 \\
+&\vdots \\
+f^{(k)}(x_0) &= k! \, a_k
+\end{align*}
+Abbiamo scritto poco sopra, infatti:
+\[
+f^{(k)} (x_0) = \sum_{n = k} n \cdot (n - 1) \cdot \ldots \cdot (n - k + 1) \, a_n \, (x_0 - x_0)^{n - k} =
+k \cdot (k - 1) \cdot \ldots \cdot 1 \, a_{k} = k! \, a_{k}
+\]
+$0^0$ \`e un abuso di notazione perch\'e quello che si dovrebbe scrivere \`e:
+\[
+a_0 + \sum_{n = 1}^{\infty} a_n \, (x - x_0)^n
+\]
+Ma, siccome $n^0 = 1 \forall n \in \reals - \{ 0 \}$, si preferisce abusare della notazione matematica e scrivere:
+\[
+\sum_{n = 0}^{\infty} a_n \, (x - x_0)^n
+\]
+Quindi, sapendo che $a_k = \frac{f^{(k)}(x_0)}{k!}$, possiamo riscrivere:
+\[
+f(x) = \sum_{n = 0}^{\infty} a_n \cdot (x - x_0)^n =
+\sum_{n = 0}^{\infty} \frac{f^{(n)} (x_0)}{n!} \cdot (x - x_0)^{n}
+\]
+Che \`e la famosa serie di Taylor.
+
+Ogni serie di potenze \`e, all'interno dell'intervallo di convergenza, la serie di Taylor della sua somma.
+
+\subsection{Esempi}
+
+A cosa ci serve questo? Sappiamo una cosa:
+\[
+\sum_{n = 0}^{\infty} x^n = \frac{1}{1 - x}
+\]
+Quindi, $f(x)$ vale:
+\[
+f(x) = \frac{1}{1 - x}
+\]
+Quale \`e la derivata $k$-esima di questa funzione nell'origine? L'abbiamo visto prima: $a_n$ \`e sempre 1, e quindi:
+\[
+f^{(k)} (0) = k!
+\]
+Guardiamo questa funzione:
+\[
+f(x) = \frac{1}{(1 - x)^2}
+\]
+\`E il quadrato \emph{e} la derivata di $\frac{1}{1 - x}$. Quale \`e il suo sviluppo in serie?
+\[
+\frac{1}{(1 - x)^2} = \left[ \frac{1}{1 - x} \right]' = 
+\sum_{n = 0}^{\infty} \left[ x^{n} \right]' = \sum_{n = 1}^{\infty} n \, x^{n - 1}
+\]
+La derivata della funzione (che \`e la serie), \`e la serie delle derivate! Il termine con $n = 0$ scompare, una volta derivato: \`e una costante.
+
+Prendiamo quest'altra funzione:
+\[
+\frac{1}{1 + x} = \sum_{n = 0}^{\infty} (-1)^n \, x^n
+\]
+Si vede chiaramente, infatti \`e sufficiente sostituire $x$ con $-x$ nell'equazione di poco sopra...
+
+Quale sar\`a lo sviluppo in serie di potenze di questa funzione?
+\[
+f(x) = \log (1 + x)
+\]
+\`E una primitiva della funzione vista sopra... Quindi il suo sviluppo in serie di potenze sar\`a:
+\[
+\log (1 + x) = \sum_{n = 0}^{\infty} (-1)^n \, \frac{x^{n+1}}{n+1}
+\]
+Sviluppandolo viene questo:
+\[
+\log (1 + x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \ldots
+\]
+Tutto questo vale all'interno dell'intervallo di convergenza. Quest'ultimo caso sarebbe vero anche per $x = 1$, anche se l'intervallo di convergenza \`e $-1 < x < 1$. Sostituendo $x = 1$ troviamo questo:
+\[
+\log (2) = \sum_{n = 1}^{\infty} \frac{(-1)^{n+1}}{n}
+\]
+La serie armonica a termini di segno alterno vale $\log (2)$.
+
+Sappiamo quanto vale questa serie:
+\[
+\sum_{n = 0}^{\infty} (-1)^n x^{2 \, n} = \frac{1}{1 + x^2}
+\]
+La primitiva di una somma \`e la somma delle primitive... E la primitiva di una serie \`e la serie delle primitive.
+\[
+\arctan (x) = \sum_{n = 0}^{\infty} (-1)^n \frac{x^{2 \, n + 1}}{2 \, n + 1}
+\]
+Anche qui si pu\`o fare qualche operazione impropria: per $x = 1$, abbiamo uno sviluppo in serie di $\arctan (1) = \frac{\pi}{4}$.
+
+Quando scriviamo un polinomio di Taylor come questo:
+\[
+f(x) = \sum_{n = 0}^{N} \frac{f^{(n)} (x_0)}{n!} \, (x - x_0)^n
+\]
+Stiamo trascurando un errore, dipendente da $N$:
+\[
+E_N (x) = \frac{f^{(N + 1)} (\xi)}{(N + 1)!} \, (x - x_0)^{N + 1}
+\]
+La serie di Taylor \`e il limite del polinomio di Taylor, per $N \to \infty$.
+
+Studiamo questa serie:
+\[
+\sum_{n = 0}^{\infty} \frac{x^n}{n!}
+\]
+Il raggio di convergenza \`e $\infty$, quindi converge per ogni $x$. Questo polinomio qui:
+\[
+\sum_{n = 0}^{N} \frac{x^n}{n!} + E_N (x)
+\]
+\`e il polinomio di Taylor di $e^x$ di centro uguale a 0. Le derivate di $e^x$ sono tutte $e^x$, e nell'origine valgono sempre 1. L'errore varr\`a:
+\[
+E_N (x) = e^\xi \cdot \frac{x^{N+1}}{(N+1)!}
+\]
+Maggioriamo l'errore cos\`i:
+\[
+\abs{E_N (x)} \le \frac{e^{\abs{x}} \, \abs{x}^{N+1}}{(N + 1)!}
+\]
+Per $N$ che tende all'infinito, l'errore tende a 0. Quindi la serie di prima \`e la serie di Taylor di $e^x$:
+\[
+e^x = \sum_{n = 0}^{\infty} \frac{x^n}{n!}
+\]
+Ripeschiamo il polinomio di Taylor della funzione seno:
+\[
+\sin (x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \ldots
+\]
+La serie di Taylor della funzione sar\`a il limite per $n \to \infty$ del polinomio di Taylor.
+
+\end{document}
+
