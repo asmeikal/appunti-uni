@@ -260,13 +260,97 @@ La differenza fra prima e dopo \`e:
 Che \`e un numero dispari.
 Quindi se il numero di inversioni era pari in $\rho$, ora \`e dispari, e viceversa se era dispari ora \`e pari.
 
+Abbiamo visto che ogni oggetto matematico pu\`o avere diverse rappresentazioni.
+Una permutazione pu\`o essere scritta come prodotto di trasposizioni, e queste possono essere completamente diverse.
+C'\`e qualcosa che non cambia scrivendo una permutazione come prodotto di trasposizioni?
+S\`i: la parit\`a del numero di trasposizioni.
 
+Abbiamo detto che data una permutazione $\rho$, alcune coppie di elementi sono in ``inversione''.
+La parit\`a del numero di coppie in inversione \`e la parit\`a della permutazione, e questa \`e una definizione.
 
+Gli automorfismi descrivono quello che non cambia in un oggetto matematico. (???)
+La parit\`a \`e un invariante relativamente semplice: ha solo due valori, anche se la definizione \`e un po' contorta.
+Avendo solo due valori, divide le permutazioni in due classi.
 
+Abbiamo parlato di una funzione ``Parit\`a'':
+\[
+	\par{\rho} = 
+	\begin{cases}
+	-1 \\
+	1
+	\end{cases}
+\]
+Vale che $\par{\rho \sigma} = \par{\rho} \par{\sigma}$.
+\`E una conseguenza di quello che abbiamo dimostrato, ossia che data una permutazione $\rho : [n] \to [n]$ qualsiasi e una trasposizione $(a,b)$ con $a,b \in [n]$, vale $\par{\rho (a,b)} \neq \par{\rho}$.
 
+Per dimostrarlo abbiamo contato il numero di inversioni in $\rho$ prima e dopo averlo moltiplicato per $(a,b)$.
+Rappresentando la permutazione con una tabella, chiamiamo ``colonne di bordo'' le colonne di $a$ e di $b$, e le colonne fra queste due le chiamiamo ``colonne intermedie''.
 
+Sia $i$ il numero delle coppie di colonne in inversione in $\rho$ in cui al pi\`u una \`e una colonna di bordo e l'altra \`e intermedia.
+Queste colonne saranno presenti anche in $\rho (a,b)$.
+Poi ci sono alcune colonne che cambiano situazione: sono le coppie di colonne in cui una \`e una colonna di bordo e una \`e una colonna intermedia.
+Chiamiamo poi $R(a,b)$ il numero delle colonne intermedie in inversione con tutte e due le colonne di bordo, e $N(a,b)$ il numero di colonne che non sono in inversione con nessuna delle colonne di bordo.
+Poi, chiamiamo $V(a,b) = R(a) + R(b)$ il numero delle colonne in inversione con esattamente una fra le colonne di bordo.
+Infine, $\chi(a,b)$ \`e definito come $1$ se le due colonne di bordo sono in inversione in $\rho$, $0$ altrimenti.
 
+Non conosciamo nessuno di questi numeri, ci interessa solo sapere come cambiano.
+Il numero di colonne in inversione in $\rho$ \`e:
+\[
+i + 2 \, R(a,b) + V(a,b) + \chi(a,b)
+\]
+$R(a,b)$ sono le coppie in inversione sia con $a$ che con $b$, quindi dobbiamo ``contarle'' due volte.
+Le colonne che non sono in inversione con $a$ o con $b$ non dobbiamo contarle.
 
+Il numero delle coppie in inversione in $\rho (a,b)$ \`e, invece:
+\[
+i + 2 \, N(a,b) + V(a,b) + \chi'(a,b)
+\]
+Le uniche colonne che possono cambiare situazione, e che anzi necessariamente la cambiano, saranno solo le coppie di colonne in cui una colonna \`e di bordo e l'altra \`e o una colonna di bordo o \`e una colonna intermedia.
+Le colonne in inversione e con $a$ e con $b$ ora non saranno in inversione con nessuna delle due.
+Al loro posto avremo in inversione le colonne che in $\rho$ non erano in inversione n\'e con $a$ n\'e con $b$.
+Quelle che erano in inversione con esattamente con una colonna di bordo, saranno ora in inversione ancora con esattamente una colonna di bordo, ma con l'altra.
+Infine, possiamo dire che $\chi'(a,b) + \chi(a,b) = 1$.
+Se $a,b$ non erano in inversione, ora lo saranno, e viceversa se erano in inversione ora non lo saranno. 
 
+Ora affermiamo che la parit\`a del primo numero \`e diversa dalla parit\`a del secondo numero, ossia che la differenza fra i due numeri \`e un numero dispari.
+\[
+i + 2 \, N(a,b) + V(a,b) + 1 - \chi(a,b) - \left[ i + 2 \, R(a,b) + V(a,b) + \chi (a,b) \right]
+\]
+Questo numero \`e dispari.
+Infatti vale:
+\[
+2 \, N(a,b) - 2 \, R(a,b) + 1 - 2 \, \chi(a,b)
+\]
+che \`e evidentemente dispari.
 
+\subsection{Numero cromatico}
 
+Parliamo di numero cromatico in relazione alla colorazione dei vertici di un grafo.
+Si pu\`o parlare di numero cromatico anche in relazione al colore degli archi di un grafo.
+Il problema \`e nato prima della teoria dei grafi, nel contesto di colorazione delle carte geografiche.
+
+Appel-Haken hanno dimostrato nel '79, alla University of Illinois at Urbana Champwtf, che bastano 4 colori per colorare ogni carta geografica.
+
+I due hanno ridotto il numero di grafi da analizzare da infiniti che erano, a meno di duemila.
+Li hanno fatti analizzare tutti a un computer e hanno ``dimostrato'' che l'ipotesi \`e vera.
+Ma negli anni '90 \`e stato dimostrato che questa dimostrazione era incompleta.
+Hanno ridotto nuovamente il numero di grafi da analizzare a circa 600, e controllato i casi col computer.
+
+\`E un problema centrale nell'ottimizzazione combinatoria, nella quale dobbiamo colorare un grafo col minor numero possibile di colori.
+
+Consideriamo una carta geografia.
+A ogni regione sulla carta associamo un vertice di un grafo.
+Vogliamo associare a ogni regione un colore, e lo facciamo con una funzione $f: V(G) \to C$ che a ogni vertice del grafo assegna un elemento di un insieme astratto $C$, che chiamiamo colore.
+Nel problema della carta geografica dobbiamo avere che regioni adiacenti hanno colori differenti.
+Nei grafi, $f$ \`e una colorazione se vertici adiacenti hanno colori diversi.
+
+\begin{defn}[Colorazione di un grafo]
+Una colorazione di un grafo \`e una funzione $f : V(G) \to C$ con $C$ insieme astratto se per ogni coppia di vertici $a,b$ abbiamo che $\{a,b\} \in E(G) \implies f(a) \neq f(b)$.
+\end{defn}
+Ogni grafo ha una colorazione: qualsiasi funzione iniettiva (con valori tutti diversi) soddisfa il vincolo.
+
+Il problema \`e capire quanto pu\`o essere piccolo $C$, ossia il minimo $\abs{C}$ per cui esiste una colorazione $f : V(G) \to C$.
+La cardinalit\`a $\abs{C}$ \`e il numero cromatico del grafo.
+
+L'ottimizzazione combinatoria \`e anche chiamata ricerca operativa, o \emph{operations research}.
+Operations = operazioni militari, la ricerca operativa \`e nata per ottimizzare le risorse.

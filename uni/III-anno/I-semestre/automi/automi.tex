@@ -412,6 +412,23 @@ Consideriamo i linguaggi $a^n b^n c^m$ e $a^m b^n c^n$.
 La loro intersezione \`e il linguaggio $a^n b^n c^n$ e non \`e un linguaggio libero dal contesto.
 Ci\`o implica che i linguaggi context-free non sono chiusi neanche rispetto al complemento, poich\'e l'intersezione si pu\`o esprimere in termini di unione e complemento.
 
+Il linguaggio $\{ ww : w \in \{0,1\}^{\star}\}$ non \`e context-free, ma il suo complemento s\`i.
+
+Il suo complemento \`e l'unione del linguaggio delle parole di lunghezza dispari (banale) e del linguaggio delle parole di lunghezza pari le cui due met\`a non sono uguali.
+\[
+	L_1 = \{ xy : x,y \in \{0,1\}^{\star} \land \abs{x} = \abs{y} \land x \neq y \}
+\]
+Possiamo considerare solo parole del tipo $xax'za'z'$, con $x,z,x',z' \in \{0,1\}^{\star}$, e $a \neq a'$ elemento di $\{0,1\}$, e con $\abs{x} = \abs{x'}$ e $\abs{z} = \abs{z'}$.
+Notare che le stringhe $xax'$ e $za'z'$ hanno lunghezza dispari.
+Quindi $L_1$ \`e l'unione dei due linguaggi dati uno dalla concatenazione di $\{ x0z : \abs{x} = \abs{z} \}$ e $\{ x1z : \abs{x} = \abs{z} \}$ e l'altro dalla concatenazione di $\{ x1z : \abs{x} = \abs{z} \}$ e di $\{ x0z : \abs{x} = \abs{z} \}$.
+
+Scrivendolo come grammatica, abbiamo che $G_1$ \`e:
+\begin{align*}
+G_1 :& S \to S_0 S_1 \langor S_1 S_0 \\
+& S_0 \to 0 \langor 0 S_0 0 \langor 0 S_0 1 \langor 1 S_0 0 \langor 1 S_0 1 \\
+& S\_1 \to 1 \langor 0 S\_1 0 \langor 0 S\_1 1 \langor 1 S\_1 0 \langor 1 S\_1 1 
+\end{align*}
+
 \section{\emph{Linear bound automata}}
 
 Sono una versione limitata delle macchine di Turing.
