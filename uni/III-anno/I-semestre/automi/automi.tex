@@ -329,11 +329,102 @@ Questo contraddice il pumping lemma: percorrendo il ciclo un numero arbitrario d
 \section{Automa a pila (\emph{Push-Down Automata})}
 
 I PDA sono automi a stati finiti con una pila.
-\`E possibile accedere a una memoria, che funziona come uno stack, e a cui possiamo accedere solo al \emph{top}
+\`E possibile accedere a una memoria, che funziona come uno stack, ma a cui possiamo accedere solo al \emph{top}.
 Come in tutte queste astrazioni, la pila \`e infinita.
 
+Formalmente un automa a pila \`e una sestupla:
+\[
+A = ( Q, \Sigma, \Gamma, \Delta, q_0, F )
+\]
+dove $Q$ \`e un insieme finito di stati, $\Sigma$ \`e un alfabeto finito di input, $\Gamma$ \`e l'alfabeto finito della pila, $\Delta : Q \times \Sigma' \times \Gamma' \to \parts{ Q \times \Gamma' }$ \`e la funzione di transizione, dove $\Sigma' = \Sigma \cup \{ \emptystring \}$ e $\Gamma' = \Gamma \cup \{ \emptystring \}$, $q_0 \in Q$ \`e lo stato iniziale e $F \subseteq Q$ \`e l'insieme degli stati finali.
 
-% TODO catch up here
+Due cose da notare: la funzione di transizione, nella definizione, \`e non deterministica, poich\'e porta a un insieme delle parti.
+Poi, la funzione di transizione \`e definita a partire da uno stato, un carattere di input (anche vuoto), e un carattere sulla pila (anche vuoto), e porta a un insieme di coppie stato, carattere sulla pila.
+\`E confuso, finch\'e non si vede cosa \`e una configurazione.
+
+La configurazione di un automa a pila \`e dato da tre cose:
+\begin{itemize}
+	\item stato della macchina
+	\item input ancora da leggere
+	\item stato della pila.
+\end{itemize}
+Quindi la configurazione \`e un elemento di $Q \times \Sigma^{\star} \times \Gamma^{\star}$. Un esempio pu\`o essere $(q, aaabb, CA\stackend)$.
+Il simbolo pi\`u a sinistra nella pila \`e la cima della pila ($C$ nel nostro caso).
+
+Supponiamo $(q, C) \in \Delta(p, a, B)$, e definiamo una relazione simile a quella vista con i DFA sulla configurazione di un automa.
+Diciamo quindi che $(p, ax, B\alpha) \leadsto (q, x, C\alpha)$, con $x \in \Sigma^{\star}$ a indicare l'input rimanente e $\alpha \in \Gamma^{\star}$ a indicare il resto della pila.
+Nello stato $p$, con input $a$ e con $B$ sulla cima della pila, andiamo nello stato $q$ sostituendo $C$ a $B$ sulla pila.
+Quindi la pila passa da una configurazione a un'altra consumando un carattere di input, cambiando stato, e modificando il carattere in cima alla pila (ossia, il carattere pi\`u a sinistra).
+
+\`E possibile usare delle $\emptystring$-transizioni per aggiungere o togliere caratteri della pila.
+Se, nell'esempio di prima, $B = \emptystring$ e $C \neq \emptystring$, stiamo facendo ``push''.
+Se invece $B \neq \emptystring$ e $C = \emptystring$, stiamo facendo ``pop''.
+Ogni stringa (di input o della pila) possiamo pensarla come il carattere di stringa vuota concatenato alla stringa stessa!
+
+Anche i PDA si distinguono in PDA deterministici e PDA non deterministici.
+Un PDA $ = (Q, \Sigma, \Gamma, \Delta, q_0, F )$ \`e deterministico se valgono le due condizioni seguenti:
+\begin{enumerate}
+	\item $\forall q \in Q$, $a \in \Sigma'$, $B \in \Gamma'$, vale che $\abs{\Delta(q,a,B)} \le 1$, ossia dato uno stato, un elemento in cima alla pila, e un carattere di input, la funzione di transizione porta al pi\`u in uno stato.
+	\item $\forall q \in Q$, $B \in \Gamma'$, vale che:
+	\[
+	\Delta(q, \emptystring, B) \neq \emptyset \implies \Delta(q, a, B) = \emptyset \forall a \in \Sigma
+	\]
+	Ossia, dato uno stato e un elemento in cima alla pila, se esiste una $\emptystring$-transizione sull'input da quello stato, la funzione di transizione non \`e definita per ogni altro input in $\Sigma$. 
+\end{enumerate}
+
+Il linguaggio $\lang{A} = \{ a^n b^n : n \ge 0 \}$ \`e deterministico.
+Invece, il linguaggio $Pal = \{ x : x = x^R \}$, ossia il linguaggio delle parole palindrome, non \`e deterministico.
+
+I linguaggi dei PDA deterministici \emph{sono meno} dei linguaggi dei PDA non deterministici, ossia $\langs{\text{DPDA}} \subset \langs{\text{PDA}}$.
+
+\subsection{Grammatiche libere dal contesto}
+
+Vediamo un esempio prima di formalizzare le \emph{Context-Free Grammars}.
+La grammatica delle espressioni aritmetiche \`e la seguente:
+\begin{align*}
+	E &\to E + E \\
+	E &\to E \times E \\
+	E &\to ( E ) \\
+	E &\to id
+\end{align*}
+Con $id$ intendiamo un ``identificatore'', sia questo una variabile o un numero, e \`e un simbolo ``terminale'': non abbiamo una regola per rimpiazzarlo.
+Stesso discorso per i simboli $+$, $\times$, $($ e $)$.
+
+Una CFG \`e una grammatica generativa: possiamo usare le sue regole per generare stringhe nel linguaggio, ad esempio con la precedente possiamo generare l'espressione aritmetica $id + ( id \times id )$.
+A cosa serva \`e e rimarr\`a un mistero.
+
+Intuitivamente, i linguaggi delle PDA possiamo riscriverli come grammatiche libere dal contesto. Questa, ad esempio, \`e la grammatica di $a^n b^n$ con $n \ge 0$:
+\begin{align*}
+	G_1 : S \to aSb \langor \emptystring
+\end{align*}
+Questa, invece, \`e la grammatica del \emph{linguaggio delle parentesi bilanciate}, arrivato secondo nella classifica delle cose pi\`u inutili al mondo:
+\begin{align*}
+	G_2 : \ & S \to LSR \langor SS \langor LR \\
+	& L \to ( \\
+	& R \to )
+\end{align*}
+
+Formalizziamo.
+Una grammatica libera dal contesto \`e una quadrupla $CFG = (T, V, S, F)$ (l'ordine sembra essere abbastanza libero qui), dove:
+\begin{itemize}
+	\item $T$ e $V$ sono due insiemi (finiti) rispettivamente di ``terminali'' e di ``variabili'',
+	\item $S$ \`e un simbolo di ``start'', con $S \in V$ (ossia \`e una variabile),
+	\item $P$ \`e un insieme di ``regole di produzione'' del tipo $A \to y$, dove $A \in V$ e $y \in {(T \cup V)}^{\star}$, ossia $y$ \`e una serie di terminali e non terminali.
+\end{itemize}
+
+Una regola di derivazione $B \to v$ \`e applicabile a $x$, con $x \in {(T \cup V)}^{\star}$ ossia stringa di terminali e non terminali, se $B$ \`e in $x$, ossia se $x = y B z$ con $y, z \in {(T \cup V)}^{\star}$ anche loro stringhe di terminali e non terminali.
+
+Il risultato dell'applicazione di $B \to v$ a $x$ \`e la stringa $y v z$.
+Possiamo chiudere questo insieme di regole di derivazione transitivamente e riflessivamente, ottenendo quindi regole come $y B z \to y v z$.
+
+Attenzione: la grammatica \`e libera dal contesto perch\'e le regole di produzione non dipendono da cosa \`e attorno al non terminale (che \`e il contesto).
+Regole simili non sono libere dal contesto:
+\begin{align*}
+	a B & \to v \\
+	b B & \to w
+\end{align*}
+
+\subsubsection{Esempi di linguaggi e grammatiche}
 
 Consideriamo il linguaggio $\lang{G} = \{ a^m b^n \text{ t.c. } m \ge n \ge 0 \}$.
 Qual \`e la grammatica per generare questo linguaggio?
@@ -342,7 +433,7 @@ Qual \`e la grammatica per generare questo linguaggio?
 	A &\to aA \langor \emptystring
 \end{align*}
 
-Passiamo al linguaggio $\lang(G) = \{ a^i b^j c^k \text{ t.c. } i = j \lor j = k \text{ con } i,j,k \ge 0 \}$.
+Passiamo al linguaggio $\lang{G} = \{ a^i b^j c^k \text{ t.c. } i = j \lor j = k \text{ con } i,j,k \ge 0 \}$.
 La sua grammatica \`e:
 \begin{align*}
 	S &\to AT \langor RC \langor \emptystring \\
@@ -373,17 +464,28 @@ Come troviamo la grammatica di questo linguaggio?
 	A &\to aA \langor \emptystring
 \end{align*}
 
-Basta esempi.
-Ora vediamo che i linguaggi liberi dal contesto corrispondono ai linguaggi riconosciuti dagli automi a pila.
+\subsubsection{Corrispondenza fra CFG e PDA}
 
+I linguaggi liberi dal contesto corrispondono ai linguaggi riconosciuti dagli automi a pila.
 Partendo da una grammatica, costruiamo un PDA che lavora non deterministicamente in tempo lineare per riconoscere la parola di input.
 
-Sia $G = (T, V, S, P)$ una grammatica libera dal contesto.
+Sia $G = (T, V, S, P)$ una grammatica libera dal contesto, costruiamo l'automa a pila $(\{q_0, q, q_f\}, \, T, \, V \cup T \cup \{ \stackend \}, \, \Delta, \, q_0, \, \{q_f\})$ come segue:
+\begin{enumerate}
+	\item passiamo da $q_0$ a $q$ senza consumare input e impilando il simbolo di pila vuota $\stackend$ e il simbolo di start $S$,
+	\item creiamo la funzione di transizione a partire dalle regole di produzione: senza consumare input, se in cima alla pila c'\`e una variabile $A$, sostituiamo $A$ con la parte destra di una regola di produzione con $A$ a sinistra; se in cima alla pila c'\`e un terminale $a$, creiamo una transizione che consuma $a$ in input e fa \emph{pop} di $a$ dalla cima della pila. Entrambi i tipi di transizione non cambiano stato (restano quindi in $q$),
+	\item creiamo la transizione che non consuma input e che, con il simbolo $\stackend$ in cima alla pila, lo rimuove e va nello stato $q_f$.
+\end{enumerate}
+Attenzione: la regola di produzione $A \to B \langor C \langor D$ \`e equivalente alle tre regole $A \to B$, $A \to C$, $A \to D$.
 
-1. Impila il simbolo di pila vuota e poi la prima variabile della CFG
-2. Se nella pila c'\`e una variabile A, scegli non deterministicamente una regola con a sinistra A e in cima alla pila sostituisci la parte destra della regola.
-3. ?
-4. ?
+Pi\`u formalmente, definiamo $\Delta$ come segue:
+\begin{enumerate}
+	\item $\Delta( q_0, \emptystring, \emptystring ) = \{ (q, \emptystring, S \stackend )\}$,
+	\item $\forall A \to y \in P$, $\Delta (q, \emptystring, A) \ni (q, y)$,
+	\item $\forall a \in T$, $\Delta (q, a, a) \ni (q, \emptystring)$.
+	\item $\Delta (q, \emptystring, \stackend) = \{ (q_f, \emptystring, \emptystring ) \}$.
+\end{enumerate}
+
+% TODO sistemare da qui
 
 Si pu\`o rimpiazzare una grammatica ambigua con una grammatica non ambigua equivalente.
 Una grammatica \`e ambigua se ha pi\`u alberi di derivazione per uno stesso input.
@@ -426,7 +528,7 @@ Scrivendolo come grammatica, abbiamo che $G_1$ \`e:
 \begin{align*}
 G_1 :& S \to S_0 S_1 \langor S_1 S_0 \\
 & S_0 \to 0 \langor 0 S_0 0 \langor 0 S_0 1 \langor 1 S_0 0 \langor 1 S_0 1 \\
-& S\_1 \to 1 \langor 0 S\_1 0 \langor 0 S\_1 1 \langor 1 S\_1 0 \langor 1 S\_1 1 
+& S_1 \to 1 \langor 0 S_1 0 \langor 0 S_1 1 \langor 1 S_1 0 \langor 1 S_1 1 
 \end{align*}
 
 \section{\emph{Linear bound automata}}
