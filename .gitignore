@@ -1,5 +1,7 @@
 *.*
 !*.tex
+!*.cls
+!*.sty
 !.gitignore
 !Makefile
 !*.md
