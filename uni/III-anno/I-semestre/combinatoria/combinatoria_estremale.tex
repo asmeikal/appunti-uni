@@ -1,0 +1,92 @@
+
+\chapter{Combinatoria estremale}
+
+Due delle branche pi\`u importanti della combinatoria e dell'informatica teorica sono la combinatoria estremale e la combinatoria probabilistica.
+
+Partiamo con un po' di teoria estremale dei grafi: vogliamo capire il rapporto all'estremo di alcuni parametri, fissandone alcuni altri.
+Un esempio di propriet\`a estremale \`e la minima superficie per volume che la sfera ha rispetto ad altri solidi.
+
+Introduciamo la combinatoria estremale.
+Fissato $n$, consideriamo tutti i grafi con $n$ vertici, e di questi grafi $G$ consideriamo due parametri: $\crom{G}$ (il numero cromatico) e $\abs{E(G)}$ (il numero degli archi).
+Qual \`e il massimo numero degli archi in un grafo con $n$ vertici e con numero cromatico 2?
+Un grafo con numero cromatico 2 \`e un grafo bipartito.
+\[
+	\Tau(n) = \max_{\abs{V(G)} = n \\ \crom{G} = 2} \abs{E(G)}
+\]
+Il grafo \`e bipartito: abbiamo due sottoinsieme dei vertici, $A$ e $[n] \setminus A$, ciascuno senza archi fra i suoi vertici.
+Il massimo numero di archi \`e $\abs{A} \cdot (n - \abs{A})$: connettiamo ogni vertice in un insieme con ogni vertice nell'altro.
+Dell'insieme $A$ ci interessa solo la cardinalit\`a.
+Se la cardinalit\`a di $A$ \`e $x$, abbiamo $x \cdot (n - x)$ archi, e dobbiamo quindi massimizzare $x$ in funzione di $n$.
+\[
+	\Tau(n) = \max_{x} x \cdot (n - x)
+\]
+Quando $n$ \`e pari, questo valore \`e $\frac{n}{2} \cdot \frac{n}{2}$, quando $n$ \`e dispari \`e $\floor{\frac{n}{2} \cdot \frac{n}{2}V}$.
+Ma perch\'e?
+
+Dimentichiamo per un momento che $x$ debba essere un intero.
+Quello che vale \`e questo:
+\[
+	x \cdot (n - x) \le \left{( \frac{n}{2} \right)}^2 = \frac{n^2}{4}
+\]
+La verifica \`e immediata:
+\begin{align*}
+	x \cdot (n - x) & \le \frac{n^2}{4} \implies \\
+	4 x^2 - 4 n x + n^2 & \ge 0
+\end{align*}
+L'ultimo \`e un quadrato, quindi sempre non negativo, quindi vale sempre quanto detto.
+
+Riflettere su questo: la radice del prodotto \`e minore o uguale della media aritmetica, e la radice del prodotto \`e la media geometrica.
+
+Notare che $\floor{\frac{n}{2} \cdot \frac{n}{2}V} = \floor{\frac{n}{2}} \cdot \ceil{\frac{n}{2}}$.
+Notare inoltre che $\binom{n}{2} \simeq \frac{n^2}{2}$, quindi al massimo abbiamo la met\`a degli archi.
+
+Vediamo che $\floor{\frac{n}{2} \cdot \frac{n}{2}V} = \floor{\frac{n}{2}} \cdot \ceil{\frac{n}{2}}$.
+Se $n$ \`e pari, vale banalmente.
+Se $n$ \`e dispari, possiamo scrivere $n$ come $2 l + 1$, e quindi:
+\[
+	\floor{\frac{n^2}{4}} = \floor{\frac{4 l^2 + 4 l + 1}{4}} = 
+	\floor{l^2 + l + \frac{1}{4}} = l^2 + l
+\]
+Dall'altro lato, possiamo scrivere questo:
+\[
+	\floor{\frac{n}{2}} = \floor{\frac{2 l + 1}{2}} = \floor{l + \frac{1}{2}} = l \\
+	\ceil{\frac{n}{2}} = \ceil{\frac{2 l + 1}{2}} = \ceil{l + \frac{1}{2}} = l + 1
+\]
+E quindi abbiamo che $l^2 + l = l \cdot (l + 1)$.
+
+Consideriamo ora tutti i grafi con $n$ vertici che non contengono triangoli.
+Notare che tutti i grafi bipartiti non contengono triangoli, ma potrebbero esserci pi\`u grafi senza triangoli che grafi bipartiti.
+\begin{theorem}[di Mandl-Tur\'an]
+	\label{teorema_mandl_turan}
+	Indicando con $\Delta$ il grafo triangolo, diciamo:
+	\[
+		T(n) = \max_{\abs{V(G)} = n \\ \Delta \nsubseteq G} \abs{E(G)}
+	\]
+	Questo numero \`e sempre $\floor{\frac{n^2}{4}}$.
+\end{theorem}
+\begin{proof}[del teorema \ref{teorema_mandl_turan}]
+	L'assenza di triangoli caratterizza il grado dei vertici, ma lo vedremo poi.
+	Intanto dimostriamo che $T(n) \ge \floor{\frac{n^2}{4}}$: \`e il lato pi\`u facile.
+	Consideriamo il cosiddetto ``bipartito completo'', ossia il grafo $K_{\floor{\frac{n}{2}}\ceil{\frac{n}{2}}}$, che ha numero cromatico 2 e che quindi non contiene triangoli.
+	Quindi il massimo numero di archi in un grafo che non contiene triangoli \`e certamente maggiore del numero di archi in questo grafo.
+
+	Dimostriamo ora che $T(n) \le \floor{\frac{n^2}{4}}$.
+	Ora dobbiamo sfruttare l'assenza di triangoli per limitare il numero degli archi.
+	Consideriamo due vertici che formano un arco nel grafo, ossia $a,b \in V(G)$ tali che $\{a,b\} \in E(G)$.
+	Avranno ciascuno il loro grado, $d_G(a)$ e $d_G(b)$.
+	Non sappiamo niente su questi due gradi, ma sappiamo che la loro somma \`e limitata.
+
+	Chiamando $\Gamma_a = \{ c : \{a,c\} \in E(G) \}$ l'insieme degli archi adiacenti a $a$.
+	Chiaramente $a \notin \Gamma_a$, e $b \in \Gamma_a$.
+	Inoltre $d_G(a) = \abs{\Gamma_a}$.
+	Vale infine che $\Gamma_a \cap \Gamma_b = \emptyset$, altrimenti ci sarebbe un triangolo.
+	Segue che, poich\'e $\abs{\Gamma_a \cup \Gamma_b} \le n$, $\abs{\Gamma_a} + \abs{\Gamma_b} \le n$.
+
+	Ora introduciamo questa limitazione inferiore sul numero degli archi:
+	\[
+		\sum_{\{a,b\} \in E(G)} d_G(a) + d_G(b) \le n \cdot \abs{E(G)}
+	\]
+
+\end{proof}
+
+

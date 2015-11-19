@@ -1,4 +1,89 @@
 
+\chapter{Grafi}
+
+La combinatoria \`e la matematica del finito.
+Tratteremo molto di grafi.
+I grafi vanno considerati oggetti astratti.
+
+\begin{defn}[Grafo]
+	Un grafo (semplice) \`e una coppia di insiemi $(V,E)$ dove $\abs{V} < \infty$ e $E \subseteq \binom{V}{2}$.
+\end{defn}
+Con $\binom{V}{2}$ indichiamo che stiamo ``prendendo due elementi'' da $V$.
+$\binom{V}{2}$ \`e l'insieme delle coppie non ordinate di elementi distinti di $V$.
+
+L'insieme $E$ \`e l'insieme degli archi (\emph{edges}), mentre $V$ \`e l'insieme dei vertici collegati da questi archi.
+
+Possiamo scrivere che $E \subseteq \{ X : X \in \parts{V} \land \abs{X} = 2 \}$.
+
+Quanti archi possiamo avere al massimo?
+Vale questo:
+\[
+\abs{\binom{V}{2}} = \binom{\abs{V}}{2} = \frac{\abs{V} \cdot \left( \abs{V} - 1 \right)}{2}
+\]
+
+Il solito problema dei ponti di K\"onigsberg si rappresenta facilmente con un grafo.
+Bisogna aggiungere vertici ``fittizzi'', visto che i nostri grafi non possono avere archi multipli o cappi.
+Un cappio \`e un arco le cui estremit\`a coincidono.
+
+Nel problema dei ponti di K\"onigsberg vogliamo trovare (guarda caso) un circuito euleriano, un circuito che attraversa tutti gli archi una sola volta, e inizia e finisce sullo stesso vertice.
+Ma prima definiamo cosa intendiamo per spostamenti all'interno di un grafo.
+
+\begin{defn}[Passeggiata (walk)]
+	Una passeggiata su un grafo $G$ \`e una sequenza alternata di vertici e archi, in cui ogni arco \`e preceduto e seguito dai suoi estremi.
+	Ossia, \`e qualcosa del tipo:
+	\[
+		v_1 e_1 v_2 e_2 v_3 \dots v_s e_s v_{s+1} \dots v_t
+	\]
+\end{defn}
+In una passeggiata vertici e archi possono ripetersi.
+Ora inventiamo due passeggiate vincolate.
+
+\begin{defn}[Cammino (path)]
+	Un cammino \`e una passeggiata in cui $i \neq j \implies e_i \neq e_j$, ossia in cui non possiamo percorrere lo stesso arco due volte.
+\end{defn}
+
+\begin{defn}[Cammino semplice (simple path)]
+	Un cammino semplice \`e un cammino in cui $i \neq j \implies v_i \neq v_j$, ossia un cammino in cui non si passa pi\`u di una volta per lo stesso vertice.
+\end{defn}
+
+Chiamiamo ``chiuso'' un cammino semplice in cui $v_1 = v_t$, ossia che inizia e finisce con lo stesso nodo.
+Chiamiamo ``circuito'' un cammino in cui vale la stessa propriet\`a.
+
+Sappiamo ora come descrivere un percorso all'interno di un grafo.
+Problema: partendo da $x \in V(G)$, dove possiamo arrivare tramite una passeggiata, un cammino, o un cammino semplice?
+
+Concettualmente, una passeggiata \`e la cosa pi\`u comoda.
+Se esiste una passeggiata $x \leadsto y$, ossia con $v_1 = x$ e con $v_t = y$, allora $y$ \`e raggiungibile da $x$.
+Questa \`e una relazione, e non una relazione qualsiasi.
+\`E una relazione transitiva, riflessiva e, nei grafi semplici, simmetrica.
+\begin{enumerate}
+	\item Che $x \leadsto x$, ossia che sia riflessiva, lo postuliamo, considerando $v_1$ una passeggiata.
+	\item Che $x \leadsto y \implies y \leadsto x$ si vede facilmente: scriviamo vertici e archi della passeggiata in ordine inverso.
+	\item $x \leadsto y \land y \leadsto z \implies x \leadsto z$, infatti abbiamo i due cammini e, togliendo il vertice finale al primo possiamo concatenarli e ottenre un cammino da $x$ a $z$.
+	Formalmente, scriviamo il cammino da $x$ a $y$ come $x e_1 v_2 \dots e_s y$ e il cammino da $y$ a $z$ come $y \cap{e}_1 \cap{v}_2 \dots \cap{e}_t z$, e scriviamo poi il cammino da $x$ a $z$ come $x e_1 v_2 \dots e_s y \cap{e}_1 \cap{v}_2 \dots \cap{e}_t z$.
+\end{enumerate}
+
+$V(G)$ \`e quindi partizionato da questa relazione, ed \`e quindi unione disgiunta di classi di vertici.
+I vertici in una classe sono raggiungibili gli uni dagli altri.
+
+\`E chiaro che se un nodo \`e raggiungibile da $x$ tramite un cammino semplice, lo \`e anche con una passeggiata, poich\'e un cammino semplice \`e un caso particolare di passeggiata.
+Ma vale anche l'opposto.
+
+Una nota: ``essere una passeggiata'' \`e una propriet\`a locale, che riguarda i singoli archi.
+``Essere un cammino semplice'', invece, \`e una propriet\`a globale.
+
+Per trasformare una passeggiata in un cammino semplice, prendiamo un vertice $z \in V(G)$ che appare nella passeggiata.
+Se $z$ appare pi\`u di una volta nella passeggiata, possiamo ``tagliare'' parte della passeggiata.
+
+Siano $i$ e $j$ rispettivamente il pi\`u piccolo e il pi\`u grande indice per cui vale $z = v_i = v_j$.
+Cancelliamo la passeggiata fra $v_i$ e $v_j$, lasciando $v_j$.
+Ora $z$ non si ripete pi\`u nella passeggiata.
+Iterando questo per ogni $z \in V(G)$ otteniamo un cammino semplice.
+
+
+
+% TODO catch up here
+
 Abbiamo una endofunzone $f : [n] \to [n]$.
 La rappresentiamo con un grafo diretto G_f in cui V(G) = [n] e con archi (a, f(a)) \forall a \in [n].
 Tutti i cicli sono ``ben orientati''.
@@ -12,7 +97,7 @@ Ogni ciclo \`e nei ricorrenti.
 
 Abbiamo due insiemi.
 L'insieme \mathcal{V}(n) dei vertebrati su K_n, e l'insieme \mathcal{F}(n) delle endofunzioni su [n].
-Vogliamo articolare i due insiemi allo stesso modo, per mettere in biezione vertebrati e endofunzioni e dimostrare che i due insiemi hanno 
+Vogliamo articolare i due insiemi allo stesso modo, per mettere in biezione vertebrati e endofunzioni e dimostrare che i due insiemi hanno
 la stessa cardinalit\`a.
 
 Un vertebrato generico \`e una terna (C, \overset{L}{<}, \{ T_x \}_{x \in C} ) dove C \subseteq [n], \overset{L}{<} \`e un ordinamento lineare di C, e T_x \`e un albero radicato in x \in C e i vertici V(T_x) degli alberi partizionano [n], ossia lo ricoprono senza avere vertici in comune.
@@ -167,7 +252,7 @@ Guardiamo la tabella della permutazione, supponendo $c < d$:
 
 \begin{tabular}{*{10}{c}}
 	1 & 2 & \dots & c & \dots & x & \dots & d & \dots & n \\
-	1 & 2 & \dots & d & \dots & x & \dots & c & \dots & n 
+	1 & 2 & \dots & d & \dots & x & \dots & c & \dots & n
 \end{tabular}
 
 $c$ e $d$ sono in inversione, certamente, ma anche $x$ e $c$, o $d$ e $x$, e via dicendo.
@@ -195,7 +280,7 @@ Tra le permutazioni di $[n]$, il numero delle permutazioni pari \`e $\frac{n!}{2
 Anche questa \`e una conseguenza della proposizione sopra.
 Serve assumere $n > 1$, perch\'e in questo caso abbiamo una sola permutazione, pari, e $\frac{1}{2}$ non \`e un naturale.
 
-Come mai vale questo? 
+Come mai vale questo?
 Prendiamo una permutazione pari $\rho$, e moltiplichiamola per la trasposizione $(1,2)$.
 Possiamo mettere in biezione le permutazioni $\rho$ e $\rho \cdot (1,2)$.
 Riapplicando il prodotto per $(1,2)$ riotteniamo $\rho$.
@@ -274,7 +359,7 @@ Avendo solo due valori, divide le permutazioni in due classi.
 
 Abbiamo parlato di una funzione ``Parit\`a'':
 \[
-	\par{\rho} = 
+	\par{\rho} =
 	\begin{cases}
 	-1 \\
 	1
@@ -310,7 +395,7 @@ Le colonne in inversione e con $a$ e con $b$ ora non saranno in inversione con n
 Al loro posto avremo in inversione le colonne che in $\rho$ non erano in inversione n\'e con $a$ n\'e con $b$.
 Quelle che erano in inversione con esattamente con una colonna di bordo, saranno ora in inversione ancora con esattamente una colonna di bordo, ma con l'altra.
 Infine, possiamo dire che $\chi'(a,b) + \chi(a,b) = 1$.
-Se $a,b$ non erano in inversione, ora lo saranno, e viceversa se erano in inversione ora non lo saranno. 
+Se $a,b$ non erano in inversione, ora lo saranno, e viceversa se erano in inversione ora non lo saranno.
 
 Ora affermiamo che la parit\`a del primo numero \`e diversa dalla parit\`a del secondo numero, ossia che la differenza fra i due numeri \`e un numero dispari.
 \[
@@ -354,3 +439,304 @@ La cardinalit\`a $\abs{C}$ \`e il numero cromatico del grafo.
 
 L'ottimizzazione combinatoria \`e anche chiamata ricerca operativa, o \emph{operations research}.
 Operations = operazioni militari, la ricerca operativa \`e nata per ottimizzare le risorse.
+
+\begin{defn}[Numero cromatico]
+	Il numero cromatico di un grafo semplice \`e la pi\`u piccola cardinalit\`a di $C$ per cui esiste una funzione $f : V(G) \to C$ di colorazione che ha vertici adiacenti con colori diversi.
+\end{defn}
+
+Chiamiamo $\xhi(G) = \min \abs{f(V(G))}$ questo numero cromatico.
+Indichiamo, data $f : V \to C$ e $A \subseteq V$, con $f(A) = \{ f(v) : v \in A \}$.
+
+I grafi delle carte geografiche sono particolari.
+
+Indichiamo con $K_{3,3}$ un grafo \emph{bipartito}.
+Stiamo dicendo che abbiamo una partizione dei vertici in due sottoinsiemi, e i vertici in un sottoinsieme sono adiacenti a tutti i vertici nell'altro insieme.
+Su $K_{3,3}$ il problema tipico \`e disegnare il grafo in modo che gli archi non si incrocino.
+Non \`e possibile.
+
+I grafi che possono essere disegnati sul piano in modo tale che archi che non hanno vertici in comune non si incrocino, sono chiamati \emph{grafi planari}.
+Un grafo planare ha numero cromatico al pi\`u 4.
+
+Un grafo senza archi ha numero cromatico 1, ossia $E(G) = \emptyset \implies \xhi(G) = 1$.
+Un grafo con almeno un arco ha numero cromatico maggiore di 1.
+
+\begin{defn}
+Un grafo \`e  bipartito se il suo numero cromatico \`e al pi\`u due.
+\end{defn}
+
+V(G) = A \cup B
+A \cap B = \emptyset
+\forall \{a, b\} \in E(G) \abs{\{a,b\} \cap A } = \abs{\{a,b\} \cap B} = 1
+
+Si possono usare grafi bipartiti per rappresentare grafi arbitrari.
+Si duplica l'insieme dei vertici V, si toglie ogni arco, e si inserisce un arco fra il nodo $a$ e il nodo $b$, uno preso dal primo insieme e uno preso dall'insieme duplicato, se $a$ e $b$ sono adiacenti nel grafo originale.
+
+Un cammino (semplice) ha numero cromatico 2.
+Un ciclo con numero pari di vertici ha anche questo numero cromatico 2.
+Bisogna essere in grado di alternare strettamente i colori.
+
+Il pi\`u piccolo ciclo dispari \`e il grafo completo con 3 vertici, e ha numero cromatico 3.
+
+Ogni sottografo ha numero cromatico non superiore al numero cromatico del grafo.
+
+\begin{prop}
+	\label{prop_grafo_bipartito_cicli_dispari}
+	$G$ \`e bipartito $\iff$ non contiene cicli dispari.
+\end{prop}
+
+\begin{proof}[della proposizione \ref{prop_grafo_bipartito_cicli_dispari}]
+	Verso destra: \`e sufficiente vedere che un ciclo dispari non \`e bicolorabile, poich\'e ha numero cromatico 3.
+	Quindi ogni grafo contenente un ciclo dispari ha numero cromatico almeno 3.
+	Se il ciclo dispari fosse bicolorabile, l'unica bicolorazione assegnerebbe a un nodo un colore, e a ogni nodo a distanza pari lo stesso colore.
+	Ma il ciclo ha lunghezza dispari, quindi il suo adiacente ha distanza pari.
+
+	Verso sinistra: il problema si riduce, banalmente, al caso di un grafo connesso.
+	Se G non \`e connesso, ha pi\`u componenti connesse, che non hanno archi tra loro.
+	La colorazione deve dare valori diversi a vertici adiacenti, quindi colorando una componente connessa non vincoliamo la coloraione delle altre componenti.
+	Siamo $L_i$ le sue componenti connesse, con $i = 1 \dots t$.
+	$\xhi(G) = \max_{i} \xhi(L_i)$, poich\'e la colorazione pu\`o essere fatta in maniera indipendente.
+	Ora \`e sufficiente mostrare che se $G$ non ha cicli dispari ed \`e connesso, allora $\xhi(G) \le 2$.
+	Un grafo connesso ha un albero di copertura, e un albero ha una sola colorazione.
+	Possiamo pensare al fatto che l'albero \`e composto da una ramificazione di cammini, ed \`e senza cicli.
+	Questa colorazione imposta dall'albero di copertura, \`e una colorazione di tutto il grafo.
+
+	Quindi, $G$ \`e connesso.
+	Prendiamo un suo arbitrario albero di copertura $T$, e sia $x_0 \in V(T)$ un vertice in $T$ (e in $G$, essendo un albero di copertura).
+	Prendendo un altro vertice $x \neq x_0$, abbiamo una distanza $d_T(x,x_0)$ fra i due vertici data dal numero degli archi nell'unico cammino fra $x$ e $x_0$.
+	La colorazione $f : V(T) \to \{ 0, 1 \}$ la definiamo come $f(x) = d_T(x, x_0) \pmod{2}$.
+	In quest'unica colorazione possibile, prendiamo due vertici $a$ e $b$ che hanno la stessa colorazione, ossia $f(a) = f(b)$.
+	Se questi due vertici non sono adiacenti in $G$, stiamo a cavallo, ma se lo sono la colorazione dell'albero non va bene per il grafo.
+	Il colore di $a$ \`e $1$ se il cammino da $x_0$ a $a$ \`e di lunghezza dispari, $0$ se \`e pari.
+	Se $a$ e $b$ sono dello stesso colore, significa che la parit\`a dei cammini da $x_0$ a uno dei nodi \`e la stessa.
+	Sia $c$ (con $c$ possibilmente, ma non necessariamente, uguale a $x_0$) il punto in cui questi due cammini (in $T$) si congiungono.
+	Poich\'e l'inizio del cammino da $x_0$ ai nodi coincide fino a $c$, e la lunghezza dei cammini \`e congrua modulo 2, la lunghezza del cammino da $a$ a $c$ a $b$ \`e pari.
+	I cammini da $a$ a $c$ e da $c$ a $b$ sono infatti entrambi di lunghezza pari o entrambi di lunghezza dispari, essendo congrui modulo 2.
+	Ma quindi $\{a,b\}$ \`e un arco che chiude un ciclo dispari.
+	Contraddizione.
+
+\end{proof}
+
+Abbiamo detto che una colorazione \`e una funzione con certe caratteristiche, e che il numero cromatico \`e il numero minimo di colori per una colorazione.
+Se il numero cromatico \`e 2, il grafo non ha cicli di lunghezza dispari.
+
+Il numero cromatico $\xhi(G)$ \`e almeno pari al numero di clique, $\omega(G)$, ossia il numero massimo di vertici in un sottografo completo.
+Non \`e un'uguaglianza: $\xhi(G) \ge \omega(G)$.
+Un grafo per cui non vale \`e il grafo rappresentato da un pentagono.
+Il grafo pentagono \`e curioso, perch\'e, ad esempio, il grafo complementare \`e isomorfo.
+
+% TODO disegnare grafo complementare e grafo pentagono
+
+Claude Berge ha introdotto il concetto di grafo perfetto, ossia un grafo per cui $\xhi(G) = \omega(G)$ per il grafo e per ogni suo sottografo indotto.
+Un grafo perfetto ha molte conseguenze interessanti, per Berge, che ne ha congetturate alcune.
+
+Possiamo limitare superiormente il numero cromatico.
+\begin{prop}
+	\label{prop_num_cromatico_minore_grado}
+	Abbiamo gi\`a visto che $\xhi(G) \le d(G) + 1$, dove $d(G)$ indica il massimo numero di archi incidenti a un vertice in un grafo.
+	Abbiamo definito $d_G(x) = \abs{\{ \{x,a\} : a \in V(G), \{x,a\} \in E(G) \}}$, e definiamo quindi $d(G) = \max\limits_{x \in V(G)} d_G(x)$
+\end{prop}
+Ma \`e una limitazione debole, questa.
+Per un ciclo dispari, $d(G)$ \`e 2, e quindi $\xhi(G) \le 3$, ma lo stesso vale per un ciclo pari.
+Con un grafo a stella, il massimo grado \`e $\abs{V(G)} - 1$, ma basterebbero due colori.
+
+\begin{proof}[della proposizione \ref{prop_num_cromatico_minore_grado}]
+	Faremo una colorazione on-line del grafo.
+	Sia $x_1, x_2, \dots, x_{\abs{V(G)}}$ un ordinamento dei vertici di $G$.
+	\emph{Colorazione on-line} significa che non appena ci viene ``presentato'' un vertice, dobbiamo assegnargli un colore.
+	Non \`e necessariamente il modo ottimale di colorare il grafo.
+
+	Vediamo che in un qualsiasi ordine di presentazione i vertici possono essere colorati con al pi\`u $d(G) + 1$ colori.
+	Usiamo i naturali come insieme dei colori, e stabiliamo che $f(x_1) = 1$.
+	Dopo aver colorato i primi $t-1$ vertici, vogliamo colorare il vertice $x_t$.
+	Dobbiamo stare attenti che $f(x_t) \neq f(x_i)$ con $i < t$, se $x_t$ e $x_i$ sono adiacenti.
+	\`E sufficiente dare a $x_t$ un colore che sia diverso dal colore degli adiacenti.
+	Il caso peggiore \`e quello in cui ho gi\`a colorato tutti gli adiacenti, e questi hanno tutti colori differenti.
+	Gli adiacenti sono al massimo $d_G(x_t) \le d(G)$.
+	Nel caso peggiore abbiamo usato $d(G)$ colori per gli adiacenti.
+\end{proof}
+
+Diamo anche un'altra dimostrazione.
+\begin{proof}[della proposizione \ref{prop_num_cromatico_minore_grado}]
+	Sia $S \subseteq G$ un sottoinsieme che forma uno \emph{stabile} nel grafo.
+	Uno stabile \`e un sottografo indotto senza archi fra i suoi vertici.
+	Chiaramente questi vertici possono avere tutti lo stesso colore, non avendo archi fra di loro.
+	Ci conviene prendere uno stabile massimale, ovviamente.
+
+	Questo algoritmo (greedy) si pu\`o ripetere togliendo di volta in volta i vertici di $S$ dal grafo.
+	Per renderlo effettivamente greedy bisognerebbe dare un qualche ordinamento alla scelta che si fa, scegliendo ad esempio ogni volta lo stabile pi\`u grande.
+
+	In ogni caso, questo algoritmo ci d\`a una colorazione con un numero di colori limitato.
+
+	Sia $S_1$ il primo stabile, coloriamo i suoi vertici col colore 1.
+	Sia poi $G_2$ il grafo con vertici $V(G_2) = V(G_1) \setminus V(S_1)$ indotto da $G$.
+	Vale che $d(G_2) \le d(G)$.
+
+	Infatti ogni vertice in $S_1$ ha almeno un arco verso un vertice in $G_2$, poich\'e $S_1$ \`e massimale.
+	Quindi ogni vertice che non appartiene a $S_1$ perde almeno un arco, e quindi $\forall x \in V(G_2)$ vale che $d_{G_2}(x) < d_G (x)$.
+
+	Dimostriamo ora la proposizione per induzione sul massimo grado del grafo.
+	Il caso base \`e per $d(G) = 0$, ossia il grafo \`e composto da vertici non connessi, e per cui vale $\xhi(G) = 1$.
+
+	Consideriamo il passo generale, in cui $d(G) = n$.
+	Per ipotesi, considerando $S_1$ stabile massimale in $G$, sappiamo che $\xhi(G \setminus S_1) \le d(G - S_1) + 1 \le d(G)$.
+	Segue quindi, dal fatto che $\xhi(G \setminus S_1) \le d(G)$, che $\xhi(G) \le \xhi(G \setminus S_1) + 1 \le d(G) + 1$.
+\end{proof}
+
+% TODO disegnare grafo triangolo con un triangolo su ogni lato
+
+Con il grafo in figura \ref{}, il numero cromatico \`e 3.
+Ma usando l'algoritmo di prima, prendendo uno stabile che ha massima cardinalit\`a, usiamo 4 colori.
+Siamo poi costretti a prendere altri tre stabili con un solo vertice ciascuno.
+
+Passiamo ora a parlare della disuguaglianza $\omega(G) \le \xhi(G)$.
+I due parametri possono essere diversi, anche di 1.
+$\omega(G)$ \`e la massima cardinalit\`a di una clique di $G$.
+
+\`E evidente che una clique di $n$ vertici ha numero cromatico $n$.
+
+\subsection{Teoria Ramsey}
+
+Prendiamo un $k \in \naturals$.
+$K_k$, la clique con $k$ vertici, \`e un sottografo completo.
+$S_k$ \`e il sottografo stabile di $k$ vertici.
+Ramsey ha dimostrato qualcosa che c'entra con la ``regolarit\`a inevitabile''.
+Fissato $k$, considerando grafi abbastanza grandi rispetto a $k$, questi grafi contengono sempre un sottografo completo di $k$ vertici o uno stabile di $k$ vertici.
+Non abbiamo specificato quanto deve essere grande il grafo rispetto a $k$.
+Strutture grandi, quindi, hanno aree omogenee grandi.
+
+Parlando dei naturali, c'\`e un teorema, di tal van der Waerden, che dice che se si partiziona l'insieme degli interi in un numero finito di classi, ciascuna di queste conterr\`a una successione aritmetica di $k$ numeri, o una cosa simile.
+Erd\"os ha congetturato che, sia $A \subseteq \naturals$ un insieme, se $\lim_{n \to \infty} \frac{\abs{A \cap [n]}}{n} > 0$, allora $A$ contiene una progressione aritmetica di $k$ numeri $\forall k \in \naturals$.
+
+Tornando indietro, non sappiamo la soglia oltre cui vale quanto detto da Ramsey, non sappiamo neanche come cresce questa soglia.
+Ci serve perch\'e un grafo con un piccolo numero di clique e un piccolo numero di stabili, ha un numero cromatico enorme.
+
+La soglia di Ramsey per 3 \`e pari a 6.
+Indichiamo la soglia di Ramsey con R(3,3).
+Si vede facilmente che R(3,3) > 5, trovando un grafo con 5 vertici che non ha triangoli e che non ha stabili con 3 vertici: basta prendere il grafo pentagono.
+
+Invece, R(3,3) \le 6.
+In un grafo di grado 5, ogni vertice pu\`o essere adiacente al pi\`u a 5 altri vertici.
+Supponiamo ci sia un vertice di grado 3: se non c'\`e, consideriamo il grafo complementare.
+Questo vertice ha 3 adiacenti: o questi 3 formano uno stabile, o non formano uno stabile, e quindi almeno due di questi sono adiacenti, e abbiamo quindi un triangolo con il vertice di grado 3.
+
+Ma R(k,k) cresce molto in fretta.
+Erd\"os ha dimostrato che $R(k,k) \ge 2^{\frac{k}{2}}$.
+
+Il risultato fondatore della teoria Ramsey \`e che $\forall k$ $\exists R(k,k) \in \naturals$ tale che ogni grafo con almeno $R(k,k)$ vertici o ha una clique $K_k$ di $k$ vertici o lo ha il suo grafo complementare.
+Quindi se prendiamo un grafo completo con $R(k,k)$ vertici, comunque coloriamo gli archi con due colori ci sar\`a un sottografo completo di $k$ vertici con archi dello stesso colore.
+
+Sappiamo che $R(k,k)$ non \`e cos\`i grande: vale che $R(k,k) \le 2^{2 \, k} = 4^k$.
+Il teorema di Erd\"os ci dice che $2^{\frac{k}{2}} \le R(k,k)$.
+
+\begin{theorem}[di Erd\"os]
+	$\forall k \ge 4$ $\exists G_k$ tale che $\abs{V(G_k)} \ge 2^{\frac{k}{2}}$ e che $\omega(G_k) < k$ e $\alpha(G_k) < k$, ossia il suo pi\`u grande completo ha meno di $k$ vertici e il suo pi\`u grande stabile ha meno di $k$ vertici.
+\end{theorem}
+Quello che ci fa vedere questo teorema \`e che esiste un grafo con un numero cromatico molto alto, ma con delle clique non grandi.
+Il numero cromatico sar\`a esponenziale in $k$.
+
+La dimostrazione sar\`a \emph{probabilistica}.
+Facciamo vedere che se prendiamo un grafo con quella cardinalit\`a, sar\`a del tipo che cerchiamo.
+Ma non lo esibiremo, questo grafo.
+La teoria dei grafi aleatori \`e dovuta a Erd\"os e a R\'enyi.
+
+\begin{proof}[del teorema di Erd\"os]
+	Un grafo aleatorio \`e un grafo scelto a caso.
+	Fissiamo $n \in \naturals$, e consideriamo tutti i grafi con $n$ vertici, ossia che hanno come insieme di vertici $[n]$.
+	Su $n$ vertici possiamo creare $2^{\binom{n}{2}}$ grafi differenti.
+
+	Possiamo pensare di tirate una moneta per ogni coppia di vertici, e mettere un arco fra questi due vertici solo se esce testa.
+	La probabilit\`a di scegliere uno specifico grafo \`e ${\left( \frac{1}{2} \right)}^{\binom{n}{2}}$.
+
+	Se la ``moneta'' con cui scegliamo di inserire un arco non \`e onesta, ma d\`a testa con probabilit\`a $p$, i grafi saranno differenti.
+	Al variare di $p$ si vede che esistono valori soglia, oltre i quali una certa propriet\`a \`e verificata con probabilit\`a 1, e prima dei quali una certa probabilit\`a \`e verificata con probabilit\`a 0.
+
+	Sia $\graphs_n$ l'insieme di tutti questi grafi.
+	La sua cardinalit\`a $\abs{\graphs_n}$ \`e, abbiamo detto, $2^{\binom{n}{2}}$.
+	Denotiamo con $\Alpha_n(k)$ i grafi con numero di stabilit\`a maggiore o uguale a $k$, ossia:
+	\[
+		\Alpha_n(k) = \{ G : G \in \graphs_n \land \alpha(G) \ge k \}
+	\]
+	Definiamo poi l'insieme $\Omega_n (k)$ come l'insieme dei grafi con un numero di clique maggiore di $k$.
+
+	Ai fini della dimostrazione vogliamo far vedere che $\Alpha_n (k) \cup \Omega_n (k) \subsetneq \graphs_n$.
+
+	Ci aspettiamo che questa stretta inclusione non valga per $n$ molto grandi.
+	Vale sicuramente se $n < k$. % TODO check here
+
+	Questi due insiemi non sono disgiunti fra loro.
+	Un grafo pu\`o avere una clique grande e un sottografo stabile grande.
+
+	% TODO definire graphs come \mathcal{G}
+	Dovremmo far vedere che $\abs{\Alpha_n (k) \cup \Omega_n (k)} < \abs{\graph_n}$.
+	La prima cosa che vogliamo dire \`e che le due famiglie di grafi hanno la stessa cardinalit\`a.
+	Per farlo vedere, introduciamo la biezione $G \leftrightarrow \bar{G}$ su $\graphs_n$, che manda $\Alpha_n (k)$ in $\Omega_n (k)$, mandando ogni grafo nel suo complementare.
+
+	Sappiamo che $\abs{\Alpha_n (k) \cup \Omega_n (k)} \le \abs{\Alpha_n (k)} + \abs{\Omega_n (k)} = 2 \, \abs{\Omega_n (k)}$.
+
+	Un grafo \`e dentro $\Omega_n (k)$ se ha una clique su $k$ vertici.
+	Introduciamo la notazione $\Omega_n (K) = \{ G : G \in \graphs_n \land G \text{ induce un completo su } K \subseteq [n] \}$
+
+	Quindi scriviamo:
+	\[
+		\Omega_n (k) = \bigcup_{K \in \binom{[n]}{k}} \Omega_n (K)
+	\]
+	Dove con $\binom{[n]}{k} = \{ A : A \subseteq [n] \land \abs{A} = k \}$ indichiamo i sottoinsiemi di $[n]$ con cardinalit\`a $k$.
+	Questa notazione ci aiuter\`a con i calcoli.
+
+	Dato $K$, quanto vale $\abs{\Omega_n (K)}$?
+	Abbiamo gi\`a scelto gli archi fra i vertici di $K$, quindi il numero di scelte che dobbiamo fare \`e $\binom{n}{2} - \binom{k}{2}$.
+	Quindi $\abs{\Omega_n (K)} = 2^{\binom{n}{2} - \binom{k}{2}}$.
+
+	Possiamo quindi dire questo, sulla cardinalit\`a di $\Omega_n (k)$:
+	\[
+		\abs{\Omega_n (k)} = \abs{\bigcup_{K \in \binom{[n]}{k}} \Omega_n (K)} \le
+		\binom{n}{k} 2^{\binom{n}{2} - \binom{k}{2}}
+	\]
+
+	Quindi fino ad ora possiamo dire quanto segue:
+	\[
+		\abs{\Alpha_n (k) \cup \Omega_n (k)} \le 2 \, \binom{n}{k} 2^{\binom{n}{2} - \binom{k}{2}}
+	\]
+	Ora: quanto pu\`o essere grande $n$ in funzione di $k$ affinch\'e valga questa disuguaglianza?
+	\[
+		2 \, \binom{n}{k} 2^{\binom{n}{2} - \binom{k}{2}} < 2^{\binom{n}{2}}
+	\]
+	Se la disuguaglianza vale, allora in $\graphs_n$ esiste il grafo che vogliamo.
+	Possiamo limitare $\binom{n}{k}$ con $\frac{n^k}{2^k}$, tanto $k \ge 4$.
+	Facciamo il conto:
+	\begin{align*}
+		2 \, \binom{n}{k} 2^{\binom{n}{2} - \binom{k}{2}} < 2^{\binom{n}{2}} \implies \\
+		\binom{n}{k} \cdot 2^{- \binom{k}{2} + 1} < 1 \implies \\
+		\frac{n^k}{2^k} \cdot 2^{- \binom{k}{2} + 1} < 1
+	\end{align*}
+	Prendiamo $k$ pari, per semplicit\`a, e vogliamo far vedere che questa disuguaglianza vale per $n = 2^{\frac{k}{2}}$.
+	Segue quindi:
+	\[
+		2^{k \cdot \frac{k}{2} - k - \binom{k}{2} + 1} < 1
+	\]
+	Che vale se l'esponente \`e minore di $0$.
+	Infatti:
+	\[
+		\frac{k^2}{2} - k - \frac{k \cdot (k - 1)}{2} + 1 < 0 \implies
+		- k + \frac{k}{2} + 1 < 0 \implies
+		\frac{k}{2} + 1 < k
+	\]
+	Che \`e sempre vero per $k \ge 4$.
+\end{proof}
+
+Noi vogliamo sfruttare il teorema di Erd\"os.
+\begin{oss}
+	$\xhi (G) \ge \frac{V(G)}{\alpha(G)}$, ossia il numero cromatico \`e maggiore o uguale al numero di vertici diviso per la cardinalit\`a massima di uno stabile in $G$.
+\end{oss}
+
+V(G) = \bigcup_{i = 1}^{\xhi(G)} \Alpha_i con \Alpha_i stabile.
+La sua cardinalit\`a \`e:
+
+\abs{V(G)} = \sum_{i = 1}^{\xhi(G)} \abs{\Alpha_i} \le \xhi(G) \cdot \alpha(G)
+
+Erd\"os ci dice che esiste un grafo $G_k$ con V(G_k) \ge 2^{\frac{k}{2}} e con \alpha(G_k) < k.
+Da questo sappiamo che il numero cromatico \`e minorato da qualcosa di enorme:
+\[
+	\xhi(G_k) \ge \frac{2^{\frac{k}{2}}}{k}
+\]
+E allo stesso tempo il numero di clique \`e minore di $k$.

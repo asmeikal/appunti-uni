@@ -1,51 +1,7 @@
 
-\chapter{Introduzione}
-
-Gli argomenti del corso sono:
-\begin{description}
-	\item[Automi] modelli di calcolo, ossia astrazioni di calcolatore.
-	\item[Calcolabilit\`a] Cosa possiamo e non possiamo calcolare.
-	\item[Complessit\`a] Cosa non possiamo calcolare perch\'e intrattabile (ossia, esponenziale).
-\end{description}
-
-I modelli di calcolo si (potrebbero) possono classificare come ``modelli matematici di computazione della nuova gerarchia di Chomsky''.
-\begin{center}
-\begin{tabular}{c|c}
-	Modelli di macchine & Classi di linguaggi \\
-	\hline
-	Macchina di Turing & ? \\
-	\emph{Linear bound automata} & ? \\
-	Automa a pila & Linguaggi liberi dal contesto \\
-	Automa a stati finiti & Linguaggi regolari
-\end{tabular}
-\end{center}
-
-Pi\`u si sale nella tabella pi\`u aumenta la complessit\`a del modello.
-
-Nella colonna di destra abbiamo dei nomi di \emph{grammatiche}
-Una grammatica \`e qualcosa del tipo:
-\begin{verbatim}
-<roba> ::= <altra roba> <ancora roba> [<roba opzionale>]
-<roba> ::= s | i | n | g | o | l | i | c | a | r | a | t | t | e | r | i
-\end{verbatim}
-Una grammatica \`e sia un insieme di regole che definiscono la sintassi di un linguaggio, che un insieme di regole per generare frasi nel linguaggio.
-La grammatica specifica la \emph{sintassi}, non la semantica.
-Ogni linguaggio ha una macchina associata che lo riconosce.
-
-Calcolabilit\`a: esistono problemi che non hanno soluzione algoritmica.
-Per formalizzare un algoritmo di solito si d\`a la specifica della macchina che lo realizza.
-
-Intuitivamente, il numero di algoritmi \`e numerabile, ma il numero di problemi non \`e numerabile, quindi esistono (molti) pi\`u problemi che algoritmi.
-
-Complessit\`a: consideriamo solo i problemi che possiamo risolvere, e mettiamo in una certa classe tutti i problemi che possono essere risolti nel caso peggiore in un certo tempo.
-La classe $\probp$ corrisponde a problemi risolvibili in $\bigo{n^k}$ per $k \ge 1$, mentre la classe $\probexp$ corrisponde a problemi risolvibili in $\bigo{2^{n^k}}$ sempre per $k \ge 1$.
-Ovviamente per individuare la classe di un problema guardiamo i tempi dell'algoritmo migliore.
-
-La classe $\probnp$ corrisponde alla classe dei problemi la cui soluzione \`e verificabile in tempo polinomiale.
-La classe $\probnpc$ \`e la classe dei problemi ($\probnp$-completi) che, se risolvibili in tempo polinomiale, implicherebbe la risolvibilit\`a in tempo polinomiale di tutti i problemi in $\probnp$.
-
 \chapter{Automi (modelli di calcolo)}
 
+\index{automi}
 Cosa \`e una computazione? Cosa \emph{calcola} un modello di calcolo?
 
 Partiamo da classificare cosa \`e un problema.
@@ -76,6 +32,7 @@ Tutti i nostri modelli di calcolo sono riconoscitori di linguaggi.
 
 \section{Automi a stati finiti}
 
+\index{automi!a stati finiti}
 Consideriamo automi senza output, che si limitano a riconoscere l'input.
 
 In un FSA la testina si sposta sempre a destra di un passo.
@@ -90,7 +47,7 @@ Un automa accetta almeno una parola se c'\`e almeno un cammino dallo stato inizi
 
 La formalizzazione degli automi a stati finiti \`e la solita.
 Ci concentriamo in particolare, per adesso, sui DFA, o \emph{Deterministic Finite state Automata}.
-Un DFA \`e una quintupla: 
+Un DFA \`e una quintupla:
 \[
 	(Q, \Sigma, \delta, q_0. F)
 \]
@@ -207,6 +164,7 @@ Per il complemento, invece, la prova \`e immediata:
 
 \subsection{Automi non deterministici (NFA)}
 
+\index{automi!a stati finiti!non deterministici}
 Con i NFA da uno stato, con un input, possiamo raggiungere pi\`u stati.
 Se fra tutti i cammini individuati da una parola ce ne \`e uno che termina con uno stato finale, l'automa accetta la parola.
 Con i NFA introduciamo anche le $\emptystring$-transizioni o $\emptystring$-mosse, che non hanno bisogno di una parola in input.
@@ -237,8 +195,8 @@ Abbiamo un algoritmo per creare un DFA a partire da un NFA, che ne dimostra quin
 Con $\emptystring$-chiusura di uno stato $q$ indichiamo l'insieme degli stati raggiungibili da $q$ usando solo $\emptystring$-mosse.
 
 \begin{algorithm}
-	\label{alg:algoritmo_dfa_eq_nfa}
 	\caption{Algoritmo per creare un DFA a partire da un NFA.}
+	\label{alg:algoritmo_dfa_eq_nfa}
 	\begin{algorithmic}
 		\Require un NFA con $\emptystring$-mosse $M = (Q, \Sigma, \delta, q_0, F)$
 		\Ensure un DFA $M' = (Q', \Sigma, \delta', q_0', F')$ equivalente
@@ -281,15 +239,15 @@ Il DFA di questo automa ha $2^n$ stati.
 		\node[state] (q2) [right of=q1] {$q_2$};
 		\node[] (dots) [right of=q2] {$\dots$};
 		\node[state, accepting] (qn) [right of=dots] {$q_n$};
-	
+
 		\path (q0)	edge [loop, above]	node {0,1}	(q0)
 			(q0)	edge	node {1}	(q1)
 			(q1)	edge	node {0,1}	(q2)
 			(q2)	edge	node {0,1}	(dots)
 			(dots)	edge	node {0,1}	(qn);
 	\end{tikzpicture}
-	\label{fig:nfa_con_problemi}
 	\caption{Automa con problemi}
+	\label{fig:nfa_con_problemi}
 \end{figure}
 
 Bisognerebbe dimostrare l'equivalenza fra l'automa che costruiamo con l'algoritmo e l'automa iniziale, ossia che:
@@ -310,7 +268,7 @@ Da questa scomposizione possiamo ricavare infinite parole $x y^i z$, ``percorren
 
 Con il \emph{pumping lemma} dimostriamo che esiste un linguaggio che non \`e regolare (ossia per cui non esiste un automa a stati finiti che lo riconosca).
 
-Partiamo dal fatto che ogni parola accettata pi\`u lunga del numero degli stati contiene un ciclo. 
+Partiamo dal fatto che ogni parola accettata pi\`u lunga del numero degli stati contiene un ciclo.
 Possiamo ricavare infinite parole ripetendo le etichette relative al ciclo.
 Questo vale \emph{per ogni} parola accettata pi\`u lunga del numero degli stati, e per qualsiasi numero di volte ripetiamo le etichette del ciclo.
 
@@ -369,7 +327,7 @@ Un PDA $ = (Q, \Sigma, \Gamma, \Delta, q_0, F )$ \`e deterministico se valgono l
 	\[
 	\Delta(q, \emptystring, B) \neq \emptyset \implies \Delta(q, a, B) = \emptyset \forall a \in \Sigma
 	\]
-	Ossia, dato uno stato e un elemento in cima alla pila, se esiste una $\emptystring$-transizione sull'input da quello stato, la funzione di transizione non \`e definita per ogni altro input in $\Sigma$. 
+	Ossia, dato uno stato e un elemento in cima alla pila, se esiste una $\emptystring$-transizione sull'input da quello stato, la funzione di transizione non \`e definita per ogni altro input in $\Sigma$.
 \end{enumerate}
 
 Il linguaggio $\lang{A} = \{ a^n b^n : n \ge 0 \}$ \`e deterministico.
@@ -440,7 +398,7 @@ La sua grammatica \`e:
 	A &\to aA \langor \emptystring \\
 	C &\to Cc \langor \emptystring \\
 	T &\to bTc \langor \emptystring \\
-	R &\to aRb \langor \emptystring 
+	R &\to aRb \langor \emptystring
 \end{align*}
 Come sappiamo che questo \`e corretto?
 La grammatica $A$ descrive il linguaggio $\lang{A} = \{ a^n : n \ge 0 \}$, cos\`i come la grammatica $C$ descrive il linguaggio $\lang{C} = \{c^n : n \ge 0\}$.
@@ -492,7 +450,7 @@ Una grammatica \`e ambigua se ha pi\`u alberi di derivazione per uno stesso inpu
 
 Il metodo che usiamo \`e quello di imporre una precedenza e l'associativit\`a a sinistra.
 \begin{verbatim}
-E -> E + T | T 
+E -> E + T | T
 T -> T * F | F
 F -> (E) | id
 \end{verbatim}
@@ -528,10 +486,93 @@ Scrivendolo come grammatica, abbiamo che $G_1$ \`e:
 \begin{align*}
 G_1 :& S \to S_0 S_1 \langor S_1 S_0 \\
 & S_0 \to 0 \langor 0 S_0 0 \langor 0 S_0 1 \langor 1 S_0 0 \langor 1 S_0 1 \\
-& S_1 \to 1 \langor 0 S_1 0 \langor 0 S_1 1 \langor 1 S_1 0 \langor 1 S_1 1 
+& S_1 \to 1 \langor 0 S_1 0 \langor 0 S_1 1 \langor 1 S_1 0 \langor 1 S_1 1
 \end{align*}
 
 \section{\emph{Linear bound automata}}
 
 Sono una versione limitata delle macchine di Turing.
+
+
+\section{Macchina di Turing}
+
+Le macchine di Turing sono un'astrazione di quello che fa una persona quando fa un calcolo.
+Ha un nastro infinito a disposizione, su cui trova l'input e su cui pu\`o scrivere.
+
+Una macchina di Turing non usa mai un'infinit\`a di caselle del nastro.
+Si pu\`o semplificare la descrizione di una macchina aggiungendo mosse in cui la macchina non muove la testina, o aggiungendo uno stato di rifiuto e uno stato di accettazione, e via dicendo.
+Dagli stati di accettazione e di rifiuto non sono possibili altre mosse.
+
+Macchine di Turing deterministiche e non deterministiche sono equivalenti.
+
+Il modello formale di una macchina di Turing \`e il seguente.
+\[
+	M = (Q, \Sigma, \Gamma, \Delta, q_0, q_a, q_r)
+\]
+$Q$ \`e l'insieme degli stati, $\Sigma$ \`e l'insieme dell'alfabeto di input, $\Gamma$ \`e l'insieme dell'alfabeto ``di nastro'', quindi $\Gamma \supset \Sigma$ e contiene altri elementi come il carattere di fine o di inizio stringa.
+La funzione di transizione \`e una funzione totale non definita su $q_a, q_r$, ossia \`e $\Delta : Q \times \Gamma \to Q \times \Gamma \times \{L, R\}$.
+$q_a$ e $q_r$ sono lo stato di accettazione e lo stato di rifiuto.
+
+Una configurazione deve mantenere informazioni sul contenuto del nastro, sullo stato della macchina e sulla posizione della testina sul nastro.
+Chiamiamo la configurazione $\alpha q a \rho$, elemento di $\Gamma^{\star} Q \Gamma^{\star}$, dove $\alpha$ e $\rho$ sono stringhe di $\Gamma$, $a$ \`e un carattere di $\Gamma$, e $q$ \`e uno stato.
+Stiamo dicendo che il contenuto del nastro \`e la stringa $\alpha a \rho$, che ci troviamo nello stato $q$, e stiamo per leggere il carattere $a$.
+La configurazione iniziale \`e $q_0 x$, se $x$ \`e la stringa di input.
+
+Se una mossa ci porta a destra, ossia se $\delta(q, a) = (p, b, R)$, allora $\alpha q a c \rho \leadsto \alpha b p c \rho$.
+Viceversa, se una mossa ci porta a sinistra, ossia se $\delta(q,c) = (p,b,L)$, allora $\alpha a q c \rho \leadsto \alpha p a b \rho$.
+
+Una configurazione $\alpha q_a \beta$ \`e una configurazione di accettazione: non importa se dobbiamo leggere ancora parte della stringa.
+$\alpha q_r \beta$ \`e invece una configurazione di rifiuto.
+
+Il linguaggio accettato da una macchina di Turing \`e definito come:
+\[
+\lang{M} = \{ x : x \in \Sigma^{\star} \text{ e } q_0 x \leadsto \alpha q_a \beta \text{ per } \alpha, \beta \in \Gamma^{\star} \}
+\]
+Possiamo parlare anche di linguaggio rifiutato dalla macchina $R(M)$.
+L'unione di $\lang{M}$ e $R(M)$, per\`o, non \`e sempre tutto $\Sigma^{\star}$.
+
+Nel caso in cui l'unione dei due linguaggi dia tutto $\Sigma^{\star}$, diciamo che il linguaggio \`e \emph{deciso} dalla macchina.
+Nel caso in cui su alcuni input la macchina non si ferma, si parla di linguaggio riconosciuto (riconoscibile).
+
+$\langs{\text{TM}}$ \`e l'insieme dei linguaggi accettati da una macchina di Turing.
+
+La tesi di Church - Turing dice che tutto quel che \`e generalmente ritenuto calcolabile, \`e calcolabile con una macchina di Turing.
+Equivale a dire che i linguaggi riconosciuti dalle macchine di Turing sono i linguaggi dei problemi risolvibili.
+
+Un algoritmo corrisponde a una macchina di Turing che si ferma sempre, un semialgoritmo si ferma solo sulle istanze ``no'' di un problema.
+
+Aggiungere nastri alla macchina di Turing non ne aumenta il potere computazionale.
+
+Si parla di complessit\`a solo quando la macchina si ferma sempre.
+
+Una macchina di Turing con $k$ nastri la definiamo come la precedente, con la differenza della funzione di transizione:
+\[
+\delta Q \setminus \{q_a, q_r\} \times \Gamma^k \to Q \times \Gamma^k \times \{ L, R \}^{k}
+\]
+La configurazione la possiamo rappresentare con una stringa in $(\Gamma^{\star}Q\Gamma^{\star})^{k}$, ossia stringhe del tipo $\alpha_1 q \beta_1, \alpha_2 q \beta_2, \dots, \alpha_k q \beta_k$.
+
+Le definizioni di linguaggi accettati e rifiutati restano uguali.
+
+La classe dei linguaggi accettati da una macchina a $k$ nastri \`e un sovrainsieme della classe dei linguaggi accettati da una macchina di Turing con un solo nastro.
+Ma vale anche il contrario: per dimostrarlo, vediamo che una macchina con $k$ nastri si pu\`o ``simulare'' con una macchina con un solo nastro.
+
+Il contenuto dei $k$ nastri si pu\`o scrivere di seguito su un nastro solo.
+Le $k$ testine si possono simulare inserendo dei nuovi simboli: se la $i$-esima testina \`e sulla lettera $a$, nel nastro unico sostituiamo a quella $a$ una lettera $\underline{a}_i$ segnata.
+
+Una transizione si fa in due passaggi: nel primo passo si scorre l'intero nastro e si memorizzano i simboli segnati.
+Per farlo, la macchina deve passare in uno stato che tiene conto dello stato della macchina simulato e di ciascuno di questi $k$ simboli.
+Nel secondo passo si scorre nuovamente la stringa e per ogni simbolo segnato si esegue la transizione della macchina simulata, scrivendo quel che si deve scrivere e spostando la testina.
+
+La versione non deterministica della macchina di Turing \`e, anche lei, equivalente alla macchina deterministica.
+Una macchina \`e non deterministica se ha pi\`u scelte possibili da un certo stato, con un certo carattere in input.
+Come al solito, la funzione di transizione va in un sottoinsieme dell'insieme delle parti del codominio della vecchia funzione di transizione.
+
+Il linguaggio accettato da una macchina di Turing non deterministica \`e l'insieme delle parole per cui si arriva in uno stato di accettazione.
+Il linguaggio rifiutato, invece, \`e il linguaggio delle parole per cui ogni stato finale in cui si arriva \`e di rifiuto.
+
+Per simulare una macchina di Turing non deterministica con una macchina di Turing deterministica, si fa una visita BFS dell'albero delle computazioni della macchina di Turing.
+\`E sufficiente stabilire l'ordine in cui le possibili mosse vengono controllate.
+La macchina che simula avr\`a tre nastri, uno per l'input, uno per il lavoro, e un nastro guida per sapere qualche cammino seguire.
+
+Se la macchina non deterministica si ferma, la deterministica che la simula non si ferma.
 

@@ -1,22 +1,31 @@
-\input{../../../../common/common.tex}
+\documentclass[11pt,draft]{lecturenotes}
+
+\title{Automi, Calcolabilit\`a e Complessit\`a}
+\author{Michele Laurenti}
+
+\usepackage{mlbasemath}
+\usepackage{mlalgoritmi}
+\usepackage{mlcomplessita}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.5}
+\usetikzlibrary{shapes,arrows,positioning,automata}
 
 \begin{document}
 
-\title{Automi, Calcolabilit\`a e Complessit\`a}
-
 \maketitle
-
 \newpage
 
 \tableofcontents
 \newpage
 
-\input{automi.tex}
-
-\input{esercizi.tex}
+\include{introduzione}
+\include{automi}
+\include{esercizi}
 
 \listoftables
-
 \listoffigures
+\printindex
 
 \end{document}
+

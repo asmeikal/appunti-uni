@@ -1,0 +1,46 @@
+
+\chapter{Introduzione}
+
+Gli argomenti del corso sono:
+\begin{description}
+	\item[Automi] modelli di calcolo, ossia astrazioni di calcolatore.
+	\item[Calcolabilit\`a] Cosa possiamo e non possiamo calcolare.
+	\item[Complessit\`a] Cosa non possiamo calcolare perch\'e intrattabile (ossia, esponenziale).
+\end{description}
+
+I modelli di calcolo si (potrebbero) possono classificare come ``modelli matematici di computazione della nuova gerarchia di Chomsky''.
+\begin{center}
+\begin{tabular}{c|c}
+	Modelli di macchine & Classi di linguaggi \\
+	\hline
+	Macchina di Turing & ? \\
+	\emph{Linear bound automata} & ? \\
+	Automa a pila & Linguaggi liberi dal contesto \\
+	Automa a stati finiti & Linguaggi regolari
+\end{tabular}
+\end{center}
+
+Pi\`u si sale nella tabella pi\`u aumenta la complessit\`a del modello.
+
+Nella colonna di destra abbiamo dei nomi di \emph{grammatiche}
+Una grammatica \`e qualcosa del tipo:
+\begin{verbatim}
+<roba> ::= <altra roba> <ancora roba> [<roba opzionale>]
+<roba> ::= s | i | n | g | o | l | i | c | a | r | a | t | t | e | r | i
+\end{verbatim}
+Una grammatica \`e sia un insieme di regole che definiscono la sintassi di un linguaggio, che un insieme di regole per generare frasi nel linguaggio.
+La grammatica specifica la \emph{sintassi}, non la semantica.
+Ogni linguaggio ha una macchina associata che lo riconosce.
+
+Calcolabilit\`a: esistono problemi che non hanno soluzione algoritmica.
+Per formalizzare un algoritmo di solito si d\`a la specifica della macchina che lo realizza.
+
+Intuitivamente, il numero di algoritmi \`e numerabile, ma il numero di problemi non \`e numerabile, quindi esistono (molti) pi\`u problemi che algoritmi.
+
+Complessit\`a: consideriamo solo i problemi che possiamo risolvere, e mettiamo in una certa classe tutti i problemi che possono essere risolti nel caso peggiore in un certo tempo.
+La classe $\probp$ corrisponde a problemi risolvibili in $\bigo{n^k}$ per $k \ge 1$, mentre la classe $\probexp$ corrisponde a problemi risolvibili in $\bigo{2^{n^k}}$ sempre per $k \ge 1$.
+Ovviamente per individuare la classe di un problema guardiamo i tempi dell'algoritmo migliore.
+
+La classe $\probnp$ corrisponde alla classe dei problemi la cui soluzione \`e verificabile in tempo polinomiale.
+La classe $\probnpc$ \`e la classe dei problemi ($\probnp$-completi) che, se risolvibili in tempo polinomiale, implicherebbe la risolvibilit\`a in tempo polinomiale di tutti i problemi in $\probnp$.
+

@@ -1,0 +1,34 @@
+
+\chapter{Calcolabilit\`a}
+
+\section{Linguaggi indecidibili}
+
+Vediamo ora che esistono problemi indecidibili.
+Lo facciamo con un confronto fra le cardinalit\`a dell'insieme degli algoritmi e l'insieme dei problemi.
+Ogni problema \`e associato a un linguaggio, quindi la cardinalit\`a dell'insieme dei problemi \`e uguale alla cardinalit\`a dell'insieme dei linguaggi. 
+Un algoritmo, invece, \`e una stringa finita su un alfabeto.
+Intuitivamente l'insieme degli algoritmi \`e un'infinit\`a numerabile, mentre l'insieme dei problemi \`e un'infinit\`a non numerabile.
+
+Un insieme \`e numerabile se pu\`o essere messo in corrispondenza biunivoca con l'insieme dei naturali.
+
+Vediamo la non-numerabilit\`a dell'insieme dei linguaggi.
+Ordiniamo quasi-lessigograficamente le parole su un certo alfabeto, ordinandole prima per lunghezza della parola e poi lessicograficamente se le parole hanno lunghezza uguale.
+Dopo aver ordinato tutte le parole su un alfabeto $\Sigma$, rappresentiamo un linguaggio con una sequenza binaria infinita.
+Alla $i$-esima posizione inseriamo un 1 se la $i$-esima parola (secondo il nostro ordinamento) \`e presente nel linguaggio, 0 altrimenti.
+Supponendo che l'insieme dei linguaggi sia numerabile, e usando il metodo della diagonale, vediamo che l'insieme dei linguaggi non \`e numerabile.
+
+Un insieme, nella teoria ingenua degli insiemi, \`e una collezione di oggetti che soddisfano una certa propriet\`a, e di cui (della collezione) ignoriamo ordine o molteplicit\`a.
+L'antinomia di Russel si basa sull'autoreferenzialit\`a: insiemi che sono elementi di s\'e stessi.
+
+\begin{esercizio}
+	Dimostrare che l'insieme dei linguaggi regolari \`e numerabile e che quello dei linguaggi non regolari non \`e numerabile.
+\end{esercizio}
+
+I linguaggi regolari sono anche \emph{enumerabili}, ossia esiste una funzione $f: \{0,1\}^{\star} \to \naturals$ calcolabile, che associa a ogni parola binaria un intero.
+Questo vale anche per ogni altro alfabeto, non solo su quello binario.
+
+\begin{esercizio}
+	Sia $B$ l'insieme delle stringhe binarie infinite, e sia $C$ il sottoinsieme di $B$ contenente solo le stringhe con un numero di 1 minore o uguale a 25.
+	Dimostrare che $C$ \`e numerabile (e enumerabile).
+\end{esercizio}
+

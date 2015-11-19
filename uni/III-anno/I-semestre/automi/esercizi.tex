@@ -1,5 +1,5 @@
 
-\chapter{esercizi}
+\chapter{Esercizi}
 
 \begin{esercizio}
 Ogni sottoinsieme di un linguaggio regolare \`e regolare?
@@ -52,7 +52,7 @@ Consideriamo un $n$ positivo generico, e la parola $a^n b^n c^{n^2}$ nel linguag
 Per ogni scomposizione $a^r a^s a^t b^n c^{n^2}$, con $s \ge 1$ e $r + s + t = n$, esiste un indice $i \ge 0$ per cui $(r + i \cdot s + t) \cdot n > n^2$, portando alla parola $a^{r + i \cdot s + t} b^n c^{n^2}$ che non appartiene al linguaggio.
 \`E sufficiente prendere $i > 1$, che verifica la disuguaglianza:
 \[
-i > \frac{n^2 - t \cdot n - r \cdot n}{s \cdot n} = \frac{n - t - r}{s} = \frac{s}{s} = 1 
+i > \frac{n^2 - t \cdot n - r \cdot n}{s \cdot n} = \frac{n - t - r}{s} = \frac{s}{s} = 1
 \]
 
 \begin{esercizio}
@@ -68,5 +68,3 @@ G :& S \to 0 R 0 \langor 1 R 1 \\
 \begin{esercizio}
 Scrivere la grammatica del linguaggio $L = \{ w \# x : w, x \in \{0,1\}^{\star} \text{ e } w^R \text{ \`e una sottostringa di } x \} = \{ w \# u w^R v : w, u, v \in \{0,1\}^{\star} \}$.
 \end{esercizio}
-
-
