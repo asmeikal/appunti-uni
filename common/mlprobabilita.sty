@@ -1,0 +1,15 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mlprobabilita}[2015/11/14 Comandi vari per la probabilit\`a]
+
+\RequirePackage{mlbasemath}
+
+\newcommand{\var}{\operatorname{Var}}       % varianza 
+\newcommand{\prob}[2][P]{#1 \left( {#2} \right)}
+\newcommand{\probcond}[3][P]{#1 \left( #2 | #3 \right)}
+\newcommand{\expect}[1]{E \left( #1 \right)}
+\newcommand{\mass}[2][X]{p_{#1} \left( #2 \right)}
+\newcommand{\distr}[2][X]{F_{#1} \left( #2 \right)}
+
+
+\endinput
+

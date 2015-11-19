@@ -1,0 +1,21 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mlcomplessita}[2015/11/16 Complexity package]
+
+\RequirePackage{mlbasemath}
+
+\newcommand{\langs}[1]{\mathcal{L}\left( {#1} \right)}
+\newcommand{\lang}[1]{L\left( {#1} \right)}
+\newcommand{\langor}{\ | \ }
+\newcommand{\kleenestar}{\star}
+\newcommand{\emptystring}{\varepsilon}
+\newcommand{\stackend}{\$}
+\renewcommand{\leadsto}{\vdash}
+
+\newcommand{\bigo}[1]{O\left( {#1} \right)}
+\newcommand{\probp}{\code{P}}
+\newcommand{\probnp}{\code{NP}}
+\newcommand{\probnpc}{\code{NP-C}}
+\newcommand{\probexp}{\code{EXP}}
+
+\endinput
+

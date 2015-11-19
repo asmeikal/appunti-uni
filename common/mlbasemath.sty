@@ -1,0 +1,68 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mlbasemath}[2015/11/14 Comandi matematici di base]
+
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{amssymb}
+\RequirePackage{amsfonts}
+
+\RequirePackage[makeroom]{cancel}
+
+% basic math operators
+\newcommand{\mcm}{\operatorname{mcm}}
+\newcommand{\mcd}{\operatorname{MCD}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\id}{id}
+\newcommand{\image}[1]{Im_{#1}}
+\newcommand{\parts}[1]{\mathbb{P} \left( {#1} \right)}
+
+\let\oldforall\forall
+\renewcommand{\forall}{\ \oldforall \ }
+\let\oldexists\exists
+\renewcommand{\exists}{\ \oldexists \ }
+\renewcommand{\implies}{\Rightarrow}
+\renewcommand{\iff}{\Leftrightarrow}
+
+\newcommand{\abs}[1]{\left\lvert{#1}\right\rvert}
+\newcommand{\intsup}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\intinf}[1]{\left\lfloor{#1}\right\rfloor}
+\newcommand{\norm}[1]{\left\lVert{#1}\right\rVert}
+\newcommand{\divides}{\bigm|}
+\newcommand{\definition}{\overset{\underset{\mathrm{def}}{}}{=}}
+
+% open and closed intervals
+\newcommand{\ooint}[2]{\left( {#1}, {#2} \right)}
+\newcommand{\coint}[2]{\left[ {#1}, {#2} \right)}
+\newcommand{\ocint}[2]{\left( {#1}, {#2} \right]}
+\newcommand{\ccint}[2]{\left[ {#1}, {#2} \right]}
+
+% number sets
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\complexes}{\mathbb{C}}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+% Theorems
+\theoremstyle{plain}
+\newtheorem{axiom}{Assioma}
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{lem}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposizione}
+\newtheorem{cor}[theorem]{Corollario}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definizione}[section]
+\newtheorem{esercizio}{Esercizio}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{oss}{Osservazione}
+\newtheorem{caso}{Caso}
+\newtheorem{fact}{Fatto}
+\newtheorem{claim}{Claim}
+
+\endinput
+
