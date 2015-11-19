@@ -1,24 +1,21 @@
 
-.PHONY: all 
+.PHONY: all clean
 
 CURR_DIR = .
 
 OUT_DIR = $(CURR_DIR)
 
-SOURCES = $(CURR_DIR)/*.tex \
-			$(CURR_DIR)/*.toc
-
+SOURCES = $(CURR_DIR)/*.tex
 TARGETS = $(CURR_DIR)/appunti-automi.pdf
 
-all: $(TARGETS) 
+all: $(TARGETS)
 
-# object files
-$(TARGETS): $(SOURCES)
-	pdflatex $(CURR_DIR)/$(@F:.pdf=.tex) -o $@ 
+$(TARGETS): $(TARGETS:.pdf=.tex) $(SOURCES)
+	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make $(CURR_DIR)/$(@F:.pdf=.tex)
 
 clean:
-	rm -rf *.pdf
+	latexmk -C
 
 neat:
-	find $(CURR_DIR) ! -name "*.tex" -a ! -name "*.pdf" -a ! -name "Makefile" -type f -delete
+	latexmk -c
 

@@ -10,7 +10,9 @@ FRST_YEAR = $(UNI)/I-anno
 SCND_YEAR = $(UNI)/II-anno
 THRD_YEAR = $(UNI)/III-anno
 
-SUBDIRS = 	$(SCND_YEAR)/$(SCND_SEM)/calcolo-integrale/
+SUBDIRS = 	$(FRST_YEAR)/$(SCND_SEM)/calcolo-integrale/ \
+			$(THRD_YEAR)/$(FRST_SEM)/combinatoria/ \
+			$(THRD_YEAR)/$(FRST_SEM)/automi/
 
 .PHONY: subdirs $(SUBDIRS)
 
