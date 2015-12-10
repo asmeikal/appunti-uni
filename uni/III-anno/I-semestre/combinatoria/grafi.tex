@@ -18,7 +18,7 @@ Possiamo scrivere che $E \subseteq \{ X : X \in \parts{V} \land \abs{X} = 2 \}$.
 Quanti archi possiamo avere al massimo?
 Vale questo:
 \[
-\abs{\binom{V}{2}} = \binom{\abs{V}}{2} = \frac{\abs{V} \cdot \left( \abs{V} - 1 \right)}{2}
+	\abs{\binom{V}{2}} = \binom{\abs{V}}{2} = \frac{\abs{V} \cdot \left( \abs{V} - 1 \right)}{2}
 \]
 
 Il solito problema dei ponti di K\"onigsberg si rappresenta facilmente con un grafo.
@@ -60,7 +60,7 @@ Questa \`e una relazione, e non una relazione qualsiasi.
 	\item Che $x \leadsto x$, ossia che sia riflessiva, lo postuliamo, considerando $v_1$ una passeggiata.
 	\item Che $x \leadsto y \implies y \leadsto x$ si vede facilmente: scriviamo vertici e archi della passeggiata in ordine inverso.
 	\item $x \leadsto y \land y \leadsto z \implies x \leadsto z$, infatti abbiamo i due cammini e, togliendo il vertice finale al primo possiamo concatenarli e ottenre un cammino da $x$ a $z$.
-	Formalmente, scriviamo il cammino da $x$ a $y$ come $x e_1 v_2 \dots e_s y$ e il cammino da $y$ a $z$ come $y \cap{e}_1 \cap{v}_2 \dots \cap{e}_t z$, e scriviamo poi il cammino da $x$ a $z$ come $x e_1 v_2 \dots e_s y \cap{e}_1 \cap{v}_2 \dots \cap{e}_t z$.
+		Formalmente, scriviamo il cammino da $x$ a $y$ come $x e_1 v_2 \dots e_s y$ e il cammino da $y$ a $z$ come $y \cap{e}_1 \cap{v}_2 \dots \cap{e}_t z$, e scriviamo poi il cammino da $x$ a $z$ come $x e_1 v_2 \dots e_s y \cap{e}_1 \cap{v}_2 \dots \cap{e}_t z$.
 \end{enumerate}
 
 $V(G)$ \`e quindi partizionato da questa relazione, ed \`e quindi unione disgiunta di classi di vertici.
@@ -79,6 +79,209 @@ Siano $i$ e $j$ rispettivamente il pi\`u piccolo e il pi\`u grande indice per cu
 Cancelliamo la passeggiata fra $v_i$ e $v_j$, lasciando $v_j$.
 Ora $z$ non si ripete pi\`u nella passeggiata.
 Iterando questo per ogni $z \in V(G)$ otteniamo un cammino semplice.
+
+\begin{defn}[Grafo connesso]
+	Se in $G$ la relazione di raggiungibilit\`a ha una sola classe di equivalenza il grafo $G$ \`e connesso.
+\end{defn}
+
+\begin{defn}[Circuito euleriano]
+	Un circuito euleriano \`e un circuito che comprende tutti gli archi e tutti i vertici.
+\end{defn}
+Un grafo non connesso non ha circuiti euleriani.
+Se dalla definizione di circuito euleriano togliessimo il vincolo che questo deve comprendere ``tutti i vertici'', potremmo trovare un circuito euleriano in un grafo con pi\`u di una componente connessa ma di cui una sola ha archi.
+
+Possiamo pensare anche a un cammino euleriano, ossia un cammino che comprende tutti gli archi e tutti i vertici.
+\begin{oss}
+	Se $G$ ha un circuito euleriano, $G$ \`e connesso.
+\end{oss}
+Alcune altre osservazioni:
+\begin{itemize}
+	\item Un circuito \`e chiuso, quindi possiamo iniziare da un nodo qualsiasi.
+	\item Non potendo passare pi\`u di una volta sull ostesso arco, se non riusciamo a trovare un cammino significa che in qualche vertice del grafo ci ``blocchiamo''.
+\end{itemize}
+Se rimaniamo ``bloccati'' in un vertice possiamo dire qualcosa sul numero di archi di questo vertice: sono dispari.
+Per ``entrare'' e ``uscire'' da un vertice questo deve avere due archi incidenti.
+
+\begin{defn}[Grado di un vertice]
+	Il grado del vertice $v$ nel grafo $G$ \`e il numero degli archi che incidono a $v$.
+	\[
+		\deg{v} = \abs{\{ e \in E(G) : v \in e \}}
+	\]
+\end{defn}
+
+\begin{theorem}[Teorema di Euler]
+	Il grafo semplice $G$ ammette un circuito euleriano $\iff$ $G$ \`e connesso e ogni suo vertice ha grado pari.
+\end{theorem}
+
+\begin{proof}[del teorema di Euler]
+	Vediamo il teorema verso destra: se in un grafo $G$ c'\`e un circuito euleriano $C$, allora ogni vertice di $G$ ha grado pari.
+	Tutti gli archi $e$ presenti in $C$ sono diversi, e $\forall e \in E(G)$, vale che $e \in C$.
+
+	Sia $v \in V(G)$ un vertice tale che $v \neq v_1$ (in $C$).
+	$v$ appare in $C$ un certo numero di volte, ossia abbiamo che $v = v_{i_1} = \dots = v_{i_r}$.
+	Sicuramente nel cammino non avviene $\dots v e v \dots$.
+	Ogni volta che attraversiamo $v$, passiamo per due archi mai attraversati prima.
+	Poich\'e in $C$ non compaiono archi ripetuti, e tutti gli archi compaiono una volta, ogni $v \in V(G)$ (escluso $v_1 = v_t$) ha grado pari.
+	Ma per partire da $v_1$ e arrivare in $v_t$ usiamo due archi distinti, e nel resto del cammino il vertice $v_1 = v_t$ \`e come uno degli altri vertici ``di passaggio''.
+	Quindi anche $v_1$ ha grado pari.
+
+	Vediamo il teorema verso sinistra: un grafo connesso con ogni vertice di grado pari ha un circuito euleriano.
+	0 non conta come pari, ma in ogni caso un vertice di grado 0 \`e isolato e, se il grafo ha pi\`u di un nodo e ha un vertice di grado 0, il grafo non \`e connesso.
+
+	Prendiamo un vertice $x \in V(G)$ e un arco $e$ incidente a $x$ e, partendo da $x$ e passando per $e$, possiamo trovare un circuito (che torna quindi in $x$).
+	Se cos\`i non fosse rimarremmo bloccati in qualche $y \neq x$: ``entriamo'' in $y$ ma non ne ``usciamo''.
+	``Entrare'' e ``uscire'' ha bisogno di un numero pari di archi, se quindi non riusciamo a ``uscire'', $y$ \`e di grado dispari.
+	Contraddizione.
+
+	Abbiamo trovato un circuito: se questo comprende tutti gli archi, \`e Euleriano.
+	Se non comprende tutti gli archi vogliamo ampliare il circuito.
+	Consideriamo uno de icircuiti che comprendono il circuito trovato, e in particolare il circuito massimale che lo contiene.
+	Dimostriamo che questo circuito massimale \`e Euleriano.
+
+	Se un circuito massimale non ha archi ``pendenti'', ossia archi che incidono a un vertice del circuito senza farne parte, allora il circuito contiene tutti gli archi.
+	E se non contiene tutti gli archi, allora ha archi pendenti!
+	Se c'\`e un arco pendente dal circuito, rimuoviamo gli archi del circuito dal grafo.
+	Vogliamo poter dire che anche in questo grafo possiamo trovare un circuito.
+	Ma attenzione: il grafo pu\`o non essere connesso dopo aver tolto il circuito.
+	Nella dimostrazione precedente, per\`o, il fatto che il grafo fosse connesso non ci \`e servito.
+	Ogni vertice, ora, o \`e di grado pari o \`e isolato.
+	Considerando la componente di cui fa parte l'arco pendente, questa sar\`a connessa.
+	Avendo tolto un numero pari di archi da ogni vertice, ora i vertici avranno o grado pari o grado 0.
+
+	Ripetendo quindi il ragionamento precedente, l'arco appeso \`e contenuto in un nuovo circuito.
+	Questo circuito ha un vertice in comune col vecchio circuito e nessun arco in comune.
+	I due circuiti formano, se uniti, un nuovo circuito, ma questo contraddice l'ipotesi che il vecchio circuito fosse massimale.
+	Quindi un circuito massimale non ha archi pendenti, ed \`e quindi Euleriano.
+\end{proof}
+
+\begin{defn}[Sottografo]
+	$F$ \`e un sottografo di $G$ se $V(F) \subseteq V(G)$ e $E(F) \subseteq E(G)$.
+	Ovviamente $F$ deve essere un grafo, e quindi $E(F) \subseteq \binom{V(F)}{2}$.
+\end{defn}
+
+Ci interessano due tipi di sottografi importanti.
+\begin{defn}[Sottografo indotto (induced subgraph]
+	$F$ \`e un sottografo indotto di $G$ se $V(F) \subset V(G)$ e $E(F) = \binom{V(F)}{2} \cap E(G)$.
+	\`E un sottografo definito unicamente dai vertici.
+\end{defn}
+
+\begin{defn}[Sottografo di copertura (spanning subgraph)]
+	$F$ \`e un sottografo di copertura di $G$ se ha gli stessi vertici, ossia $V(F) = V(G)$ ma $E(F) \subseteq E(G)$.
+\end{defn}
+Un sottografo indotto e di copertura non \`e un sottografo proprio.
+(Ma questo significa che un sottografo indotto $F$ pu\`o avere gli stessi vertici di $G$?)
+
+\begin{defn}[Grafo completo]
+	Un grafo $G$ \`e completo se $E(G) = \binom{V(G)}{2}$.
+\end{defn}
+Un grafo completo si indica spesso con $K$.
+Un sottografo completo \`e necessariamente un sottografo indotto.
+I sottografi completi si chiamano anche \emph{clique}.
+
+$\clique{G}$ \`e il massimo numero di vertici in un sottografo completo di $G$.
+
+\begin{defn}[Grafo complementare]
+	$G$ e $\bar{G}$ sono complementari se:
+	\begin{itemize}
+		\item $V(G) = V(\bar{G}) = V$
+		\item $E(G) \cap E(\bar{G}) = \emptyset$
+		\item $E(G) \cup E(\bar{G}) = \binom{V}{2}$
+	\end{itemize}
+\end{defn}
+
+\begin{prop}
+	Sia $G$ un grafo, vale:
+	\[
+		\sum_{x \in V(G)} \degree{x} = 2 \abs{E(G)}
+	\]
+\end{prop}
+
+\begin{proof}
+	Immaginiamo una matrice a valori in $\{0,1\}$ in cui ogni riga corrisponde a un arco e ogni colonna a un vertice del grafo, definita cos\`i:
+	\[
+		M(e,x) =
+		\begin{cases}
+			1 & \text{ se } x \in e \\
+			0 & \text{ altrimenti}
+		\end{cases}
+	\]
+	\`E una matrice di incidenza.
+	Quanti 1 ci sono in $M$?
+	Usiamo il metodo del doppio conteggio.
+
+	Ogni riga contiene esattamente due ``1'', quindi sono $2 \abs{E(G)}$.
+	Ogni colonna contiene un numero di ``1'' pari al numero di archi incidenti al vertice relativo alla colonna su cui siamo, quindi $\sum_{x \in V(G)} \degree{x}$.
+\end{proof}
+
+La sommatoria dei gradi di un grafo \`e pari!
+Quindi il numero di vertici di grado dispari \`e pari o \`e 0.
+Infatti:
+\[
+	\underbrace{\sum_{x \in V(G) \\ 2 \not\divides \degree{x}} \degree{x}}{\text{deve essere un numero pari}} +
+	\underbrace{\sum_{x \in V(G) \\ 2 \divides \degree{x}} \degree{x}{\text{\`e un numero pari}}} =
+	\underbrace{\sum_{x \in V(G)} \degree{x}}{\text{\`e un numero pari}}
+\]
+Il numero di sommandi (tutti dispari) deve essere pari.
+
+Se in un grafo ci sono $>2$ vertici di grado dispari, non esiste un circuito euleriano.
+Se il numero di vertici di grado dispari \`e esattamente 2, esiste per\`o un cammino euleriano.
+\begin{defn}[Cammino Euleriano]
+	Un cammino Euleriano in $G$ \`e un cammino che comprende tutti gli archi e tutt i vertici di $G$.
+\end{defn}
+
+\begin{proof}
+	Ogni vertice \`e un vertice di passaggio, tranne gli estremi (che non devono coincidere), e ogni vertice tranne gli estremi \`e di grado pari.
+
+	Possiamo ridurre la dimostrazione alla dimostrazione precedente per i circuiti Euleriani.
+	Introduciamo un nuovo vertice con archi incidenti ai due vertici di grado dispari.
+	Nel grafo ora c'\`e un circuito Euleriano, che inizia da dove vogliamo noi, quindi anche da un nodo di grado dispari, e passa per l'arco che abbiamo aggiunto.
+	Il circuito sar\`a, ad esempio, del tipo $aecfb \dots a$, dove $c$ \`e il nuovo vertice e $e,f$ sono gli archi $\{a,c\},\{c,b\}$.
+	Togliendo $aecf$ otteniamo un cammino Euleriano da $b$ ad $a$.
+\end{proof}
+
+\begin{defn}[Albero]
+	Un albero \`e un grafo connesso senza cicli.
+	Con ciclo indichiamo un cammino semplice chiuso.
+\end{defn}
+Un albero \`e ``radicato'' se si identifica un vertice come ``radice''.
+
+\begin{prop}
+	In un albero non banale (ossia con $\abs{V(G)} \ge 2$) ci sono almeno due vertici di grado 1.
+\end{prop}
+
+\begin{proof}
+	Dimostriamo una proposizione pi\`u forte:
+	\[
+		\# \text{ di vertici di grado } 1 \ge \max_{x \in V(G)} \degree{x}
+	\]
+	Ossia, il numero di vertici di grado 1 \`e maggiore del grado del grafo.
+	Il grado del grafo \`e il massimo grado di un vertice nel grafo.
+
+	Questo implica la proposizione. C'\`e il caso in cui $\max \degree{g} = 1$, ma se il grafo \`e connesso (e un albero deve esserlo) l'unico caso in cui questo \`e possibile \`e se $V(G) = \{a,b\}$ e $E(G) = \{\{a,b\}\}$, che \`e subito verificato.
+
+	Negli altri casi, quindi, il grafo deve avere grado $>1$.
+	Se $\max \degree{x} = 0$, il grafo non \`e connesso, ma composto da vertici isolati (ossia $E(G) = \emptyset$).
+
+	Percorriamo un cammino semplice da un vertice $x$ (cammino semplice con l'estremit\`a fissa $x$) per trovare un vertice di grado $1$.
+	Vogliamo qualcosa di ``estremo'', qualcosa oltre cui non si pu\`o andare.
+	Cerchiamo quindi un cammino semplice massimale con estremit\`a fissa $x$.
+	Non \`e prolungabile, non \`e contenuto in altri cammini semplici con estremit\`a fissa $x$.
+	Il cammino deve terminare in un vertice di grado dispari, in particolare di grado 1.
+	Non possiamo passare due volte per lo stesso vertice, quindi il grado deve essere 1 (se ci ``blocchiamo'').
+	Il numero di questi cammino \`e almeno $\degree{x}$.
+	Prendendo $x$ con $\degree{x} \ge 2$, e sappiamo che c'\`e, abbiamo fatto.
+\end{proof}
+% TODO rivedere questa dimostrazione
+
+Un grafo $G$ connesso ha un sottografo di copertura connesso e minimale, ed \`e interessante cercarlo.
+Un grafo connesso di questo tipo \`e senza cicli.
+Se consideriamo un grafo con $n$ archi e $n$ vertici, che formano un ciclo, togliendo un arco qualunque abbiamo un sottografo connesso e minimale con $n-1$ archi.
+Vale per tutti i sottografi di copertura connessi e minimali, e per tutti gli archi.
+
+\begin{prop}
+	Un grafo connesso \`e un albero $\iff \abs{V(G)} = 1 + \abs{E(G)}$.
+\end{prop}
+Gli alberi sono molto diversi gli uni dagli altri, ma questo vale sempre.
 
 
 
@@ -128,8 +331,8 @@ Una generica endofunzione suriettiva \pi : [n] \to [n] la chiamiamo \emph{permut
 Possiamo rappresentarla naturalmente con una tabella con nella prima riga gli argomenti e nella seconda riga le immagini.
 
 \begin{tabular}{*{5}{c}}
-1 & 2 & 3 & \dots & n \\
-\pi (1) & \pi (2) & \pi (3) & \dots & \pi (n)
+	1 & 2 & 3 & \dots & n \\
+	\pi (1) & \pi (2) & \pi (3) & \dots & \pi (n)
 \end{tabular}
 
 Non abbiamo bisogno, in realt\`a, della prima riga.
@@ -252,7 +455,7 @@ Guardiamo la tabella della permutazione, supponendo $c < d$:
 
 \begin{tabular}{*{10}{c}}
 	1 & 2 & \dots & c & \dots & x & \dots & d & \dots & n \\
-	1 & 2 & \dots & d & \dots & x & \dots & c & \dots & n
+	1 & 2 & \dots & d & \dots & x & \import Data.Array.IArraydots & c & \dots & n
 \end{tabular}
 
 $c$ e $d$ sono in inversione, certamente, ma anche $x$ e $c$, o $d$ e $x$, e via dicendo.
@@ -313,430 +516,695 @@ Quali colonne da non invertite diventano invertite?
 
 Una coppia di colonne cambia situazione se almeno una \`e tra le colonne $\begin{smallpmatrix}\rho^{-1}(a) \\ a \end{smallpmatrix}$ e $\begin{smallpmatrix}\rho^{-1}(b) \\ b \end{smallpmatrix}$.
 Le colonne intermedie saranno colonne del tipo $\begin{smallpmatrix} x \\ \rho(x) \end{smallpmatrix}$ con $\rho^{-1} (a) < x < \rho^{-1} (b)$.
-Questa colonna pu\`o essere in inversione con entrambe, con nessuna, o con una ma non con l'altra.
-Abbiamo quindi 4 casi distinti.
-
-Sia $i$ il numero delle coppie in inversione in $\rho$ tali da non essere una coppia dove almeno una coppia \`e ``di bordo'' e l'altra \`e intermedia o di bordo.
-Sia $R(a,b)$ il numero delle colonne intermedie in inversione con le due colonne di bordo.
-Sia $N(a,b)$ il numero delle colonne intermedie non in inversione con nessuna colonna di bordo.
-Sia $R(a)$ il numero delle colonne intermedie in inversione con solo la colonna di $a$.
-Sia $R(b)$ il numero delle colonne intermedie in inversione con solo la colonna di $b$.
-
-Il totale delle colonne in inversione \`e dato da:
-\[
-	i + 2 \, R(a,b) + R(a) + R(b) + \chi (a,b)
-\]
-Dove $\chi (a,b)$ \`e 1 se le colonne di $a$ e $b$ sono in inversione in $\rho$, 0 altrimenti.
-
-Come cambia la situazione?
-Le $i$ colonne erano in inversione e cos\`i rimangono. Quelle in inversione con le due colonne di bordo non ci saranno pi\`u.
-Quelle in inversione con la colonna di $a$ saranno in inversione con la colonna di $b$, e viceversa con la colonna di $b$.
-Quelle non in inversione con le due colonne di bordo ora saranno in inversione con entrambe.
-
-Otteniamo quindi:
-\[
-	i + R(a) + R(b) + 2 \, N(a,b) + \chi'(a,b)
-\]
-Ponendo $\chi'(a,b) = 1$ se $\chi (a,b) = 0$ o $\chi'(a,b) = 0$ se $\chi(a,b) = 1$.
-La differenza fra prima e dopo \`e:
-\[
-	2 \, R(a,b) + \chi (a,b) - 2 \, N(a,b) + \chi'(a,b)
-\]
-Che \`e un numero dispari.
-Quindi se il numero di inversioni era pari in $\rho$, ora \`e dispari, e viceversa se era dispari ora \`e pari.
-
-Abbiamo visto che ogni oggetto matematico pu\`o avere diverse rappresentazioni.
-Una permutazione pu\`o essere scritta come prodotto di trasposizioni, e queste possono essere completamente diverse.
-C'\`e qualcosa che non cambia scrivendo una permutazione come prodotto di trasposizioni?
-S\`i: la parit\`a del numero di trasposizioni.
-
-Abbiamo detto che data una permutazione $\rho$, alcune coppie di elementi sono in ``inversione''.
-La parit\`a del numero di coppie in inversione \`e la parit\`a della permutazione, e questa \`e una definizione.
-
-Gli automorfismi descrivono quello che non cambia in un oggetto matematico. (???)
-La parit\`a \`e un invariante relativamente semplice: ha solo due valori, anche se la definizione \`e un po' contorta.
-Avendo solo due valori, divide le permutazioni in due classi.
-
-Abbiamo parlato di una funzione ``Parit\`a'':
-\[
-	\par{\rho} =
-	\begin{cases}
-	-1 \\
-	1
-	\end{cases}
-\]
-Vale che $\par{\rho \sigma} = \par{\rho} \par{\sigma}$.
-\`E una conseguenza di quello che abbiamo dimostrato, ossia che data una permutazione $\rho : [n] \to [n]$ qualsiasi e una trasposizione $(a,b)$ con $a,b \in [n]$, vale $\par{\rho (a,b)} \neq \par{\rho}$.
-
-Per dimostrarlo abbiamo contato il numero di inversioni in $\rho$ prima e dopo averlo moltiplicato per $(a,b)$.
-Rappresentando la permutazione con una tabella, chiamiamo ``colonne di bordo'' le colonne di $a$ e di $b$, e le colonne fra queste due le chiamiamo ``colonne intermedie''.
-
-Sia $i$ il numero delle coppie di colonne in inversione in $\rho$ in cui al pi\`u una \`e una colonna di bordo e l'altra \`e intermedia.
-Queste colonne saranno presenti anche in $\rho (a,b)$.
-Poi ci sono alcune colonne che cambiano situazione: sono le coppie di colonne in cui una \`e una colonna di bordo e una \`e una colonna intermedia.
-Chiamiamo poi $R(a,b)$ il numero delle colonne intermedie in inversione con tutte e due le colonne di bordo, e $N(a,b)$ il numero di colonne che non sono in inversione con nessuna delle colonne di bordo.
-Poi, chiamiamo $V(a,b) = R(a) + R(b)$ il numero delle colonne in inversione con esattamente una fra le colonne di bordo.
-Infine, $\chi(a,b)$ \`e definito come $1$ se le due colonne di bordo sono in inversione in $\rho$, $0$ altrimenti.
-
-Non conosciamo nessuno di questi numeri, ci interessa solo sapere come cambiano.
-Il numero di colonne in inversione in $\rho$ \`e:
-\[
-i + 2 \, R(a,b) + V(a,b) + \chi(a,b)
-\]
-$R(a,b)$ sono le coppie in inversione sia con $a$ che con $b$, quindi dobbiamo ``contarle'' due volte.
-Le colonne che non sono in inversione con $a$ o con $b$ non dobbiamo contarle.
-
-Il numero delle coppie in inversione in $\rho (a,b)$ \`e, invece:
-\[
-i + 2 \, N(a,b) + V(a,b) + \chi'(a,b)
-\]
-Le uniche colonne che possono cambiare situazione, e che anzi necessariamente la cambiano, saranno solo le coppie di colonne in cui una colonna \`e di bordo e l'altra \`e o una colonna di bordo o \`e una colonna intermedia.
-Le colonne in inversione e con $a$ e con $b$ ora non saranno in inversione con nessuna delle due.
-Al loro posto avremo in inversione le colonne che in $\rho$ non erano in inversione n\'e con $a$ n\'e con $b$.
-Quelle che erano in inversione con esattamente con una colonna di bordo, saranno ora in inversione ancora con esattamente una colonna di bordo, ma con l'altra.
-Infine, possiamo dire che $\chi'(a,b) + \chi(a,b) = 1$.
-Se $a,b$ non erano in inversione, ora lo saranno, e viceversa se erano in inversione ora non lo saranno.
-
-Ora affermiamo che la parit\`a del primo numero \`e diversa dalla parit\`a del secondo numero, ossia che la differenza fra i due numeri \`e un numero dispari.
-\[
-i + 2 \, N(a,b) + V(a,b) + 1 - \chi(a,b) - \left[ i + 2 \, R(a,b) + V(a,b) + \chi (a,b) \right]
-\]
-Questo numero \`e dispari.
-Infatti vale:
-\[
-2 \, N(a,b) - 2 \, R(a,b) + 1 - 2 \, \chi(a,b)
-\]
-che \`e evidentemente dispari.
-
-\subsection{Numero cromatico}
-
-Parliamo di numero cromatico in relazione alla colorazione dei vertici di un grafo.
-Si pu\`o parlare di numero cromatico anche in relazione al colore degli archi di un grafo.
-Il problema \`e nato prima della teoria dei grafi, nel contesto di colorazione delle carte geografiche.
-
-Appel-Haken hanno dimostrato nel '79, alla University of Illinois at Urbana Champwtf, che bastano 4 colori per colorare ogni carta geografica.
-
-I due hanno ridotto il numero di grafi da analizzare da infiniti che erano, a meno di duemila.
-Li hanno fatti analizzare tutti a un computer e hanno ``dimostrato'' che l'ipotesi \`e vera.
-Ma negli anni '90 \`e stato dimostrato che questa dimostrazione era incompleta.
-Hanno ridotto nuovamente il numero di grafi da analizzare a circa 600, e controllato i casi col computer.
-
-\`E un problema centrale nell'ottimizzazione combinatoria, nella quale dobbiamo colorare un grafo col minor numero possibile di colori.
-
-Consideriamo una carta geografia.
-A ogni regione sulla carta associamo un vertice di un grafo.
-Vogliamo associare a ogni regione un colore, e lo facciamo con una funzione $f: V(G) \to C$ che a ogni vertice del grafo assegna un elemento di un insieme astratto $C$, che chiamiamo colore.
-Nel problema della carta geografica dobbiamo avere che regioni adiacenti hanno colori differenti.
-Nei grafi, $f$ \`e una colorazione se vertici adiacenti hanno colori diversi.
-
-\begin{defn}[Colorazione di un grafo]
-Una colorazione di un grafo \`e una funzione $f : V(G) \to C$ con $C$ insieme astratto se per ogni coppia di vertici $a,b$ abbiamo che $\{a,b\} \in E(G) \implies f(a) \neq f(b)$.
-\end{defn}
-Ogni grafo ha una colorazione: qualsiasi funzione iniettiva (con valori tutti diversi) soddisfa il vincolo.
-
-Il problema \`e capire quanto pu\`o essere piccolo $C$, ossia il minimo $\abs{C}$ per cui esiste una colorazione $f : V(G) \to C$.
-La cardinalit\`a $\abs{C}$ \`e il numero cromatico del grafo.
-
-L'ottimizzazione combinatoria \`e anche chiamata ricerca operativa, o \emph{operations research}.
-Operations = operazioni militari, la ricerca operativa \`e nata per ottimizzare le risorse.
-
-\begin{defn}[Numero cromatico]
-	Il numero cromatico di un grafo semplice \`e la pi\`u piccola cardinalit\`a di $C$ per cui esiste una funzione $f : V(G) \to C$ di colorazione che ha vertici adiacenti con colori diversi.
-\end{defn}
-
-Chiamiamo $\xhi(G) = \min \abs{f(V(G))}$ questo numero cromatico.
-Indichiamo, data $f : V \to C$ e $A \subseteq V$, con $f(A) = \{ f(v) : v \in A \}$.
-
-I grafi delle carte geografiche sono particolari.
-
-Indichiamo con $K_{3,3}$ un grafo \emph{bipartito}.
-Stiamo dicendo che abbiamo una partizione dei vertici in due sottoinsiemi, e i vertici in un sottoinsieme sono adiacenti a tutti i vertici nell'altro insieme.
-Su $K_{3,3}$ il problema tipico \`e disegnare il grafo in modo che gli archi non si incrocino.
-Non \`e possibile.
-
-I grafi che possono essere disegnati sul piano in modo tale che archi che non hanno vertici in comune non si incrocino, sono chiamati \emph{grafi planari}.
-Un grafo planare ha numero cromatico al pi\`u 4.
-
-Un grafo senza archi ha numero cromatico 1, ossia $E(G) = \emptyset \implies \xhi(G) = 1$.
-Un grafo con almeno un arco ha numero cromatico maggiore di 1.
-
-\begin{defn}
-Un grafo \`e  bipartito se il suo numero cromatico \`e al pi\`u due.
-\end{defn}
-
-V(G) = A \cup B
-A \cap B = \emptyset
-\forall \{a, b\} \in E(G) \abs{\{a,b\} \cap A } = \abs{\{a,b\} \cap B} = 1
-
-Si possono usare grafi bipartiti per rappresentare grafi arbitrari.
-Si duplica l'insieme dei vertici V, si toglie ogni arco, e si inserisce un arco fra il nodo $a$ e il nodo $b$, uno preso dal primo insieme e uno preso dall'insieme duplicato, se $a$ e $b$ sono adiacenti nel grafo originale.
-
-Un cammino (semplice) ha numero cromatico 2.
-Un ciclo con numero pari di vertici ha anche questo numero cromatico 2.
-Bisogna essere in grado di alternare strettamente i colori.
-
-Il pi\`u piccolo ciclo dispari \`e il grafo completo con 3 vertici, e ha numero cromatico 3.
-
-Ogni sottografo ha numero cromatico non superiore al numero cromatico del grafo.
-
-\begin{prop}
-	\label{prop_grafo_bipartito_cicli_dispari}
-	$G$ \`e bipartito $\iff$ non contiene cicli dispari.
-\end{prop}
-
-\begin{proof}[della proposizione \ref{prop_grafo_bipartito_cicli_dispari}]
-	Verso destra: \`e sufficiente vedere che un ciclo dispari non \`e bicolorabile, poich\'e ha numero cromatico 3.
-	Quindi ogni grafo contenente un ciclo dispari ha numero cromatico almeno 3.
-	Se il ciclo dispari fosse bicolorabile, l'unica bicolorazione assegnerebbe a un nodo un colore, e a ogni nodo a distanza pari lo stesso colore.
-	Ma il ciclo ha lunghezza dispari, quindi il suo adiacente ha distanza pari.
-
-	Verso sinistra: il problema si riduce, banalmente, al caso di un grafo connesso.
-	Se G non \`e connesso, ha pi\`u componenti connesse, che non hanno archi tra loro.
-	La colorazione deve dare valori diversi a vertici adiacenti, quindi colorando una componente connessa non vincoliamo la coloraione delle altre componenti.
-	Siamo $L_i$ le sue componenti connesse, con $i = 1 \dots t$.
-	$\xhi(G) = \max_{i} \xhi(L_i)$, poich\'e la colorazione pu\`o essere fatta in maniera indipendente.
-	Ora \`e sufficiente mostrare che se $G$ non ha cicli dispari ed \`e connesso, allora $\xhi(G) \le 2$.
-	Un grafo connesso ha un albero di copertura, e un albero ha una sola colorazione.
-	Possiamo pensare al fatto che l'albero \`e composto da una ramificazione di cammini, ed \`e senza cicli.
-	Questa colorazione imposta dall'albero di copertura, \`e una colorazione di tutto il grafo.
-
-	Quindi, $G$ \`e connesso.
-	Prendiamo un suo arbitrario albero di copertura $T$, e sia $x_0 \in V(T)$ un vertice in $T$ (e in $G$, essendo un albero di copertura).
-	Prendendo un altro vertice $x \neq x_0$, abbiamo una distanza $d_T(x,x_0)$ fra i due vertici data dal numero degli archi nell'unico cammino fra $x$ e $x_0$.
-	La colorazione $f : V(T) \to \{ 0, 1 \}$ la definiamo come $f(x) = d_T(x, x_0) \pmod{2}$.
-	In quest'unica colorazione possibile, prendiamo due vertici $a$ e $b$ che hanno la stessa colorazione, ossia $f(a) = f(b)$.
-	Se questi due vertici non sono adiacenti in $G$, stiamo a cavallo, ma se lo sono la colorazione dell'albero non va bene per il grafo.
-	Il colore di $a$ \`e $1$ se il cammino da $x_0$ a $a$ \`e di lunghezza dispari, $0$ se \`e pari.
-	Se $a$ e $b$ sono dello stesso colore, significa che la parit\`a dei cammini da $x_0$ a uno dei nodi \`e la stessa.
-	Sia $c$ (con $c$ possibilmente, ma non necessariamente, uguale a $x_0$) il punto in cui questi due cammini (in $T$) si congiungono.
-	Poich\'e l'inizio del cammino da $x_0$ ai nodi coincide fino a $c$, e la lunghezza dei cammini \`e congrua modulo 2, la lunghezza del cammino da $a$ a $c$ a $b$ \`e pari.
-	I cammini da $a$ a $c$ e da $c$ a $b$ sono infatti entrambi di lunghezza pari o entrambi di lunghezza dispari, essendo congrui modulo 2.
-	Ma quindi $\{a,b\}$ \`e un arco che chiude un ciclo dispari.
-	Contraddizione.
-
-\end{proof}
-
-Abbiamo detto che una colorazione \`e una funzione con certe caratteristiche, e che il numero cromatico \`e il numero minimo di colori per una colorazione.
-Se il numero cromatico \`e 2, il grafo non ha cicli di lunghezza dispari.
-
-Il numero cromatico $\xhi(G)$ \`e almeno pari al numero di clique, $\omega(G)$, ossia il numero massimo di vertici in un sottografo completo.
-Non \`e un'uguaglianza: $\xhi(G) \ge \omega(G)$.
-Un grafo per cui non vale \`e il grafo rappresentato da un pentagono.
-Il grafo pentagono \`e curioso, perch\'e, ad esempio, il grafo complementare \`e isomorfo.
-
-% TODO disegnare grafo complementare e grafo pentagono
-
-Claude Berge ha introdotto il concetto di grafo perfetto, ossia un grafo per cui $\xhi(G) = \omega(G)$ per il grafo e per ogni suo sottografo indotto.
-Un grafo perfetto ha molte conseguenze interessanti, per Berge, che ne ha congetturate alcune.
-
-Possiamo limitare superiormente il numero cromatico.
-\begin{prop}
-	\label{prop_num_cromatico_minore_grado}
-	Abbiamo gi\`a visto che $\xhi(G) \le d(G) + 1$, dove $d(G)$ indica il massimo numero di archi incidenti a un vertice in un grafo.
-	Abbiamo definito $d_G(x) = \abs{\{ \{x,a\} : a \in V(G), \{x,a\} \in E(G) \}}$, e definiamo quindi $d(G) = \max\limits_{x \in V(G)} d_G(x)$
-\end{prop}
-Ma \`e una limitazione debole, questa.
-Per un ciclo dispari, $d(G)$ \`e 2, e quindi $\xhi(G) \le 3$, ma lo stesso vale per un ciclo pari.
-Con un grafo a stella, il massimo grado \`e $\abs{V(G)} - 1$, ma basterebbero due colori.
-
-\begin{proof}[della proposizione \ref{prop_num_cromatico_minore_grado}]
-	Faremo una colorazione on-line del grafo.
-	Sia $x_1, x_2, \dots, x_{\abs{V(G)}}$ un ordinamento dei vertici di $G$.
-	\emph{Colorazione on-line} significa che non appena ci viene ``presentato'' un vertice, dobbiamo assegnargli un colore.
-	Non \`e necessariamente il modo ottimale di colorare il grafo.
-
-	Vediamo che in un qualsiasi ordine di presentazione i vertici possono essere colorati con al pi\`u $d(G) + 1$ colori.
-	Usiamo i naturali come insieme dei colori, e stabiliamo che $f(x_1) = 1$.
-	Dopo aver colorato i primi $t-1$ vertici, vogliamo colorare il vertice $x_t$.
-	Dobbiamo stare attenti che $f(x_t) \neq f(x_i)$ con $i < t$, se $x_t$ e $x_i$ sono adiacenti.
-	\`E sufficiente dare a $x_t$ un colore che sia diverso dal colore degli adiacenti.
-	Il caso peggiore \`e quello in cui ho gi\`a colorato tutti gli adiacenti, e questi hanno tutti colori differenti.
-	Gli adiacenti sono al massimo $d_G(x_t) \le d(G)$.
-	Nel caso peggiore abbiamo usato $d(G)$ colori per gli adiacenti.
-\end{proof}
-
-Diamo anche un'altra dimostrazione.
-\begin{proof}[della proposizione \ref{prop_num_cromatico_minore_grado}]
-	Sia $S \subseteq G$ un sottoinsieme che forma uno \emph{stabile} nel grafo.
-	Uno stabile \`e un sottografo indotto senza archi fra i suoi vertici.
-	Chiaramente questi vertici possono avere tutti lo stesso colore, non avendo archi fra di loro.
-	Ci conviene prendere uno stabile massimale, ovviamente.
-
-	Questo algoritmo (greedy) si pu\`o ripetere togliendo di volta in volta i vertici di $S$ dal grafo.
-	Per renderlo effettivamente greedy bisognerebbe dare un qualche ordinamento alla scelta che si fa, scegliendo ad esempio ogni volta lo stabile pi\`u grande.
-
-	In ogni caso, questo algoritmo ci d\`a una colorazione con un numero di colori limitato.
-
-	Sia $S_1$ il primo stabile, coloriamo i suoi vertici col colore 1.
-	Sia poi $G_2$ il grafo con vertici $V(G_2) = V(G_1) \setminus V(S_1)$ indotto da $G$.
-	Vale che $d(G_2) \le d(G)$.
-
-	Infatti ogni vertice in $S_1$ ha almeno un arco verso un vertice in $G_2$, poich\'e $S_1$ \`e massimale.
-	Quindi ogni vertice che non appartiene a $S_1$ perde almeno un arco, e quindi $\forall x \in V(G_2)$ vale che $d_{G_2}(x) < d_G (x)$.
-
-	Dimostriamo ora la proposizione per induzione sul massimo grado del grafo.
-	Il caso base \`e per $d(G) = 0$, ossia il grafo \`e composto da vertici non connessi, e per cui vale $\xhi(G) = 1$.
-
-	Consideriamo il passo generale, in cui $d(G) = n$.
-	Per ipotesi, considerando $S_1$ stabile massimale in $G$, sappiamo che $\xhi(G \setminus S_1) \le d(G - S_1) + 1 \le d(G)$.
-	Segue quindi, dal fatto che $\xhi(G \setminus S_1) \le d(G)$, che $\xhi(G) \le \xhi(G \setminus S_1) + 1 \le d(G) + 1$.
-\end{proof}
-
-% TODO disegnare grafo triangolo con un triangolo su ogni lato
-
-Con il grafo in figura \ref{}, il numero cromatico \`e 3.
-Ma usando l'algoritmo di prima, prendendo uno stabile che ha massima cardinalit\`a, usiamo 4 colori.
-Siamo poi costretti a prendere altri tre stabili con un solo vertice ciascuno.
-
-Passiamo ora a parlare della disuguaglianza $\omega(G) \le \xhi(G)$.
-I due parametri possono essere diversi, anche di 1.
-$\omega(G)$ \`e la massima cardinalit\`a di una clique di $G$.
-
-\`E evidente che una clique di $n$ vertici ha numero cromatico $n$.
-
-\subsection{Teoria Ramsey}
-
-Prendiamo un $k \in \naturals$.
-$K_k$, la clique con $k$ vertici, \`e un sottografo completo.
-$S_k$ \`e il sottografo stabile di $k$ vertici.
-Ramsey ha dimostrato qualcosa che c'entra con la ``regolarit\`a inevitabile''.
-Fissato $k$, considerando grafi abbastanza grandi rispetto a $k$, questi grafi contengono sempre un sottografo completo di $k$ vertici o uno stabile di $k$ vertici.
-Non abbiamo specificato quanto deve essere grande il grafo rispetto a $k$.
-Strutture grandi, quindi, hanno aree omogenee grandi.
-
-Parlando dei naturali, c'\`e un teorema, di tal van der Waerden, che dice che se si partiziona l'insieme degli interi in un numero finito di classi, ciascuna di queste conterr\`a una successione aritmetica di $k$ numeri, o una cosa simile.
-Erd\"os ha congetturato che, sia $A \subseteq \naturals$ un insieme, se $\lim_{n \to \infty} \frac{\abs{A \cap [n]}}{n} > 0$, allora $A$ contiene una progressione aritmetica di $k$ numeri $\forall k \in \naturals$.
-
-Tornando indietro, non sappiamo la soglia oltre cui vale quanto detto da Ramsey, non sappiamo neanche come cresce questa soglia.
-Ci serve perch\'e un grafo con un piccolo numero di clique e un piccolo numero di stabili, ha un numero cromatico enorme.
-
-La soglia di Ramsey per 3 \`e pari a 6.
-Indichiamo la soglia di Ramsey con R(3,3).
-Si vede facilmente che R(3,3) > 5, trovando un grafo con 5 vertici che non ha triangoli e che non ha stabili con 3 vertici: basta prendere il grafo pentagono.
-
-Invece, R(3,3) \le 6.
-In un grafo di grado 5, ogni vertice pu\`o essere adiacente al pi\`u a 5 altri vertici.
-Supponiamo ci sia un vertice di grado 3: se non c'\`e, consideriamo il grafo complementare.
-Questo vertice ha 3 adiacenti: o questi 3 formano uno stabile, o non formano uno stabile, e quindi almeno due di questi sono adiacenti, e abbiamo quindi un triangolo con il vertice di grado 3.
-
-Ma R(k,k) cresce molto in fretta.
-Erd\"os ha dimostrato che $R(k,k) \ge 2^{\frac{k}{2}}$.
-
-Il risultato fondatore della teoria Ramsey \`e che $\forall k$ $\exists R(k,k) \in \naturals$ tale che ogni grafo con almeno $R(k,k)$ vertici o ha una clique $K_k$ di $k$ vertici o lo ha il suo grafo complementare.
-Quindi se prendiamo un grafo completo con $R(k,k)$ vertici, comunque coloriamo gli archi con due colori ci sar\`a un sottografo completo di $k$ vertici con archi dello stesso colore.
-
-Sappiamo che $R(k,k)$ non \`e cos\`i grande: vale che $R(k,k) \le 2^{2 \, k} = 4^k$.
-Il teorema di Erd\"os ci dice che $2^{\frac{k}{2}} \le R(k,k)$.
-
-\begin{theorem}[di Erd\"os]
-	$\forall k \ge 4$ $\exists G_k$ tale che $\abs{V(G_k)} \ge 2^{\frac{k}{2}}$ e che $\omega(G_k) < k$ e $\alpha(G_k) < k$, ossia il suo pi\`u grande completo ha meno di $k$ vertici e il suo pi\`u grande stabile ha meno di $k$ vertici.
-\end{theorem}
-Quello che ci fa vedere questo teorema \`e che esiste un grafo con un numero cromatico molto alto, ma con delle clique non grandi.
-Il numero cromatico sar\`a esponenziale in $k$.
-
-La dimostrazione sar\`a \emph{probabilistica}.
-Facciamo vedere che se prendiamo un grafo con quella cardinalit\`a, sar\`a del tipo che cerchiamo.
-Ma non lo esibiremo, questo grafo.
-La teoria dei grafi aleatori \`e dovuta a Erd\"os e a R\'enyi.
-
-\begin{proof}[del teorema di Erd\"os]
-	Un grafo aleatorio \`e un grafo scelto a caso.
-	Fissiamo $n \in \naturals$, e consideriamo tutti i grafi con $n$ vertici, ossia che hanno come insieme di vertici $[n]$.
-	Su $n$ vertici possiamo creare $2^{\binom{n}{2}}$ grafi differenti.
-
-	Possiamo pensare di tirate una moneta per ogni coppia di vertici, e mettere un arco fra questi due vertici solo se esce testa.
-	La probabilit\`a di scegliere uno specifico grafo \`e ${\left( \frac{1}{2} \right)}^{\binom{n}{2}}$.
-
-	Se la ``moneta'' con cui scegliamo di inserire un arco non \`e onesta, ma d\`a testa con probabilit\`a $p$, i grafi saranno differenti.
-	Al variare di $p$ si vede che esistono valori soglia, oltre i quali una certa propriet\`a \`e verificata con probabilit\`a 1, e prima dei quali una certa probabilit\`a \`e verificata con probabilit\`a 0.
-
-	Sia $\graphs_n$ l'insieme di tutti questi grafi.
-	La sua cardinalit\`a $\abs{\graphs_n}$ \`e, abbiamo detto, $2^{\binom{n}{2}}$.
-	Denotiamo con $\Alpha_n(k)$ i grafi con numero di stabilit\`a maggiore o uguale a $k$, ossia:
+	Questa colonna pu\`o essere in inversione con entrambe, con nessuna, o con una ma non con l'altra.
+	Abbiamo quindi 4 casi distinti.
+
+	Sia $i$ il numero delle coppie in inversione in $\rho$ tali da non essere una coppia dove almeno una coppia \`e ``di bordo'' e l'altra \`e intermedia o di bordo.
+	Sia $R(a,b)$ il numero delle colonne intermedie in inversione con le due colonne di bordo.
+	Sia $N(a,b)$ il numero delle colonne intermedie non in inversione con nessuna colonna di bordo.
+	Sia $R(a)$ il numero delle colonne intermedie in inversione con solo la colonna di $a$.
+	Sia $R(b)$ il numero delle colonne intermedie in inversione con solo la colonna di $b$.
+
+	Il totale delle colonne in inversione \`e dato da:
 	\[
-		\Alpha_n(k) = \{ G : G \in \graphs_n \land \alpha(G) \ge k \}
+		i + 2 \, R(a,b) + R(a) + R(b) + \chi (a,b)
 	\]
-	Definiamo poi l'insieme $\Omega_n (k)$ come l'insieme dei grafi con un numero di clique maggiore di $k$.
+	Dove $\chi (a,b)$ \`e 1 se le colonne di $a$ e $b$ sono in inversione in $\rho$, 0 altrimenti.
 
-	Ai fini della dimostrazione vogliamo far vedere che $\Alpha_n (k) \cup \Omega_n (k) \subsetneq \graphs_n$.
+	Come cambia la situazione?
+	Le $i$ colonne erano in inversione e cos\`i rimangono. Quelle in inversione con le due colonne di bordo non ci saranno pi\`u.
+	Quelle in inversione con la colonna di $a$ saranno in inversione con la colonna di $b$, e viceversa con la colonna di $b$.
+	Quelle non in inversione con le due colonne di bordo ora saranno in inversione con entrambe.
 
-	Ci aspettiamo che questa stretta inclusione non valga per $n$ molto grandi.
-	Vale sicuramente se $n < k$. % TODO check here
-
-	Questi due insiemi non sono disgiunti fra loro.
-	Un grafo pu\`o avere una clique grande e un sottografo stabile grande.
-
-	% TODO definire graphs come \mathcal{G}
-	Dovremmo far vedere che $\abs{\Alpha_n (k) \cup \Omega_n (k)} < \abs{\graph_n}$.
-	La prima cosa che vogliamo dire \`e che le due famiglie di grafi hanno la stessa cardinalit\`a.
-	Per farlo vedere, introduciamo la biezione $G \leftrightarrow \bar{G}$ su $\graphs_n$, che manda $\Alpha_n (k)$ in $\Omega_n (k)$, mandando ogni grafo nel suo complementare.
-
-	Sappiamo che $\abs{\Alpha_n (k) \cup \Omega_n (k)} \le \abs{\Alpha_n (k)} + \abs{\Omega_n (k)} = 2 \, \abs{\Omega_n (k)}$.
-
-	Un grafo \`e dentro $\Omega_n (k)$ se ha una clique su $k$ vertici.
-	Introduciamo la notazione $\Omega_n (K) = \{ G : G \in \graphs_n \land G \text{ induce un completo su } K \subseteq [n] \}$
-
-	Quindi scriviamo:
+	Otteniamo quindi:
 	\[
-		\Omega_n (k) = \bigcup_{K \in \binom{[n]}{k}} \Omega_n (K)
+		i + R(a) + R(b) + 2 \, N(a,b) + \chi'(a,b)
 	\]
-	Dove con $\binom{[n]}{k} = \{ A : A \subseteq [n] \land \abs{A} = k \}$ indichiamo i sottoinsiemi di $[n]$ con cardinalit\`a $k$.
-	Questa notazione ci aiuter\`a con i calcoli.
-
-	Dato $K$, quanto vale $\abs{\Omega_n (K)}$?
-	Abbiamo gi\`a scelto gli archi fra i vertici di $K$, quindi il numero di scelte che dobbiamo fare \`e $\binom{n}{2} - \binom{k}{2}$.
-	Quindi $\abs{\Omega_n (K)} = 2^{\binom{n}{2} - \binom{k}{2}}$.
-
-	Possiamo quindi dire questo, sulla cardinalit\`a di $\Omega_n (k)$:
+	Ponendo $\chi'(a,b) = 1$ se $\chi (a,b) = 0$ o $\chi'(a,b) = 0$ se $\chi(a,b) = 1$.
+	La differenza fra prima e dopo \`e:
 	\[
-		\abs{\Omega_n (k)} = \abs{\bigcup_{K \in \binom{[n]}{k}} \Omega_n (K)} \le
-		\binom{n}{k} 2^{\binom{n}{2} - \binom{k}{2}}
+		2 \, R(a,b) + \chi (a,b) - 2 \, N(a,b) + \chi'(a,b)
 	\]
+	Che \`e un numero dispari.
+	Quindi se il numero di inversioni era pari in $\rho$, ora \`e dispari, e viceversa se era dispari ora \`e pari.
 
-	Quindi fino ad ora possiamo dire quanto segue:
+	Abbiamo visto che ogni oggetto matematico pu\`o avere diverse rappresentazioni.
+	Una permutazione pu\`o essere scritta come prodotto di trasposizioni, e queste possono essere completamente diverse.
+	C'\`e qualcosa che non cambia scrivendo una permutazione come prodotto di trasposizioni?
+	S\`i: la parit\`a del numero di trasposizioni.
+
+	Abbiamo detto che data una permutazione $\rho$, alcune coppie di elementi sono in ``inversione''.
+	La parit\`a del numero di coppie in inversione \`e la parit\`a della permutazione, e questa \`e una definizione.
+
+	Gli automorfismi descrivono quello che non cambia in un oggetto matematico. (???)
+	La parit\`a \`e un invariante relativamente semplice: ha solo due valori, anche se la definizione \`e un po' contorta.
+	Avendo solo due valori, divide le permutazioni in due classi.
+
+	Abbiamo parlato di una funzione ``Parit\`a'':
 	\[
-		\abs{\Alpha_n (k) \cup \Omega_n (k)} \le 2 \, \binom{n}{k} 2^{\binom{n}{2} - \binom{k}{2}}
+		\par{\rho} =
+		\begin{cases}
+			-1 \\
+			1
+		\end{cases}
 	\]
-	Ora: quanto pu\`o essere grande $n$ in funzione di $k$ affinch\'e valga questa disuguaglianza?
+	Vale che $\par{\rho \sigma} = \par{\rho} \par{\sigma}$.
+	\`E una conseguenza di quello che abbiamo dimostrato, ossia che data una permutazione $\rho : [n] \to [n]$ qualsiasi e una trasposizione $(a,b)$ con $a,b \in [n]$, vale $\par{\rho (a,b)} \neq \par{\rho}$.
+
+	Per dimostrarlo abbiamo contato il numero di inversioni in $\rho$ prima e dopo averlo moltiplicato per $(a,b)$.
+	Rappresentando la permutazione con una tabella, chiamiamo ``colonne di bordo'' le colonne di $a$ e di $b$, e le colonne fra queste due le chiamiamo ``colonne intermedie''.
+
+	Sia $i$ il numero delle coppie di colonne in inversione in $\rho$ in cui al pi\`u una \`e una colonna di bordo e l'altra \`e intermedia.
+	Queste colonne saranno presenti anche in $\rho (a,b)$.
+	Poi ci sono alcune colonne che cambiano situazione: sono le coppie di colonne in cui una \`e una colonna di bordo e una \`e una colonna intermedia.
+	Chiamiamo poi $R(a,b)$ il numero delle colonne intermedie in inversione con tutte e due le colonne di bordo, e $N(a,b)$ il numero di colonne che non sono in inversione con nessuna delle colonne di bordo.
+	Poi, chiamiamo $V(a,b) = R(a) + R(b)$ il numero delle colonne in inversione con esattamente una fra le colonne di bordo.
+	Infine, $\chi(a,b)$ \`e definito come $1$ se le due colonne di bordo sono in inversione in $\rho$, $0$ altrimenti.
+
+	Non conosciamo nessuno di questi numeri, ci interessa solo sapere come cambiano.
+	Il numero di colonne in inversione in $\rho$ \`e:
 	\[
-		2 \, \binom{n}{k} 2^{\binom{n}{2} - \binom{k}{2}} < 2^{\binom{n}{2}}
+		i + 2 \, R(a,b) + V(a,b) + \chi(a,b)
 	\]
-	Se la disuguaglianza vale, allora in $\graphs_n$ esiste il grafo che vogliamo.
-	Possiamo limitare $\binom{n}{k}$ con $\frac{n^k}{2^k}$, tanto $k \ge 4$.
-	Facciamo il conto:
-	\begin{align*}
-		2 \, \binom{n}{k} 2^{\binom{n}{2} - \binom{k}{2}} < 2^{\binom{n}{2}} \implies \\
-		\binom{n}{k} \cdot 2^{- \binom{k}{2} + 1} < 1 \implies \\
-		\frac{n^k}{2^k} \cdot 2^{- \binom{k}{2} + 1} < 1
-	\end{align*}
-	Prendiamo $k$ pari, per semplicit\`a, e vogliamo far vedere che questa disuguaglianza vale per $n = 2^{\frac{k}{2}}$.
-	Segue quindi:
+	$R(a,b)$ sono le coppie in inversione sia con $a$ che con $b$, quindi dobbiamo ``contarle'' due volte.
+	Le colonne che non sono in inversione con $a$ o con $b$ non dobbiamo contarle.
+
+	Il numero delle coppie in inversione in $\rho (a,b)$ \`e, invece:
 	\[
-		2^{k \cdot \frac{k}{2} - k - \binom{k}{2} + 1} < 1
+		i + 2 \, N(a,b) + V(a,b) + \chi'(a,b)
 	\]
-	Che vale se l'esponente \`e minore di $0$.
-	Infatti:
+	Le uniche colonne che possono cambiare situazione, e che anzi necessariamente la cambiano, saranno solo le coppie di colonne in cui una colonna \`e di bordo e l'altra \`e o una colonna di bordo o \`e una colonna intermedia.
+	Le colonne in inversione e con $a$ e con $b$ ora non saranno in inversione con nessuna delle due.
+	Al loro posto avremo in inversione le colonne che in $\rho$ non erano in inversione n\'e con $a$ n\'e con $b$.
+	Quelle che erano in inversione con esattamente con una colonna di bordo, saranno ora in inversione ancora con esattamente una colonna di bordo, ma con l'altra.
+	Infine, possiamo dire che $\chi'(a,b) + \chi(a,b) = 1$.
+	Se $a,b$ non erano in inversione, ora lo saranno, e viceversa se erano in inversione ora non lo saranno.
+
+	Ora affermiamo che la parit\`a del primo numero \`e diversa dalla parit\`a del secondo numero, ossia che la differenza fra i due numeri \`e un numero dispari.
 	\[
-		\frac{k^2}{2} - k - \frac{k \cdot (k - 1)}{2} + 1 < 0 \implies
-		- k + \frac{k}{2} + 1 < 0 \implies
-		\frac{k}{2} + 1 < k
+		i + 2 \, N(a,b) + V(a,b) + 1 - \chi(a,b) - \left[ i + 2 \, R(a,b) + V(a,b) + \chi (a,b) \right]
 	\]
-	Che \`e sempre vero per $k \ge 4$.
-\end{proof}
+	Questo numero \`e dispari.
+	Infatti vale:
+	\[
+		2 \, N(a,b) - 2 \, R(a,b) + 1 - 2 \, \chi(a,b)
+	\]
+	che \`e evidentemente dispari.
 
-Noi vogliamo sfruttare il teorema di Erd\"os.
-\begin{oss}
-	$\xhi (G) \ge \frac{V(G)}{\alpha(G)}$, ossia il numero cromatico \`e maggiore o uguale al numero di vertici diviso per la cardinalit\`a massima di uno stabile in $G$.
-\end{oss}
+	\subsection{Numero cromatico}
 
-V(G) = \bigcup_{i = 1}^{\xhi(G)} \Alpha_i con \Alpha_i stabile.
-La sua cardinalit\`a \`e:
+	Parliamo di numero cromatico in relazione alla colorazione dei vertici di un grafo.
+	Si pu\`o parlare di numero cromatico anche in relazione al colore degli archi di un grafo.
+	Il problema \`e nato prima della teoria dei grafi, nel contesto di colorazione delle carte geografiche.
 
-\abs{V(G)} = \sum_{i = 1}^{\xhi(G)} \abs{\Alpha_i} \le \xhi(G) \cdot \alpha(G)
+	Appel-Haken hanno dimostrato nel '79, alla University of Illinois at Urbana Champwtf, che bastano 4 colori per colorare ogni carta geografica.
 
-Erd\"os ci dice che esiste un grafo $G_k$ con V(G_k) \ge 2^{\frac{k}{2}} e con \alpha(G_k) < k.
-Da questo sappiamo che il numero cromatico \`e minorato da qualcosa di enorme:
-\[
-	\xhi(G_k) \ge \frac{2^{\frac{k}{2}}}{k}
-\]
-E allo stesso tempo il numero di clique \`e minore di $k$.
+	I due hanno ridotto il numero di grafi da analizzare da infiniti che erano, a meno di duemila.
+	Li hanno fatti analizzare tutti a un computer e hanno ``dimostrato'' che l'ipotesi \`e vera.
+	Ma negli anni '90 \`e stato dimostrato che questa dimostrazione era incompleta.
+	Hanno ridotto nuovamente il numero di grafi da analizzare a circa 600, e controllato i casi col computer.
+
+	\`E un problema centrale nell'ottimizzazione combinatoria, nella quale dobbiamo colorare un grafo col minor numero possibile di colori.
+
+	Consideriamo una carta geografia.
+	A ogni regione sulla carta associamo un vertice di un grafo.
+	Vogliamo associare a ogni regione un colore, e lo facciamo con una funzione $f: V(G) \to C$ che a ogni vertice del grafo assegna un elemento di un insieme astratto $C$, che chiamiamo colore.
+	Nel problema della carta geografica dobbiamo avere che regioni adiacenti hanno colori differenti.
+	Nei grafi, $f$ \`e una colorazione se vertici adiacenti hanno colori diversi.
+
+	\begin{defn}[Colorazione di un grafo]
+		Una colorazione di un grafo \`e una funzione $f : V(G) \to C$ con $C$ insieme astratto se per ogni coppia di vertici $a,b$ abbiamo che $\{a,b\} \in E(G) \implies f(a) \neq f(b)$.
+	\end{defn}
+	Ogni grafo ha una colorazione: qualsiasi funzione iniettiva (con valori tutti diversi) soddisfa il vincolo.
+
+	Il problema \`e capire quanto pu\`o essere piccolo $C$, ossia il minimo $\abs{C}$ per cui esiste una colorazione $f : V(G) \to C$.
+	La cardinalit\`a $\abs{C}$ \`e il numero cromatico del grafo.
+
+	L'ottimizzazione combinatoria \`e anche chiamata ricerca operativa, o \emph{operations research}.
+	Operations = operazioni militari, la ricerca operativa \`e nata per ottimizzare le risorse.
+
+	\begin{defn}[Numero cromatico]
+		Il numero cromatico di un grafo semplice \`e la pi\`u piccola cardinalit\`a di $C$ per cui esiste una funzione $f : V(G) \to C$ di colorazione che ha vertici adiacenti con colori diversi.
+	\end{defn}
+
+	Chiamiamo $\xhi(G) = \min \abs{f(V(G))}$ questo numero cromatico.
+	Indichiamo, data $f : V \to C$ e $A \subseteq V$, con $f(A) = \{ f(v) : v \in A \}$.
+
+	I grafi delle carte geografiche sono particolari.
+
+	Indichiamo con $K_{3,3}$ un grafo \emph{bipartito}.
+	Stiamo dicendo che abbiamo una partizione dei vertici in due sottoinsiemi, e i vertici in un sottoinsieme sono adiacenti a tutti i vertici nell'altro insieme.
+	Su $K_{3,3}$ il problema tipico \`e disegnare il grafo in modo che gli archi non si incrocino.
+	Non \`e possibile.
+
+	I grafi che possono essere disegnati sul piano in modo tale che archi che non hanno vertici in comune non si incrocino, sono chiamati \emph{grafi planari}.
+	Un grafo planare ha numero cromatico al pi\`u 4.
+
+	Un grafo senza archi ha numero cromatico 1, ossia $E(G) = \emptyset \implies \xhi(G) = 1$.
+	Un grafo con almeno un arco ha numero cromatico maggiore di 1.
+
+	\begin{defn}
+		Un grafo \`e  bipartito se il suo numero cromatico \`e al pi\`u due.
+	\end{defn}
+
+	V(G) = A \cup B
+	A \cap B = \emptyset
+	\forall \{a, b\} \in E(G) \abs{\{a,b\} \cap A } = \abs{\{a,b\} \cap B} = 1
+
+	Si possono usare grafi bipartiti per rappresentare grafi arbitrari.
+	Si duplica l'insieme dei vertici V, si toglie ogni arco, e si inserisce un arco fra il nodo $a$ e il nodo $b$, uno preso dal primo insieme e uno preso dall'insieme duplicato, se $a$ e $b$ sono adiacenti nel grafo originale.
+
+	Un cammino (semplice) ha numero cromatico 2.
+	Un ciclo con numero pari di vertici ha anche questo numero cromatico 2.
+	Bisogna essere in grado di alternare strettamente i colori.
+
+	Il pi\`u piccolo ciclo dispari \`e il grafo completo con 3 vertici, e ha numero cromatico 3.
+
+	Ogni sottografo ha numero cromatico non superiore al numero cromatico del grafo.
+
+	\begin{prop}
+		\label{prop_grafo_bipartito_cicli_dispari}
+		$G$ \`e bipartito $\iff$ non contiene cicli dispari.
+	\end{prop}
+
+	\begin{proof}[della proposizione \ref{prop_grafo_bipartito_cicli_dispari}]
+		Verso destra: \`e sufficiente vedere che un ciclo dispari non \`e bicolorabile, poich\'e ha numero cromatico 3.
+		Quindi ogni grafo contenente un ciclo dispari ha numero cromatico almeno 3.
+		Se il ciclo dispari fosse bicolorabile, l'unica bicolorazione assegnerebbe a un nodo un colore, e a ogni nodo a distanza pari lo stesso colore.
+		Ma il ciclo ha lunghezza dispari, quindi il suo adiacente ha distanza pari.
+
+		Verso sinistra: il problema si riduce, banalmente, al caso di un grafo connesso.
+		Se G non \`e connesso, ha pi\`u componenti connesse, che non hanno archi tra loro.
+		La colorazione deve dare valori diversi a vertici adiacenti, quindi colorando una componente connessa non vincoliamo la coloraione delle altre componenti.
+		Siamo $L_i$ le sue componenti connesse, con $i = 1 \dots t$.
+		$\xhi(G) = \max_{i} \xhi(L_i)$, poich\'e la colorazione pu\`o essere fatta in maniera indipendente.
+		Ora \`e sufficiente mostrare che se $G$ non ha cicli dispari ed \`e connesso, allora $\xhi(G) \le 2$.
+		Un grafo connesso ha un albero di copertura, e un albero ha una sola colorazione.
+		Possiamo pensare al fatto che l'albero \`e composto da una ramificazione di cammini, ed \`e senza cicli.
+		Questa colorazione imposta dall'albero di copertura, \`e una colorazione di tutto il grafo.
+
+		Quindi, $G$ \`e connesso.
+		Prendiamo un suo arbitrario albero di copertura $T$, e sia $x_0 \in V(T)$ un vertice in $T$ (e in $G$, essendo un albero di copertura).
+		Prendendo un altro vertice $x \neq x_0$, abbiamo una distanza $d_T(x,x_0)$ fra i due vertici data dal numero degli archi nell'unico cammino fra $x$ e $x_0$.
+		La colorazione $f : V(T) \to \{ 0, 1 \}$ la definiamo come $f(x) = d_T(x, x_0) \pmod{2}$.
+		In quest'unica colorazione possibile, prendiamo due vertici $a$ e $b$ che hanno la stessa colorazione, ossia $f(a) = f(b)$.
+		Se questi due vertici non sono adiacenti in $G$, stiamo a cavallo, ma se lo sono la colorazione dell'albero non va bene per il grafo.
+		Il colore di $a$ \`e $1$ se il cammino da $x_0$ a $a$ \`e di lunghezza dispari, $0$ se \`e pari.
+		Se $a$ e $b$ sono dello stesso colore, significa che la parit\`a dei cammini da $x_0$ a uno dei nodi \`e la stessa.
+		Sia $c$ (con $c$ possibilmente, ma non necessariamente, uguale a $x_0$) il punto in cui questi due cammini (in $T$) si congiungono.
+		Poich\'e l'inizio del cammino da $x_0$ ai nodi coincide fino a $c$, e la lunghezza dei cammini \`e congrua modulo 2, la lunghezza del cammino da $a$ a $c$ a $b$ \`e pari.
+		I cammini da $a$ a $c$ e da $c$ a $b$ sono infatti entrambi di lunghezza pari o entrambi di lunghezza dispari, essendo congrui modulo 2.
+		Ma quindi $\{a,b\}$ \`e un arco che chiude un ciclo dispari.
+		Contraddizione.
+
+	\end{proof}
+
+	Abbiamo detto che una colorazione \`e una funzione con certe caratteristiche, e che il numero cromatico \`e il numero minimo di colori per una colorazione.
+	Se il numero cromatico \`e 2, il grafo non ha cicli di lunghezza dispari.
+
+	Il numero cromatico $\xhi(G)$ \`e almeno pari al numero di clique, $\omega(G)$, ossia il numero massimo di vertici in un sottografo completo.
+	Non \`e un'uguaglianza: $\xhi(G) \ge \omega(G)$.
+	Un grafo per cui non vale \`e il grafo rappresentato da un pentagono.
+	Il grafo pentagono \`e curioso, perch\'e, ad esempio, il grafo complementare \`e isomorfo.
+
+	% TODO disegnare grafo complementare e grafo pentagono
+
+	Claude Berge ha introdotto il concetto di grafo perfetto, ossia un grafo per cui $\xhi(G) = \omega(G)$ per il grafo e per ogni suo sottografo indotto.
+	Un grafo perfetto ha molte conseguenze interessanti, per Berge, che ne ha congetturate alcune.
+
+	Possiamo limitare superiormente il numero cromatico.
+	\begin{prop}
+		\label{prop_num_cromatico_minore_grado}
+		Abbiamo gi\`a visto che $\xhi(G) \le d(G) + 1$, dove $d(G)$ indica il massimo numero di archi incidenti a un vertice in un grafo.
+		Abbiamo definito $d_G(x) = \abs{\{ \{x,a\} : a \in V(G), \{x,a\} \in E(G) \}}$, e definiamo quindi $d(G) = \max\limits_{x \in V(G)} d_G(x)$
+	\end{prop}
+	Ma \`e una limitazione debole, questa.
+	Per un ciclo dispari, $d(G)$ \`e 2, e quindi $\xhi(G) \le 3$, ma lo stesso vale per un ciclo pari.
+	Con un grafo a stella, il massimo grado \`e $\abs{V(G)} - 1$, ma basterebbero due colori.
+
+	\begin{proof}[della proposizione \ref{prop_num_cromatico_minore_grado}]
+		Faremo una colorazione on-line del grafo.
+		Sia $x_1, x_2, \dots, x_{\abs{V(G)}}$ un ordinamento dei vertici di $G$.
+		\emph{Colorazione on-line} significa che non appena ci viene ``presentato'' un vertice, dobbiamo assegnargli un colore.
+		Non \`e necessariamente il modo ottimale di colorare il grafo.
+
+		Vediamo che in un qualsiasi ordine di presentazione i vertici possono essere colorati con al pi\`u $d(G) + 1$ colori.
+		Usiamo i naturali come insieme dei colori, e stabiliamo che $f(x_1) = 1$.
+		Dopo aver colorato i primi $t-1$ vertici, vogliamo colorare il vertice $x_t$.
+		Dobbiamo stare attenti che $f(x_t) \neq f(x_i)$ con $i < t$, se $x_t$ e $x_i$ sono adiacenti.
+		\`E sufficiente dare a $x_t$ un colore che sia diverso dal colore degli adiacenti.
+		Il caso peggiore \`e quello in cui ho gi\`a colorato tutti gli adiacenti, e questi hanno tutti colori differenti.
+		Gli adiacenti sono al massimo $d_G(x_t) \le d(G)$.
+		Nel caso peggiore abbiamo usato $d(G)$ colori per gli adiacenti.
+	\end{proof}
+
+	Diamo anche un'altra dimostrazione.
+	\begin{proof}[della proposizione \ref{prop_num_cromatico_minore_grado}]
+		Sia $S \subseteq G$ un sottoinsieme che forma uno \emph{stabile} nel grafo.
+		Uno stabile \`e un sottografo indotto senza archi fra i suoi vertici.
+		Chiaramente questi vertici possono avere tutti lo stesso colore, non avendo archi fra di loro.
+		Ci conviene prendere uno stabile massimale, ovviamente.
+
+		Questo algoritmo (greedy) si pu\`o ripetere togliendo di volta in volta i vertici di $S$ dal grafo.
+		Per renderlo effettivamente greedy bisognerebbe dare un qualche ordinamento alla scelta che si fa, scegliendo ad esempio ogni volta lo stabile pi\`u grande.
+
+		In ogni caso, questo algoritmo ci d\`a una colorazione con un numero di colori limitato.
+
+		Sia $S_1$ il primo stabile, coloriamo i suoi vertici col colore 1.
+		Sia poi $G_2$ il grafo con vertici $V(G_2) = V(G_1) \setminus V(S_1)$ indotto da $G$.
+		Vale che $d(G_2) \le d(G)$.
+
+		Infatti ogni vertice in $S_1$ ha almeno un arco verso un vertice in $G_2$, poich\'e $S_1$ \`e massimale.
+		Quindi ogni vertice che non appartiene a $S_1$ perde almeno un arco, e quindi $\forall x \in V(G_2)$ vale che $d_{G_2}(x) < d_G (x)$.
+
+		Dimostriamo ora la proposizione per induzione sul massimo grado del grafo.
+		Il caso base \`e per $d(G) = 0$, ossia il grafo \`e composto da vertici non connessi, e per cui vale $\xhi(G) = 1$.
+
+		Consideriamo il passo generale, in cui $d(G) = n$.
+		Per ipotesi, considerando $S_1$ stabile massimale in $G$, sappiamo che $\xhi(G \setminus S_1) \le d(G - S_1) + 1 \le d(G)$.
+		Segue quindi, dal fatto che $\xhi(G \setminus S_1) \le d(G)$, che $\xhi(G) \le \xhi(G \setminus S_1) + 1 \le d(G) + 1$.
+	\end{proof}
+
+	% TODO disegnare grafo triangolo con un triangolo su ogni lato
+
+	Con il grafo in figura \ref{}, il numero cromatico \`e 3.
+	Ma usando l'algoritmo di prima, prendendo uno stabile che ha massima cardinalit\`a, usiamo 4 colori.
+	Siamo poi costretti a prendere altri tre stabili con un solo vertice ciascuno.
+
+	Passiamo ora a parlare della disuguaglianza $\omega(G) \le \xhi(G)$.
+	I due parametri possono essere diversi, anche di 1.
+	$\omega(G)$ \`e la massima cardinalit\`a di una clique di $G$.
+
+	\`E evidente che una clique di $n$ vertici ha numero cromatico $n$.
+
+	\subsection{Teoria Ramsey}
+
+	Prendiamo un $k \in \naturals$.
+	$K_k$, la clique con $k$ vertici, \`e un sottografo completo.
+	$S_k$ \`e il sottografo stabile di $k$ vertici.
+	Ramsey ha dimostrato qualcosa che c'entra con la ``regolarit\`a inevitabile''.
+	Fissato $k$, considerando grafi abbastanza grandi rispetto a $k$, questi grafi contengono sempre un sottografo completo di $k$ vertici o uno stabile di $k$ vertici.
+	Non abbiamo specificato quanto deve essere grande il grafo rispetto a $k$.
+	Strutture grandi, quindi, hanno aree omogenee grandi.
+
+	Parlando dei naturali, c'\`e un teorema, di tal van der Waerden, che dice che se si partiziona l'insieme degli interi in un numero finito di classi, ciascuna di queste conterr\`a una successione aritmetica di $k$ numeri, o una cosa simile.
+	Erd\"os ha congetturato che, sia $A \subseteq \naturals$ un insieme, se $\lim_{n \to \infty} \frac{\abs{A \cap [n]}}{n} > 0$, allora $A$ contiene una progressione aritmetica di $k$ numeri $\forall k \in \naturals$.
+
+	Tornando indietro, non sappiamo la soglia oltre cui vale quanto detto da Ramsey, non sappiamo neanche come cresce questa soglia.
+	Ci serve perch\'e un grafo con un piccolo numero di clique e un piccolo numero di stabili, ha un numero cromatico enorme.
+
+	La soglia di Ramsey per 3 \`e pari a 6.
+	Indichiamo la soglia di Ramsey con R(3,3).
+	Si vede facilmente che R(3,3) > 5, trovando un grafo con 5 vertici che non ha triangoli e che non ha stabili con 3 vertici: basta prendere il grafo pentagono.
+
+	Invece, R(3,3) \le 6.
+	In un grafo di grado 5, ogni vertice pu\`o essere adiacente al pi\`u a 5 altri vertici.
+	Supponiamo ci sia un vertice di grado 3: se non c'\`e, consideriamo il grafo complementare.
+	Questo vertice ha 3 adiacenti: o questi 3 formano uno stabile, o non formano uno stabile, e quindi almeno due di questi sono adiacenti, e abbiamo quindi un triangolo con il vertice di grado 3.
+
+	Ma R(k,k) cresce molto in fretta.
+	Erd\"os ha dimostrato che $R(k,k) \ge 2^{\frac{k}{2}}$.
+
+	Il risultato fondatore della teoria Ramsey \`e che $\forall k$ $\exists R(k,k) \in \naturals$ tale che ogni grafo con almeno $R(k,k)$ vertici o ha una clique $K_k$ di $k$ vertici o lo ha il suo grafo complementare.
+	Quindi se prendiamo un grafo completo con $R(k,k)$ vertici, comunque coloriamo gli archi con due colori ci sar\`a un sottografo completo di $k$ vertici con archi dello stesso colore.
+
+	Sappiamo che $R(k,k)$ non \`e cos\`i grande: vale che $R(k,k) \le 2^{2 \, k} = 4^k$.
+	Il teorema di Erd\"os ci dice che $2^{\frac{k}{2}} \le R(k,k)$.
+
+	\begin{theorem}[di Erd\"os]
+		$\forall k \ge 4$ $\exists G_k$ tale che $\abs{V(G_k)} \ge 2^{\frac{k}{2}}$ e che $\omega(G_k) < k$ e $\alpha(G_k) < k$, ossia il suo pi\`u grande completo ha meno di $k$ vertici e il suo pi\`u grande stabile ha meno di $k$ vertici.
+	\end{theorem}
+	Quello che ci fa vedere questo teorema \`e che esiste un grafo con un numero cromatico molto alto, ma con delle clique non grandi.
+	Il numero cromatico sar\`a esponenziale in $k$.
+
+	La dimostrazione sar\`a \emph{probabilistica}.
+	Facciamo vedere che se prendiamo un grafo con quella cardinalit\`a, sar\`a del tipo che cerchiamo.
+	Ma non lo esibiremo, questo grafo.
+	La teoria dei grafi aleatori \`e dovuta a Erd\"os e a R\'enyi.
+
+	\begin{proof}[del teorema di Erd\"os]
+		Un grafo aleatorio \`e un grafo scelto a caso.
+		Fissiamo $n \in \naturals$, e consideriamo tutti i grafi con $n$ vertici, ossia che hanno come insieme di vertici $[n]$.
+		Su $n$ vertici possiamo creare $2^{\binom{n}{2}}$ grafi differenti.
+
+		Possiamo pensare di tirate una moneta per ogni coppia di vertici, e mettere un arco fra questi due vertici solo se esce testa.
+		La probabilit\`a di scegliere uno specifico grafo \`e ${\left( \frac{1}{2} \right)}^{\binom{n}{2}}$.
+
+		Se la ``moneta'' con cui scegliamo di inserire un arco non \`e onesta, ma d\`a testa con probabilit\`a $p$, i grafi saranno differenti.
+		Al variare di $p$ si vede che esistono valori soglia, oltre i quali una certa propriet\`a \`e verificata con probabilit\`a 1, e prima dei quali una certa probabilit\`a \`e verificata con probabilit\`a 0.
+
+		Sia $\graphs_n$ l'insieme di tutti questi grafi.
+		La sua cardinalit\`a $\abs{\graphs_n}$ \`e, abbiamo detto, $2^{\binom{n}{2}}$.
+		Denotiamo con $\Alpha_n(k)$ i grafi con numero di stabilit\`a maggiore o uguale a $k$, ossia:
+		\[
+			\Alpha_n(k) = \{ G : G \in \graphs_n \land \alpha(G) \ge k \}
+		\]
+		Definiamo poi l'insieme $\Omega_n (k)$ come l'insieme dei grafi con un numero di clique maggiore di $k$.
+
+		Ai fini della dimostrazione vogliamo far vedere che $\Alpha_n (k) \cup \Omega_n (k) \subsetneq \graphs_n$.
+
+		Ci aspettiamo che questa stretta inclusione non valga per $n$ molto grandi.
+		Vale sicuramente se $n < k$. % TODO check here
+
+		Questi due insiemi non sono disgiunti fra loro.
+		Un grafo pu\`o avere una clique grande e un sottografo stabile grande.
+
+		% TODO definire graphs come \mathcal{G}
+		Dovremmo far vedere che $\abs{\Alpha_n (k) \cup \Omega_n (k)} < \abs{\graph_n}$.
+		La prima cosa che vogliamo dire \`e che le due famiglie di grafi hanno la stessa cardinalit\`a.
+		Per farlo vedere, introduciamo la biezione $G \leftrightarrow \bar{G}$ su $\graphs_n$, che manda $\Alpha_n (k)$ in $\Omega_n (k)$, mandando ogni grafo nel suo complementare.
+
+		Sappiamo che $\abs{\Alpha_n (k) \cup \Omega_n (k)} \le \abs{\Alpha_n (k)} + \abs{\Omega_n (k)} = 2 \, \abs{\Omega_n (k)}$.
+
+		Un grafo \`e dentro $\Omega_n (k)$ se ha una clique su $k$ vertici.
+		Introduciamo la notazione $\Omega_n (K) = \{ G : G \in \graphs_n \land G \text{ induce un completo su } K \subseteq [n] \}$
+
+		Quindi scriviamo:
+		\[
+			\Omega_n (k) = \bigcup_{K \in \binom{[n]}{k}} \Omega_n (K)
+		\]
+		Dove con $\binom{[n]}{k} = \{ A : A \subseteq [n] \land \abs{A} = k \}$ indichiamo i sottoinsiemi di $[n]$ con cardinalit\`a $k$.
+		Questa notazione ci aiuter\`a con i calcoli.
+
+		Dato $K$, quanto vale $\abs{\Omega_n (K)}$?
+		Abbiamo gi\`a scelto gli archi fra i vertici di $K$, quindi il numero di scelte che dobbiamo fare \`e $\binom{n}{2} - \binom{k}{2}$.
+		Quindi $\abs{\Omega_n (K)} = 2^{\binom{n}{2} - \binom{k}{2}}$.
+
+		Possiamo quindi dire questo, sulla cardinalit\`a di $\Omega_n (k)$:
+		\[
+			\abs{\Omega_n (k)} = \abs{\bigcup_{K \in \binom{[n]}{k}} \Omega_n (K)} \le
+			\binom{n}{k} 2^{\binom{n}{2} - \binom{k}{2}}
+		\]
+
+		Quindi fino ad ora possiamo dire quanto segue:
+		\[
+			\abs{\Alpha_n (k) \cup \Omega_n (k)} \le 2 \, \binom{n}{k} 2^{\binom{n}{2} - \binom{k}{2}}
+		\]
+		Ora: quanto pu\`o essere grande $n$ in funzione di $k$ affinch\'e valga questa disuguaglianza?
+		\[
+			2 \, \binom{n}{k} 2^{\binom{n}{2} - \binom{k}{2}} < 2^{\binom{n}{2}}
+		\]
+		Se la disuguaglianza vale, allora in $\graphs_n$ esiste il grafo che vogliamo.
+		Possiamo limitare $\binom{n}{k}$ con $\frac{n^k}{2^k}$, tanto $k \ge 4$.
+		Facciamo il conto:
+		\begin{align*}
+			2 \, \binom{n}{k} 2^{\binom{n}{2} - \binom{k}{2}} < 2^{\binom{n}{2}} \implies \\
+			\binom{n}{k} \cdot 2^{- \binom{k}{2} + 1} < 1 \implies \\
+			\frac{n^k}{2^k} \cdot 2^{- \binom{k}{2} + 1} < 1
+		\end{align*}
+		Prendiamo $k$ pari, per semplicit\`a, e vogliamo far vedere che questa disuguaglianza vale per $n = 2^{\frac{k}{2}}$.
+		Segue quindi:
+		\[
+			2^{k \cdot \frac{k}{2} - k - \binom{k}{2} + 1} < 1
+		\]
+		Che vale se l'esponente \`e minore di $0$.
+		Infatti:
+		\[
+			\frac{k^2}{2} - k - \frac{k \cdot (k - 1)}{2} + 1 < 0 \implies
+			- k + \frac{k}{2} + 1 < 0 \implies
+			\frac{k}{2} + 1 < k
+		\]
+		Che \`e sempre vero per $k \ge 4$.
+	\end{proof}
+
+	Noi vogliamo sfruttare il teorema di Erd\"os.
+	\begin{oss}
+		$\xhi (G) \ge \frac{V(G)}{\alpha(G)}$, ossia il numero cromatico \`e maggiore o uguale al numero di vertici diviso per la cardinalit\`a massima di uno stabile in $G$.
+	\end{oss}
+
+	V(G) = \bigcup_{i = 1}^{\xhi(G)} \Alpha_i con \Alpha_i stabile.
+	La sua cardinalit\`a \`e:
+
+	\abs{V(G)} = \sum_{i = 1}^{\xhi(G)} \abs{\Alpha_i} \le \xhi(G) \cdot \alpha(G)
+
+	Erd\"os ci dice che esiste un grafo $G_k$ con V(G_k) \ge 2^{\frac{k}{2}} e con \alpha(G_k) < k.
+	Da questo sappiamo che il numero cromatico \`e minorato da qualcosa di enorme:
+	\[
+		\xhi(G_k) \ge \frac{2^{\frac{k}{2}}}{k}
+	\]
+	E allo stesso tempo il numero di clique \`e minore di $k$.
+
+	\section{Ipegrafi}
+
+	Un ipergrafo \`e un insieme di vertici e una famiglia di sottoinsiemi dei vertici, che sono gli archi.
+	Sperner (shperner), 1928.
+
+	Una famiglia di Sperner \`e una famiglia di sottoinsiemi di $X$, con $\abs{X} = n$.
+	$\mathcal{F} \subseteq 2^X$, dove con $2^X = \{ A : A \subseteq X \}$.
+	\`E una notazione utile: la cardinalit\`a di $2^X$ \`e $2^n$.
+	Una famiglia \`e di Sperner se due suoi elementi non si contengono, ossia $\{a,b\} \in \binom{\mathca{F}}{2} \implies A \notsubseteq B$.
+
+	Gli archi di un grafo non si contengono: hanno la stessa cardinalit\`a, ma sono diversi, quindi non si contengono.
+	Quanto pu\`o essere grande una famiglia di Sperner su un insieme con $n$ elementi?
+	$M(n) = \max\limits_{\mathcal{F} \text{ di Sperner} \\ \mathcal{F} \subseteq 2^{[n]}} \abs{\mathcal{F}}$.
+	Il problema, a Sperner, lo fece venire in mente Schreier, un teorico dei gruppi.
+
+	\begin{theorem}[di Sperner (1928)]
+		M(n) = \binom{n}{\floor{\frac{n}{2}}}
+		La massima cardinalit\`a \`e il coefficiente binomiale ?? non ho capito cosa.
+
+		Se $n$ \`e pari, la soluzione ottimale \`e unica.
+		Se $n$ \`e dispari, ci sono due famiglie ottimali: sono una famiglia e il suo complementare.
+	\end{theorem}
+
+	Possiamo considerare un grafo i cui vertici sono sottoinsiemi di $X$, e mettiamo un arco fra due vertici se i due sottoinsiemi non si contengono.
+	Una famiglia di Sperner \`e un sottografo completo di questo grafo, e la massima cardinalit\`a di una famiglia di Sperner \`e la massima cardinalit\`a di una clique in questo grafo.
+
+	\begin{proof}[del teorema di Sperner]
+		Scegliamo un $k$, e consideriamo tutti i sottoinsiemi di cardinalit\`a $k$.
+		Questa \`e una famiglia di Sperner.
+		Quindi $M(n) \ge \binom{n}{k} \forall k$.
+		Possiamo affermare che $M(n) \ge \binom{n}{\floor{\frac{n}{2}}}$.
+		Non stiamo dicendo che questo \`e il coefficiente binomiale pi\`u grande (anche se lo \`e).
+
+		Non esistono solo famiglie uniformi, per\`o, in cui ogni insieme ha la stessa cardinalit\`a.
+		Dobbiamo far vedere che le famiglie eterogenee hanno comunque al massimo questa cardinalit\`a, ossia che $M(n) \le \binom{n}{\floor{\frac{n}{2}}}$.
+
+		Per vederlo utilizziamo questa disuguaglianza (disuguaglianza LYM):
+		\[
+			\mathcal{F} \subseteq 2^X \implies \sum_{F \in \mathcal{F}} \binom{n}{\abs{F}}^{-1} \le 1
+		\]
+		\`E stata ottenuta contemporaneamente da tre persone, indipendentemente: Lubell, Yamamoto e Meshalkin.
+		\`E un risultato puramente tecnico, ma ci porter\`a alla dimostrazione.
+
+		Se in una famiglia abbiamo un particolare insieme, tutti i suoi sottoinsiemi e tutti i suoi ``soprainsiemi'' non possono essere in quella famiglia.
+		\`E questo che vogliamo cogliere con questa disuguaglianza.
+
+		Consideriamo un insieme arbitrario $E \subseteq [n]$, costruiamo una catena che passa per questo insieme.
+		Una catena \`e una sequenza di insiemi che si contengono strettamente.
+		L'$i$-esimo di questi insiemi ha $i$ elementi.
+		$D_i \setminus D_{i-1} = \{ x_i \}$, contiene un unico elemento.
+		Quante catene ci sono?
+		In generale, una catena \`e una successione di elementi, e possiamo pensarla come una permutazione.
+		Ci sono quindi $n!$ catene.
+		Per ogni catena, in una famiglia di Sperner abbiamo al pi\`u un insieme preso da questa catena.
+		Questo ci dar\`a la limitazione superiore che cerchiamo.
+
+		Fissato un insieme, una catena passa per questo insieme $E$ se $D_{\abs{E}} = E$.
+		Quante catene passano per un insieme fissato $E$?
+		Sono $\abs{E}! \cdot \abs{E^{\compl}}! = \abs{E}! \cdot (n - \abs{E})!$.
+		Abbiamo prima gli elementi di $E$, poi gli elementi che non sono in $E$.
+
+		Gli insiemi di una famiglia di Sperner non si contengono, quindi le catene che passano per uno di questi insiemi non possono contenere nessun altro insieme.
+		Scriviamo in maniera formale:
+		\[
+			\sum_{E \in \mathcal{F}} \abs{\{ \text{catene che passano per un insieme } E} \le n!
+			\]
+			Ogni catena \`e conteggiata solo una volta.
+			Questi insiemi di catene sono disgiunti.
+			Quindi non stiamo contando pi\`u catene di quante esistano.
+			Possiamo quindi scrivere questo:
+			\[
+				\sum_{E \in \mathcal{F}} \abs{E}! \cdot (n - \abs{E})! \le n!
+			\]
+			Dividendo i due lati per $n!$, abbiamo:
+			\[
+				\sum_{E \in mathcal{F}} \frac{\abs{E}! \cdot (n - \abs{E})!}{n!} \le 1
+			\]
+			E questa \`e proprio la disuguaglianza di LYM.
+
+			Adesso possiamo dire questo:
+			\[
+				1 \ge \sum_{E \in \mathcal{F}} \frac{1}{\binom{n}{\abs{E}}} \ge \sum_{E \in \mathcal{F}} \frac{1}{\binom{n}{\floor{\frac{n}{2}}}} = \abs{F} \cdot \frac{1}{\binom{n}{\floor{\frac{n}{2}}}}
+			\]
+			Una limitazione inferiore alla sommatoria la otteniamo mettendo al posto di ogni coefficiente binomiale il coefficiente pi\`u grande.
+			E abbiamo finito.
+			Questo infatti implica che $\abs{\mathcal{F}} \le \binom{n}{\floor{\frac{n}{2}}}$.
+
+			Facciamo vedere brevemente che $\binom{n}{k-1} \le \binom{n}{k}$ fin tanto che $k \le \floor{\frac{n}{2}}$.
+			Sappiamo che $\binom{n}{k} = \binom{n}{n - k}$.
+			Basta vedere che:
+			\[
+				\binom{n}{k-1} = \frac{n \cdot (n-1) \cdot \dots \cdot (n - k - 2)}{(k-1)!} \\
+				\binom{n}{k} = \frac{n \cdot (n-1) \cdot \dots \cdot (n - k - 1)}{k!}
+			\]
+			Quindi $\binom{n}{k}$ lo otteniamo da $\binom{n}{k-1}$ in questo modo:
+			\[
+				\binom{n}{k} = \binom{n}{k-1} \cdot \frac{n - k - 1}{k}
+			\]
+			I coefficienti crescono fintanto che $\frac{n - k - 1}{k} \ge 1$, quindi $n - k - 1 \ge k \implies 2 k - 1 \le n$.
+		\end{proof}
+
+		Il vero teorema di Sperner riguarda anche l'unicit\`a di questa famiglia.
+		Lo vediamo solo per quando $n$ \`e pari.
+		Vogliamo sapere quando c'\`e l'uguaglianza, e vedremo che se $n$ \`e pari l'unicit\`a c'\`e per una sola famiglia.
+
+		Supponiamo che $\abs{\mathcal{F}} = \binom{n}{\frac{n}{2}}$.
+		La disuguaglianza di prima (TODO aggiungere riferimento) non deve essere stretta: deve essere un'uguaglianza.
+		Le due sommatorie al centro devono essere uguali, quindi $\forall E \binom{n}{\abs{E}} = \binom{n}{\frac{n}{2}}$.
+		Questa disuguaglianza la abbiamo solo se $\abs{E} = \frac{n}{2}$, e se li abbiamo tutti.
+		Quindi $\mathcal{F} = \left\{ A : \abs{A} = \frac{n}{2} \right\}$.
+
+		\section{Extremal set theory}
+
+		Cominciamo col grafo di Petersen, o grafo del comunista in prigione.
+		Il suo numero di clique \`e 2.
+		Il suo numero cromatico \`e 3.
+
+		Il grafo di Petersen appartiene alla famiglia dei grafi di Kneser.
+		Lo indichiamo con $K_{n,k}$, i cui vertici sono $V(K_{n,k} = \binom{[n]}{k}$, ossia tutti gli insiemi di $k$ elementi.
+		Mettiamo un arco $\{A,B\} \in E(K_{n,k})$ se $A \cap B = \emptyset$.
+
+		Kneser ha chiesto: qual \`e il numero cromatico di $K_{n,k}$?
+		Kneser ha notato che $\xhi(K_{n,k}) \le n - 2k + 2$.
+
+		Sappiamo che il suo numero cromatico \`e al pi\`u $n$: per ogni $n$ possiamo dare un colore a ogni vertice contenente $n$.
+		Nel momento in cui abbiamo usato $n - (2k - 1)$ colori, ci restano $2k -1$ elementi da colorare.
+		Da questi $2k -1$ elementi possiamo prendere un solo insieme di $k$ elementi, quindi usiamo al pi\`u $n - 2k +2$ colori.
+
+		E il numero di clique?
+		\`E al pi\`u $\frac{n}{k}$: dobbiamo dividere gli $n$ elementi in gruppi di $k$.
+
+		Laszlo Lovasz ha dimostrato nel '79 che $\xhi(K_{n,k}) = n - 2k +2$.
+		Il grafo di Petersen \`e un grafo di Kneser $K_{5,2}$.
+
+		Notare che $K_{n,1}$ \`e un grafo completo con $n$ vertici.
+
+		Vedremo prossimamente il teorema di Erd\H{o}s-Ko-Rado che riguarda il numero di stabilit\`a del grafo di Kneser.
+		Vedremo che $\alpha (K_{n,k}) = \binom{n-1}{k-1}$.
+
+		In questo grafo i vertici di una clique corrispondono a insiemi disgiunti di vertici.
+		Per $k = 1$ abbiamo un grafo completo.
+		Per $k = 2$ le cose sono pi\`u complicate.
+
+		Ogni grafo di Kneser si pu\`o sovrapporre a s\'e stesso in modo tale che i vertici si sovrappongano.
+		Ogni vertice all'interno del grafo ha lo stesso ruolo di ogni altro vertice.
+
+		Dimostriamo che il grafo di Petersen \`e un grafo di Kneser $K_{5,2}$.
+
+		Assegnamo a un vertice l'insieme $\{1,2\}$.
+		A un insieme adiacente assegniamo il primo insieme disgiunto, ossia $\{3,4\}$.
+		Fatto questo, dobbiamo trovare ancora un adiacente di $\{1,2\}$.
+		Ne abbiamo gi\`a trovati due: $\{3,4\}, \{4,5\}$.
+		Quindi manca $\{3,5\}$.
+		Possiamo anche pensare al complementare di ogni vertice: $\{3,4,5\}$.
+		Da qui prendiamo due elementi non consecutivi, ossia $\{3,5\}$.
+		Ripetiamo per gli altri vertici.
+
+		% TODO disegnare il grafo
+
+		Vediamo ora il numero di stabilit\`a di un grafo di Kneser $K_{n,k}$.
+		Consideriamo il problema astrattamente.
+
+		Una famiglia $\mathcal{F}$ di insiemi \`e intersecante se i suoi elementi non sono disgiunti, ossia se $\{A,B\} \in \binom{\mathcal{F}}{2} \implies A \cap B \neq \emptyset$.
+		Il problema di Erd\H{o}s-Ko-Rado \`e determinare la cardinalit\`a massima di una famiglia intersecante.
+		\[
+			M(n,k) = \max\limits_{\mathcal{F}\subseteq\binom{[n]}{2}} \abs{\mathcal{F}}
+		\]
+		dove $\mathcal{F}$ \`e intersecante.
+
+		\`E facile costruire una famiglia intersecante di $k$-insiemi.
+		Fissiamo un elemento e consideriamo tutti i $k$ insiemi che contengono questo elemento.
+		Questi sono $\binom{n-1}{k-1}$: dobbiamo scegliere altri $k-1$ elementi fra gli $n-1$ elementi rimasti per formare un $k$ insieme.
+
+		Questo ci dice che $M(n,k) \ge \binom{n-1}{k-1}$.
+
+		C'\`e per\`o una considerazione da fare: se $k$ \`e maggiore di una certa soglia, non ci sono $k$-insiemi disgiunti.
+		Se $k \ge \frac{n}{2} \implies M(n,k) = \binom{n}{k}$: pi\`u grande non pu\`o essere.
+
+		\begin{theorem}[di Erd\H{o}s-Ko-Rado ('61)]
+			\[
+				M(n,k) =
+				\begin{cases}
+					\binom{n}{k} & \text{ se } k > \frac{n}{2} \\
+					\binom{n-1}{k-1} & \text{ se } k \le \frac{n}{2}
+				\end{cases}
+			\]
+		\end{theorem}
+		Una struttura in cui fissiamo un elemento e cerchiamo insiemi che lo contengono \`e una struttura nucleare (??).
+		La struttura ottimale ha una struttura nucleare se si fissa un elemento piccolo e si considerano tutte le possibilit\`a.
+
+		\begin{proof}[del teorema di Erd\H{o}s-Ko-Rado]
+			Tutto quello che dobbiamo mostrare \`e che $M(n,k) \le \binom{n-1}{k-1}$ per $k$ piccolo.
+			Vuol dire che una famiglia intersecante non \`e ``troppo grande''.
+			Invece di limitare superiormente la cardinalit\`a, limiteremo superiormente la \emph{densit\`a}.
+			Possiamo quindi analizzare in maniera pi\`u intuitiva.
+			\[
+				\frac{M(n,k)}{\binom{n}{k}} \le \frac{\binom{n-1}{k-1}}{\binom{n}{k}} = \frac{k}{n}
+			\]
+			Questa \`e la frazione dell'universo che pu\`o formare una famiglia intersecante.
+			L'ultima equivalenza \`e banale, ma possiamo vedere che $k \cdot \binom{n}{k} = n \cdot \binom{n-1}{k-1}$ che \`e pi\`u carino della banalit\`a.
+			Scegliamo un elemento \emph{leader}.
+			% TODO capire qui
+
+			Facciamo un ``sondaggio'', o un censimento.
+			Abbiamo gli studenti, divisi fra 100 corsi.
+			Ciascuno frequenta cinque corsi.
+			I professori fanno un sondaggio ai loro studenti, e ottengono tutti un certo risultato.
+			Anche se gli insiemi di studenti di un corso non sono disgiunti, il risultato vale per tutti gli studenti.
+
+			Se la famiglia di sondaggio \`e una $n$-copertura, e in ogni $n$-copertura la percentuale non supera una certa soglia, allora la soglia non \`e superata nell'insieme totale.
+
+			\begin{lemma}[dei sondaggi]
+				In realt\`a \`e un doppio conteggio, ma vabe.
+				Abbiamo un insieme finito $U$, e denotiamo con $\Sigma$ una famiglia di sottoinsiemi di $U$, ossia $\Sigma \subseteq 2^{U}$.
+				$\Sigma$ \`e una $c$-upla copertura di $U$, ossia il numero di insiemi contenenti un certo elemento $x$ \`e sempre $c$.
+				$\abs{\{S : S \in \Sigma, x \in S \}} = c \forall x \in U$.
+				Ogni elemento nell'universo \`e interpellato esattamente $c$ volte.
+				Vogliamo calcolare la cardinalit\`a di un insieme $C$.
+				Se vale che $\frac{\abs{C \cap S}}{\abs{S}} \le \lambda \forall S \in \Sigma$, allora $\frac{\abs{C}}{\abs{U}} \le \lambda$.
+			\end{lemma}
+			\begin{proof}[del lemma dei sondaggi]
+				Se vale quanto detto, allora $\sum_{S \in \Sigma} \abs{S} = c \cdot \abs{U}$.
+				Naturalmente vale anche che $\sum_{S \in \Sigma} \abs{S \cap C} = c \cdot \abs{C}$.
+				Abbiamo detto che $\abs{C} = \sum_{S \in \Sigma} \frac{\abs{S \cap C}}{c}$.
+				Scriviamo anche $c \cdot \abs{C} = \sum_{S \in \Sigma} \abs{S \cap C} = \sum_{S \in \Sigma} \abs{S} \cdot \frac{\abs{S \cap C}}{\abs{S}}$.
+				L'ipotesi ci d\`a anche che la frazione $\frac{\abs{S \cap C}}{\abs{S}} \le \lambda$.
+				Quindi $c \cdot \abs{C} \le \sum_{S \in \Sigma} \lambda \cdot \abs{S} = \lambda \sum_{S \in \Sigma} \abs{S} = \lambda \cdot c \cdot \abs{U}$.
+				Quindi $\abs{C} \le \lambda \abs{U} \implies \frac{\abs{C}}{\abs{U}} \le \lambda$.
+			\end{proof}
+
+			Ora andiamo con la dimostrazione.
+			Facciamo quella di Katona (che guarda caso \`e ungherese).
+			Affermiamo che:
+			\[
+				\frac{\abs{\mathcal{F}}}{\binom{n}{k}} \le \frac{k}{n}
+			\]
+			Organizziamo i nostri $n$ elementi in una permutazione ciclica, che \`e una permutazione senza elemento iniziale o finale.
+			Queste sono $\frac{n!}{n} = (n-1)!$.
+			Fissiamo una permutazione ciclica e consideriamo i $k$ insiemi in questa permutazione ciclica che hanno elementi consecutivi.
+			Sia $\pi$ una permutazione ciclica, $A$ \`e un intervallo ciclico se i suoi elementi sono consecutivi in $\pi$.
+			Quanti intervalli ciclici ci sono?
+			Il primo elemento di questo intervallo ciclico, se diamo un ordine alla permutazione ciclica, identifica un intervallo ciclico.
+			Quindi abbiamo $n$ intervalli ciclici di una certa lunghezza.
+
+			Ogni $k$-insieme sar\`a un intervallo ciclico in una qualche permutazione ciclica.
+			E ogni $k$-insieme diventa un intervallo ciclico \emph{nello stesso numero di permutazioni cicliche}.
+
+			Diamo un ordine agli elementi di $A$, per prima cosa.
+			Possiamo dargli $k!$ ordini differenti.
+			In quante permutazioni cicliche appare questo intervallo ciclico?
+			In $(n - k)!$: il resto della permutazione ciclica \`e una permutazione \emph{vera} dei restanti $n - k$ elementi.
+			Quindi un $k$-insieme a prescindere da chi sono i suoi elementi \`e una permutazione ciclica in $(n-k)! \cdot k!$.
+			Ma possiamo anche capirlo per simmetria.
+
+			Queste permutazioni cicliche formano una famiglia di sondaggio.
+			Determiniamo quanti intervalli ciclici possono appartenere a una famiglia intersecante in una permutazione ciclica fissata.
+			Ci sono al pi\`u $k$ intervalli ciclici che si intersecano, data una permutazione ciclica.
+			% TODO rivedere un attimo i conteggi che stiamo facendo, specie che k <= n/2
+		\end{proof}
+
+
+
+
+
