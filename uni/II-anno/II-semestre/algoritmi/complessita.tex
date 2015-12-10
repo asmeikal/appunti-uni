@@ -380,9 +380,9 @@ Un insieme infinito $S$ \`e numerabile se (e solo se) esiste una corrispondenza 
 \end{defn}
 Quindi deve esistere una funzione $f : \naturals \to S$ tale che $\forall s \exists n \in \naturals$ tale che $f(s) = n$ e $f(s) = f(s') \implies s = s'$.
 
-$\parts (\naturals)$ non \`e in corrispondenza biunivoca con $\naturals$. Rappresentiamo ogni insieme in $\parts (\naturals)$ con il suo vettore caratteristico, ossia con la stringa di 0 e di 1 per cui alla posizione $i$ c'\`e uno 0 se $i$ non \`e contenuto nel sottoinsieme. Mettendo in tabella tutti $i$ vettori caratteristici, prendiamo il vettore caratteristico che sta sulla diagonale e complementiamolo. Questo vettore non pu\`o essere nella tabella: se lo fosse, la diagonale l'avrebbe intercettato in una riga $j$, alla colonna $j$, ma il vettore alla riga $j$ ha quel valore complementato. Assurdo.
+$\parts{\naturals}$ non \`e in corrispondenza biunivoca con $\naturals$. Rappresentiamo ogni insieme in $\parts{\naturals}$ con il suo vettore caratteristico, ossia con la stringa di 0 e di 1 per cui alla posizione $i$ c'\`e uno 0 se $i$ non \`e contenuto nel sottoinsieme. Mettendo in tabella tutti $i$ vettori caratteristici, prendiamo il vettore caratteristico che sta sulla diagonale e complementiamolo. Questo vettore non pu\`o essere nella tabella: se lo fosse, la diagonale l'avrebbe intercettato in una riga $j$, alla colonna $j$, ma il vettore alla riga $j$ ha quel valore complementato. Assurdo.
 
-$A^{\star}$, con $A$ finito, \`e numerabile. $\parts (A^{\star})$ \`e l'insieme di tutti i linguaggi sull'alfabeto $A$, e non \`e numerabile. Basta ripetere il metodo della diagonale con $A^{\star}$.
+$A^{\star}$, con $A$ finito, \`e numerabile. $\parts{A^{\star}}$ \`e l'insieme di tutti i linguaggi sull'alfabeto $A$, e non \`e numerabile. Basta ripetere il metodo della diagonale con $A^{\star}$.
 
 Bisogna capire cosa vuol dire che una macchina di Turing \emph{accetta} un linguaggio. Abbiamo tre possibilit\`a, invece delle due della macchina a stati finiti:
 \begin{itemize}
@@ -401,9 +401,9 @@ Data una macchina di Turing $M$, il linguaggio associato $L(M)$ \`e tale che $L(
 
 Non diciamo niente su cosa succede quando $x \notin L(M)$. Ci sono quindi due possibilit\`a: o $M$ si ferma su uno stato che non appartiene a $F$, o non si ferma mai.
 
-Torniamo a $\parts (A^{\star})$, ossia all'insieme di tutti i linguaggi a caratteri in $A$. $\Lambda$ \`e l'insieme di tutti e soli i linguaggi tali che per ogni siffatto linguaggio $L$ esiste una macchina di Turing che lo riconosce. Sicuramente \`e vero che $\Lambda \subset \parts (A^{\star})$. Ma \`e un sottoinsieme proprio? Esiste qualcosa che \`e fuori da $\Lambda$, ma appartiene a $\parts(A^{\star})$?
+Torniamo a $\parts{A^{\star}}$, ossia all'insieme di tutti i linguaggi a caratteri in $A$. $\Lambda$ \`e l'insieme di tutti e soli i linguaggi tali che per ogni siffatto linguaggio $L$ esiste una macchina di Turing che lo riconosce. Sicuramente \`e vero che $\Lambda \subset \parts{A^{\star}}$. Ma \`e un sottoinsieme proprio? Esiste qualcosa che \`e fuori da $\Lambda$, ma appartiene a $\parts{A^{\star}}$?
 
-Chiamando $C$ l'insieme delle codifiche delle macchine di Turing, vale che $C \subseteq A^{\star}$. \`E sicuramente numerabile. Quindi anche $\Lambda$ \`e un insieme infinito numerabile, e quindi \`e un sottoinsieme proprio di $\parts (A^{\star})$. Anzi, i linguaggi non accettati da macchine di Turing sono \emph{molti} di pi\`u di quelli accettati. I linguaggi privi di grammatica sono la maggioranza.
+Chiamando $C$ l'insieme delle codifiche delle macchine di Turing, vale che $C \subseteq A^{\star}$. \`E sicuramente numerabile. Quindi anche $\Lambda$ \`e un insieme infinito numerabile, e quindi \`e un sottoinsieme proprio di $\parts{A^{\star}}$. Anzi, i linguaggi non accettati da macchine di Turing sono \emph{molti} di pi\`u di quelli accettati. I linguaggi privi di grammatica sono la maggioranza.
 
 $\Lambda$ si indica con $\code{RE}$, o insieme dei linguaggi Ricorsivamente Enumerabili. Tutti i linguaggi sono enumerabili, ma questi sono linguaggi per cui esiste una procedura calcolabile, algoritmica e quindi ricorsiva che li enumera, ossia che fornisce tutti gli elementi del linguaggio uno alla volta.
 
@@ -788,7 +788,7 @@ Il complemento del vettore sulla diagonale non pu\`o essere nella tabella, quind
 Dimostrare l'esistenza di un linguaggio $L$ tale che n\'e $L$, n\'e il suo complemento $\bar{L}$ sono ricorsivamente enumerabili. 
 \end{esercizio}
 
-L'insieme di tutti i linguaggi \`e $\parts \left( A^{\star} \right)$, che non \`e un insieme numerabile. $\code{RE}$ \`e un insieme numerabile, cos\`i come $\code{CO-RE}$, e come la loro unione. Infatti ciascun linguaggio in $\code{RE}$ \`e individuato da (almeno) una macchina di Turing, e sappiamo che l'insieme delle macchine di Turing \`e numerabile. Quindi, necessariamente, $\code{CO-RE} \cup \code{RE} \subset \parts \left( A^{\star} \right)$.
+L'insieme di tutti i linguaggi \`e $\parts{A^{\star}}$, che non \`e un insieme numerabile. $\code{RE}$ \`e un insieme numerabile, cos\`i come $\code{CO-RE}$, e come la loro unione. Infatti ciascun linguaggio in $\code{RE}$ \`e individuato da (almeno) una macchina di Turing, e sappiamo che l'insieme delle macchine di Turing \`e numerabile. Quindi, necessariamente, $\code{CO-RE} \cup \code{RE} \subset \parts{A^{\star}}$.
 
 \section{La superstar dei migliori bar di Caracas}
 
