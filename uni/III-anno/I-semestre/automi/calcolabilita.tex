@@ -32,3 +32,18 @@ Questo vale anche per ogni altro alfabeto, non solo su quello binario.
 	Dimostrare che $C$ \`e numerabile (e enumerabile).
 \end{esercizio}
 
+% TODO qua manca qualcosa
+
+Consideriamo questi due linguaggi:
+\begin{align*}
+	E_{DFA} & = \{ A : A \in DFA \land \lang{A} = \emptyset \} \\
+	EQ_{DFA} & = \{ (A, A') : A, A' \in DFA \land \lang{A} = \lang{A'} \}
+\end{align*}
+Abbiamo dimostrato che il primo problema \`e decidibile, mentre per dimostrare la decidibilit\`a del secondo sfruttiamo il primo.
+Dire che due automi sono equivalenti significa che $\lang{A} \setminus \lang{A'} = \emptyset$ e $\lang{A'} \setminus \lang{A} = \emptyset$.
+Si pu\`o anche scrivere costruendo l'automa $\bar{A}$ che ha il linguaggio $\lang{\bar{A}} = \left( \lang{A} \cap \compl \lang{A'} \right) \cup \left( \compl \lang{A} \cap \lang{A'} \right)$.
+Se il linguaggio di $\bar{A}$ \`e vuoto, i due automi $A$ e $A'$ sono equivalenti.
+
+Generalizziamo questo discorso: consideriamo due linguaggi $L, L' \subseteq \Sigma^{\star}$, diciamo che $L \le L'$ se $\exists f : \Sigma^{\star} \to \Sigma^{\star}$ calcolabile e tale che $x \in L \iff f(x) \in L'$.
+
+
