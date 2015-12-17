@@ -1,0 +1,181 @@
+
+\section{Teorema di Cook}
+
+Cook riduce polinomialmente ogni problema in $\probnp$ al linguaggio delle formule soddisfacibili ($SAT$).
+Questo permette di parlare della classe dei problemi $\probnp$-completi ($\probnpc$), che sono ``difficili'' almeno quanto tutti i problemi in $\probnp$.
+
+Consideriamo un linguaggio $A \in \probnp$.
+Esiste una macchina di Turing non deterministica $M = ( Q, \Sigma, \Gamma, q_0, q_a, q_r )$ che decide $A$ in tempo $n^k$ per un qualche $k$.
+Definiamo quindi una funzione Turing-calcolabile e polinomiale che associa una formula booleana $\phi$ a ogni input $x$ in maniera tale che $x \in A \iff \phi \in SAT$.
+
+Informalmente, la formula $\phi$ dovr\`a ``descrivere'' la sequenza di configurazioni che $M$ assume mentre legge l'input $x$.
+La sequenza sar\`a del tipo
+\[
+	C_0 \leadsto C_1 \leadsto \dots \leadsto C_i
+\]
+dove $C_0 = q_0 x$ \`e la configurazione iniziale e $C_i = \alpha q_a \beta$ \`e la configurazione (finale) di accettazione se $x \in A$, con $i \in \ints{n^k}$.
+
+La nostra formula dovr\`a esprimere quindi una serie di propriet\`a di questa successione di configurazioni:
+\begin{enumerate}
+	\item\label{itm:cook_conf_in} $C_0$ \`e la configurazione iniziale;
+	\item\label{itm:cook_conf_val} $\forall i$, $C_i$ \`e una configurazione valida, ossia:
+		\begin{enumerate}
+			\item\label{itm:cook_conf_val_stato} la macchina si trova in uno ed un solo stato;
+			\item\label{itm:cook_conf_val_posiz} la testina si trova in una ed una sola posizione;
+			\item\label{itm:cook_conf_val_simb} in ogni casella del nastro c'\`e un solo simbolo;
+		\end{enumerate}
+	\item\label{itm:cook_conf_trans} $\forall i$, $C_i \leadsto C_{i+1}$, ossia:
+		\begin{enumerate}
+			\item\label{itm:conf_trans_val} la funzione di transizione \`e rispettata a ogni passo;
+			\item\label{itm:conf_trans_simb} a ogni passo cambia solo il simbolo su cui si trova la testina;
+		\end{enumerate}
+	\item\label{itm:conf_acc} esiste una configurazione di accettazione.
+\end{enumerate}
+
+\`E bene rispolverare cosa significa la funzione di transizione:
+\begin{itemize}
+	\item $\delta(q,a) \ni (p,b,R) \implies \alpha q \underline{a} c \beta \leadsto \alpha b p \underline{c} \beta$
+	\item $\delta(q,c) \ni (p,b,L) \implies \alpha a q \underline{c} \beta \leadsto \alpha p \underline{a} b \beta$
+\end{itemize}
+
+La formula $\phi$ che costruiremo sar\`a composta dai seguenti letterali:
+\begin{enumerate}
+	\item $S_{i,q}$ con $i \in \ints{n^k}$ e $q \in Q$ rappresenta ``la macchina al passo $i$ \`e nello stato $q$'';
+	\item $T_{i,j,a}$ con $i,j \in \ints{n^k}$ e $a \in \Gamma$ rappresenta ``sul nastro (\emph{tape}) al passo $i$ nella posizione $j$ si trova il simbolo $a$'';
+	\item $H_{i,j}$ con $i,j \in \ints{n^k}$ rappresenta ``la testina (\emph{head}) al passo $i$ si trova nella posizione $j$''.
+\end{enumerate}
+
+Riassumendo:
+\begin{center}
+	\begin{tabular}{c|l}
+		Simbolo & Significato \\
+		\hline
+		$S$ & stato \\
+		$T$ & nastro (\emph{tape}) \\
+		$H$ & testina (\emph{head}) \\
+		$i$ & indice del passo \\
+		$j$ & posizione sul nastro \\
+		$q$ & stato ($\in Q$) \\
+		$a$ & simbolo ($\in \Gamma$)
+	\end{tabular}
+\end{center}
+
+Chiariamo infine la semantica dei simboli che useremo (con $A$ a indicare un generico insieme):
+\begin{itemize}
+	\item $\Land_{i \in A} L_i$ indica l'\emph{and} logico dei letterali $L_i$ al variare di $i \in A$;
+	\item $\Lor_{i \in A} L_i$, allo stesso modo, indica l'\emph{or} logico dei letterali $L_i$ al variare di $i \in A$;
+	\item $\binom{A}{2}$ indica l'insieme delle coppie di elementi distinti di $A$;
+	\item $\ints{n^k}$ indica l'insieme degli interi da 1 a $n$.
+\end{itemize}
+
+Dobbiamo ora esprimere tutte le propriet\`a elencate sopra con una formula booleana $\phi$.
+Questa formula sar\`a l'\emph{and} di alcune sottoformule:
+\[
+	\phi = 
+	\underbrace{\phi_{\text{start}}}_{\text{punto \ref{itm:cook_conf_in}}} \land 
+	\underbrace{\phi_{\text{testina}} \land \phi_{\text{nastro}} \land \phi_{\text{stato}}}_{\text{punto \ref{itm:cook_conf_val}}} \land 
+	\underbrace{\phi_{\text{mossa}} \land \phi_{\text{mossa/nastro}}}_{\text{punto \ref{itm:cook_conf_trans}}} \land 
+	\underbrace{\phi_{\text{accettazione}}}_{\text{punto \ref{itm:conf_acc}}}
+\]
+\begin{enumerate}
+	\item $\phi_{\text{start}}$ rappresenta la condizione \ref{itm:cook_conf_in}, ossia che la macchina al primo passo si trova nella condizione iniziale.
+	Usando i letterali indicati sopra la esprimiamo come:
+	\[
+		\phi_{\text{start}} = 
+		S_{1,q_0} \land \left( \Land_{j \in \ints{n}} T_{1,j,x_j} \right) \land \left( \Land_{j \in \ints{n^k} \setminus \ints{n}} T_{1,j,\emptysimbol} \right)
+	\]
+	Stiamo dicendo che lo stato al passo 1 \`e $q_0$.
+	Poi affermiamo qualcosa sullo stato del nastro fino alla posizione $n^k$ al passo 1: nelle prime $n$ posizioni abbiamo l'input $x$, nelle successive $n^k - n$ posizioni abbiamo il simbolo di stringa vuota.
+	\item Il punto \ref{itm:cook_conf_val} \`e espresso dalla congiunzione di tre formule:
+		\begin{enumerate}
+			\item $\phi_{\text{testina}}$ ci dice che a ogni passo la testina di lettura si trova su una e una sola cella del nastro, come da punto \ref{itm:cook_conf_val_posiz}.
+			Questa condizione la rappresentiamo con una congiunzione di formule (una per passo):
+			\[
+				\phi_{\text{testina}} = \Land_{i \in \ints{n^k}} \phi_{\text{testina},i}
+			\]
+			dove ogni formula $\phi_{\text{testina},i}$ \`e:
+			\[
+				\phi_{\text{testina},i} = \left( \Lor_{j \in \ints{n^k}} H_{i,j} \right) \land
+				\left( \Land_{\{j_1,j_2\} \in \binom{\ints{n^k}}{2}} \overline{\left( H_{i,j_1} \land H_{i,j_2} \right)} \right)
+			\]
+			La prima parte afferma che la testina al passo $i$ si trova almeno in una delle prime $n^k$ posizioni del nastro.
+			La seconda parte afferma che la testina \emph{non} si trova in due o pi\`u posizioni al passo $i$.
+			\item $\phi_{\text{nastro}}$ ci dice, in maniera analoga, che a ogni passo ogni cella del nastro contiene uno ed un solo simbolo, come da punto \ref{itm:cook_conf_val_simb}.
+			Anche questa condizione la rappresentiamo con una congiunzione di formule, una per ogni coppia passo/posizione:
+			\[
+				\phi_{\text{nastro}} = \Land_{i, j \in \ints{n^k}} \phi_{\text{nastro},i,j}
+			\]
+			Ogni formula $\phi_{\text{nastro},i,j}$ \`e:
+			\[
+				\phi_{\text{nastro},i,j} = \left( \Lor_{a \in \Gamma} T_{i,j,a} \right) \land
+				\left( \Land_{\{a_1,a_2\} \in \binom{\Gamma}{2}} \overline{\left( T_{i,j,a_1} \land T_{i,j,a_2} \right)} \right)
+			\]
+			Come sopra, la prima parte afferma che al passo $i$, alla posizione $j$, c'\`e almeno un simbolo sul nastro.
+			La seconda parte afferma che non ci sono due o pi\`u simboli sulla posizione $j$ del nastro, al passo $i$ di computazione.
+			\item $\phi_{\text{stato}}$ ci dice che a ogni passo la macchina si trova in uno ed un solo stato, come da punto \ref{itm:cook_conf_val_stato}.
+			La formula \`e del tutto simile alle precedenti:
+			\[
+				\phi_{\text{stato}} = \Land_{i \in \ints{n^k}} \phi_{\text{stato},i}
+			\]
+			dove ogni formula $\phi_{\text{stato},i}$ \`e anche qui:
+			\[
+				\phi_{\text{stato},i} = \left( \Lor_{q \in Q} S_{i,q} \right) \land
+				\left( \Land_{\{q_1,q_2\} \in \binom{Q}{2}} \overline{\left( S_{i,q_1} \land S_{i,q_2} \right)} \right)
+			\]
+			Di nuovo, la prima parte afferma che la macchina al passo $i$ si trova in almeno uno stato.
+			La seconda parte afferma che la macchina \emph{non} si trova in due o pi\`u stati al passo $i$.
+		\end{enumerate}
+	Questo conclude il punto \ref{itm:cook_conf_val}: se $\phi$ \`e vera, ogni configurazione che rappresenta \`e valida.
+	\item Dobbiamo ora validare le mosse, come da punto \ref{itm:cook_conf_trans}.
+		\begin{enumerate}
+			\item La formula $\phi_{\text{mossa}}$ ci dice, come da punto \ref{itm:conf_trans_val}, che cambiamo configurazione seguendo la funzione di transizione.
+			Possiamo pensare questa formula come una congiunzione di formule, ciascuna che afferma che a ogni passo, in ogni posizione del nastro, in ogni stato, qualsiasi sia l'input, la mossa effettuata \`e conforme alla funzione di transizione.
+			Quindi scriviamo:
+			\[
+				\phi_{\text{mossa}} = \Land_{i,j \in \ints{n^k}} \left( \Land_{\substack{q \in Q \\ a \in \Gamma}} \phi_{i,j,\delta(q,a)} \right)
+			\]
+			Ricordiamo che la funzione di transizione definisce un insieme di configurazioni raggiungibili:
+			\[
+				\delta(q,a) = \{ (p_1, b_1, D_q), \dots, (p_m, b_m, D_m) \}
+			\]
+			dove $p_i \in Q$ \`e il nuovo stato, $b_i \in \Gamma$ \`e il simbolo scritto sul nastro, e $D_i \in \{L, R\}$ (\`e il movimento della testina).
+			Ogni formula $\phi_{i,j,\delta(q,a)}$ \`e:
+			\[
+				\phi_{i,j,\delta(q,a)} =
+				\left( H_{i,j} \land T_{i,j,a} \land S_{i,q} \right) \implies
+				\left(
+					\Lor_{(p',b',D') \in \delta(q,a)} \left(
+						H_{i+1,j'} \land T_{i+1,j,b'} \land S_{i+1,p'}
+					\right)
+				\right)
+			\]
+			Dove $j'$ \`e dato da:
+			\[
+				j' =
+				\begin{cases}
+					j+1 \text{ se } D' = R \\
+					j-1 \text{ se } D' = L
+				\end{cases}
+			\]
+			Stiamo dicendo che, \emph{se} al passo $i$, alla posizione $j$, il simbolo letto \`e $a$ e lo stato \`e $q$, \emph{allora} al passo $i+1$ lo stato, la testina e il simbolo alla posizione $j$ saranno cambiati secondo una delle possibili transizioni descritte dalla funzione $\delta(q,a)$.
+			\item $\phi_{\text{mossa/nastro}}$ ci dice che solo il simbolo letto dalla testina pu\`o cambiare a ogni passo, come da punto \ref{itm:conf_trans_simb}.
+			Quindi vogliamo dire che a ogni passo, qualunque sia la posizione della testina, i simboli nelle altre caselle del nastro non cambiano.
+			La formula \`e:
+			\[
+				\phi_{\text{mossa/nastro}} = 
+				\Land_{i,j \in \ints{n^k}} \left(
+					\Land_{\substack{j' \in \ints{n^k}, \, j \neq j' \\ a \in \Gamma}} \left(
+						H_{i,j} \land T_{i,j',a}
+					\right) \implies
+					T_{i+1,j',a}
+				\right)
+			\]
+			\emph{Se} ci troviamo alla posizione $j$ al passo $i$, e il simbolo alla casella $j'$ (diversa da quella su cui ci troviamo) \`e $a$, \emph{allora} al passo $i+1$ alla posizione $j'$ c'\`e ancora il simbolo $a$.
+		\end{enumerate}
+		\item Resta solo $\phi_{\text{accettazione}}$ che, come da punto \ref{itm:conf_acc} ci dice che una delle configurazioni \`e di accettazione.
+		\[
+			\phi_{\text{accettazione}} = 
+			\Lor_{i \in \ints{n^k}} S_{i,q_a}
+		\]
+\end{enumerate}
+
