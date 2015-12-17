@@ -545,6 +545,65 @@ La probabilit\`a di prendere una permutazione sconvolgente ``a caso'' \`e:
 L'ultima \`e la serie di Taylor della funzione esponenziale!
 Funny.
 
+Il principio di inclusione/esclusione, se fermiamo la sommatoria prima di $r$, ci porta a limitazioni inferiori e superiori.
+``Oscilliamo'' fra limitazioni superiori e inferiori, sempre pi\`u raffinate e pi\`u vicine alla cardinalit\`a totale.
+
+Vediamo una seconda applicazione del principio di inclusione/esclusione: la formula di Euler.
+$\varphi(n) = \abs{\{ r : r \in [n] \mcd(r,n) = 1 \}}$, ossia \`e il numero degli $r \le n$ che non hanno divisori comuni con $n$.
+La risposta \`e in funzione della \emph{forma} di $n$.
+Ogni numero \`e un prodotto di primi, ossia $n = \prod_{i=1}^{r} p_i^{\alpha_i}$, dove $p_i$ sono numeri primi e dipendono da $n$: $p_1$ \emph{non} \`e il ``primo numero primo'', ossia 2.
+Naturalmente $\alpha_i > 0$.
+
+\begin{theorem}
+	\[
+		\varphi(n) = n \cdot \prod_{i=1}^{r} \left( 1 - \frac{1}{p_i} \right)
+	\]
+\end{theorem}
+
+\begin{proof}
+	Applichiamo la formula di inclusione/esclusione.
+
+	Ci interessano quei numeri che non condividono con $n$ nessuno dei suoi divisori.
+	Se un numero ha un divisore comune con $n$, questo divisore deve essere uno dei $p_i$ per qualche $i$.
+	I primi sono divisori non decomponibili.
+	Quindi un numero $m$ non ha divisori in comune con $n$ $\iff$ non \`e divisibile per nessuno dei $p_i$.
+
+	Consideriamo gli insiemi $P_i = \{ m : p_i \divides m \}$.
+	I coprimi con $n$ sono gli elementi di $[n]$ che non hanno nessuna delle propriet\`a $P_i$.
+
+	Quindi $N(\{i\}) = \abs{\{ m : m \in [n] \text{ e sono multipli di } p_i \}}$.
+	Quanti sono?
+	Poich\'e $p_i$ \`e un divisore di $n$, i multipli di $p_i$ sono $p_i, 2 p_i, \dots, t \, p_i$ dove $t \, p_i \le n$, quindi $t \le \floor{\frac{n}{p_i}}$.
+	Ma abbiamo detto che $n$ \`e multiplo di $p_i$, quindi $t = \frac{n}{p_i}$.
+	Quindi $N(\{i\}) = \frac{n}{p_i}$.
+
+	In generale $N(A) = \abs{\{m : m \in [n] \text{ e sono multipli di ogni } p_i \text{ con } i \in A \}}$.
+	Con lo stesso ragionamento, sapendo che se un numero \`e multiplo di un insieme di primi allora \`e multiplo del loro prodotto (sempre perch\'e i primi non sono decomponibili), possiamo dire che $N(A) = \abs{\{ m : m \in [n] \text{ e sono multipli di } \prod_{i \in A} p_i\}}$, e quindi che:
+	\[
+		N(A) = \abs{\{ \prod_{i \in A} p_i, 2 \prod_{i \in A} p_i, \dots, t \, \prod_{i \in A} p_i \}} = \frac{n}{\prod_{i \in A} p_i}
+	\]
+	Ora, applicando la formula di inclusione/esclusione, possiamo dire:
+	\[
+		\varphi(n) = \sum_{A \subseteq [r]} (-1)^{\abs{A}} \cdot \frac{n}{\prod_{i \in A} p_i}
+	\]
+	Facciamo alcune trasformazioni:
+	\[
+		\varphi(n) =  n \cdot \sum_{A \subseteq [r]} (-1)^{\abs{A}} \cdot \prod_{i \in A} \frac{1}{p_i} =
+		n \cdot \sum_{A \subseteq [r]} \prod_{i \in A} \frac{-1}{p_i} = \text{$-1$ viene ripetuto $A$ volte, quindi siamo tranquilli}
+	\]
+	L'ultimo pezzo ``percorre'' tutti i sottoinsiemi di $r$, e c'\`e il prodotto di fattori che hanno tutti la stessa forma.
+	Se guardiamo la produttoria a cui vogliamo arrivare, abbiamo un prodotto di binomi.
+	Se espandiamo il prodotto in cui ogni termine \`e un binomio, il termine generico di questa espressione sar\`a il prodotto di un certo numero di fattori presi dalla parte $\frac{-1}{p_i}$.
+	% TODO capire il binomio di newton
+	Quindi prendiamo fattori da un insieme $A$, e avremo quindi una somma di termini generici $\prod_{i \in A} \frac{-1}{p_i}$.
+	La somma, a sua volta, \`e per tutti i possibili insiemi $A$ di indici:
+	\[
+		(1 + a)^n = \sum_{A \subseteq [n]} a^{\abs{A}} \implies \prod{i = 1}^{r} \left( 1 - \frac{1}{p_i} \right) = \sum_{A \subseteq [r]} \prod_{i \in A} \frac{-1}{p_i}
+	\]
+\end{proof}
+
+$n \left( 1 - \frac{1}{p_i} \right)$ \`e il numero di numeri minori di $n$ non divisibili per $p_i$.
+$1 - \frac{1}{p_i}$ \`e la frazione del tutto di numeri non divisibili per $p_i$.
 
 
 
