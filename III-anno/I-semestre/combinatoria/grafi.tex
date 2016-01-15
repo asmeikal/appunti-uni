@@ -190,6 +190,7 @@ $\clique{G}$ \`e il massimo numero di vertici in un sottografo completo di $G$.
 \end{defn}
 
 \begin{prop}
+	\label{grado_n_archi}
 	Sia $G$ un grafo, vale:
 	\[
 		\sum_{x \in V(G)} \degree{x} = 2 \abs{E(G)}
@@ -283,6 +284,43 @@ Vale per tutti i sottografi di copertura connessi e minimali, e per tutti gli ar
 \end{prop}
 Gli alberi sono molto diversi gli uni dagli altri, ma questo vale sempre.
 
+\begin{proof}
+	Primo lato: in un albero $\abs{V(G)} = 1 + \abs{E(G)}$.
+	Sia $x_0 \in V(G)$ un vertice arbitrario fissato.
+	Per ogni $x \neq x_0$, poich\'e il grafo \`e connesso, c'\`e un unico cammino semplice da $x$ a $x_0$.
+	\`E semplice poich\'e il grafo non ha cicli.
+	\`E unico perch\'e altrimenti i due cammini biforcherebbero e si ricongiungirebbero da qualche parte individuando un ciclo.
+	Creiamo una bisezione $f: V(G) \setminus \{x_0\} \to E(G)$ dove $f(x)$ \`e il primo arco dell'unico cammino da $x$ a $x_0$.
+	Poich\'e il cammino \`e unico, la funzione \`e ben definita.
+	\`E suriettiva: se un arco non fosse nell'immagine della funzione, avremmo un ciclo fra $x_0$ e i vertici su cui questo arco incide.
+	Possiamo quindi gi\`a vedere che $\abs{E(G)} \le \abs{V(G)} - 1$.
+	La funzione \`e anche iniettiva.
+	Consideriamo due vertici $a \neq b$, con $a \neq x_0$ e $b \neq x_0$.
+	Se il primo arco nel cammino da $a \to x_0$ e $b \to x_0$ \`e lo stesso, allora $a$ e $b$ devono essere adiacenti.
+	Quindi c'\`e un cammino $a e b \dots x_0$ e un cammino $b e a \dots x_0$.
+	Possiamo individuare due nuovi cammini $a \to x_0$ e $b \to x_0$ che non passano per $e$.
+	Sono entrambi due cammini semplici, e hanno almeno un vertice in comune ($x_0$).
+	Questo primo vertice in comune chiude un ciclo, in contraddizione con l'ipotesi che il grafo fosse un albero.
+	Quindi la funzione \`e una biezione, e $\abs{E(G)} + 1 = \abs{V(G)}$.
+
+	Secondo lato: se un grafo connesso $G$ ha $\abs{V(G)} = \abs{E(G)} + 1$, $G$ \`e un albero (non ha cicli).
+	Chiamiamo $\abs{V(G)} = n$.
+	$G$ ha almeno un vertice di grado 1.
+	Infatti per la proposizione \ref{grado_n_archi}, sappiamo che:
+	\[
+		2 (n - 1) = 2 \abs{E(G)} = \sum_{x \in V(G)} \degree{x}
+	\]
+	Essendo il grafo connesso, $\nexists x : \degree{x} = 0$.
+	Quindi:
+	\begin{align*}
+		2 (n-1) =
+		\sum_{x : \degree{x} = 1} \degree{x} + \sum_{x : \degree{x} > 1} \degree{x} \ge
+		\sum_{x : \degree{x} = 1} 1 + \sum_{x : \degree{x} > 1} 2 =
+		c + 2 (n - c) = 2n - c
+	\end{align*}
+	Dove $c$ \`e il numero di vertici di grado 1.
+	Quindi $2n - 2 \ge 2n - c \impies c \ge 2$, abbiamo almeno 2 vertici di grado 1.
+	
 
 
 % TODO catch up here
