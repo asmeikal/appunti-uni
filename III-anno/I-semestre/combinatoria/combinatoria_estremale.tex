@@ -26,7 +26,7 @@ Ma perch\'e?
 Dimentichiamo per un momento che $x$ debba essere un intero.
 Quello che vale \`e questo:
 \[
-x \cdot (n - x) \le \left{( \frac{n}{2} \right)}^2 = \frac{n^2}{4}
+x \cdot (n - x) \le {\left( \frac{n}{2} \right)}^2 = \frac{n^2}{4}
 \]
 La verifica \`e immediata:
 \begin{align*}
@@ -105,8 +105,9 @@ $M(n) = \max\limits_{\mathcal{F} \text{ di Sperner} \\ \mathcal{F} \subseteq 2^{
 Il problema, a Sperner, lo fece venire in mente Schreier, un teorico dei gruppi.
 
 \begin{theorem}[di Sperner (1928)]
-	M(n) = \binom{n}{\floor{\frac{n}{2}}}
-	La massima cardinalit\`a \`e il coefficiente binomiale ?? non ho capito cosa.
+	\[
+		M(n) = \binom{n}{\floor{\frac{n}{2}}}
+	\]
 
 	Se $n$ \`e pari, la soluzione ottimale \`e unica.
 	Se $n$ \`e dispari, ci sono due famiglie ottimali: sono una famiglia e il suo complementare.
@@ -164,7 +165,7 @@ Una famiglia di Sperner \`e un sottografo completo di questo grafo, e la massima
 	\]
 	Dividendo i due lati per $n!$, abbiamo:
 	\[
-		\sum_{E \in mathcal{F}} \frac{\abs{E}! \cdot (n - \abs{E})!}{n!} \le 1
+		\sum_{E \in \mathcal{F}} \frac{\abs{E}! \cdot (n - \abs{E})!}{n!} \le 1
 	\]
 	E questa \`e proprio la disuguaglianza di LYM.
 
@@ -207,7 +208,7 @@ Il suo numero di clique \`e 2.
 Il suo numero cromatico \`e 3.
 
 Il grafo di Petersen appartiene alla famiglia dei grafi di Kneser.
-Lo indichiamo con $K_{n,k}$, i cui vertici sono $V(K_{n,k} = \binom{[n]}{k}$, ossia tutti gli insiemi di $k$ elementi.
+Lo indichiamo con $K_{n,k}$, i cui vertici sono $V(K_{n,k}) = \binom{[n]}{k}$, ossia tutti gli insiemi di $k$ elementi.
 Mettiamo un arco $\{A,B\} \in E(K_{n,k})$ se $A \cap B = \emptyset$.
 
 Kneser ha chiesto: qual \`e il numero cromatico di $K_{n,k}$?
@@ -598,7 +599,7 @@ Naturalmente $\alpha_i > 0$.
 	Quindi prendiamo fattori da un insieme $A$, e avremo quindi una somma di termini generici $\prod_{i \in A} \frac{-1}{p_i}$.
 	La somma, a sua volta, \`e per tutti i possibili insiemi $A$ di indici:
 	\[
-		(1 + a)^n = \sum_{A \subseteq [n]} a^{\abs{A}} \implies \prod{i = 1}^{r} \left( 1 - \frac{1}{p_i} \right) = \sum_{A \subseteq [r]} \prod_{i \in A} \frac{-1}{p_i}
+		(1 + a)^n = \sum_{A \subseteq [n]} a^{\abs{A}} \implies \prod_{i = 1}^{r} \left( 1 - \frac{1}{p_i} \right) = \sum_{A \subseteq [r]} \prod_{i \in A} \frac{-1}{p_i}
 	\]
 \end{proof}
 
