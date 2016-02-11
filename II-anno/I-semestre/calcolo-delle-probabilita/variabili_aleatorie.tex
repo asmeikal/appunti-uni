@@ -246,7 +246,7 @@ Quindi la somma di cui sopra \`e:
 \prob{\bigcup_{x_i : f(x_i) = y_j} \{X = x_i\}} =
 \prob{\bigcup_{x_i : f(x_i) = y_j} \{z \in S : X(z) = x_i\}}
 \]
-\`E un modo molto complesso per dire una cosa semplice:
+\`E un modo molto complementesso per dire una cosa semplice:
 \[
 \prob{f(X) = y_j} = \mass[f(X)]{y_j}
 \]
@@ -792,16 +792,16 @@ Un rivenditore acquista componenti elettriche in lotti da 10. Controlla a caso 3
 
 $F = $ ``il lotto ha 4 pezzi difettosi''. $E = $ ``il lotto controllato \`e rifiutato''.
 \[
-\prob{E} = \probcond{E}{F} \ \prob{F} + \probcond{E}{F^{\compl}} \ \prob{F^{\compl}}
+\prob{E} = \probcond{E}{F} \ \prob{F} + \probcond{E}{F^{\complement}} \ \prob{F^{\complement}}
 \]
 Vediamo il valore di $\probcond{E}{F}$. Scegliamo tre pezzi da un lotto con quattro difettosi. $X$ \`e il numero di pezzi difettosi che estraiamo. Quindi $X = \operatorname{Iperg}(N = 10, n = 3, m = 4)$. Quindi:
 \[
 \probcond{E}{F} = \probcond{X \ge 1}{F} = 1 - \probcond{X = 0}{F} =
 1 - \frac{\binom{6}{3}}{10}{3}
 \]
-Analogamente si trova $\probcond{E}{F^{\compl}} = 1 - \probcond{X =0}{F}$, con questa volta $X = \operatorname{Iper}(N = 10, n = 3, m = 1)$. Che \`e:
+Analogamente si trova $\probcond{E}{F^{\complement}} = 1 - \probcond{X =0}{F}$, con questa volta $X = \operatorname{Iper}(N = 10, n = 3, m = 1)$. Che \`e:
 \[
-\probcond{E}{F^{\compl}} = 1 - \frac{\binom{9}{3}}{\binom{10}{3}}
+\probcond{E}{F^{\complement}} = 1 - \frac{\binom{9}{3}}{\binom{10}{3}}
 \]
 \end{exmp}
 
@@ -818,7 +818,7 @@ Sia $X$ una variabile aleatoria $m$-dimensionale discreta, la sua densit\`a disc
 \end{defn}
 Se scriviamo $X$ componente per componente, ossia $X = (X_1, X_2, \ldots, X_m)$, la sua densit\`a discreta $p_X$ \`e detta densit\`a congiunta delle variabili aleatorie $X_1, X_2, \ldots, X_m$.
 
-Se scriviamo il vettore $a$ componente per componente, ossia $a = (\seq{a}{1}{m})$, la densit\`a discreta si pu\`o scrivere come $\prob{X = a} = \prob{X_1 = a_1, X_2 = a_2, \ldots, X_m = a_m}$, o anche:
+Se scriviamo il vettore $a$ componente per componente, ossia $a = (a_1, \dots, a_m)$, la densit\`a discreta si pu\`o scrivere come $\prob{X = a} = \prob{X_1 = a_1, X_2 = a_2, \ldots, X_m = a_m}$, o anche:
 \[
 \mass{a} = \mass[X_1, X_2, \ldots, X_m]{a_1, a_2, \ldots, a_m}
 \]
@@ -865,7 +865,7 @@ Le densit\`a marginali non determinano la densit\`a congiunta.
 \end{oss}
 
 \begin{defn}[Indipendenza di variabili aleatorie]
-L'indipendenza ha senso solo se le variabili aleatorie sono definite sullo stesso spazio campionario. Le variabili aleatorie $\seq{X}{1}{m} : S \to \reals$ si dicono indipendenti se per ogni scelta di sottoinsiemi $\seq{A}{1}{m} \subseteq \reals$ vale che:
+L'indipendenza ha senso solo se le variabili aleatorie sono definite sullo stesso spazio campionario. Le variabili aleatorie $X_1, \dots, X_m : S \to \reals$ si dicono indipendenti se per ogni scelta di sottoinsiemi $A_1, \dots, A_m \subseteq \reals$ vale che:
 \[
 \prob{X_1 \in A_1, X_2 \in A_2, \ldots, X_m \in A_m} = \prob{X_1 \in A_1} \cdot \prob{X_2 \in A_2} \cdot \ldots \cdot \prob{X_m \in A_m}
 \]
@@ -1607,7 +1607,7 @@ E inoltre:
 \int_{[a,b]} f(z) \, dz = \int_{a}^{b} \frac{1}{b - a} \, dz = 
 \frac{b - a}{b - a} = 1
 \]
-Nel caso particolare in cui $a = 0$ e $b = 1$, qual \`e la probabiit\`a che $X$ sia in $[0, \sfrac{1}{2}]$? Proprio $\sfrac{1}{2}$. La probabilit\`a che la variabile aleatoria assuma valori in un intervallo \`e la lunghezza dell'intervallo. La funzione di probabilit\`a \`e omogenea.
+Nel caso particolare in cui $a = 0$ e $b = 1$, qual \`e la probabiit\`a che $X$ sia in $[0, \frac{1}{2}]$? Proprio $\frac{1}{2}$. La probabilit\`a che la variabile aleatoria assuma valori in un intervallo \`e la lunghezza dell'intervallo. La funzione di probabilit\`a \`e omogenea.
 
 \subsection{Variabile aleatoria normale (o gaussiana)}
 

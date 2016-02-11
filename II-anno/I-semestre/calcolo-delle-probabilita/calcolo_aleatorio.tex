@@ -81,21 +81,21 @@ Per transitivit\`a ho dimostrato la tesi.
 
 L'additivit\`a richiede la disgiunzione.
 
-\begin{prop}[Probabilit\`a dell'evento complementare]
-Dato un evento $E$, l'evento complementare $E^{\compl} = S \setminus E$ ha probabilit\`a:
+\begin{prop}[Probabilit\`a dell'evento complementementare]
+Dato un evento $E$, l'evento complementementare $E^{\complement} = S \setminus E$ ha probabilit\`a:
 \[
-\prob{E^{\compl}} = 1 - \prob{E}
+\prob{E^{\complement}} = 1 - \prob{E}
 \]
 \end{prop}
 \begin{proof}
 Applico la proposizione \ref{additivita_finita} con $k = 2$, dato che i due insiemi sono disgiunti.
 \[
-\prob{E \cup E^{\compl}} = \prob{E} + \prob{E^{\compl}}
+\prob{E \cup E^{\complement}} = \prob{E} + \prob{E^{\complement}}
 \]
-Ma poich\'e $E + E^{\compl} = S$:
+Ma poich\'e $E + E^{\complement} = S$:
 \[
-\prob{E \cup E^{\compl}} = \prob{E} + \prob{E^{\compl}} = P(S) = 1 \implies
-\prob{E^{\compl}} = 1 - \prob{E}
+\prob{E \cup E^{\complement}} = \prob{E} + \prob{E^{\complement}} = P(S) = 1 \implies
+\prob{E^{\complement}} = 1 - \prob{E}
 \]
 \end{proof}
 
@@ -357,7 +357,7 @@ P(E_1 \cup E_2 \cup \dots \cup E_n \cup E_{n+1}) \le P(E_1 \cup \dots \cup E_n) 
 \begin{exmp}
 Abbiamo cinque coppie, ciascuna formata da un uomo e una donna. Vogliamo sapere qual \`e la probabilit\`a di prendere $G_i = F_i$ balla con $M_i$.
 \[
-E^{\compl} = G_1 \cup G_2 \cup G_3 \cup G_4 \cup G_5
+E^{\complement} = G_1 \cup G_2 \cup G_3 \cup G_4 \cup G_5
 \]
 \[
 P(E^c) = P(G_1 \cup G_2 \cup G_3 \cup G_4 \cup G_5) = \sum_{r = 1}^{5} (-1)^{r +1} \sum_{1 \le i_1 < i_2 \dots i_r \le 5} P( G_{i_1} \cap G_{i_2} \dots G_{i_r})
@@ -568,13 +568,13 @@ $S \ni (x_1, x_2) \to (x_2, x_1) \in S$, ossia le coppie in cui $x_1$ \`e asso s
 \begin{defn}[Rapporto a favore di un evento]
 Il rapporto a favore di un evento $A$ \`e definito come:
 \[
-\frac{P(A)}{P(A^{\compl})}
+\frac{P(A)}{P(A^{\complement})}
 \]
 \end{defn}
 \begin{exmp}
-``La Juve \`e data 10 a 2'' vuol dire che $\frac{P(A)}{P(A^{\compl})} = \frac{10}{2}$.
+``La Juve \`e data 10 a 2'' vuol dire che $\frac{P(A)}{P(A^{\complement})} = \frac{10}{2}$.
 \[
-\frac{P(A)}{P(A^{\compl})} = c \implies P(A) = c (1 - P(A)) \implies P(A) [1 + c] = c \implies P(A) = \frac{c}{1 + c}
+\frac{P(A)}{P(A^{\complement})} = c \implies P(A) = c (1 - P(A)) \implies P(A) [1 + c] = c \implies P(A) = \frac{c}{1 + c}
 \]
 \end{exmp}
 
@@ -595,10 +595,10 @@ P(A) = 30 \%
 P(A_1 | A) = 0{,}4 \%
 \]
 \[
-P(A_1 | A^{\compl}) = 0{,}2 \%
+P(A_1 | A^{\complement}) = 0{,}2 \%
 \]
 \[
-P(A_1) = P(A_1 | A) P(A) + P(A_1 | A^{\compl}) P(A^{\compl})
+P(A_1) = P(A_1 | A) P(A) + P(A_1 | A^{\complement}) P(A^{\complement})
 \]
 Dopo un anno il cliente ha avuto un incidente. Qual \`e ora la probabilit\`a che \`e propenso agli incidenti?
 \[
@@ -709,28 +709,28 @@ Non sono indipendenti.
 \end{exmp}
 
 \begin{prop}
-Se $E$ e $F$ sono indipendenti, allora $E$ e $F^{\compl}$ sono indipendenti.
+Se $E$ e $F$ sono indipendenti, allora $E$ e $F^{\complement}$ sono indipendenti.
 \end{prop}
 \begin{proof}
 Ipotesi: $P(E F) = P(E) P(F)$
-Tesi: $P(E F^{\compl}) = P(E) P(F^{\compl})$
+Tesi: $P(E F^{\complement}) = P(E) P(F^{\complement})$
 
-Abbiamo che $E \cap F^{\compl} = E \setminus (E \cap F)$
+Abbiamo che $E \cap F^{\complement} = E \setminus (E \cap F)$
 
-Quindi $P(E F^{\compl}) = P(E) - P(EF) = P(E) - P(E) P(F) = P(E) (1 - P(F)) = P(E) P(F^{\compl})$
+Quindi $P(E F^{\complement}) = P(E) - P(EF) = P(E) - P(E) P(F) = P(E) (1 - P(F)) = P(E) P(F^{\complement})$
 \end{proof}
-Con il complementare, l'unione e l'intersezione, dato F posso generare solo $\emptyset$, $S$ e $F^{\compl}$.
+Con il complementementare, l'unione e l'intersezione, dato F posso generare solo $\emptyset$, $S$ e $F^{\complement}$.
 
 L'evento vuoto (impossibile) \`e indipendente da tutti. L'evento certo anche \`e indipendente da tutti gli altri.
 
-Quindi date $E$, $F$ con $E$ ed $F$ indipendenti, $E$ \`e indipendente da ogni insieme generabile da $F$ con unione, intersezione e complementare.
+Quindi date $E$, $F$ con $E$ ed $F$ indipendenti, $E$ \`e indipendente da ogni insieme generabile da $F$ con unione, intersezione e complementementare.
 
-Vale che se $E$, $F$ e $G$ sono indipendenti, allora che $E$ \`e indipendente da ogni evento costruito a partire da $F$ e $G$ tramite unione, intersezione e complementare.
+Vale che se $E$, $F$ e $G$ sono indipendenti, allora che $E$ \`e indipendente da ogni evento costruito a partire da $F$ e $G$ tramite unione, intersezione e complementementare.
 
 \begin{defn}[Indipendenza generalizzata]
 Dati $n$ eventi $E_1, E_2 \dots E_n$, questi sono detti indipendenti se comunque ne prendo una sottofamiglia, la probabilit\`a dell'intersezione \`e il prodotto delle singole probabilit\`a.
 \begin{gather*}
-\forall r \ge 2, \forall \seq{i}{1}{r} : 1 \le i_1 < i_2 < \ldots < i_r \le n \\ P \left( E_{i_1} \cap E_{i_2} \cap \ldots \cap E_{i_r} \right) = P(E_{i_1}) \cdot P(E_{i_2}) \cdot \ldots \cdot P(E_{i_r})
+\forall r \ge 2, \forall i_1, \dots, i_r : 1 \le i_1 < i_2 < \ldots < i_r \le n \\ P \left( E_{i_1} \cap E_{i_2} \cap \ldots \cap E_{i_r} \right) = P(E_{i_1}) \cdot P(E_{i_2}) \cdot \ldots \cdot P(E_{i_r})
 \end{gather*}
 \end{defn}
 
@@ -761,7 +761,7 @@ P \left( \bigcap_{i=1}^{n} \right) = \prod_{i=1}^{n} \overbrace{P(F_i)}^{p} = p^
 \]
 Vediamo la probabilit\`a che ci sia almeno un successo nelle prime $n$ prove. $P($``almeno un successo nelle prime $n$-prove''$) = 1 -  P($``sempre insuccesso nelle prime $n$-prove''$)$.
 \[
-1 - P \left( \bigcap_{i=1}^{n} F_{i}^{\compl} \right) = 1 - \prod_{i=1}^{n} P(F_{i}^{\compl}) = 1 - q^n = 1 - (1 - p)^{n}
+1 - P \left( \bigcap_{i=1}^{n} F_{i}^{\complement} \right) = 1 - \prod_{i=1}^{n} P(F_{i}^{\complement}) = 1 - q^n = 1 - (1 - p)^{n}
 \]
 Anche in questo caso ci riferiamo a prove operativamente indipendenti. Non \`e necessario pensare a una successione infinita di prove, questi esempi valgono anche nel caso di successioni finite.
 \end{exmp}
@@ -778,11 +778,11 @@ P(\text{``esattamente $k$ successi nelle prime $n$ prove''})
 \]
 Consideriamo prima la probabilit\`a che nelle prime $n$ prove ho che le prime $k$ prove sono successi, le restanti $n - k$ sono insuccessi.
 \[
-P(F_1 \cap F_2 \cap \dots \cap F_k \cap F_{k+1}^{\compl} \cap \dots \cap F_{n}^{\compl})
+P(F_1 \cap F_2 \cap \dots \cap F_k \cap F_{k+1}^{\complement} \cap \dots \cap F_{n}^{\complement})
 \]
 Sono matematicamente indipendenti, quindi per indipendenza questo \`e uguale a:
 \[
-P(F_1) \cdot P(F_2) \cdot \ldots \cdot P(F_k) \cdot P(F_{k+1}^{\compl}) \cdot \ldots \cdot P(F_{n}^{\compl}) = p^{k} \cdot q^{n-k}
+P(F_1) \cdot P(F_2) \cdot \ldots \cdot P(F_k) \cdot P(F_{k+1}^{\complement}) \cdot \ldots \cdot P(F_{n}^{\complement}) = p^{k} \cdot q^{n-k}
 \]
 Anche cambiando l'ordine dei successi, la probabilit\`a \`e sempre $p^k \cdot q^{n-k}$.
 
@@ -790,8 +790,8 @@ Fissato $A \subset \{ 1 \dots n \}$ con $|A| = k$, $P($``la prova $i$-esima \`e 
 
 \begin{proof}
 \[
-P \left( \left( \bigcap_{i \in A} F_i \right) \cap \left( \bigcap_{j \in B \setminus A} F_j^{\compl} \right) \right) = 
-\prod_{i \in A} P(F_i) \cdot \prod_{j \in B \setminus A} P(F_{j}^{\compl}) = p^{|A|} \cdot q^{|B \setminus A|} = p^k q^{n-k}
+P \left( \left( \bigcap_{i \in A} F_i \right) \cap \left( \bigcap_{j \in B \setminus A} F_j^{\complement} \right) \right) = 
+\prod_{i \in A} P(F_i) \cdot \prod_{j \in B \setminus A} P(F_{j}^{\complement}) = p^{|A|} \cdot q^{|B \setminus A|} = p^k q^{n-k}
 \]
 \end{proof}
 
@@ -832,7 +832,7 @@ Gli eventi $E_n \cap F$ sono a due a due disgiunti. Posso applicare l'additivit\
 
 Per questo, le propriet\`a che valgono per le probabilit\`a, valgono con le probabilit\`a condizionate.
 \[
-\probcond{E^{\compl}}{F} = 1 - \probcond{E}{F}
+\probcond{E^{\complement}}{F} = 1 - \probcond{E}{F}
 \]
 \[
 \probcond{A \cup B}{F} = \probcond{A}{F} + \probcond{B}{F} - \probcond{A \cap B}{F}
@@ -870,9 +870,9 @@ Supponiamo di avere $n$ sottoesperimenti.
 \]
 Ogni $S_i$ \`e numerabile.
 \[
-S = S_1 \times \ldots \times S_n = \{ (\seq{s}{1}{n}) : s_i \in S_i \text{ con } i = 1, \ldots, n \}
+S = S_1 \times \ldots \times S_n = \{ (s_1, \dots, s_n) : s_i \in S_i \text{ con } i = 1, \ldots, n \}
 \]
-$P$ \`e l'unica misura di probabilit\`a tale che $\prob{\{(\seq{s}{1}{n})\}} = \prob[P_1]{\{s_1\}} \cdot \ldots \cdot \prob[P_n]{\{s_n\}}$.
+$P$ \`e l'unica misura di probabilit\`a tale che $\prob{\{(s_1, \dots, s_n)\}} = \prob[P_1]{\{s_1\}} \cdot \ldots \cdot \prob[P_n]{\{s_n\}}$.
 
 \begin{prop}
 Se $\abs{S_1}, \ldots, \abs{S_n} < + \infty$ e $(S_i, P_i)$  ha esiti equiprobabili $\forall  i = 1, \ldots, n \implies (S, P)$ ha esiti equiprobabili.
@@ -887,9 +887,9 @@ Se $\abs{S_1}, \ldots, \abs{S_n} < + \infty$ e $(S_i, P_i)$  ha esiti equiprobab
 
 Considero $n$ prove, ciascuna con esito di tipo successo/insuccesso (1/0). Supponiamo che $p$ sia la probabilit\`a che si verifichi il successo in una singola prova. La prova $i$-esima \`e descritta dallo spazio di probabilit\`a $(S_i, P_i)$. $S_i = \{0,1\}$, e $\prob[P_i]{\{1\}} = p$. $\prob[P_i]{\{0\}} = 1 - p = q$.
 \[
-S = S_1 \times \dots \times S_n = \{0,1\} = \{ (\seq{x}{1}{n}) : x \in \{ 0, 1 \}\}
+S = S_1 \times \dots \times S_n = \{0,1\} = \{ (x_1, \dots, x_n) : x \in \{ 0, 1 \}\}
 \]
-$P$ \`e l'unica funzione di probabilit\`a tale che $\prob{\{(\seq{x}{1}{n})\}} = \prod_{i = 1}^{n} \prob[P_i]{\{x_i\}} = p^m \cdot q^{m-n}$ con $m $ a indicare il numero degli 1 presenti in $(\seq{x}{1}{n})$.
+$P$ \`e l'unica funzione di probabilit\`a tale che $\prob{\{(x_1, \dots, x_n)\}} = \prod_{i = 1}^{n} \prob[P_i]{\{x_i\}} = p^m \cdot q^{m-n}$ con $m $ a indicare il numero degli 1 presenti in $(x_1, \dots, x_n)$.
 
 \begin{esercizio}
 Lancio 3 volte un dado truccato. Ciascuna faccia esce con probabilit\`a:
