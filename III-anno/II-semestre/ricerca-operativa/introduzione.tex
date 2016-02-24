@@ -1,0 +1,67 @@
+
+\section{Introduzione}
+
+La ricerca operativa tratta la risoluzione di problemi di ottimizzazione.
+Si tratta tipicamente di massimizzare o minimizzare il valore di una funzione $f(x) : \reals^n \to \reals$.
+Poich\'e $\min \left( f(x) \right) = - \max \left( - f(x) \right)$, possiamo considerare solo problemi di minimizzazione.
+Vogliamo quindi trovare $\min \left( f(x) \right)$ con $x \in S$, $S \subseteq \reals^n$.
+$f$ \`e chiamata \emph{funzione obiettivo}, $S$ \`e l'insieme delle soluzioni ammissibili (che soddisfano alcuni vincoli).
+
+Qualche definizione.
+Dato il problema di ottimizzazione $P$:
+\[
+	P =
+	\begin{cases}
+		\min \left( f(x) \right), \, f : \reals^n \to \reals \\
+		x \in S \\
+		S \subseteq \reals^n
+	\end{cases}
+\]
+Diciamo che $P$:
+\begin{itemize}
+	\item \`e inammissibile se $S = \emptyset$;
+	\item \`e illimitato se $\forall M > 0$, $\exists x \in S$ tale per cui $f(x) < -M$, ossia la funzione \`e illimitata inferioremente in $S$;
+	\item ammette soluzione ottima se $\exists \cap{x} \in S$ tale per cui $f(x) \ge f(\cap{x}) \forall x \in S$.
+\end{itemize}
+
+I problemi di ottimizzazione possono essere classificati sotto due aspetti:
+\begin{itemize}
+	\item natura delle variabili (intere o continue);
+	\item struttura delle funzioni (lineari o meno).
+\end{itemize}
+
+Parliamo di ottimizzazione continua se $x \in \reals^n$, ossia consideriamo vettori di reali come valori della funzione.
+Il problema pu\`o essere vincolato (se $S \subset \reals^n$), o non vincolato (se $S = \reals^n$).
+
+Parliamo di ottimizzazione discreta se $x \in \integers^n$, ossia consideriamo solo vettori di interi come valori della funzione.
+Si parla di ottimizzazione a numeri interi (o ottimizzazione intera) se $S \subseteq \integers^n$, e di ottimizzazione booleanaa se $S \subseteq \{ 0, 1 \}^n$.
+
+Ci sono poi problemi con entrambi i tipi di variabili (problemi misti).
+
+\subsection{Programmazione matematica}
+
+Parliamo di programmazione matematica quando $S$ (l'insieme ammissibile) \`e descritto da un numero finito di disuguaglianze:
+\[
+	S = \{ x \in \reals^n \text{ t.c. } g_i(x) \ge b_i, \, i \in [m] \}
+\]
+con ciascun $g_i : \reals^n \to \reals$, e $b_i \in \reals$.
+
+Possiamo facilmente tradurre un vincolo del tipo $g(x) \le b$ nel vincolo $- g(x) \ge - b$, e il vincolo di uguaglianza $g(x) = b$ nei due vincoli $g(x) \ge b$ e $g(x) \le b$.
+
+Di norma scriveremo:
+\[
+	\begin{cases}
+		\min \left( f(x) \right) \\
+		g_1 (x) \ge b_1 \\
+		\dots \\
+		g_m (x) \ge b_n
+	\end{cases}
+\]
+
+Consideriamo un vincolo $g(x) \in b$, e $\cap{x} \in \reals^n$.
+\begin{itemize}
+	\item se $g(\cap{x}) \ge b$, il vincolo \`e soddisfatto;
+	\item se $g(\cap{x}) < b$, il vincolo non \`e soddisfatto;
+	\item se $g(\cap{x}) = b$, il vincolo \`e attivo in $\cap{x}.
+\end{itemize}
+

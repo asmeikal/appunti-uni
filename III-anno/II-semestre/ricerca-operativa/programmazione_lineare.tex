@@ -1,0 +1,103 @@
+\section{Programmazione lineare}
+
+Ci occuperemo di problemi di programmazione lineare.
+I problemi di programmazione lineare sono problemi di programmazione matematica in cui tutte le funzioni $f(x), g_i(x)$.
+
+Consideriamo problemi di programmazione lineare in cui le variabili possono assumere valori reali.
+Con problemi di programmazione lineare possiamo fare sempre tre assunzioni:
+\begin{enumerate}
+	\item c'\`e proporzionalit\`a diretta con le variabili;
+	\item c'\`e additivit\`a;
+	\item le variabili sono continue.
+\end{enumerate}
+
+Introdurremo dei modelli di programmazione lineare, dotati di sufficiente generalit\`a, facili perch\'e usano solo algebra lineare, per i quali disponiamo di algoritmi risolutivi efficienti, e per i quali \`e possibile condurre un'analisi della sensitivit\`a post-ottimale: come varia la soluzione al variare dei dati.
+
+Un problema di programmazione lineare sar\`a qualcosa del tipo:
+\[
+	\begin{cases}
+		\min \left( c_1 x_1 + \dots + c_n x_n \right) \\
+		a_{1,1} x_1 + \dots + a_{1,n} x_n \ge b_1 \\
+		dots \\
+		a_{m,1} x_1 + \dots + a_{m,n} x_n \ge b_m
+	\end{cases}
+\]
+
+A chi non fa venire in mente delle matrici?
+Chiamiamo:
+\[
+	c =
+	\begin{pmatrix}
+		c_1 \\ \vdots \\ c_n
+	\end{pmatrix}
+	\qquad
+	x =
+	\begin{pmatrix}
+		x_1 \\ \vdots \\ x_n
+	\end{pmatrix}
+	\qquad
+	b =
+	\begin{pmatrix}
+		b_1 \\ \vdots \\ b_m
+	\end{pmatrix}
+\]
+Indicando con $c^{T}$ la trasposta di $c$ (che \`e un vettore colonna), possiamo scrivere la funzione obiettivo come $\min \left( c^{T} x \right)$.
+La funzione obiettivo \`e il prodotto scalare dei vettori $c$ e $x$, ma possiamo anche trattarli come matrici, rendere $c$ un vettore riga, e fare il prodotto matriciale fra i due.
+
+Per i vincoli (che sono $m$) creiamo una matrice $A$ di dimensione $m \times n$, dove $[A]_{i,j} = a_{i,j}$ nella notazione di prima.
+Scriviamo quindi il problema come:
+\[
+	\begin{cases}
+		\min \left( c^{T} x \right) \\
+		A x \ge b
+	\end{cases}
+\]
+
+\subsectioN{Allocazione ottima di risorse limitate}
+
+Dobbiamo fabbricare $n$ prodotti $P_i$, e abbiamo a disposizione $m$ risorse $R_j$ (in quantit\`a limitate $b_j$).
+Il prodotto $P_i$ ha bisogno di una quantit\`a $a_{i,j}$ della risorsa $R_j$ per essere realizzato.
+Il prodotto $P_i$ viene poi venduto a un prezzo $c_i$.
+I dati sono quindi:
+\begin{center}
+	\begin{tabular}{c|ccc|c}
+		& $P_1$ & $\dots$ & $P_n$ & \\
+		\hline
+		$R_1$ & $a_{1,1}$ & $\dots$ & $a_{n, 1}$ & $b_1$ \\
+		$\vdots$ & $\vdots$ & $\ddots$ & $\vdots$ & $\vdots$ \\
+		$R_m$ & $a_{1, m}$ & $\dots$ & $a_{n, m}$ & $b_m$ \\
+		\hline
+		& $c_1$ & $\dots$ & $c_n$ &
+	\end{tabular}
+\end{center}
+Le risorse o ``concorrono'' alla realizzazione dei prodotti, ossia sono tutte necessarie per realizzare il certo prodotto, o sono ``indipendenti'', ossia ciascuna risorsa \`e in grado di realizzare autonomamente il prodotto.
+
+Se le risorse concorrono, introduciamo le variabili $x_i$ a cui associamo la quantit\`a di prodotto $P_i$ realizzata.
+Il problema si esprime come:
+\[
+	\begin{cases}
+		\max \left( c_1 x_1 + \dots c_n x_n \right) \\
+		a_{1,1} x_1 + \dots + a_{n,1} x_n \ge b_1 \\
+		\dots \\
+		a_{1,m} x_1 + \dots + a_{n,m} x_n \ge b_m \\
+		x_1 \ge 0 \\
+		\dots \\
+		x_n \ge 0
+	\end{cases}
+\]
+
+Se le risorse sono indipendenti, introduciamo le variabili $x_{i,j}$ a cui associamo la quantit\`a di prodotto $P_i$ realizzata dalla risorsa $R_j$.
+\[
+	\begin{cases}
+		\max \left( c_1 \cdot (x_{1,1} + \dots + x_{1,m}) + \dots c_n \cdot (x_{n,1} + \dots + x_{n,m}) \right) \\
+		a_{1,1} x_{1,1} + \dots + a_{n,1} x_{n,1} \ge b_1 \\
+		\dots \\
+		a_{1,m} x_{1,m} + \dots + a_{n,m} x_{n,m} \ge b_m \\
+		x_{1,1} \ge 0 \\
+		\dots \\
+		x_{n,m} \ge 0
+	\end{cases}
+\]
+
+\subsection{Miscelazione}
+
