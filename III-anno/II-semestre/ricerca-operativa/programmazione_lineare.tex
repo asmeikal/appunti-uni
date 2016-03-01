@@ -101,3 +101,171 @@ Se le risorse sono indipendenti, introduciamo le variabili $x_{i,j}$ a cui assoc
 
 \subsection{Miscelazione}
 
+% fill here
+
+\subsection{Trasporti}
+
+% fill here
+
+\subsection{Multiplant}
+
+Esiste anche pianificazione multiperiodo: compro in una settimana per usare la settimana dopo.
+
+L'azienda produce due prodotti, in due impianti.
+
+			| Impianto 1 | Impianto 2
+Risorse:	|   P1   P2  |  P1   P2
+Levigatura  |   4    2   |  5    3
+Pulitura    |   2    5   |  5    6
+
+Max levigatura 1: 80h/giorno
+Max pulitura 1:   60h/giorno
+Max levigatura 2: 70h/giorno
+Max pulitura 2:   65h/giorno
+
+Ciascuna unit\`a di prodotto utilizza 4 kg di materiale grezzo.
+P1 viene venduto a 10 dollari a pezzo, P2 a 15 dollari a pezzo.
+
+Modellare con un problema di PL per massimizzare il profitto settimanale sapendo che:
+\begin{enumerate}
+	\item Settimanalmente abbiamo 75 kg di materiale grezzo presso l'impianto 1, e 45 kg presso l'impianto 2.
+	\item Settimanalmente abbiamo 120 kg di materiale grezzo presso i due impianti.
+\end{enumerate}
+
+Caso 1:
+
+$x_{i,j}$ indica la quantit\`a di prodotto $i$ che l'impianto $j$ realizza.
+
+I due impianti sono indipendenti:
+
+\max (10 x_{1,1} + 15 x_{2,1})
+4 x_{1,1} + 2 x_{2,1} \le 80
+2 x_{1,1} + 5 x_{2,1} \le 60
+4 x_{1,1} + 4 x_{2,1} \le 75
+x_{1,1} \ge 0
+x_{2,1} \ge 0
+
+\max (10 x_{1,2} + 15 x_{2,2})
+5 x_{1,2} + 3 x_{2,2} \le 70
+5 x_{1,2} + 6 x_{2,2} \le 65
+4 x_{1,2} + 4 x_{2,2} \le 45
+x_{1,2} \ge 0
+x_{2,2} \ge 0
+
+Caso 2:
+
+I due impianti non sono indipendenti.
+Stesse variabili.
+
+\max (10 (x_{1,1} + x_{1,2}) + 15 (x_{2,1} + x_{2,2}))
+4 x_{1,1} + 2 x_{2,1} \le 80
+2 x_{1,1} + 5 x_{2,1} \le 60
+5 x_{1,2} + 3 x_{2,2} \le 70
+5 x_{1,2} + 6 x_{2,2} \le 65
+4 x_{1,1} + 4 x_{2,1} + 4 x_{1,2} + 4 x_{2,2} \le 120
+x_{1,1} \ge 0
+x_{2,1} \ge 0
+x_{1,2} \ge 0
+x_{2,2} \ge 0
+
+La matrice dei primi 4 vincoli \`e una matrice a blocchi.
+
+Vediamo pianificazione sul lungo periodo, considerando solo l'impianto 1 visto sopra.
+Dobbiamo programmare la produzione di due prodotti in due settimane successive.
+Nella prima settimana possiamo vendere al pi\`u 12 prodotti P1 e al pi\`u 4 prodotti P2.
+Nella seconda settimana possiamo vendere al pi\`u 8 prodotti P1 e al pi\`u 12 prodotti P2.
+Inoltre, nella prima settimana si possono produrre pi\`u prodotti rispetto a quelli che si possono vendere.
+Costruire un modello lineare che permetta di massimizzare il profitto complessivo dalla vendita dei prodotti nelle due settimane sapendo che settimanalmente l'azienda dispone di 75 kg di materiale grezzo, e sapendo che il costo di immagazzinamento, indipendentemente dal prodotto, \`e di 2 dollari a prodotto.
+
+x_{i,j} indica la quantit\a di prodotto $i$ realizzata e venduta dall'impianto nella settimana $j$.
+x_{i,m} indica la quantit\`a di prodotto $i$ realizzata nella settimana 1 e immagazzinata, e venduta quindi nella settimana 2.
+
+\max (10 (x_{1,1} + x_{1,2} + x_{1,m}) + 15 (x_{2,1} + x_{2,2} + x_{2,m}) - 2 (x_{1,m} + x_{2,m})
+4 (x_{1,1} + x_{1,m}) + 2 (x_{2,1} + x_{2,m}) \le 80
+2 (x_{1,1} + x_{1,m}) + 5 (x_{2,1} + x_{2,m}) \le 60
+4 x_{1,2} + 2 x_{2,2} \le 80
+2 x_{1,2} + 5 x_{2,2} \le 60
+4 (x_{1,1} + x_{1,m}) + 4 (x_{2,1} + x_{2,m}) \le 75
+4 x_{1,2} + 4 x_{2,2} \le 75
+x_{1,1} \le 12
+x_{2,1} \le 4
+x_{1,2} + x_{1,m} \le 8
+x_{2,2} + x_{2,m} \le 12
+x_{1,1} \ge 0
+x_{1,2} \ge 0
+x_{2,1} \ge 0
+x_{2,2} \ge 0
+x_{1,m} \ge 0
+x_{2,m} \ge 0
+
+Alternativamente:
+x_{i,j} indica la quantit\`a di prodotto $i$ realizzata dall'impianto nella settimana $j$.
+y_{i} indica la quantit\`a di prodotto $i$ immagazzinata nella prima settimana.
+
+\max (10 (x_{1,1} - y_{1}) + 15 (x_{2,1} - y_{2}) + 10 (x_{1,2} + y_{1}) + 15 (x_{2,2} + y_{2}) - 2 (y_{1} + y_{2}))
+4 x_{1,1} + 2 x_{2,1} \le 80
+2 x_{1,1} + 5 x_{2,1} \le 60
+4 x_{1,2} + 2 x_{2,2} \le 80
+2 x_{1,2} + 5 x_{2,2} \le 60
+4 x_{1,1} + 4 x_{2,1} \le 75
+4 x_{1,2} + 4 x_{2,2} \le 75
+x_{1,1} - y_{1} \le 12
+x_{2,1} - y_{2} \le 4
+x_{1,2} + y_{1} \le 8
+x_{2,2} + y_{2} \le 12
+x_{1,1} \ge 0
+x_{1,2} \ge 0
+x_{2,1} \ge 0
+x_{2,2} \ge 0
+y_{1} \ge 0
+y_{2} \ge 0
+
+\begin{esercizio}
+	Una fabbrica produce due tipi di pneumatici (A e B).
+	Ha una gestione trimestrale della produzione.
+	Deve soddisfare il seguente ordine (num. pneumatici) di mese in mese:
+    Mese  |     1 |     2 |     3
+	A     | 16000 |  7000 |  4000
+	B     | 14000 |  4000 |  6000
+	La fabbrica dispone di due linee di produzione L1 e L2.
+	Le linee di produzione lavorano in parallelo, autonomamente.
+	Disponibilit\`a (in ore) delle linee di produzione:
+	Mese  |    1 |    2 |    3
+	L1    | 2000 |  400 |  200
+	L2    | 3000 |  800 | 1000
+	I tempi di produzione (in ore) dei pneumatici variano fra le due linee:
+	Tempi |   A |   B
+	L1    | .10 | .12
+	L2    | .13 | .18
+	Il costo di produzione orario \`e uguale su entrambe le linee, ed \`e pari a 6 euro a ora.
+	Il costo del materiale grezzo \`e di 2.5 euro per il tipo A, e 4.0 euro per il tipo B.
+	Nei primi due mesi \`e possibile produrre pi\`u del richiesto.
+	La produzione in eccesso pu\`o essere immagazzinata.
+	Il costo di immagazzinamento \`e di .35 euro a pneumatico al mese.
+	I magazzini sono vuoti a inizio e a fine trimestre.
+	Modellare con un problema di PL trascurando l'interezza dei prodotti.
+
+	\{A,B\}_{j, k} quantit\`a di prodotto realizzata dalla linea L_{j} nel mese k \in \{1, 2, 3\}.
+	A_{i}, B_{i} con i \in \{1,2\} indica la quantit\`a di prodotto immagazzinato nei due mesi.
+
+	\min (
+		6 * 0.10 (A_{1,1} + A_{1,2} + A_{1,3}) + 6 * 0.12 (A_{2,1} + A_{2,2} + A_{2,3}) +
+		6 * 0.12 (B_{1,1} + B_{1,2} + B_{1,3}) + 6 * 0.18 (B_{2,1} + B_{2,2} + B_{2,3}) +
+		2.5 (A_{1,1} + A_{1,2} + A_{1,3} + A_{2,1} + A_{2,2} + A_{2,3}) +
+		4 (B_{1,1} + B_{1,2} + B_{1,3} + B_{2,1} + B_{2,2} + B_{2,3}) +
+		0.35 * (A_{1} + A_{2} + B_{1} + B_{2})
+	)
+	A_{1,1} + A_{2,1} - A_{1} = 16000
+	B_{1,1} + B_{2,1} - B_{1} = 14000
+	A_{1,2} + A_{2,2} + A_{1} - A_{2} = 7000
+	B_{1,2} + B_{2,2} + B_{1} - B_{2} = 4000
+	A_{1,3} + A_{2,3} + A_{2} = 4000
+	B_{1,3} + B_{2,3} + B_{2} = 6000
+	0.10 A_{1,1} + 0.12 B_{1,1} \le 2000
+	0.10 A_{1,2} + 0.12 B_{1,2} \le 400
+	0.10 A_{1,3} + 0.12 B_{1,3} \le 200
+	0.12 A_{2,1} + 0.18 B_{2,1} \le 3000
+	0.12 A_{2,2} + 0.18 B_{2,2} \le 800
+	0.12 A_{2,3} + 0.18 B_{2,3} \le 1000
+\end{esercizio}
+
