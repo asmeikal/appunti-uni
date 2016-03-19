@@ -5,4 +5,10 @@
 !.gitignore
 !Makefile
 !*.md
+!*.mzn
+!*.dzn
+!*.mzp
+!*.dat
+!*.mod
+!*.run
 
