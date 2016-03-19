@@ -1,0 +1,16 @@
+# run scripts with include [script_name]
+
+# clean memory
+reset;
+
+model first_example.mod;
+
+# solve and display results
+option solver cplex;
+solve;
+
+# show results with display [var]
+display x1;
+display x2;
+display Funzione_Obiettivo;
+

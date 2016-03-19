@@ -1,0 +1,30 @@
+# run scripts with include [script_name]
+
+# clean memory
+reset;
+
+model esercizio1.mod;
+data  esercizio1a.dat;
+
+# solve and display results
+option solver cplex;
+solve;
+
+# show results with display [var]
+display MerceTrasportata;
+display Costo;
+
+# clean memory
+reset;
+
+model esercizio1.mod;
+data  esercizio1b.dat;
+
+# solve and display results
+option solver cplex;
+solve;
+
+# show results with display [var]
+display MerceTrasportata;
+display Costo;
+
