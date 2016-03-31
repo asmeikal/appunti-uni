@@ -6,8 +6,8 @@
 
 % this is a slightly optimized version: finds unsatisfiable cases faster
 % is a little slower with small cases
-% with P: 9, W: 5, G: 3 finds that there is no solution in 8s 138msec
-% socialgolf.mzn has no solution after 1m 17s
+% with P: 9, W: 5, G: 3 finds that there is no solution in 176msec
+% socialgolf.mzn has no solution after 2m 38s
 
 include"alldifferent.mzn";
 include"alldifferent_except_0.mzn";
@@ -47,12 +47,19 @@ constraint forall(p in 1..players, w in 1..weeks, s in 1..S) (
 
 % break simmetries
 
+% order groups in each week
 constraint forall(w in 1..weeks, g in 1..groups-1) (
   arrangement[w,g,1] < arrangement[w,g+1,1]
 );
 
+% order players in each week
 constraint forall(w in 1..weeks, g in 1..groups, s in 1..S-1) (
   arrangement[w,g,s] < arrangement[w,g,s+1]
+);
+
+% fix first week
+constraint forall(g in 1..groups, s in 1..S) (
+  fix(arrangement[1,g,s] = s + S*(g-1))
 );
 
 % each player is in 1 group per week
