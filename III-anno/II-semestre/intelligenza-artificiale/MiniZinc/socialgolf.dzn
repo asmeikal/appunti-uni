@@ -1,6 +1,6 @@
 % es. A.5.8
 % social golfers
 
-players = 9;
+players = 12;
 weeks   = 5;
-groups  = 3;
+groups  = 4;
