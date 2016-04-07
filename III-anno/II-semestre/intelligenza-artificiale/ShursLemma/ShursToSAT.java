@@ -69,7 +69,7 @@ public class ShursToSAT {
 		for(int y : urnsRange.values()) {
 			for(int i : ballsRange.values()) {
 				for (int j : ballsRange.values()) {
-					if (i + j <= n) {
+					if ((i + j <= n) && (i != j)) {
 						enc.addComment("Property in urn " + y + " for balls " + i + " and " + j);
 						enc.addNegToClause("U", i, y);
 						enc.addNegToClause("U", j, y);
