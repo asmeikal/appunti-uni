@@ -1,0 +1,30 @@
+
+set Componenti := C1 C2 C3 C4;
+set Elementi := Azoto Fosforo Potassio;
+
+param Ordine := 10000;
+
+param CostoFinito := 185;
+
+param Costo :=
+C1  120
+C2  125
+C3  140
+C4  180;
+
+param QtaElemento :=
+Azoto       .04
+Fosforo     .15
+Potassio    .18;
+
+param QtaComponente :  C1  C2  C3  C4 :=
+Azoto                 .54 .10 .20 .15
+Fosforo               .10 .45 .05 .20
+Potassio              .03 .13 .38 .17;
+
+param DispIniziale :=
+C1    0
+C2  200
+C3    0
+C4    0;
+

@@ -1,0 +1,18 @@
+set BIGNE := crema ciocc panna;
+set MATERIE := farina zucchero latte;
+
+param: domanda:=
+crema 1000
+ciocc 1000
+panna 900;
+
+param consumo: crema ciocc panna:=
+farina 20 30 15
+zucchero 10 15 15
+latte 15 10 25;
+
+param: costo disponibilita:=
+farina 0.001 100000
+zucchero 0.002 100000
+latte 0.003 60000;
+
