@@ -320,13 +320,46 @@ Gli alberi sono molto diversi gli uni dagli altri, ma questo vale sempre.
 	\end{align*}
 	Dove $c$ \`e il numero di vertici di grado 1.
 	Quindi $2n - 2 \ge 2n - c \impies c \ge 2$, abbiamo almeno 2 vertici di grado 1.
-	
 
+	Facciamo induzione sul numero dei vertici.
+	Supponiamo sia vero per $\abs{\verts{\bar{G}}} < n$ che se $\abs{\verts{\bar{G}}} = \abs{\edges{\bar{G}}} + 1 \implies \bar{G}$ \`e un albero.
+	Abbiamo visto che $\exists y \in \verts{G}$ tale che $\degree{y} = 1$.
+	$G$ induce $\bar{G}$ su $\verts{G} \setminus \{y\}$.
+	$\bar{G}$ \`e connesso, come $G$, infatti da $y$ possiamo andare ovunque.
+	Inoltre $\abs{\verts{\bar{G}}} = \abs{\verts{G}} - 1$ e $\abs{\edges{\bar{G}}} = \abs{\edges{G}} - 1$.
+	Il passo base dell'induzione \`e con $\abs{\verts{G}} = 1$ e $\edges{G} = \emptyset$, e si verifica banalmente che questo grafo \`e un albero.
+	Ora, per ipotesi di induzione $\bar{G}$ \`e un albero, ossia non ha cicli.
+	Se $G$ avesse unciclo, questo dovrebbe coinvolgere l'arco incidente in $y$, poich\'e $\bar{G}$ non ha cicli.
+	Ma $\degree{y} = 1$, quindi $G$ neanche ha cicli.
+\end{proof}
+
+\begin{defn}
+	Un grafo senza cicli \`e una foresta.
+\end{defn}
+
+\begin{oss}
+	Sia $F$ una foresta, $\abs{\verts{F}} = \abs{\edges{F}} + \lambda$, dove $\lambda$ \`e il numero di componenti connesse di $F$.
+\end{oss}
+
+\begin{proof}
+	Siano $C_1, C_2, \dots C_{\lambda}$ le componenti connesse di $F$.
+	Ciascuna componente connessa \`e un albero, quindi $\forall i \abs{\verts{C_i}} = \abs{\edges{C_i}} + 1$.
+	Quindi:
+	\begin{align*}
+		\abs{\verts{F}} =
+		\sum_{i = 1}^{\lambda} \abs{\verts{C_i}} =
+		\sum_{i = 1}^{\lambda} \left( \abs{\edges{C_i}} + 1 \right) =
+		\sum_{i = 1}^{\lambda} \abs{\edges{C_i}} + \lambda =
+		\abs{\edges{F}} + \lambda
+	\end{align*}
+\end{proof}
+
+\newpage
 
 % TODO catch up here
 
 Abbiamo una endofunzone $f : [n] \to [n]$.
-La rappresentiamo con un grafo diretto G_f in cui V(G) = [n] e con archi (a, f(a)) \forall a \in [n].
+La rappresentiamo con un grafo diretto $G_f$ in cui $V(G) = [n]$ e con archi $(a, f(a)) \forall a \in [n]$.
 Tutti i cicli sono ``ben orientati''.
 Tutti gli archi con un vertice in comune sono ``consecutivi''.
 
@@ -337,7 +370,7 @@ Nel grafo non ci sono cicli non orientati bene.
 Ogni ciclo \`e nei ricorrenti.
 
 Abbiamo due insiemi.
-L'insieme \mathcal{V}(n) dei vertebrati su K_n, e l'insieme \mathcal{F}(n) delle endofunzioni su [n].
+L'insieme $\mathcal{V}(n)$ dei vertebrati su $K_n$, e l'insieme $\mathcal{F}(n)$ delle endofunzioni su $[n]$.
 Vogliamo articolare i due insiemi allo stesso modo, per mettere in biezione vertebrati e endofunzioni e dimostrare che i due insiemi hanno
 la stessa cardinalit\`a.
 
