@@ -1,0 +1,36 @@
+# load this with data [filename]
+
+# 2 tipi di prodotti, 2 reparti di produzione indipendenti
+# 2 fasi di lavorazione per prodotto
+#
+# +----------------+-------------------+-------------------+
+# | Impianto       | Impianto 1        | Impianto 2        |
+# +----------------+----+----+---------+----+----+---------+
+# | Prodotti       | P1 | P2 | Max ore | P1 | P2 | Max ore |
+# +----------------+----+----+---------+----+----+---------+-------------+
+# | Levigatura     |  4 |  2 |      80 |  5 |  3 |      60 | Tempi       |
+# +----------------+----+----+---------+----+----+---------+ lavorazione |
+# | Pulitura       |  2 |  5 |      60 |  5 |  6 |      75 |             |
+# +----------------+----+----+---------+----+----+---------+-------------+
+# | Mat. grezzo    |               75  |                45 |
+# +----------------+----+----+---------+-------------------+
+# | Prezzo vendita | 10 | 15 |
+# +----------------+----+----+
+
+set Prodotti := P1 P2;
+set Risorse  := MaterialeGrezzo Levigatura Pulitura;
+
+param Q_Max :=
+MaterialeGrezzo 75
+Levigatura      80
+Pulitura        60;
+
+param Prezzo :=
+P1 10
+P2 15;
+
+param Richieste : P1   P2 :=
+MaterialeGrezzo    4    4
+Levigatura         4    2
+Pulitura           2    5;
+

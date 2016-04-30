@@ -1,0 +1,24 @@
+
+set Farcitura := crema cioccolato panna;
+set Ingredienti := farina zucchero latte;
+
+param Prezzo :=
+crema       0.5
+cioccolato  0.5
+panna       0.6;
+
+param Domanda :=
+crema       2000
+cioccolato  2000
+panna       1000;
+
+param Disponibili :=
+farina      100000
+zucchero    100000
+latte        60000;
+
+param Consumo : farina zucchero latte :=
+crema               20       10    15
+cioccolato          30       15    10
+panna               15       15    25;
+
