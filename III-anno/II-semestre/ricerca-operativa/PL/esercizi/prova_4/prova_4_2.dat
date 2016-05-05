@@ -1,0 +1,25 @@
+
+set Pezzi = 4M 2M 1_5M;
+set Assi  = 7M 3M;
+set Tagli7M = M1 M2 M3 M4 M5;
+set Tagli3M = N1 N2;
+
+param Richieste :=
+4M   1500
+2M   2000
+1_5M 2500;
+
+param Prezzo7M := 10;
+param Prezzo3M := 5;
+
+param PezziTagli7M : 4M 2M 1_5M :=
+M1                    1  0    0
+M2                    0  0    4
+M3                    1  0    2
+M4                    0  3    0
+M5                    0  2    2;
+
+param PezziTagli3M : 4M 2M 1_5M :=
+N1                    0  1    0
+N2                    0  0    2;
+

@@ -1,0 +1,10 @@
+reset;
+
+model nqueens.mod
+data nqueens.dat
+
+option solver cplex;
+solve;
+
+display Scacchiera;
+
